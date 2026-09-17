@@ -14,6 +14,8 @@
 - Перемешивание вариантов (`shuffle`).
 - Настройка теста: показ результатов, показ правильных ответов, статистика ответов.
 - Сегменты результатов (диапазоны баллов) или порог прохождения.
+- Публикация анонса формы в **Telegram** и **VK**.
+- Защита от повторной публикации в один день (файл состояния `state.json`).
 - Ежедневный запуск через GitHub Actions, а также ручной запуск и `--dry-run`.
 
 ## Структура
@@ -24,8 +26,11 @@ forms_writer/
 ├── config.py                # загрузка настроек из окружения
 ├── llm.py                   # генерация вопросов через LLM
 ├── yandex_forms.py          # клиент API Яндекс Форм
+├── publisher.py             # публикация анонса в Telegram и VK
+├── state.py                 # состояние: защита от дублей
 ├── requirements.txt
 ├── .env.example             # шаблон настроек для локального запуска
+├── state.json               # данные о последних публикациях
 ├── samples/questions.json   # пример готовых вопросов (без LLM)
 └── .github/workflows/daily.yml  # ежедневный запуск
 ```
@@ -79,6 +84,15 @@ python main.py --check
 | `SEGMENTS` | нет | — | JSON-массив сегментов результатов |
 | `CLEAR_EXISTING` | нет | `false` | Удалять старые вопросы в существующей форме |
 | `DRY_RUN` | нет | `false` | Только показать план, не обращаться к API |
+| `PUBLISH_TELEGRAM` | нет | `true` | Публиковать анонс в Telegram |
+| `TG_BOT_TOKEN` | нет | — | Токен Telegram-бота |
+| `TG_TARGET_CHANNEL` | нет | — | Канал для анонса (например `@qa_helper`) |
+| `PUBLISH_VK` | нет | `true` | Публиковать анонс в VK |
+| `VK_ACCESS_TOKEN` | нет | — | Токен VK с правом `wall` |
+| `VK_GROUP_ID` | нет | — | id VK-группы (положительное число) |
+| `ANNOUNCE_TEMPLATE` | нет | см. ниже | Шаблон текста анонса (`{name}`, `{count}`, `{url}`) |
+| `STATE_FILE` | нет | `state.json` | Файл состояния |
+| `FORCE` | нет | `false` | Игнорировать защиту от дублей |
 
 \* обязателен, если не задан `QUESTIONS_FILE`.
 
@@ -87,6 +101,35 @@ python main.py --check
 ```bash
 SEGMENTS=[{"title":"Новичок","description":"Есть куда расти","upper_limit":4},{"title":"Эрудит","description":"Отличный результат","upper_limit":13}]
 ```
+
+## Публикация анонса в Telegram и VK
+
+После создания формы приложение публикует короткий анонс со ссылкой.
+
+Публикация включается автоматически, если заданы соответствующие переменные:
+
+- **Telegram:** `TG_BOT_TOKEN` + `TG_TARGET_CHANNEL` (токен бота, добавленного
+  администратором в канал).
+- **VK:** `VK_ACCESS_TOKEN` + `VK_GROUP_ID` (токен с правом `wall`; id группы —
+  положительное число, пост публикуется от имени группы).
+
+Текст анонса настраивается через `ANNOUNCE_TEMPLATE`:
+
+```text
+Новый тест: «{name}»
+
+{count} вопросов на разные темы — проверьте свой кругозор.
+
+Пройти: {url}
+```
+
+Если ключи не заданы — публикация в соцсети просто пропускается.
+
+## Защита от дублей
+
+Приложение хранит дату последней публикации в `state.json`. Если запуск
+повторяется в тот же день (например, резервным расписанием), форма не создаётся
+заново. Для принудительного запуска используйте флаг `--force` или `FORCE=true`.
 
 ## Как получить токен и org id
 
@@ -104,11 +147,16 @@ SEGMENTS=[{"title":"Новичок","description":"Есть куда расти"
 
 1. Запушьте проект в репозиторий.
 2. **Settings → Secrets and variables → Actions**:
-   - **Secrets:** `LLM_API_KEY`, `YANDEX_FORMS_TOKEN`, `YANDEX_ORG_ID`;
+   - **Secrets:** `LLM_API_KEY`, `YANDEX_FORMS_TOKEN`, `YANDEX_ORG_ID`
+     и, для соцсетей, `TG_BOT_TOKEN`, `TG_TARGET_CHANNEL`,
+     `VK_ACCESS_TOKEN`, `VK_GROUP_ID`;
    - **Variables** (необязательно): `LLM_BASE_URL`, `LLM_MODEL`,
      `QUESTIONS_TOPIC`, `QUESTIONS_COUNT`, `QUESTIONS_LANGUAGE`.
-3. Расписание задаётся в `.github/workflows/daily.yml` (cron в UTC, по умолчанию
-   `0 6 * * *`). Запустить можно и вручную: вкладка **Actions → Daily form → Run workflow**.
+3. Расписание задаётся в `.github/workflows/daily.yml` (cron в UTC: основной
+   `0 6 * * *` и резервный `30 6 * * *`). Запустить можно и вручную:
+   вкладка **Actions → Daily form → Run workflow**.
+4. Workflow сам коммитит обновлённый `state.json` (нужны права
+   `permissions: contents: write`, они уже указаны).
 
 ## Формат вопросов в `QUESTIONS_FILE`
 

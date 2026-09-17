@@ -83,6 +83,19 @@ class Config:
     questions_file: Optional[str]
     dry_run: bool
 
+    # --- Публикация анонса в соцсетях ---
+    publish_telegram: bool
+    tg_bot_token: str
+    tg_target_channel: str
+    publish_vk: bool
+    vk_access_token: str
+    vk_group_id: str
+    announce_template: str
+
+    # --- Состояние (защита от дублей) ---
+    state_file: str
+    force: bool
+
     def validate(self, require_questions: bool = True) -> None:
         errors = []
         if not self.dry_run:
@@ -130,6 +143,18 @@ def load_config(
         clear_existing=_get_bool("CLEAR_EXISTING", False),
         questions_file=(os.getenv("QUESTIONS_FILE") or "").strip() or None,
         dry_run=_get_bool("DRY_RUN", False),
+        publish_telegram=_get_bool("PUBLISH_TELEGRAM", True),
+        tg_bot_token=os.getenv("TG_BOT_TOKEN", "").strip(),
+        tg_target_channel=os.getenv("TG_TARGET_CHANNEL", "").strip(),
+        publish_vk=_get_bool("PUBLISH_VK", True),
+        vk_access_token=os.getenv("VK_ACCESS_TOKEN", "").strip(),
+        vk_group_id=os.getenv("VK_GROUP_ID", "").strip(),
+        announce_template=os.getenv(
+            "ANNOUNCE_TEMPLATE",
+            "Новый тест: «{name}»\n\n{count} вопросов на разные темы — проверьте свой кругозор.\n\nПройти: {url}",
+        ).strip(),
+        state_file=os.getenv("STATE_FILE", "state.json").strip(),
+        force=_get_bool("FORCE", False),
     )
 
     if overrides:

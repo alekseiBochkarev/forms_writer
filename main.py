@@ -19,6 +19,8 @@ from typing import Any, Dict, List
 
 from config import load_config
 from llm import generate_questions
+from publisher import publish_announcement
+from state import load_state, save_state, today_utc
 from yandex_forms import YandexFormsClient, publish_questions
 
 logging.basicConfig(
@@ -38,6 +40,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--survey-id", help="добавить вопросы в существующую форму")
     parser.add_argument("--name", help="название новой формы")
     parser.add_argument("--no-publish", action="store_true", help="не публиковать форму")
+    parser.add_argument("--force", action="store_true", help="игнорировать защиту от дублей")
     parser.add_argument("--check", action="store_true", help="проверить доступ к API и выйти")
     parser.add_argument("--delete-survey", help="удалить форму по id и выйти")
     return parser.parse_args()
@@ -82,6 +85,8 @@ def main() -> int:
         overrides["survey_name"] = args.name
     if args.no_publish:
         overrides["publish"] = False
+    if args.force:
+        overrides["force"] = True
 
     service_mode = bool(args.check or args.delete_survey)
     try:
@@ -106,6 +111,13 @@ def main() -> int:
         log.info("Форма %s удалена", args.delete_survey)
         return 0
 
+    # Защита от повторной публикации в один день (как в article_writer)
+    if not cfg.dry_run and not cfg.force:
+        current = load_state(cfg.state_file)
+        if current.get("last_publish_date") == today_utc():
+            log.info("За %s уже публиковали — пропускаю (используйте --force для повтора).", today_utc())
+            return 0
+
     log.info("Форма: «%s»", cfg.survey_name)
     log.info("Вопросов: %s | тема: %s | публикация: %s", cfg.count, cfg.topic, cfg.publish)
 
@@ -126,10 +138,25 @@ def main() -> int:
         log.info("DRY-RUN: обращения к Яндекс Формам не будет")
         return 0
 
-    # 3) Публикуем
+    # 3) Создаём и публикуем форму
     client = YandexFormsClient(cfg.yandex_token, cfg.yandex_org_id, cfg.yandex_org_header)
     survey_id = publish_questions(cfg, questions, client)
-    log.info("Готово. Публичная ссылка: %s", YandexFormsClient.public_url(survey_id))
+    public_url = YandexFormsClient.public_url(survey_id)
+    log.info("Готово. Публичная ссылка: %s", public_url)
+
+    # 4) Анонс в Telegram и VK
+    posted = publish_announcement(cfg, survey_id, len(questions), cfg.survey_name)
+    if posted:
+        log.info("Анонс опубликован: %s", ", ".join(posted))
+
+    # 5) Сохраняем состояние (защита от дублей)
+    current = load_state(cfg.state_file)
+    current["last_publish_date"] = today_utc()
+    current.setdefault("published", []).append(
+        {"date": today_utc(), "survey_id": survey_id, "url": public_url}
+    )
+    save_state(cfg.state_file, current)
+
     return 0
 
 

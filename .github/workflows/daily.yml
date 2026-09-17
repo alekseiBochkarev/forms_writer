@@ -4,11 +4,19 @@ on:
   schedule:
     # Каждый день в 06:00 UTC (09:00 МСК). Время указывается в UTC.
     - cron: "0 6 * * *"
+    # Резервный запуск через 30 минут на случай сбоя основного.
+    - cron: "30 6 * * *"
   workflow_dispatch: {}  # позволяет запустить вручную из вкладки Actions
+
+concurrency:
+  group: daily-form
+  cancel-in-progress: false
 
 jobs:
   create-form:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     timeout-minutes: 15
 
     steps:
@@ -25,11 +33,16 @@ jobs:
 
       - name: Generate and publish form
         env:
-          # --- секреты ---
+          # --- секреты: модель и Яндекс Формы ---
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           YANDEX_FORMS_TOKEN: ${{ secrets.YANDEX_FORMS_TOKEN }}
           YANDEX_ORG_ID: ${{ secrets.YANDEX_ORG_ID }}
-          # --- обычные настройки (можно задать в Settings -> Variables) ---
+          # --- секреты: публикация анонса (необязательно) ---
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_TARGET_CHANNEL: ${{ secrets.TG_TARGET_CHANNEL }}
+          VK_ACCESS_TOKEN: ${{ secrets.VK_ACCESS_TOKEN }}
+          VK_GROUP_ID: ${{ secrets.VK_GROUP_ID }}
+          # --- обычные настройки (Settings -> Variables) ---
           LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.openai.com/v1' }}
           LLM_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}
           QUESTIONS_TOPIC: ${{ vars.QUESTIONS_TOPIC || 'общая эрудиция: разные области науки и жизни' }}
@@ -42,3 +55,11 @@ jobs:
           SHOW_CORRECT: "true"
           STATS: "true"
         run: python main.py
+
+      - name: Commit state
+        run: |
+          git config user.name "daily-bot"
+          git config user.email "daily-bot@users.noreply.github.com"
+          git add state.json || true
+          git commit -m "Update state" || echo "No changes"
+          git push || echo "Nothing to push"
