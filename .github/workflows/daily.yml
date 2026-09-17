@@ -1,0 +1,44 @@
+name: Daily form
+
+on:
+  schedule:
+    # Каждый день в 06:00 UTC (09:00 МСК). Время указывается в UTC.
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}  # позволяет запустить вручную из вкладки Actions
+
+jobs:
+  create-form:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate and publish form
+        env:
+          # --- секреты ---
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          YANDEX_FORMS_TOKEN: ${{ secrets.YANDEX_FORMS_TOKEN }}
+          YANDEX_ORG_ID: ${{ secrets.YANDEX_ORG_ID }}
+          # --- обычные настройки (можно задать в Settings -> Variables) ---
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.openai.com/v1' }}
+          LLM_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}
+          QUESTIONS_TOPIC: ${{ vars.QUESTIONS_TOPIC || 'общая эрудиция: разные области науки и жизни' }}
+          QUESTIONS_COUNT: ${{ vars.QUESTIONS_COUNT || '13' }}
+          QUESTIONS_LANGUAGE: ${{ vars.QUESTIONS_LANGUAGE || 'ru' }}
+          SURVEY_NAME: "Насколько широк ваш кругозор"
+          PUBLISH: "true"
+          SHUFFLE: "true"
+          SHOW_RESULTS: "true"
+          SHOW_CORRECT: "true"
+          STATS: "true"
+        run: python main.py
