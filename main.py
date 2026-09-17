@@ -43,6 +43,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--force", action="store_true", help="игнорировать защиту от дублей")
     parser.add_argument("--check", action="store_true", help="проверить доступ к API и выйти")
     parser.add_argument("--delete-survey", help="удалить форму по id и выйти")
+    parser.add_argument("--rename-survey", help="переименовать форму по id (вместе с --name)")
     return parser.parse_args()
 
 
@@ -88,7 +89,7 @@ def main() -> int:
     if args.force:
         overrides["force"] = True
 
-    service_mode = bool(args.check or args.delete_survey)
+    service_mode = bool(args.check or args.delete_survey or args.rename_survey)
     try:
         cfg = load_config(overrides, require_questions=not service_mode)
     except ValueError as exc:
@@ -106,6 +107,13 @@ def main() -> int:
             log.info("Доступ к API есть. Доступных форм: %s", len(surveys))
             for s in surveys:
                 log.info("  %s | %s", s.get("id"), s.get("name"))
+            return 0
+        if args.rename_survey:
+            if not args.name:
+                log.error("Для --rename-survey укажите новое имя через --name")
+                return 2
+            client.update_survey(args.rename_survey, {"name": args.name})
+            log.info("Форма %s переименована в «%s»", args.rename_survey, args.name)
             return 0
         client.delete_survey(args.delete_survey)
         log.info("Форма %s удалена", args.delete_survey)

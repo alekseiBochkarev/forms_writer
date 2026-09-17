@@ -49,6 +49,18 @@ class YandexFormsClient:
         data = self._request("GET", "/surveys/")
         return data.get("result", []) if isinstance(data, dict) else data
 
+    def next_survey_name(self, base: str) -> str:
+        """Имя со счётчиком: «<base> N», где N — число форм с таким префиксом + 1."""
+        try:
+            surveys = self.list_surveys()
+        except YandexFormsError as exc:
+            log.warning("Не удалось получить список форм для нумерации: %s", exc)
+            return base
+        count = sum(
+            1 for s in surveys if str(s.get("name", "")).strip().startswith(base)
+        )
+        return f"{base} {count + 1}"
+
     def create_survey(self, name: str) -> str:
         payload = {
             "name": name,
@@ -109,6 +121,18 @@ class YandexFormsClient:
     def publish(self, survey_id: str) -> None:
         self._request("POST", f"/surveys/{survey_id}/publish/")
 
+    def set_access(self, survey_id: str, access: str = "public", action: str = "submit") -> None:
+        """Настроить доступ к форме.
+
+        access: restricted | common | public
+        action: change (редактирование) | submit (заполнение)
+        """
+        self._request(
+            "POST",
+            f"/surveys/{survey_id}/access",
+            {"action": action, "access": access},
+        )
+
     @staticmethod
     def public_url(survey_id: str) -> str:
         return f"https://forms.yandex.ru/u/{survey_id}/"
@@ -149,28 +173,43 @@ def build_quiz_settings(cfg, total: int) -> Dict[str, Any]:
         ]
         return quiz
 
-    # Авто-сегменты: 4 диапазона по четвертям от общего числа баллов.
+    # Авто-сегменты: 4 уровня, границы по четвертям от общего числа баллов.
     quiz["calc_method"] = "range"
-    limits = [
-        max(1, total * 1 // 4),
-        max(2, total * 2 // 4),
-        max(3, total * 3 // 4),
-        total,
-    ]
-    titles = [
-        "Начинающий",
-        "Любознательный",
-        "Эрудит",
-        "Ходячая энциклопедия",
-    ]
-    quiz["items"] = [
+    bounds = sorted(
         {
-            "title": f"{titles[i]} (0–{limits[i]})",
-            "description": "Результат теста на общую эрудицию.",
-            "upper_limit": limits[i],
+            max(1, total // 4),
+            max(2, total // 2),
+            max(3, (total * 3) // 4),
+            total,
         }
-        for i in range(len(limits))
+    )
+    while bounds and bounds[-1] > total:
+        bounds.pop()
+    if not bounds:
+        bounds = [total]
+
+    levels = [
+        ("Начинающий", "Кругозор только формируется — отличный повод узнать больше."),
+        ("Любознательный", "Основы есть, но в ряде областей стоит подтянуться."),
+        ("Эрудит", "Вы уверенно ориентируетесь в большинстве тем."),
+        ("Ходячая энциклопедия", "Отличный результат — по-настоящему широкий кругозор!"),
     ]
+
+    items = []
+    lower = 0
+    for i, upper in enumerate(bounds):
+        name, description = levels[min(i, len(levels) - 1)]
+        range_text = str(lower) if lower == upper else f"{lower}–{upper}"
+        items.append(
+            {
+                "title": name,
+                "description": f"Верных ответов: {range_text} из {total}. {description}",
+                "upper_limit": upper,
+            }
+        )
+        lower = upper + 1
+
+    quiz["items"] = items
     return quiz
 
 
@@ -189,8 +228,11 @@ def publish_questions(cfg, questions: List[Dict[str, Any]], client: YandexFormsC
                 if "id" in q:
                     client.delete_question(survey_id, q["id"])
     else:
-        survey_id = client.create_survey(cfg.survey_name)
-        log.info("Создана форма: %s", survey_id)
+        name = cfg.survey_name
+        if cfg.number_surveys:
+            name = client.next_survey_name(cfg.survey_name)
+        survey_id = client.create_survey(name)
+        log.info("Создана форма «%s»: %s", name, survey_id)
 
     for i, q in enumerate(questions, 1):
         qid = client.add_enum_question(
@@ -203,8 +245,14 @@ def publish_questions(cfg, questions: List[Dict[str, Any]], client: YandexFormsC
         log.info("  + вопрос %s: id=%s [%s]", i, qid, q.get("topic", ""))
 
     quiz = build_quiz_settings(cfg, total=len(questions))
-    client.update_survey(survey_id, {"quiz": quiz, "stats": cfg.stats})
+    client.update_survey(
+        survey_id, {"quiz": quiz, "stats": cfg.stats, "need_auth": False}
+    )
     log.info("Настройки теста применены (stats=%s, quiz=%s)", cfg.stats, quiz.get("calc_method"))
+
+    # Открываем публичный доступ: иначе обычные пользователи не откроют ссылку.
+    client.set_access(survey_id, access="public", action="submit")
+    log.info("Доступ к форме: публичный (заполнение)")
 
     if cfg.publish:
         client.publish(survey_id)

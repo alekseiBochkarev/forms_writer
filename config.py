@@ -9,7 +9,6 @@ from __future__ import annotations
 import json
 import os
 from dataclasses import dataclass
-from datetime import date
 from typing import Any, Dict, List, Optional
 
 try:
@@ -73,6 +72,7 @@ class Config:
 
     # --- Поведение ---
     publish: bool
+    number_surveys: bool
     shuffle: bool
     show_results: bool
     show_correct: bool
@@ -117,7 +117,6 @@ def load_config(
     overrides: Optional[Dict[str, Any]] = None, require_questions: bool = True
 ) -> Config:
     """Собрать конфигурацию из окружения и применить переопределения (CLI)."""
-    today = date.today().isoformat()
     cfg = Config(
         llm_api_key=os.getenv("LLM_API_KEY", "").strip(),
         llm_base_url=os.getenv("LLM_BASE_URL", "https://api.openai.com/v1").rstrip("/"),
@@ -131,9 +130,10 @@ def load_config(
         count=_get_int("QUESTIONS_COUNT", 13) or 13,
         language=os.getenv("QUESTIONS_LANGUAGE", "ru").strip(),
         survey_name=os.getenv(
-            "SURVEY_NAME", f"Насколько широк ваш кругозор — {today}"
+            "SURVEY_NAME", "Насколько широк ваш кругозор"
         ).strip(),
         publish=_get_bool("PUBLISH", True),
+        number_surveys=_get_bool("NUMBER_SURVEYS", True),
         shuffle=_get_bool("SHUFFLE", True),
         show_results=_get_bool("SHOW_RESULTS", True),
         show_correct=_get_bool("SHOW_CORRECT", True),
