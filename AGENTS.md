@@ -12,7 +12,7 @@ API), собирает из них тест с правильными ответ
 
 ## Структура
 
-- `main.py` — точка входа и CLI (`--dry-run`, `--check`, `--force`, `--delete-survey`).
+- `main.py` — точка входа и CLI (`--dry-run`, `--check`, `--force`, `--delete-survey`, `--rename-survey`).
 - `config.py` — загрузка настроек из переменных окружения / `.env`.
 - `llm.py` — генерация вопросов через LLM.
 - `yandex_forms.py` — клиент API Яндекс Форм (создание формы, вопросы, публикация).

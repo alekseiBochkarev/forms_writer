@@ -6,7 +6,8 @@
     python main.py --questions-file samples/questions.json
     python main.py --count 10 --topic "наука и техника"
     python main.py --check              # проверить доступ к API Яндекс Форм
-    python main.py --delete-survey 6aac...   # удалить форму по id
+    python main.py --delete-survey 6aac...            # удалить форму по id
+    python main.py --rename-survey 6aac... --name "Новое имя"  # переименовать форму
 """
 
 from __future__ import annotations

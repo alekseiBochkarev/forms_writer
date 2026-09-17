@@ -58,6 +58,13 @@ python main.py
 python main.py --check
 ```
 
+Служебные команды (по id формы):
+
+```bash
+python main.py --rename-survey 6aac... --name "Насколько широк ваш кругозор 1"
+python main.py --delete-survey 6aac...
+```
+
 ## Настройки
 
 Все настройки задаются через переменные окружения (или файл `.env`).
