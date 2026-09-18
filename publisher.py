@@ -3,17 +3,42 @@
 from __future__ import annotations
 
 import logging
+import random
+from datetime import date
 from typing import List
 
 import requests
 
 log = logging.getLogger(__name__)
 
+# Формулировки анонса по умолчанию. При каждом запуске выбирается случайная,
+# поэтому посты в Telegram и VK слегка отличаются.
+DEFAULT_ANNOUNCE_TEMPLATES = [
+    "Новый тест: «{name}»\n\n{count} вопросов на разные темы — проверьте свой кругозор.\n\nПройти: {url}",
+    "Проверьте эрудицию: «{name}»\n\n{count} вопросов из разных областей. Справитесь?\n\nПройти: {url}",
+    "Свежий тест: «{name}»\n\n{count} вопросов на общую эрудицию — узнайте, насколько широк ваш кругозор.\n\nПройти: {url}",
+    "«{name}» — новый тест дня\n\n{count} вопросов из разных сфер. Ответьте и узнайте результат.\n\nПройти: {url}",
+    "Готов новый тест: «{name}»\n\n{count} вопросов на разные темы. Проверьте себя за пару минут.\n\nПройти: {url}",
+    "Тест на кругозор: «{name}»\n\n{count} вопросов из разных областей знаний. Какой результат у вас?\n\nПройти: {url}",
+    "Небольшая разминка для ума: «{name}»\n\n{count} вопросов на разные темы — сравните результат с друзьями.\n\nПройти: {url}",
+]
+
+
+def _effective_templates(cfg) -> List[str]:
+    templates = getattr(cfg, "announce_templates", None)
+    if templates:
+        return templates
+    single = (getattr(cfg, "announce_template", "") or "").strip()
+    if single:
+        return [single]
+    return DEFAULT_ANNOUNCE_TEMPLATES
+
 
 def build_announcement(cfg, survey_id: str, count: int, name: str) -> str:
-    """Собрать текст анонса со ссылкой на форму."""
+    """Собрать текст анонса со ссылкой на форму (случайная формулировка)."""
     url = f"https://forms.yandex.ru/u/{survey_id}/"
-    return cfg.announce_template.format(name=name, count=count, url=url)
+    template = random.choice(_effective_templates(cfg))
+    return template.format(name=name, count=count, url=url, date=date.today().isoformat())
 
 
 def post_to_telegram(token: str, channel: str, text: str) -> None:

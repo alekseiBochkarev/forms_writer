@@ -91,6 +91,7 @@ class Config:
     vk_access_token: str
     vk_group_id: str
     announce_template: str
+    announce_templates: Optional[List[str]]
 
     # --- Состояние (защита от дублей) ---
     state_file: str
@@ -149,10 +150,8 @@ def load_config(
         publish_vk=_get_bool("PUBLISH_VK", True),
         vk_access_token=os.getenv("VK_ACCESS_TOKEN", "").strip(),
         vk_group_id=os.getenv("VK_GROUP_ID", "").strip(),
-        announce_template=os.getenv(
-            "ANNOUNCE_TEMPLATE",
-            "Новый тест: «{name}»\n\n{count} вопросов на разные темы — проверьте свой кругозор.\n\nПройти: {url}",
-        ).strip(),
+        announce_template=os.getenv("ANNOUNCE_TEMPLATE", "").strip(),
+        announce_templates=_get_list("ANNOUNCE_TEMPLATES"),
         state_file=os.getenv("STATE_FILE", "state.json").strip(),
         force=_get_bool("FORCE", False),
     )
