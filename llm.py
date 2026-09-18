@@ -17,15 +17,25 @@ SYSTEM_PROMPT = (
 )
 
 
-def _build_user_prompt(topic: str, count: int, language: str) -> str:
+def _build_user_prompt(topic: str, count: int, language: str, avoid: List[str] | None = None) -> str:
+    avoid_block = ""
+    if avoid:
+        listed = "\n".join(f"- {q}" for q in avoid[:150])
+        avoid_block = (
+            "\nВАЖНО: не повторяй вопросы, которые уже были раньше. "
+            "Ниже список уже заданных вопросов — не используй их и не перефразируй:\n"
+            f"{listed}\n"
+        )
     return (
         f"Составь ровно {count} вопросов на тему «{topic}» на языке «{language}».\n"
         "Требования:\n"
         "- вопросы из РАЗНЫХ областей (история, география, наука, литература, искусство, "
         "спорт, технологии, языкознание и т.п.), без повторов тем;\n"
+        "- все вопросы должны быть разными и не повторять друг друга;\n"
         "- у каждого вопроса ровно 4 варианта ответа и РОВНО ОДИН правильный;\n"
         "- факты должны быть достоверными и однозначными, без спорных формулировок;\n"
-        "- варианты должны быть правдоподобными, но только один — верный.\n\n"
+        "- варианты должны быть правдоподобными, но только один — верный.\n"
+        f"{avoid_block}\n"
         "Верни JSON строго такого вида:\n"
         "{\n"
         '  "questions": [\n'
@@ -77,9 +87,10 @@ def _validate_questions(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return result
 
 
-def generate_questions(cfg) -> List[Dict[str, Any]]:
+def generate_questions(cfg, avoid: List[str] | None = None) -> List[Dict[str, Any]]:
     """Сгенерировать список вопросов через LLM.
 
+    avoid — список ранее заданных вопросов, которые повторять не нужно.
     Возвращает список словарей: topic, question, options[4], correct_index.
     """
     url = f"{cfg.llm_base_url}/chat/completions"
@@ -87,7 +98,10 @@ def generate_questions(cfg) -> List[Dict[str, Any]]:
         "model": cfg.llm_model,
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": _build_user_prompt(cfg.topic, cfg.count, cfg.language)},
+            {
+                "role": "user",
+                "content": _build_user_prompt(cfg.topic, cfg.count, cfg.language, avoid),
+            },
         ],
         "temperature": cfg.llm_temperature,
         "response_format": {"type": "json_object"},

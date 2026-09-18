@@ -9,10 +9,15 @@ from typing import Any, Dict
 
 
 def load_state(path: str) -> Dict[str, Any]:
-    default: Dict[str, Any] = {"last_publish_date": None, "published": []}
+    default: Dict[str, Any] = {
+        "last_publish_date": None,
+        "published": [],
+        "asked_questions": [],
+    }
     if not os.path.exists(path):
         return default
-    with open(path, "r", encoding="utf-8") as f:
+    # utf-8-sig корректно читает файл и с BOM, и без него
+    with open(path, "r", encoding="utf-8-sig") as f:
         data = json.load(f)
     for key, value in default.items():
         data.setdefault(key, value)

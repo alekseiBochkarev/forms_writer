@@ -19,6 +19,7 @@ import sys
 from typing import Any, Dict, List
 
 from config import load_config
+from dedup import DuplicateChecker
 from llm import generate_questions
 from publisher import publish_announcement
 from state import load_state, save_state, today_utc
@@ -67,6 +68,27 @@ def load_questions_from_file(path: str) -> List[Dict[str, Any]]:
             }
         )
     return result
+
+
+def _collect_unique_questions(cfg, history: List[str], checker: DuplicateChecker) -> List[Dict[str, Any]]:
+    """Сгенерировать вопросы, исключая повторы (в т.ч. по прошлым выпускам)."""
+    collected: List[Dict[str, Any]] = []
+    max_attempts = 5
+    for attempt in range(1, max_attempts + 1):
+        avoid = history + [q["question"] for q in collected]
+        batch = generate_questions(cfg, avoid=avoid)
+        for q in batch:
+            if checker.is_duplicate(q["question"]):
+                log.info("  повтор, пропускаю: %s", q["question"])
+                continue
+            checker.add(q["question"])
+            collected.append(q)
+        log.info("Попытка %s: уникальных вопросов %s из %s", attempt, len(collected), cfg.count)
+        if len(collected) >= cfg.count:
+            return collected[: cfg.count]
+    raise RuntimeError(
+        f"Не удалось собрать {cfg.count} уникальных вопросов за {max_attempts} попыток"
+    )
 
 
 def main() -> int:
@@ -120,22 +142,52 @@ def main() -> int:
         log.info("Форма %s удалена", args.delete_survey)
         return 0
 
+    state_data = load_state(cfg.state_file)
+    history = list(state_data.get("asked_questions") or [])
+
     # Защита от повторной публикации в один день (как в article_writer)
     if not cfg.dry_run and not cfg.force:
-        current = load_state(cfg.state_file)
-        if current.get("last_publish_date") == today_utc():
+        if state_data.get("last_publish_date") == today_utc():
             log.info("За %s уже публиковали — пропускаю (используйте --force для повтора).", today_utc())
             return 0
+
+    # Если истории ещё нет — подтягиваем вопросы из уже созданных форм,
+    # чтобы не повторять их в новом выпуске.
+    if not history and not cfg.dry_run:
+        try:
+            hist_client = YandexFormsClient(cfg.yandex_token, cfg.yandex_org_id, cfg.yandex_org_header)
+            for s in hist_client.list_surveys():
+                if not str(s.get("name", "")).strip().startswith(cfg.survey_name):
+                    continue
+                for q in hist_client.get_questions(s["id"]):
+                    if q.get("label"):
+                        history.append(q["label"])
+            if history:
+                log.info("Загружено вопросов из существующих форм: %s", len(history))
+                state_data["asked_questions"] = history[-500:]
+        except Exception as exc:  # noqa: BLE001 - история не критична для запуска
+            log.warning("Не удалось загрузить историю вопросов: %s", exc)
 
     log.info("Форма: «%s»", cfg.survey_name)
     log.info("Вопросов: %s | тема: %s | публикация: %s", cfg.count, cfg.topic, cfg.publish)
 
-    # 1) Получаем вопросы
+    # 1) Получаем вопросы (без повторов с предыдущими выпусками)
+    checker = DuplicateChecker(history)
+    if history:
+        log.info("Учитываю ранее заданные вопросы: %s", len(history))
+
     if cfg.questions_file:
         log.info("Читаю вопросы из файла: %s", cfg.questions_file)
-        questions = load_questions_from_file(cfg.questions_file)
+        loaded = load_questions_from_file(cfg.questions_file)
+        questions = []
+        for q in loaded:
+            if checker.is_duplicate(q["question"]):
+                log.warning("Пропускаю повтор: %s", q["question"])
+                continue
+            checker.add(q["question"])
+            questions.append(q)
     else:
-        questions = generate_questions(cfg)
+        questions = _collect_unique_questions(cfg, history, checker)
 
     log.info("Вопросов получено: %s", len(questions))
     for i, q in enumerate(questions, 1):
@@ -158,13 +210,15 @@ def main() -> int:
     if posted:
         log.info("Анонс опубликован: %s", ", ".join(posted))
 
-    # 5) Сохраняем состояние (защита от дублей)
-    current = load_state(cfg.state_file)
-    current["last_publish_date"] = today_utc()
-    current.setdefault("published", []).append(
+    # 5) Сохраняем состояние (защита от дублей и от повторов вопросов)
+    state_data["last_publish_date"] = today_utc()
+    state_data.setdefault("published", []).append(
         {"date": today_utc(), "survey_id": survey_id, "url": public_url}
     )
-    save_state(cfg.state_file, current)
+    asked = state_data.setdefault("asked_questions", [])
+    asked.extend(q["question"] for q in questions)
+    state_data["asked_questions"] = asked[-500:]
+    save_state(cfg.state_file, state_data)
 
     return 0
 

@@ -106,6 +106,7 @@ class YandexFormsClient:
             "widget": "radio",
             "has_quiz": True,
             "modify_choices": "shuffle" if shuffle else "natural",
+            "validators": [{"type": "required"}],
             "items": [
                 {
                     "label": option,
