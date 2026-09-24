@@ -28,6 +28,14 @@ def save_state(path: str, state: Dict[str, Any]) -> None:
     # храним только последние записи, чтобы файл не разрастался
     if isinstance(state.get("published"), list):
         state["published"] = state["published"][-180:]
+    if isinstance(state.get("asked_questions"), list):
+        state["asked_questions"] = state["asked_questions"][-500:]
+    # фото-поток: ограничиваем списки использованных сущностей по темам
+    used = state.get("used_entities")
+    if isinstance(used, dict):
+        for theme, items in used.items():
+            if isinstance(items, list):
+                used[theme] = items[-300:]
     with open(path, "w", encoding="utf-8") as f:
         json.dump(state, f, ensure_ascii=False, indent=2)
 

@@ -51,7 +51,7 @@ def _build_user_prompt(topic: str, count: int, language: str, avoid: List[str] |
     )
 
 
-def _extract_json(content: str) -> Dict[str, Any]:
+def extract_json(content: str) -> Dict[str, Any]:
     """Достать JSON из ответа модели, даже если он обёрнут в ```json ... ```."""
     content = content.strip()
     fence = re.search(r"```(?:json)?\s*(.*?)```", content, re.DOTALL)
@@ -62,6 +62,10 @@ def _extract_json(content: str) -> Dict[str, Any]:
     if start == -1 or end == -1:
         raise ValueError("В ответе модели не найден JSON")
     return json.loads(content[start : end + 1])
+
+
+# Совместимый алиас для старого приватного имени.
+_extract_json = extract_json
 
 
 def _validate_questions(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -122,7 +126,7 @@ def generate_questions(cfg, avoid: List[str] | None = None) -> List[Dict[str, An
 
     response.raise_for_status()
     content = response.json()["choices"][0]["message"]["content"]
-    data = _extract_json(content)
+    data = extract_json(content)
     questions = _validate_questions(data.get("questions", []))
 
     if len(questions) != cfg.count:

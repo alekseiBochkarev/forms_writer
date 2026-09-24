@@ -17,6 +17,9 @@ __pycache__/
 .idea/
 .vscode/
 
+# Локальная конфигурация агентов
+.opencode/
+
 # Прочее
 *.log
 .DS_Store

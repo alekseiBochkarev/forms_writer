@@ -8,6 +8,8 @@
     python main.py --check              # проверить доступ к API Яндекс Форм
     python main.py --delete-survey 6aac...            # удалить форму по id
     python main.py --rename-survey 6aac... --name "Новое имя"  # переименовать форму
+    python main.py --photo               # выпуск фото-теста (одна тема)
+    python main.py --photo --photo-theme "советские фильмы"
 """
 
 from __future__ import annotations
@@ -18,6 +20,7 @@ import logging
 import sys
 from typing import Any, Dict, List
 
+import photo_flow
 from config import load_config
 from dedup import DuplicateChecker
 from llm import generate_questions
@@ -46,6 +49,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--check", action="store_true", help="проверить доступ к API и выйти")
     parser.add_argument("--delete-survey", help="удалить форму по id и выйти")
     parser.add_argument("--rename-survey", help="переименовать форму по id (вместе с --name)")
+    parser.add_argument("--photo", action="store_true", help="создать тест с фотографиями")
+    parser.add_argument(
+        "--photo-theme", help="тема фото-теста (иначе выбирается случайная)"
+    )
     return parser.parse_args()
 
 
@@ -94,6 +101,30 @@ def _collect_unique_questions(cfg, history: List[str], checker: DuplicateChecker
 def main() -> int:
     args = parse_args()
 
+    if args.photo and (args.check or args.delete_survey or args.rename_survey):
+        log.error(
+            "Флаги --check/--delete-survey/--rename-survey несовместимы с --photo"
+        )
+        return 2
+
+    if args.photo:
+        ignored = [
+            flag
+            for flag, value in (
+                ("--questions-file", args.questions_file),
+                ("--count", args.count),
+                ("--topic", args.topic),
+                ("--survey-id", args.survey_id),
+                ("--name", args.name),
+            )
+            if value is not None
+        ]
+        if ignored:
+            log.warning(
+                "Эти параметры не применяются к фото-потоку (--photo): %s",
+                ", ".join(ignored),
+            )
+
     overrides: Dict[str, Any] = {}
     if args.dry_run:
         overrides["dry_run"] = True
@@ -111,6 +142,10 @@ def main() -> int:
         overrides["publish"] = False
     if args.force:
         overrides["force"] = True
+    if args.photo:
+        overrides["mode"] = "photo"
+    if args.photo_theme:
+        overrides["photo_theme"] = args.photo_theme
 
     service_mode = bool(args.check or args.delete_survey or args.rename_survey)
     try:
@@ -118,6 +153,10 @@ def main() -> int:
     except ValueError as exc:
         log.error("%s", exc)
         return 2
+
+    # Фото-поток: отдельная логика, эрудиция не затрагивается.
+    if args.photo:
+        return photo_flow.run(cfg, args)
 
     # Режимы обслуживания: проверка доступа и удаление формы
     if service_mode:

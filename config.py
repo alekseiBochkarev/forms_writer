@@ -50,6 +50,36 @@ def _get_list(name: str) -> Optional[List[Dict[str, Any]]]:
     return parsed
 
 
+def _get_str_list(name: str) -> Optional[List[str]]:
+    parsed = _get_list(name)
+    if parsed is None:
+        return None
+    return [str(item).strip() for item in parsed if str(item).strip()]
+
+
+# Встроенный список тем фото-тестов (используется, если PHOTO_THEMES не задан).
+DEFAULT_PHOTO_THEMES = [
+    "животные",
+    "растения",
+    "достопримечательности и места",
+    "картины",
+    "советские фильмы",
+    "иностранные фильмы",
+    "актёры",
+]
+
+# Источники изображений по умолчанию (порядок важен).
+DEFAULT_PHOTO_SOURCES = ["wikimedia", "openverse"]
+
+KNOWN_PHOTO_SOURCES = (
+    "wikimedia",
+    "openverse",
+    "ruwiki_film",
+    "filmgrab",
+    "movscreencaps",
+)
+
+
 @dataclass
 class Config:
     # --- Модель (LLM) ---
@@ -97,7 +127,39 @@ class Config:
     state_file: str
     force: bool
 
+    # --- Режим работы ---
+    # "erudition" — обычный эрудиционный поток, "photo" — фото-тесты.
+    mode: str = "erudition"
+
+    # --- Фото-тесты (отдельный ежедневный поток) ---
+    photo_flow_enabled: bool = False
+    photo_survey_name: str = "Что на фото"
+    photo_questions_count: int = 10
+    photo_theme: Optional[str] = None
+    photo_themes: Optional[List[str]] = None
+    photo_sources: Optional[List[str]] = None
+    photo_max_image_attempts: int = 3
+    photo_min_questions: Optional[int] = None
+    photo_image_timeout: int = 30
+    photo_image_max_bytes: int = 8_000_000
+    photo_state_file: str = "photo_state.json"
+    wikimedia_user_agent: str = ""
+    openverse_api_key: str = ""
+    openverse_base_url: str = "https://api.openverse.org/v1"
+    film_ru_enabled: bool = False
+    film_grab_enabled: bool = False
+    movie_screencaps_enabled: bool = False
+    vision_api_key: str = ""
+    vision_base_url: str = ""
+    vision_model: str = ""
+    vision_timeout: int = 120
+    photo_vision_enabled: bool = False
+
     def validate(self, require_questions: bool = True) -> None:
+        if self.mode == "photo":
+            self._validate_photo(require_questions)
+            return
+
         errors = []
         if not self.dry_run:
             if not self.yandex_token:
@@ -112,6 +174,67 @@ class Config:
             errors.append("QUESTIONS_COUNT должен быть >= 1")
         if errors:
             raise ValueError("Ошибки конфигурации:\n  - " + "\n  - ".join(errors))
+
+    def _validate_photo(self, require_questions: bool = True) -> None:
+        errors = []
+        if not self.dry_run:
+            if not self.yandex_token:
+                errors.append("YANDEX_FORMS_TOKEN не задан")
+            if not self.yandex_org_id:
+                errors.append("YANDEX_ORG_ID (X-Org-Id / X-Cloud-Org-Id) не задан")
+        if require_questions and self.photo_questions_count < 1:
+            errors.append("PHOTO_QUESTIONS_COUNT должен быть >= 1")
+        unknown_sources = [
+            name for name in (self.photo_sources or []) if name not in KNOWN_PHOTO_SOURCES
+        ]
+        if unknown_sources:
+            errors.append(
+                "Неизвестные источники в PHOTO_SOURCES: "
+                + ", ".join(unknown_sources)
+                + ". Допустимые: "
+                + ", ".join(KNOWN_PHOTO_SOURCES)
+            )
+        if require_questions and not self.llm_api_key:
+            errors.append(
+                "Для фото-потока нужен LLM_API_KEY (генерация сущностей и дистракторов)"
+            )
+        if require_questions and not self.enabled_photo_sources():
+            errors.append(
+                "Не включён ни один источник изображений "
+                "(PHOTO_SOURCES или FILM_RU_ENABLED/FILM_GRAB_ENABLED/MOVIE_SCREENCAPS_ENABLED)"
+            )
+        if errors:
+            raise ValueError("Ошибки конфигурации:\n  - " + "\n  - ".join(errors))
+
+    def enabled_photo_sources(self) -> List[str]:
+        """Активные источники изображений в порядке приоритета.
+
+        wikimedia/openverse берутся из PHOTO_SOURCES (по умолчанию оба),
+        кино-источники подключаются только по своим фича-флагам.
+        """
+        sources = (
+            list(self.photo_sources)
+            if self.photo_sources is not None
+            else list(DEFAULT_PHOTO_SOURCES)
+        )
+        enabled = [s for s in ("wikimedia", "openverse") if s in sources]
+        if self.film_ru_enabled:
+            enabled.append("ruwiki_film")
+        if self.film_grab_enabled:
+            enabled.append("filmgrab")
+        if self.movie_screencaps_enabled:
+            enabled.append("movscreencaps")
+        return enabled
+
+    def effective_photo_themes(self) -> List[str]:
+        if self.photo_themes is not None:
+            return list(self.photo_themes)
+        return list(DEFAULT_PHOTO_THEMES)
+
+    def effective_photo_min_questions(self) -> int:
+        if self.photo_min_questions is None:
+            return self.photo_questions_count
+        return self.photo_min_questions
 
 
 def load_config(
@@ -154,12 +277,45 @@ def load_config(
         announce_templates=_get_list("ANNOUNCE_TEMPLATES"),
         state_file=os.getenv("STATE_FILE", "state.json").strip(),
         force=_get_bool("FORCE", False),
+        # --- Фото-тесты ---
+        photo_flow_enabled=_get_bool("PHOTO_FLOW_ENABLED", False),
+        photo_survey_name=os.getenv("PHOTO_SURVEY_NAME", "Что на фото").strip(),
+        photo_questions_count=_get_int("PHOTO_QUESTIONS_COUNT", 10),
+        photo_theme=(os.getenv("PHOTO_THEME") or "").strip() or None,
+        photo_themes=_get_str_list("PHOTO_THEMES"),
+        photo_sources=_get_str_list("PHOTO_SOURCES"),
+        photo_max_image_attempts=_get_int("PHOTO_MAX_IMAGE_ATTEMPTS", 3),
+        photo_min_questions=_get_int("PHOTO_MIN_QUESTIONS", None),
+        photo_image_timeout=_get_int("PHOTO_IMAGE_TIMEOUT", 30),
+        photo_image_max_bytes=_get_int("PHOTO_IMAGE_MAX_BYTES", 8_000_000),
+        photo_state_file=os.getenv("PHOTO_STATE_FILE", "photo_state.json").strip(),
+        wikimedia_user_agent=os.getenv("WIKIMEDIA_USER_AGENT", "").strip(),
+        openverse_api_key=os.getenv("OPENVERSE_API_KEY", "").strip(),
+        openverse_base_url=os.getenv(
+            "OPENVERSE_BASE_URL", "https://api.openverse.org/v1"
+        ).rstrip("/"),
+        film_ru_enabled=_get_bool("FILM_RU_ENABLED", False),
+        film_grab_enabled=_get_bool("FILM_GRAB_ENABLED", False),
+        movie_screencaps_enabled=_get_bool("MOVIE_SCREENCAPS_ENABLED", False),
+        photo_vision_enabled=_get_bool("PHOTO_VISION_ENABLED", False),
+        vision_timeout=_get_int("VISION_TIMEOUT", 120),
     )
+
+    # Vision может использовать отдельный ключ/URL/модель, иначе — параметры LLM.
+    cfg.vision_api_key = (os.getenv("VISION_API_KEY") or "").strip() or cfg.llm_api_key
+    cfg.vision_base_url = (
+        (os.getenv("VISION_BASE_URL") or "").strip() or cfg.llm_base_url
+    ).rstrip("/")
+    cfg.vision_model = (os.getenv("VISION_MODEL") or "").strip() or cfg.llm_model
 
     if overrides:
         for key, value in overrides.items():
             if value is not None and hasattr(cfg, key):
                 setattr(cfg, key, value)
+
+    # Если минимум не задан явно — он равен числу вопросов.
+    if cfg.photo_min_questions is None:
+        cfg.photo_min_questions = cfg.photo_questions_count
 
     cfg.validate(require_questions=require_questions)
     return cfg
