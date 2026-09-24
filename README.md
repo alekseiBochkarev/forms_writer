@@ -119,7 +119,7 @@ python main.py --delete-survey 6aac...
 | `PHOTO_QUESTIONS_COUNT` | нет | `10` | Число вопросов в фото-выпуске |
 | `PHOTO_THEME` | нет | — | Зафиксировать тему фото-выпуска (иначе случайная неиспользованная) |
 | `PHOTO_THEMES` | нет | — | JSON-массив тем (по умолчанию — встроенный список) |
-| `PHOTO_SOURCES` | нет | `["wikimedia","openverse"]` | JSON-массив источников изображений |
+| `PHOTO_SOURCES` | нет | `["wikimedia","openverse"]` | JSON-массив открытых источников изображений. Задаёт только `wikimedia`/`openverse`; кино-источники так не включаются |
 | `PHOTO_MAX_IMAGE_ATTEMPTS` | нет | `3` | Попыток подобрать изображение на вопрос |
 | `PHOTO_MIN_QUESTIONS` | нет | = `PHOTO_QUESTIONS_COUNT` | Минимум вопросов для выпуска |
 | `PHOTO_IMAGE_TIMEOUT` | нет | `30` | Таймаут загрузки изображения, с |
@@ -128,9 +128,9 @@ python main.py --delete-survey 6aac...
 | `WIKIMEDIA_USER_AGENT` | нет* | — | User-Agent для Wikimedia (обязателен для источника) |
 | `OPENVERSE_API_KEY` | нет | — | API-ключ Openverse |
 | `OPENVERSE_BASE_URL` | нет | `https://api.openverse.org/v1` | Базовый URL Openverse |
-| `FILM_RU_ENABLED` | нет | `false` | Источник: кадры из фильмов СССР (ru.wikipedia) |
-| `FILM_GRAB_ENABLED` | нет | `false` | Источник: film-grab.com |
-| `MOVIE_SCREENCAPS_ENABLED` | нет | `false` | Источник: movie-screencaps.com |
+| `FILM_RU_ENABLED` | нет | `false` | Единственный способ включить `ruwiki_film`; нужен для темы «советские фильмы» |
+| `FILM_GRAB_ENABLED` | нет | `false` | Единственный способ включить `filmgrab` (film-grab.com); нужен для иностранных фильмов |
+| `MOVIE_SCREENCAPS_ENABLED` | нет | `false` | Единственный способ включить `movscreencaps` (movie-screencaps.com); нужен для иностранных фильмов |
 | `PHOTO_VISION_ENABLED` | нет | `false` | Проверять изображения через vision-модель |
 | `VISION_API_KEY` | нет | = `LLM_API_KEY` | Ключ vision-модели |
 | `VISION_BASE_URL` | нет | = `LLM_BASE_URL` | Базовый URL vision-модели |
@@ -241,10 +241,28 @@ python main.py --photo --force                       # игнорировать 
 
 ### Откуда берутся фото
 
-По умолчанию включены открытые источники `wikimedia` (Wikimedia Commons) и
-`openverse` (Openverse). Дополнительно можно включить кино-источники
-(`FILM_RU_ENABLED`, `FILM_GRAB_ENABLED`, `MOVIE_SCREENCAPS_ENABLED`) — по умолчанию
-они **выключены**, так как их права/лицензии рискованнее.
+Источник подбирается по теме выпуска:
+
+- **советские фильмы/СССР** → `ruwiki_film` (ru.wikipedia, файловый namespace),
+  работает только при `FILM_RU_ENABLED=true`;
+- **иностранные фильмы/кино/сериалы** → `filmgrab` и `movscreencaps` (по флагам
+  `FILM_GRAB_ENABLED`/`MOVIE_SCREENCAPS_ENABLED`);
+- **остальные темы** (животные, растения, актёры и т.п.) → `wikimedia` +
+  `openverse`.
+
+Для кино-тем открытые `wikimedia`/`openverse` **не примешиваются**: там нет
+кадров фильмов, и до этого вместо кадров в тест попадали постеры и афиши.
+
+`PHOTO_SOURCES` задаёт только открытые `wikimedia`/`openverse`. Кино-источники
+(`ruwiki_film`, `filmgrab`, `movscreencaps`) включаются **исключительно** своими
+флагами `FILM_RU_ENABLED` / `FILM_GRAB_ENABLED` / `MOVIE_SCREENCAPS_ENABLED`;
+их имена в `PHOTO_SOURCES` ничего не включают. Тема считается доступной, только
+если хотя бы один её источник реально включён, — иначе она пропускается.
+
+Кино-источники по умолчанию **выключены**, так как их права/лицензии
+рискованнее. Если тема фильмов выбрана, а нужный флаг не включён, тема
+**пропускается** (с записью в логе), и выбирается другая; если доступных тем не
+осталось — запуск завершается понятной ошибкой.
 
 Для Wikimedia обязателен описательный `WIKIMEDIA_USER_AGENT`: если источник активен,
 а переменная не задана, приложение выводит предупреждение (но не падает).

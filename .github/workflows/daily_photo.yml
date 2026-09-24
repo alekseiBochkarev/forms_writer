@@ -48,6 +48,13 @@ jobs:
           PHOTO_FLOW_ENABLED: "true"
           PHOTO_SURVEY_NAME: "${{ vars.PHOTO_SURVEY_NAME || 'Что на фото' }}"
           PHOTO_QUESTIONS_COUNT: ${{ vars.PHOTO_QUESTIONS_COUNT || '10' }}
+          # Темы и открытые источники можно переопределить через Variables.
+          PHOTO_THEMES: ${{ vars.PHOTO_THEMES }}
+          PHOTO_SOURCES: ${{ vars.PHOTO_SOURCES }}
+          # Кино-источники: включаются владельцем через Variables (по умолчанию нет).
+          FILM_RU_ENABLED: ${{ vars.FILM_RU_ENABLED || 'false' }}
+          FILM_GRAB_ENABLED: ${{ vars.FILM_GRAB_ENABLED || 'false' }}
+          MOVIE_SCREENCAPS_ENABLED: ${{ vars.MOVIE_SCREENCAPS_ENABLED || 'false' }}
           # Wikimedia требует описательный User-Agent — задайте в Variables.
           WIKIMEDIA_USER_AGENT: ${{ vars.WIKIMEDIA_USER_AGENT }}
           # Vision-проверка по умолчанию выключена.
