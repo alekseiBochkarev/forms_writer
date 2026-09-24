@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import logging
+import time
 from typing import Any, Dict, List, Optional
 
 import requests
@@ -92,6 +93,56 @@ class YandexFormsClient:
     def delete_question(self, survey_id: str, question_id: int) -> None:
         self._request("DELETE", f"/surveys/{survey_id}/questions/{question_id}/")
 
+    def upload_image(
+        self,
+        survey_id: str,
+        data: bytes,
+        filename: str,
+        content_type: str = "image/jpeg",
+    ) -> Dict[str, Any]:
+        """Загрузить изображение для вопроса формы.
+
+        Отправляет multipart/form-data (поле `image`) отдельным запросом: у сессии
+        выставлен `Content-Type: application/json`, который для multipart не годится.
+        Возвращает только данные изображения для вопроса (`id`, `links`, `name`) —
+        без служебных `check_status`/`check_mode`.
+
+        Статус `check` означает, что изображение ещё проверяется антивирусом.
+        Отдельной ручки опроса статуса нет, поэтому считаем изображение пригодным,
+        но явно предупреждаем, что модерация не подтверждена. При
+        `infected`/`error`/`deleted` поднимаем ошибку.
+        """
+        url = f"{self.base_url}/surveys/{survey_id}/images"
+        headers = {
+            key: value
+            for key, value in self.session.headers.items()
+            if key.lower() != "content-type"
+        }
+        files = {"image": (filename, data, content_type)}
+        response = requests.post(url, headers=headers, files=files, timeout=120)
+        if response.status_code >= 400:
+            raise YandexFormsError(
+                f"POST /surveys/{survey_id}/images -> {response.status_code}: "
+                f"{response.text[:500]}"
+            )
+        info: Dict[str, Any] = response.json() if response.text else {}
+        status = info.get("check_status")
+        if status in ("infected", "error", "deleted"):
+            raise YandexFormsError(f"Изображение отклонено API: check_status={status}")
+        if status == "check":
+            # Короткая пауза: обычно за это время проверка завершается.
+            time.sleep(2)
+            log.warning(
+                "Изображение «%s» ещё проверяется антивирусом (check_status=check); "
+                "модерация не подтверждена.",
+                info.get("name") or filename,
+            )
+        return {
+            "id": info.get("id"),
+            "links": info.get("links"),
+            "name": info.get("name"),
+        }
+
     def add_enum_question(
         self,
         survey_id: str,
@@ -99,6 +150,7 @@ class YandexFormsClient:
         options: List[str],
         correct_index: int,
         shuffle: bool = True,
+        image: Optional[Dict[str, Any]] = None,
     ) -> int:
         payload = {
             "type": "enum",
@@ -116,6 +168,8 @@ class YandexFormsClient:
                 for i, option in enumerate(options)
             ],
         }
+        if image:
+            payload["image"] = image
         data = self._request("POST", f"/surveys/{survey_id}/questions/", payload)
         return data["id"]
 
@@ -242,6 +296,7 @@ def publish_questions(cfg, questions: List[Dict[str, Any]], client: YandexFormsC
             options=q["options"],
             correct_index=q["correct_index"],
             shuffle=cfg.shuffle,
+            image=q.get("image"),
         )
         log.info("  + вопрос %s: id=%s [%s]", i, qid, q.get("topic", ""))
 

@@ -1,0 +1,3 @@
+# Зависимости для тестов (не нужны в рантайме).
+# Установка: python -m pip install -r requirements-dev.txt
+pytest>=8.0.0
