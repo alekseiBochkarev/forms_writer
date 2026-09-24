@@ -12,8 +12,8 @@ import re
 import time
 import urllib.robotparser
 from dataclasses import dataclass
-from typing import List
-from urllib.parse import quote_plus, urljoin
+from typing import List, Optional
+from urllib.parse import quote_plus, urljoin, urlparse
 
 import requests
 
@@ -23,10 +23,6 @@ log = logging.getLogger(__name__)
 
 WIKIMEDIA_API = "https://commons.wikimedia.org/w/api.php"
 RUWIKI_API = "https://ru.wikipedia.org/w/api.php"
-
-# Категория кадров из советских фильмов на ru.wikipedia.
-# Точное имя может потребовать уточнения — при смене категории поиск вернёт пусто.
-RUWIKI_FILM_CATEGORY = "Категория:Кадры из фильмов СССР"
 
 FILMGRAB_BASE = "https://film-grab.com"
 FILMGRAB_SEARCH = "https://film-grab.com/?s={query}"
@@ -42,6 +38,25 @@ IMAGE_EXT_RE = re.compile(r"\.(?:jpe?g|png|webp)(?:\?|$)", re.IGNORECASE)
 IMG_TAG_RE = re.compile(r"<img[^>]+src=[\"']([^\"']+)[\"']", re.IGNORECASE)
 LINK_RE = re.compile(r"href=[\"']([^\"']+)[\"']", re.IGNORECASE)
 TAG_RE = re.compile(r"<[^>]+>")
+
+# Служебные сегменты пути HTML-источников: их не выбираем как страницу выпуска.
+# Сверяем весь сегмент целиком, иначе фильм `about-a-boy` отсекался бы по `about`.
+SERVICE_SEGMENTS = {"movies-a-z", "about", "contact", "category", "tag", "feed"}
+PAGE_QUERY_RE = re.compile(r"(?:^|&)(?:paged?|page)=\d", re.IGNORECASE)
+
+# Год выпуска в пути/слаге отличает страницу фильма от навигации источника.
+FILM_YEAR_RE = re.compile(r"(?:19|20)\d\d")
+
+# Хвост слага выпуска: год и качество (`up-2009-4k`, `the-matrix-1999` -> без хвоста).
+SLUG_SUFFIX_RE = re.compile(r"-(?:19|20)\d\d.*$")
+# Хвост только качества, если года в слаге нет (`up-4k`).
+SLUG_QUALITY_RE = re.compile(r"-(?:4k|1080p|720p|blu-?ray|web-?dl)$")
+
+# Признаки кадра и постеров в названиях файлов ru.wikipedia.
+RUWIKI_FRAME_RE = re.compile(r"кадр|сцен|роли|эпизод|screenshot", re.IGNORECASE)
+RUWIKI_POSTER_RE = re.compile(
+    r"постер|афиша|обложка|poster|cover|плакат", re.IGNORECASE
+)
 
 
 @dataclass
@@ -93,6 +108,19 @@ def _get_imageinfo(cfg, api_url: str, titles: List[str]) -> List[dict]:
     return pages
 
 
+def _ruwiki_relevance(title: str) -> int:
+    """Ранг файла: кадры выше нейтральных, постеры/афиши — ниже.
+
+    Сортировка стабильная, поэтому внутри группы сохраняется порядок выдачи
+    полнотекстового поиска. Файлы не отбрасываются — только переупорядочиваются.
+    """
+    if RUWIKI_FRAME_RE.search(title):
+        return 0
+    if RUWIKI_POSTER_RE.search(title):
+        return 2
+    return 1
+
+
 def search_wikimedia(cfg, query: str, limit: int) -> List[ImageCandidate]:
     """Найти изображения в Wikimedia Commons через Action API."""
     headers = {"User-Agent": cfg.wikimedia_user_agent or DEFAULT_USER_AGENT}
@@ -109,7 +137,12 @@ def search_wikimedia(cfg, query: str, limit: int) -> List[ImageCandidate]:
     )
     response.raise_for_status()
     hits = response.json().get("query", {}).get("search", [])
-    titles = [h.get("title", "") for h in hits if h.get("title")]
+    # В namespace 6 попадаются не-изображения (например .pdf/.svg) — отсеиваем.
+    titles = [
+        h.get("title", "")
+        for h in hits
+        if h.get("title") and IMAGE_EXT_RE.search(h.get("title", ""))
+    ]
     if not titles:
         return []
 
@@ -175,30 +208,38 @@ def search_openverse(cfg, query: str, limit: int) -> List[ImageCandidate]:
 
 
 def search_ruwiki_film(cfg, query: str, limit: int) -> List[ImageCandidate]:
-    """Найти кадры из советских фильмов в ru.wikipedia (по фича-флагу)."""
+    """Найти кадры из фильмов в ru.wikipedia (по фича-флагу).
+
+    Ищем в файловом namespace (6) по названию фильма, затем по найденным
+    `File:...` запрашиваем imageinfo. Категории-контейнеры кадров на ru.wikipedia
+    содержат только подкатегории, поэтому поиск работает надёжнее.
+    """
     if not cfg.film_ru_enabled:
         return []
     headers = {"User-Agent": cfg.wikimedia_user_agent or DEFAULT_USER_AGENT}
     params = {
         "action": "query",
         "format": "json",
-        "list": "categorymembers",
-        "cmtitle": RUWIKI_FILM_CATEGORY,
-        "cmtype": "file",
-        "cmlimit": max(1, limit),
+        "list": "search",
+        "srsearch": query,
+        "srnamespace": 6,
+        "srlimit": max(1, limit),
     }
     response = requests.get(
         RUWIKI_API, params=params, headers=headers, timeout=cfg.photo_image_timeout
     )
     response.raise_for_status()
-    members = response.json().get("query", {}).get("categorymembers", [])
-    titles = [m.get("title", "") for m in members if m.get("title")]
-
-    # Простейшая фильтрация по запросу: оставляем файлы, где встречаются его слова.
-    tokens = [t for t in re.split(r"\W+", (query or "").lower()) if len(t) > 2]
-    if tokens:
-        filtered = [t for t in titles if any(tok in t.lower() for tok in tokens)]
-        titles = filtered or titles
+    hits = response.json().get("query", {}).get("search", [])
+    # В namespace 6 попадаются не-изображения (например .pdf) — отфильтровываем.
+    titles = [
+        h.get("title", "")
+        for h in hits
+        if h.get("title") and IMAGE_EXT_RE.search(h.get("title", ""))
+    ]
+    if not titles:
+        return []
+    # Кадры/сцены — вперёд, постеры/афиши — в конец (не отбрасываем).
+    titles.sort(key=_ruwiki_relevance)
 
     candidates: List[ImageCandidate] = []
     for page in _get_imageinfo(cfg, RUWIKI_API, titles):
@@ -245,10 +286,72 @@ def _robots_allows(cfg, base_url: str, url: str, user_agent: str) -> bool:
         return True
 
 
+def _looks_like_film_page(url: str) -> bool:
+    """Похожа ли ссылка на страницу фильма: в пути/слаге есть год 19xx/20xx.
+
+    film-grab держит год отдельным сегментом (`/2024/05/15/the-matrix/`),
+    movie-screencaps — внутри слага (`/the-matrix-1999-4k/`). Служебные
+    страницы (`/contact/`, `/movies-a-z/`) года не содержат; ссылки на файлы
+    (`/wp-content/uploads/2019/02/icon.jpg`) отсеиваются по расширению.
+    """
+    parsed = urlparse(url)
+    if IMAGE_EXT_RE.search(parsed.path):
+        return False
+    for segment in parsed.path.split("/"):
+        if segment and FILM_YEAR_RE.search(segment):
+            return True
+    return False
+
+
+def _normalize_slug(value: str) -> str:
+    """Привести slug/название к сравнимому виду: `The Matrix` -> `the-matrix`.
+
+    У слага источника срезается хвост выпуска (год и качество), чтобы
+    `up-2009-4k` совпадал с запросом `Up`. Тот же способ применяется и к
+    запросу, поэтому сравнение остаётся симметричным.
+    """
+    slug = re.sub(r"[^a-zа-я0-9]+", "-", value.lower()).strip("-")
+    slug = SLUG_SUFFIX_RE.sub("", slug)
+    return SLUG_QUALITY_RE.sub("", slug)
+
+
+def _is_service_url(url: str) -> bool:
+    """Служебная ли ссылка источника: пагинация, рубрики, about/contact.
+
+    Жёсткие служебные признаки (`wp-`-ассеты, пагинация) отбрасываем всегда.
+    Совпавшие служебные слова (`contact`, `about`, `tag`) уступают странице
+    фильма: `contact` в `/2019/contact/` — часть названия, а не навигация.
+    """
+    parsed = urlparse(url)
+    if PAGE_QUERY_RE.search(parsed.query):
+        return True
+    segments = [s.lower() for s in parsed.path.split("/") if s]
+    if any(s.startswith("wp-") or s == "page" for s in segments):
+        return True
+    if _looks_like_film_page(url):
+        return False
+    return any(s in SERVICE_SEGMENTS for s in segments)
+
+
 def _html_image_search(
-    cfg, search_url: str, base_url: str, user_agent: str, limit: int, source: str
+    cfg,
+    search_url: str,
+    base_url: str,
+    user_agent: str,
+    limit: int,
+    source: str,
+    query: str = "",
 ) -> List[ImageCandidate]:
-    """Общий сценарий для HTML-источников: поиск -> страница -> прямые ссылки."""
+    """Общий сценарий для HTML-источников: поиск -> страница -> прямые ссылки.
+
+    Выбирается только страница фильма (в пути/слаге есть год выпуска), а не
+    навигация вида `/contact/`, `/browse-by-artist/` или `/xmlrpc.php`. Среди
+    страниц фильма предпочитается та, чей slug ближе к запросу (по числу
+    совпавших токенов; при равенстве — точное совпадение slug и более глубокий
+    путь). Для совсем коротких названий («Up», «It») токенов не бывает, поэтому
+    берём первую страницу фильма, но точное совпадение slug — приоритет. Если
+    страниц фильма нет, возвращаем [].
+    """
     if not _robots_allows(cfg, base_url, search_url, user_agent):
         log.info("robots.txt запрещает запрос к %s", search_url)
         return []
@@ -258,13 +361,47 @@ def _html_image_search(
     response.raise_for_status()
     time.sleep(0.5)  # щадящий режим, чтобы не нагружать источник
 
-    # Ищем ссылку на страницу выпуска (не на служебные разделы).
+    # Сравниваем slug последнего сегмента пути со словами запроса.
+    tokens = {t for t in re.split(r"\W+", (query or "").lower()) if len(t) > 2}
+    query_slug = _normalize_slug(query or "")
+    base_netloc = urlparse(base_url).netloc.lower()
     page_url = ""
+    best_score = -1
+    best_exact = False
+    best_depth = -1
     for href in LINK_RE.findall(response.text):
         absolute = urljoin(base_url, href)
-        if absolute.startswith(base_url) and re.search(r"/20\d\d/?", absolute):
+        parsed = urlparse(absolute)
+        if parsed.netloc.lower() != base_netloc:
+            continue
+        # Навигацию и прочие не-фильмы отбрасываем сразу, без «поблажки» по score.
+        if not _looks_like_film_page(absolute) or _is_service_url(absolute):
+            continue
+        slug = parsed.path.rstrip("/").rsplit("/", 1)[-1]
+        slug = re.sub(r"\.[a-z0-9]+$", "", slug, flags=re.IGNORECASE)
+        # Очень короткое название («Up», «It», «9»): токенов нет, поэтому
+        # запоминаем первую страницу фильма, но точное совпадение slug — приоритет.
+        if not tokens:
+            if _normalize_slug(slug) == query_slug:
+                page_url = absolute
+                break
+            if not page_url:
+                page_url = absolute
+            continue
+        slug_tokens = {t for t in re.split(r"[^a-zа-я0-9]+", slug.lower()) if t}
+        score = len(tokens & slug_tokens)
+        exact = _normalize_slug(slug) == query_slug
+        depth = len([s for s in parsed.path.split("/") if s])
+        # Тай-брейк: точное совпадение slug с названием, затем более глубокий путь.
+        if (
+            score > best_score
+            or (score == best_score and exact and not best_exact)
+            or (score == best_score and exact == best_exact and depth > best_depth)
+        ):
+            best_score = score
+            best_exact = exact
+            best_depth = depth
             page_url = absolute
-            break
     if not page_url:
         return []
 
@@ -309,6 +446,7 @@ def search_filmgrab(cfg, query: str, limit: int) -> List[ImageCandidate]:
         DEFAULT_USER_AGENT,
         limit,
         "filmgrab",
+        query=query,
     )
 
 
@@ -323,6 +461,7 @@ def search_moviescreencaps(cfg, query: str, limit: int) -> List[ImageCandidate]:
         DEFAULT_USER_AGENT,
         limit,
         "movscreencaps",
+        query=query,
     )
 
 
@@ -339,14 +478,27 @@ SOURCE_FUNCS = {
 SOURCE_ORDER = ["wikimedia", "openverse", "ruwiki_film", "filmgrab", "movscreencaps"]
 
 
-def search_images(cfg, query: str, limit: int = 8) -> List[ImageCandidate]:
-    """Опросить все включённые источники и собрать кандидатов.
+def search_images(
+    cfg,
+    query: str,
+    limit: int = 8,
+    sources: Optional[List[str]] = None,
+) -> List[ImageCandidate]:
+    """Опросить включённые источники и собрать кандидатов.
+
+    `sources` задаёт порядок обхода (например, профильный для темы); он всё
+    равно пересекается с фактически включёнными источниками. Без `sources`
+    используется общий порядок `SOURCE_ORDER`.
 
     Ошибки каждого источника логируются, но не прерывают поиск по остальным.
     """
     enabled = set(cfg.enabled_photo_sources())
+    if sources is not None:
+        order = [source for source in sources if source in enabled]
+    else:
+        order = SOURCE_ORDER
     result: List[ImageCandidate] = []
-    for source in SOURCE_ORDER:
+    for source in order:
         if source not in enabled:
             continue
         func = SOURCE_FUNCS[source]

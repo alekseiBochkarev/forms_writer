@@ -32,12 +32,187 @@ def test_question_text_other_theme():
     )
 
 
-def test_image_query_for_film_prepends_film():
-    """Для кинотемы поисковый запрос дополняется словом film."""
+def test_image_query_for_film_uses_bare_entity():
+    """Для кинотемы поисковый запрос — голое название, без префикса film."""
     assert photo_flow.image_query("советские фильмы", "Иван Васильевич") == (
-        "film Иван Васильевич"
+        "Иван Васильевич"
     )
+    assert photo_flow.image_query("иностранные фильмы", "The Matrix") == "The Matrix"
     assert photo_flow.image_query("животные", "кот") == "кот"
+
+
+# --- is_foreign_film_theme --------------------------------------------------
+
+
+def test_is_foreign_film_theme_categorization():
+    """Иностранное кино — фильмы/кино без признаков советского."""
+    assert photo_flow.is_foreign_film_theme("иностранные фильмы")
+    assert photo_flow.is_foreign_film_theme("кино")
+    assert photo_flow.is_foreign_film_theme("зарубежные фильмы")
+    assert not photo_flow.is_foreign_film_theme("советские фильмы")
+    assert not photo_flow.is_foreign_film_theme("советское кино")
+    assert not photo_flow.is_foreign_film_theme("актёры")
+    assert not photo_flow.is_foreign_film_theme("животные")
+
+
+# --- язык названий в промптах LLM -------------------------------------------
+
+
+def _capture_chat_json(monkeypatch, response):
+    """Подменить `_chat_json`, вернув контейнер с захваченным промптом."""
+    captured = {}
+
+    def fake_chat_json(cfg, system, user):
+        captured["user"] = user
+        return response
+
+    monkeypatch.setattr(photo_flow, "_chat_json", fake_chat_json)
+    return captured
+
+
+def test_generate_entities_foreign_films_request_original_titles(monkeypatch):
+    """Для иностранных фильмов промпт сущностей требует оригинальные названия."""
+    captured = _capture_chat_json(monkeypatch, {"entities": ["The Matrix"]})
+
+    photo_flow._generate_entities(FakePhotoCfg(), "иностранные фильмы", 3, [])
+
+    user = captured["user"]
+    assert "ОРИГИНАЛЬНЫЕ" in user
+    assert "англ" in user.lower()
+
+
+def test_generate_entities_foreign_films_keep_dedup(monkeypatch):
+    """Требование оригинальных названий не мешает фильтрации повторов."""
+    _capture_chat_json(monkeypatch, {"entities": ["The Matrix", "The Matrix", "Alien"]})
+
+    result = photo_flow._generate_entities(FakePhotoCfg(), "кино", 3, [])
+
+    assert result == ["The Matrix", "Alien"]
+
+
+def test_generate_entities_soviet_films_use_russian(monkeypatch):
+    """Для советских фильмов нет требования английских/оригинальных названий."""
+    captured = _capture_chat_json(monkeypatch, {"entities": ["Иван Васильевич"]})
+
+    photo_flow._generate_entities(FakePhotoCfg(), "советские фильмы", 3, [])
+
+    user = captured["user"]
+    assert "ОРИГИНАЛЬН" not in user
+    assert "англ" not in user.lower()
+    assert "русском" in user.lower()
+
+
+def test_generate_entities_other_theme_uses_russian(monkeypatch):
+    """Не-кино темы остаются с русскими названиями, без англоязычных требований."""
+    captured = _capture_chat_json(monkeypatch, {"entities": ["кот"]})
+
+    photo_flow._generate_entities(FakePhotoCfg(), "животные", 3, [])
+
+    user = captured["user"]
+    assert "ОРИГИНАЛЬН" not in user
+    assert "англ" not in user.lower()
+    assert "русском" in user.lower()
+
+
+def test_generate_distractors_foreign_films_request_original_titles(monkeypatch):
+    """Для иностранных фильмов дистракторы — тоже оригинальные названия."""
+    captured = _capture_chat_json(monkeypatch, {"distractors": ["Alien", "Jaws", "Heat"]})
+
+    photo_flow._generate_distractors(FakePhotoCfg(), "иностранные фильмы", "The Matrix")
+
+    user = captured["user"]
+    assert "ОРИГИНАЛЬНЫЕ" in user
+    assert "англ" in user.lower()
+
+
+def test_generate_distractors_soviet_films_use_russian(monkeypatch):
+    """Для советских фильмов дистракторы — русские названия, без английских."""
+    captured = _capture_chat_json(monkeypatch, {"distractors": ["Ирония судьбы"]})
+
+    photo_flow._generate_distractors(FakePhotoCfg(), "советские фильмы", "Москва слезам не верит")
+
+    user = captured["user"]
+    assert "ОРИГИНАЛЬН" not in user
+    assert "англ" not in user.lower()
+    assert "русском" in user.lower()
+
+
+def test_generate_distractors_other_theme_has_no_language_rule(monkeypatch):
+    """Для не-кино тем язык дистракторов не навязывается отдельным пунктом."""
+    captured = _capture_chat_json(monkeypatch, {"distractors": ["пёс", "лис", "волк"]})
+
+    photo_flow._generate_distractors(FakePhotoCfg(), "животные", "кот")
+
+    user = captured["user"]
+    assert "ОРИГИНАЛЬН" not in user
+    assert "англ" not in user.lower()
+    assert "советских" not in user.lower()
+
+
+# --- theme_sources ----------------------------------------------------------
+
+
+def test_theme_sources_soviet_requires_film_ru_flag():
+    """Советские фильмы -> только ruwiki_film, но лишь при включённом флаге."""
+    enabled = FakePhotoCfg(film_ru_enabled=True)
+    assert photo_flow.theme_sources(enabled, "советские фильмы") == ["ruwiki_film"]
+    assert photo_flow.theme_sources(FakePhotoCfg(), "советские фильмы") == []
+
+
+def test_theme_sources_foreign_films_use_film_sites():
+    """Иностранные фильмы -> filmgrab/movscreencaps по их флагам."""
+    cfg = FakePhotoCfg(film_grab_enabled=True, movie_screencaps_enabled=True)
+    assert photo_flow.theme_sources(cfg, "иностранные фильмы") == [
+        "filmgrab",
+        "movscreencaps",
+    ]
+    assert photo_flow.theme_sources(cfg, "кино") == ["filmgrab", "movscreencaps"]
+    assert photo_flow.theme_sources(FakePhotoCfg(), "иностранные фильмы") == []
+
+
+def test_theme_sources_foreign_films_respects_individual_flags():
+    """Каждый кино-источник включается своим флагом."""
+    only_grab = FakePhotoCfg(film_grab_enabled=True)
+    only_caps = FakePhotoCfg(movie_screencaps_enabled=True)
+    assert photo_flow.theme_sources(only_grab, "иностранные фильмы") == ["filmgrab"]
+    assert photo_flow.theme_sources(only_caps, "иностранные фильмы") == [
+        "movscreencaps"
+    ]
+
+
+def test_theme_sources_other_themes_use_open_sources():
+    """Не-кино темы остаются на wikimedia/openverse, без примеси кино-источников."""
+    cfg = FakePhotoCfg(film_ru_enabled=True, film_grab_enabled=True)
+    assert photo_flow.theme_sources(cfg, "животные") == ["wikimedia", "openverse"]
+    assert photo_flow.theme_sources(cfg, "актёры") == ["wikimedia", "openverse"]
+
+
+# --- available_theme_sources ------------------------------------------------
+
+
+def test_available_theme_sources_intersects_enabled():
+    """Источники темы пересекаются с фактически включёнными в конфиге."""
+    cfg = FakePhotoCfg(
+        photo_sources=["filmgrab", "movscreencaps"], film_grab_enabled=True
+    )
+    assert photo_flow.available_theme_sources(cfg, "иностранные фильмы") == [
+        "filmgrab"
+    ]
+    assert photo_flow.available_theme_sources(cfg, "животные") == []
+
+
+def test_choose_theme_does_not_pick_theme_without_enabled_sources():
+    """Тема без реально включённых источников не выбирается.
+
+    PHOTO_SOURCES=["filmgrab","movscreencaps"] выключает wikimedia/openverse,
+    поэтому тема «животные» недоступна, хотя статический theme_sources не пуст.
+    """
+    cfg = FakePhotoCfg(
+        photo_themes=["животные", "иностранные фильмы"],
+        photo_sources=["filmgrab", "movscreencaps"],
+        film_grab_enabled=True,
+    )
+    assert photo_flow._choose_theme(cfg, {}) == "иностранные фильмы"
 
 
 # --- _choose_theme ----------------------------------------------------------
@@ -73,6 +248,24 @@ def test_choose_theme_resets_when_all_used():
 def test_choose_theme_empty_list_returns_none():
     """Пустой список тем -> None."""
     cfg = FakePhotoCfg(photo_themes=[])
+    assert photo_flow._choose_theme(cfg, {}) is None
+
+
+def test_choose_theme_skips_film_without_flags():
+    """Фильмовая тема при выключенных кино-флагах не выбирается."""
+    cfg = FakePhotoCfg(photo_themes=["советские фильмы", "иностранные фильмы", "животные"])
+    assert photo_flow._choose_theme(cfg, {}) == "животные"
+
+
+def test_choose_theme_all_films_unavailable_returns_none():
+    """Если все темы — фильмовые, а флаги выключены, выбора нет."""
+    cfg = FakePhotoCfg(photo_themes=["советские фильмы", "иностранные фильмы"])
+    assert photo_flow._choose_theme(cfg, {}) is None
+
+
+def test_choose_theme_explicit_unavailable_returns_none():
+    """Явно заданная фильмовая тема без источников не принимается."""
+    cfg = FakePhotoCfg(photo_theme="иностранные фильмы")
     assert photo_flow._choose_theme(cfg, {}) is None
 
 

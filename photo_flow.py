@@ -38,6 +38,7 @@ DISTRACTOR_COUNT = 3
 ASKED_HISTORY_LIMIT = 500
 
 FILM_THEME_RE = re.compile(r"фильм|кино|сериал", re.IGNORECASE)
+SOVIET_THEME_RE = re.compile(r"совет|ссср", re.IGNORECASE)
 ACTOR_THEME_RE = re.compile(r"акт[её]р", re.IGNORECASE)
 
 ENTITY_SYSTEM = (
@@ -59,11 +60,66 @@ def is_film_theme(theme: str) -> bool:
     return bool(FILM_THEME_RE.search(theme))
 
 
+def is_foreign_film_theme(theme: str) -> bool:
+    """Иностранная кинотема: фильмы/кино, но не советские.
+
+    Для таких тем кадры ищутся в англоязычных источниках (film-grab.com,
+    movie-screencaps.com), поэтому названия фильмов нужны в оригинале.
+    """
+    return is_film_theme(theme) and not SOVIET_THEME_RE.search(theme or "")
+
+
 def image_query(theme: str, entity: str) -> str:
-    """Поисковый запрос для фото-источников."""
-    if is_film_theme(theme):
-        return f"film {entity}"
+    """Поисковый запрос для фото-источников.
+
+    Для кино-тем используется голое название фильма: сначала маршрутизация
+    выбирает профильный кино-источник, а префикс «film » только мешал бы
+    поиску по названию.
+    """
     return entity
+
+
+def theme_sources(cfg, theme: str) -> List[str]:
+    """Источники изображений, подходящие теме выпуска.
+
+    Советские фильмы ищутся в ru.wikipedia (файловый namespace), иностранные —
+    на film-grab.com / movie-screencaps.com, остальные темы — в открытых
+    wikimedia/openverse. Для кино-тем wikimedia/openverse не примешиваются,
+    иначе побеждают плакаты и афиши вместо кадров.
+    """
+    if SOVIET_THEME_RE.search(theme or ""):
+        return ["ruwiki_film"] if cfg.film_ru_enabled else []
+    if is_film_theme(theme):
+        sources: List[str] = []
+        if cfg.film_grab_enabled:
+            sources.append("filmgrab")
+        if cfg.movie_screencaps_enabled:
+            sources.append("movscreencaps")
+        return sources
+    return ["wikimedia", "openverse"]
+
+
+def available_theme_sources(cfg, theme: str) -> List[str]:
+    """Источники темы, реально включённые в конфиге.
+
+    `theme_sources` даёт статический список под тему, но фактически активные
+    источники определяет `cfg.enabled_photo_sources()` (PHOTO_SOURCES и
+    кино-флаги). Пересечение не даёт выбрать тему, все источники которой
+    выключены: иначе поиск вернёт 0 кандидатов и выпуск провалится.
+    """
+    enabled = set(cfg.enabled_photo_sources())
+    return [source for source in theme_sources(cfg, theme) if source in enabled]
+
+
+def _theme_skip_reason(cfg, theme: str) -> Optional[str]:
+    """Причина, по которой тему нельзя использовать (или None)."""
+    if available_theme_sources(cfg, theme):
+        return None
+    if SOVIET_THEME_RE.search(theme or ""):
+        return "не включён FILM_RU_ENABLED"
+    if is_film_theme(theme):
+        return "не включены FILM_GRAB_ENABLED/MOVIE_SCREENCAPS_ENABLED"
+    return "нет доступных источников"
 
 
 def _capitalize(theme: str) -> str:
@@ -71,11 +127,33 @@ def _capitalize(theme: str) -> str:
 
 
 def _entity_hint(theme: str) -> str:
+    if is_foreign_film_theme(theme):
+        return (
+            "известных иностранных фильмов; указывай ОРИГИНАЛЬНЫЕ названия "
+            "(как правило, на английском), по которым можно найти кадры"
+        )
     if is_film_theme(theme):
         return "известных фильмов (узнаваемых по кадру)"
     if ACTOR_THEME_RE.search(theme):
         return "известных актёров"
     return "конкретных объектов, персон или мест, которые можно узнать на фото"
+
+
+def _name_language_rule(theme: str) -> str:
+    """Требование к языку названий в промпте генерации сущностей.
+
+    Иностранные фильмы ищутся по оригинальным (обычно английским) названиям,
+    советские — по русским.
+    """
+    if is_foreign_film_theme(theme):
+        return (
+            "Названия указывай ОРИГИНАЛЬНЫЕ (как правило, на английском — "
+            "на языке оригинала фильма), чтобы по ним находились кадры "
+            "в англоязычных источниках."
+        )
+    if SOVIET_THEME_RE.search(theme or ""):
+        return "Названия указывай на русском языке."
+    return "Пункты указывай на русском языке."
 
 
 def _chat_json(cfg, system: str, user: str) -> Dict[str, Any]:
@@ -116,9 +194,9 @@ def _generate_entities(
             f"{listed}\n"
         )
     user = (
-        f"Составь список ровно из {count} {_entity_hint(theme)} по теме «{theme}» "
-        "на русском языке.\n"
+        f"Составь список ровно из {count} {_entity_hint(theme)} по теме «{theme}».\n"
         "Требования:\n"
+        f"- {_name_language_rule(theme)}\n"
         "- все пункты — из этой темы, без повторов;\n"
         "- только широко известные, однозначно узнаваемые варианты;\n"
         "- разные пункты не должны быть похожи друг на друга.\n"
@@ -141,11 +219,20 @@ def _generate_entities(
 
 def _generate_distractors(cfg, theme: str, entity: str) -> List[str]:
     """Сгенерировать дистракторы строго того же класса, что и верный ответ."""
+    language_rule = ""
+    if is_foreign_film_theme(theme):
+        language_rule = (
+            "Дистракторы — ОРИГИНАЛЬНЫЕ названия иностранных фильмов "
+            "(как правило, на английском), того же языка, что и правильный ответ.\n"
+        )
+    elif SOVIET_THEME_RE.search(theme or ""):
+        language_rule = "Дистракторы — названия советских фильмов на русском языке.\n"
     user = (
         f"Тема викторины — «{theme}». Правильный ответ: «{entity}».\n"
         f"Придумай ровно {DISTRACTOR_COUNT} дистрактора — правдоподобные, но "
         "НЕправильные варианты СТРОГО того же класса, что и правильный ответ "
         "(та же категория и уровень известности, без повторов).\n"
+        f"{language_rule}"
         "Верни JSON строго такого вида:\n"
         '{"distractors": ["...", "...", "..."]}\n'
         "Никакого текста кроме JSON."
@@ -185,9 +272,16 @@ def _build_options(cfg, theme: str, entity: str) -> Optional[Tuple[List[str], in
 
 def _search_candidates(cfg, theme: str, entity: str) -> List[photo_sources.ImageCandidate]:
     query = image_query(theme, entity)
+    sources = available_theme_sources(cfg, theme)
+    if not sources:
+        log.info("Для темы «%s» нет доступных источников — поиск пропущен", theme)
+        return []
     try:
         return photo_sources.search_images(
-            cfg, query, limit=max(3, cfg.photo_max_image_attempts)
+            cfg,
+            query,
+            limit=max(3, cfg.photo_max_image_attempts),
+            sources=sources,
         )
     except Exception as exc:  # noqa: BLE001 - источник ненадёжен
         log.warning("Поиск изображений для «%s» не удался: %s", entity, exc)
@@ -248,17 +342,34 @@ def _warn_wikimedia(cfg) -> None:
 
 
 def _choose_theme(cfg, state: Dict[str, Any]) -> Optional[str]:
-    """Выбрать тему выпуска: заданную вручную или случайную неиспользованную."""
+    """Выбрать тему выпуска: заданную вручную или случайную неиспользованную.
+
+    Темы, для которых `theme_sources` пуст (например, фильмы при выключенных
+    кино-флагах), пропускаются — иначе боевой запуск соберёт неправильные фото.
+    """
     if cfg.photo_theme:
+        reason = _theme_skip_reason(cfg, cfg.photo_theme)
+        if reason:
+            log.error("Тема «%s» недоступна: %s", cfg.photo_theme, reason)
+            return None
         log.info("Тема задана явно: %s", cfg.photo_theme)
         return cfg.photo_theme
+
     themes = cfg.effective_photo_themes()
+    available: List[str] = []
+    for theme in themes:
+        reason = _theme_skip_reason(cfg, theme)
+        if reason:
+            log.info("Тема «%s» пропущена: %s", theme, reason)
+            continue
+        available.append(theme)
+
     used = list(state.get("used_themes") or [])
-    candidates = [t for t in themes if t not in used]
+    candidates = [t for t in available if t not in used]
     if not candidates:
-        log.warning("Все темы уже использованы — сбрасываю список тем")
+        log.warning("Все доступные темы уже использованы — сбрасываю список тем")
         state["used_themes"] = []
-        candidates = themes
+        candidates = available
     if not candidates:
         return None
     return random.choice(candidates)
@@ -477,7 +588,11 @@ def run(cfg: Config, args: Any = None) -> int:
 
     theme = _choose_theme(cfg, state)
     if not theme:
-        log.error("Не удалось выбрать тему фото-теста (список тем пуст)")
+        log.error(
+            "Не удалось выбрать тему фото-теста: нет доступных тем. "
+            "Проверьте PHOTO_THEMES и флаги кино-источников "
+            "(FILM_RU_ENABLED, FILM_GRAB_ENABLED, MOVIE_SCREENCAPS_ENABLED)."
+        )
         return 1
 
     question = question_text(theme)
