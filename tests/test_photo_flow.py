@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import llm
 import photo_flow
 import pytest
-from helpers import FakePhotoCfg
+import requests
+from helpers import FakePhotoCfg, FakeResponse
 from photo_sources import ImageCandidate
 
 
@@ -335,11 +337,37 @@ def test_run_disabled_returns_1_without_network(monkeypatch):
     def forbidden(*args, **kwargs):
         raise AssertionError("поток выключен, сеть недопустима")
 
-    monkeypatch.setattr(photo_flow.requests, "post", forbidden)
+    monkeypatch.setattr(llm.requests, "post", forbidden)
     monkeypatch.setattr(photo_flow, "YandexFormsClient", forbidden)
 
     cfg = FakePhotoCfg(photo_flow_enabled=False)
     assert photo_flow.run(cfg) == 1
+
+
+# --- _chat_json: ретраи через общий хелпер ----------------------------------
+
+
+def test_chat_json_retries_on_timeout(monkeypatch):
+    """ReadTimeout на первой попытке не роняет фото-поток — запрос повторяется."""
+    calls = {"n": 0}
+
+    def fake_post(url, json, headers, timeout):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise requests.exceptions.ReadTimeout("timeout")
+        return FakeResponse(
+            200,
+            json_data={
+                "choices": [{"message": {"content": '{"entities": ["кот"]}'}}]
+            },
+        )
+
+    monkeypatch.setattr(llm.requests, "post", fake_post)
+
+    data = photo_flow._chat_json(FakePhotoCfg(), "system", "user")
+
+    assert data == {"entities": ["кот"]}
+    assert calls["n"] == 2
 
 
 # --- run: отмена при недоборе вопросов -------------------------------------

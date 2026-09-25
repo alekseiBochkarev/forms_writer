@@ -103,6 +103,9 @@ class FakePhotoCfg:
         self.llm_base_url = "https://example.invalid/v1"
         self.llm_model = "test-model"
         self.llm_temperature = 0.0
+        self.llm_timeout = 120
+        self.llm_retries = 2
+        self.llm_retry_delay = 0.0
         self.wikimedia_user_agent = ""
         self.photo_vision_enabled = False
         self.vision_api_key = ""

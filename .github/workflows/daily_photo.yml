@@ -17,7 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    timeout-minutes: 30
+    # Фото-поток делает много LLM-вызовов: ~15 при 10 вопросах
+    # (сущности + дистракторы на каждую сущность), worst-case
+    # ~15 × LLM_TIMEOUT × (LLM_RETRIES+1) + fallback-запросы поверх этого.
+    # При дефолтах 15 × 120 × 2 = 3600 с ≈ 60 мин, поэтому 30 мин мало.
+    timeout-minutes: 60
 
     steps:
       - name: Checkout

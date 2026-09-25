@@ -80,10 +80,14 @@ def load_questions_from_file(path: str) -> List[Dict[str, Any]]:
 def _collect_unique_questions(cfg, history: List[str], checker: DuplicateChecker) -> List[Dict[str, Any]]:
     """Сгенерировать вопросы, исключая повторы (в т.ч. по прошлым выпускам)."""
     collected: List[Dict[str, Any]] = []
-    max_attempts = 5
+    max_attempts = 3
     for attempt in range(1, max_attempts + 1):
         avoid = history + [q["question"] for q in collected]
-        batch = generate_questions(cfg, avoid=avoid)
+        try:
+            batch = generate_questions(cfg, avoid=avoid)
+        except Exception as exc:  # noqa: BLE001 - транзиентный сбой одной попытки
+            log.warning("Попытка %s: не удалось получить вопросы (%s)", attempt, exc)
+            continue
         for q in batch:
             if checker.is_duplicate(q["question"]):
                 log.info("  повтор, пропускаю: %s", q["question"])

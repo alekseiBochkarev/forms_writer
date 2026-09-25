@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+import time
 from typing import Any, Dict, List
 
 import requests
@@ -91,13 +92,96 @@ def _validate_questions(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return result
 
 
+# 4xx, при которых fallback без response_format осмыслен (провайдер его не
+# поддерживает / не понимает поле). Для 401/403 fallback не делаем.
+FALLBACK_STATUSES = frozenset({400, 404, 415, 422})
+
+
+def post_chat(cfg, payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Выполнить Chat Completions-запрос с ретраями и fallback без response_format.
+
+    Основной цикл повторяет только транзиентные ошибки: таймауты/сетевые сбои,
+    HTTP 429 и 5xx (пауза `llm_retry_delay * 2**attempt`). При 4xx из
+    ``FALLBACK_STATUSES`` один раз отправляется отдельный запрос без
+    ``response_format`` — он НЕ расходует retry-бюджет. Если всё исчерпано —
+    RuntimeError с фактическим числом сделанных запросов и кодом ответа.
+    Исходный ``payload`` не мутируется.
+    """
+    url = f"{cfg.llm_base_url}/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {cfg.llm_api_key}",
+        "Content-Type": "application/json",
+    }
+    attempts = max(1, cfg.llm_retries + 1)
+    request_payload = dict(payload)
+    requests_made = 0
+    last_error: Exception | None = None
+    fallback_payload: Dict[str, Any] | None = None
+
+    for attempt in range(attempts):
+        requests_made += 1
+        try:
+            response = requests.post(
+                url, json=request_payload, headers=headers, timeout=cfg.llm_timeout
+            )
+        except requests.exceptions.RequestException as exc:
+            last_error = exc
+            if attempt < attempts - 1:
+                delay = cfg.llm_retry_delay * (2 ** attempt)
+                log.warning(
+                    "LLM-запрос не удался (%s), повтор через %.1f с", exc, delay
+                )
+                time.sleep(delay)
+                continue
+            break
+
+        status = response.status_code
+        if status == 429 or status >= 500:
+            last_error = requests.HTTPError(f"HTTP {status}", response=response)
+            if attempt < attempts - 1:
+                delay = cfg.llm_retry_delay * (2 ** attempt)
+                log.warning("LLM вернула HTTP %s, повтор через %.1f с", status, delay)
+                time.sleep(delay)
+                continue
+            break
+
+        if status >= 400:
+            last_error = requests.HTTPError(f"HTTP {status}", response=response)
+            if status in FALLBACK_STATUSES and "response_format" in request_payload:
+                fallback_payload = dict(payload)
+                fallback_payload.pop("response_format", None)
+                log.warning("Ответ %s, повтор без response_format", status)
+            break
+
+        return response.json()
+
+    # Fallback отдельным запросом, вне retry-бюджета (ровно один раз).
+    if fallback_payload is not None:
+        requests_made += 1
+        try:
+            response = requests.post(
+                url, json=fallback_payload, headers=headers, timeout=cfg.llm_timeout
+            )
+        except requests.exceptions.RequestException as exc:
+            last_error = exc
+        else:
+            if response.status_code < 400:
+                return response.json()
+            last_error = requests.HTTPError(
+                f"HTTP {response.status_code}", response=response
+            )
+
+    raise RuntimeError(
+        f"LLM-запрос не удался после {requests_made} запросов: {last_error}"
+    ) from last_error
+
+
 def generate_questions(cfg, avoid: List[str] | None = None) -> List[Dict[str, Any]]:
     """Сгенерировать список вопросов через LLM.
 
     avoid — список ранее заданных вопросов, которые повторять не нужно.
     Возвращает список словарей: topic, question, options[4], correct_index.
     """
-    url = f"{cfg.llm_base_url}/chat/completions"
     payload = {
         "model": cfg.llm_model,
         "messages": [
@@ -110,24 +194,11 @@ def generate_questions(cfg, avoid: List[str] | None = None) -> List[Dict[str, An
         "temperature": cfg.llm_temperature,
         "response_format": {"type": "json_object"},
     }
-    headers = {
-        "Authorization": f"Bearer {cfg.llm_api_key}",
-        "Content-Type": "application/json",
-    }
 
     log.info("Запрашиваю %s вопросов у модели %s ...", cfg.count, cfg.llm_model)
-    response = requests.post(url, json=payload, headers=headers, timeout=120)
-
-    if response.status_code >= 400:
-        # Некоторые провайдеры не поддерживают response_format — пробуем без него.
-        log.warning("Ответ %s, повтор без response_format", response.status_code)
-        payload.pop("response_format", None)
-        response = requests.post(url, json=payload, headers=headers, timeout=120)
-
-    response.raise_for_status()
-    content = response.json()["choices"][0]["message"]["content"]
-    data = extract_json(content)
-    questions = _validate_questions(data.get("questions", []))
+    data = post_chat(cfg, payload)
+    content = data["choices"][0]["message"]["content"]
+    questions = _validate_questions(extract_json(content).get("questions", []))
 
     if len(questions) != cfg.count:
         raise ValueError(
