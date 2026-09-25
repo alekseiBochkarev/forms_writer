@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-09-24",
+  "last_publish_date": "2026-09-25",
   "published": [
     {
       "date": "2026-09-24",
@@ -88,6 +88,94 @@
           "license": "CC BY-SA 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-09-25",
+      "survey_id": "6ab67321969f1415ef207332",
+      "url": "https://forms.yandex.ru/u/6ab67321969f1415ef207332/",
+      "theme": "картины",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/1280px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg",
+          "title": "Mona Lisa, by Leonardo da Vinci, from C2RMF retouched.jpg",
+          "author": "Leonardo da Vinci",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/VanGogh-starry_night_ballance1.jpg/1280px-VanGogh-starry_night_ballance1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:VanGogh-starry_night_ballance1.jpg",
+          "title": "VanGogh-starry night ballance1.jpg",
+          "author": "Vincent van Gogh",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/The_Creation_of_Adam-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:The_Creation_of_Adam-1.jpg",
+          "title": "The Creation of Adam-1.jpg",
+          "author": "Michelangelo Buonarroti Simoni",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg/1280px-Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Edvard_Munch,_1893,_The_Scream,_oil,_tempera_and_pastel_on_cardboard,_91_x_73_cm,_National_Gallery_of_Norway.jpg",
+          "title": "Edvard Munch, 1893, The Scream, oil, tempera and pastel on cardboard, 91 x 73 cm, National Gallery of Norway.jpg",
+          "author": "Edvard Munch",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Ame02128_10.jpg/1280px-Ame02128_10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ame02128_10.jpg",
+          "title": "Ame02128 10.jpg",
+          "author": "Gorup de Besanez",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/e8/Kazimir_Malewich%2C_Black_Square_%281915%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Kazimir_Malewich,_Black_Square_(1915).jpg",
+          "title": "Kazimir Malewich, Black Square (1915).jpg",
+          "author": "Kazimir Malevich",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Raphael_-_The_Sistine_Madonna_-_Google_Arts_%26_Culture.jpg/1280px-Raphael_-_The_Sistine_Madonna_-_Google_Arts_%26_Culture.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Raphael_-_The_Sistine_Madonna_-_Google_Arts_%26_Culture.jpg",
+          "title": "Raphael - The Sistine Madonna - Google Arts & Culture.jpg",
+          "author": "Raphael",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Boyarina_Morozova_de_V.Surikov_galerie_Tretyakov.jpg/1280px-Boyarina_Morozova_de_V.Surikov_galerie_Tretyakov.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Boyarina_Morozova_de_V.Surikov_galerie_Tretyakov.jpg",
+          "title": "Boyarina Morozova de V.Surikov galerie Tretyakov.jpg",
+          "author": "Vasily Surikov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Karl_Briullov%2C_The_Last_Day_of_Pompeii_%281827%E2%80%931833%29.jpg/1280px-Karl_Briullov%2C_The_Last_Day_of_Pompeii_%281827%E2%80%931833%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Karl_Briullov,_The_Last_Day_of_Pompeii_(1827%E2%80%931833).jpg",
+          "title": "Karl Briullov, The Last Day of Pompeii (1827–1833).jpg",
+          "author": "Karl Bryullov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/98/Morning_in_a_Pine_Forest_%28Shishkin%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Morning_in_a_Pine_Forest_(Shishkin).jpg",
+          "title": "Morning in a Pine Forest (Shishkin).jpg",
+          "author": "Ivan Shishkin",
+          "license": "Public domain"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -100,10 +188,21 @@
     "советские фильмы: Москва слезам не верит",
     "советские фильмы: Любовь и голуби",
     "советские фильмы: Офицеры",
-    "советские фильмы: В бой идут одни старики"
+    "советские фильмы: В бой идут одни старики",
+    "картины: Мона Лиза",
+    "картины: Звездная ночь",
+    "картины: Сотворение Адама",
+    "картины: Крик",
+    "картины: Постоянство памяти",
+    "картины: Черный квадрат",
+    "картины: Сикстинская мадонна",
+    "картины: Боярыня Морозова",
+    "картины: Последний день Помпеи",
+    "картины: Утро в сосновом лесу"
   ],
   "used_themes": [
-    "советские фильмы"
+    "советские фильмы",
+    "картины"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -117,6 +216,18 @@
       "Любовь и голуби",
       "Офицеры",
       "В бой идут одни старики"
+    ],
+    "картины": [
+      "Мона Лиза",
+      "Звездная ночь",
+      "Сотворение Адама",
+      "Крик",
+      "Постоянство памяти",
+      "Черный квадрат",
+      "Сикстинская мадонна",
+      "Боярыня Морозова",
+      "Последний день Помпеи",
+      "Утро в сосновом лесу"
     ]
   }
 }
