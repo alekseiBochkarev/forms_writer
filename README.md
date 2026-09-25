@@ -85,6 +85,9 @@ python main.py --delete-survey 6aac...
 | `LLM_BASE_URL` | нет | `https://api.openai.com/v1` | Базовый URL API модели |
 | `LLM_MODEL` | нет | `gpt-4o-mini` | Название модели |
 | `LLM_TEMPERATURE` | нет | `0.8` | Температура генерации |
+| `LLM_TIMEOUT` | нет | `120` | Таймаут одного LLM-запроса, секунд |
+| `LLM_RETRIES` | нет | `1` | Повторных попыток LLM-запроса поверх первой |
+| `LLM_RETRY_DELAY` | нет | `5.0` | Базовая пауза перед повтором, секунд (экспоненциально) |
 | `YANDEX_FORMS_TOKEN` | да | — | OAuth-токен с правом `forms:write` |
 | `YANDEX_ORG_ID` | да | — | Идентификатор организации |
 | `YANDEX_ORG_HEADER` | нет | `X-Cloud-Org-Id` | Заголовок организации (`X-Org-Id` для Яндекс 360) |
@@ -138,6 +141,17 @@ python main.py --delete-survey 6aac...
 | `VISION_TIMEOUT` | нет | `120` | Таймаут vision-запроса, с |
 
 \* обязателен, если не задан `QUESTIONS_FILE`.
+
+Бюджет времени LLM в эрудиционном потоке:
+`LLM_TIMEOUT × (LLM_RETRIES + 1 + 1) × max_attempts` должен укладываться в
+`timeout-minutes` workflow (дополнительный `+1` — возможный fallback-запрос на
+внешнюю попытку). При дефолтах `120 × (1+1+1) × 3 = 1080 с = 18 мин < 25 мин`
+(`.github/workflows/daily.yml`). Не увеличивайте эти настройки, не подняв
+`timeout-minutes`.
+
+Фото-поток делает много LLM-вызовов на выпуск (~15 при 10 вопросах: сущности и
+дистракторы), поэтому его бюджет считается отдельно, а `timeout-minutes` в
+`.github/workflows/daily_photo.yml` заметно больше.
 
 ### Свои сегменты результатов
 

@@ -15,13 +15,11 @@ import random
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
-import requests
-
 import photo_sources
 import publisher
 import vision
 from config import Config
-from llm import extract_json
+from llm import extract_json, post_chat
 from state import load_state, save_state, today_utc
 from yandex_forms import YandexFormsClient, build_quiz_settings
 
@@ -157,8 +155,7 @@ def _name_language_rule(theme: str) -> str:
 
 
 def _chat_json(cfg, system: str, user: str) -> Dict[str, Any]:
-    """Вызвать Chat Completions и вернуть распарсенный JSON."""
-    url = f"{cfg.llm_base_url}/chat/completions"
+    """Вызвать Chat Completions (с ретраями) и вернуть распарсенный JSON."""
     payload = {
         "model": cfg.llm_model,
         "messages": [
@@ -168,17 +165,8 @@ def _chat_json(cfg, system: str, user: str) -> Dict[str, Any]:
         "temperature": cfg.llm_temperature,
         "response_format": {"type": "json_object"},
     }
-    headers = {
-        "Authorization": f"Bearer {cfg.llm_api_key}",
-        "Content-Type": "application/json",
-    }
-    response = requests.post(url, json=payload, headers=headers, timeout=120)
-    if response.status_code >= 400:
-        # Некоторые провайдеры не поддерживают response_format — пробуем без него.
-        payload.pop("response_format", None)
-        response = requests.post(url, json=payload, headers=headers, timeout=120)
-    response.raise_for_status()
-    content = response.json()["choices"][0]["message"]["content"]
+    data = post_chat(cfg, payload)
+    content = data["choices"][0]["message"]["content"]
     return extract_json(content)
 
 

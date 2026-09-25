@@ -87,6 +87,9 @@ class Config:
     llm_base_url: str
     llm_model: str
     llm_temperature: float
+    llm_timeout: int
+    llm_retries: int
+    llm_retry_delay: float
 
     # --- Яндекс Формы ---
     yandex_token: str
@@ -246,6 +249,15 @@ def load_config(
         llm_base_url=os.getenv("LLM_BASE_URL", "https://api.openai.com/v1").rstrip("/"),
         llm_model=os.getenv("LLM_MODEL", "gpt-4o-mini").strip(),
         llm_temperature=_get_float("LLM_TEMPERATURE", 0.8),
+        # Бюджет LLM: LLM_TIMEOUT * (LLM_RETRIES + 1 + 1) * max_attempts (main)
+        # должен укладываться в timeout-minutes workflow. Дополнительный +1 —
+        # возможный fallback-запрос на внешнюю попытку. При дефолтах
+        # 120 * (1+1+1) * 3 = 1080 с = 18 мин < 25 мин (daily.yml).
+        # Фото-поток делает много вызовов на выпуск, его бюджет считается
+        # отдельно (см. .github/workflows/daily_photo.yml).
+        llm_timeout=_get_int("LLM_TIMEOUT", 120) or 120,
+        llm_retries=max(0, _get_int("LLM_RETRIES", 1) or 0),
+        llm_retry_delay=max(0.0, _get_float("LLM_RETRY_DELAY", 5.0)),
         yandex_token=os.getenv("YANDEX_FORMS_TOKEN", "").strip(),
         yandex_org_id=os.getenv("YANDEX_ORG_ID", "").strip(),
         yandex_org_header=os.getenv("YANDEX_ORG_HEADER", "X-Cloud-Org-Id").strip(),
