@@ -6,7 +6,7 @@ import pytest
 
 import yandex_forms
 from helpers import FakeResponse
-from yandex_forms import YandexFormsClient, YandexFormsError
+from yandex_forms import MAX_SURVEY_PAGES, YandexFormsClient, YandexFormsError
 
 
 # --- add_enum_question -----------------------------------------------------
@@ -133,3 +133,145 @@ def test_upload_image_http_error_raises(monkeypatch):
 
     with pytest.raises(YandexFormsError):
         client.upload_image("s1", b"bytes", "img.jpg", "image/jpeg")
+
+
+# --- list_surveys: пагинация -------------------------------------------------
+
+
+def _paged_client(all_surveys):
+    """Клиент с замоканным `_request`, отдающий формы страницами по `limit`."""
+    client = YandexFormsClient("token", "org")
+    calls = []
+
+    def fake_request(method, path, payload=None, params=None):
+        calls.append(params or {})
+        offset = (params or {}).get("offset", 0)
+        limit = (params or {}).get("limit", 10)
+        page = all_surveys[offset : offset + limit]
+        has_next = offset + limit < len(all_surveys)
+        links = {"next": "https://api.forms.yandex.net/v1/surveys/?offset=x"} if has_next else {}
+        return {"result": page, "links": links}
+
+    client._request = fake_request  # type: ignore[method-assign]
+    return client, calls
+
+
+def test_list_surveys_collects_all_pages():
+    """3 страницы по 100/100/50 → 250 форм, offset/limit переданы корректно."""
+    all_surveys = [{"id": f"id{i}", "name": f"Форма {i}"} for i in range(250)]
+    client, calls = _paged_client(all_surveys)
+
+    result = client.list_surveys()
+
+    assert len(result) == 250
+    assert result[0] == all_surveys[0]
+    assert result[-1] == all_surveys[-1]
+    assert [c["offset"] for c in calls] == [0, 100, 200]
+    assert all(c["limit"] == 100 for c in calls)
+
+
+def test_list_surveys_stops_without_next_link():
+    """Полная страница без `links.next` — обход завершается на ней."""
+    all_surveys = [{"id": f"id{i}", "name": f"Форма {i}"} for i in range(100)]
+    client = YandexFormsClient("token", "org")
+    calls = []
+
+    def fake_request(method, path, payload=None, params=None):
+        calls.append(params or {})
+        return {"result": all_surveys, "links": {}}
+
+    client._request = fake_request  # type: ignore[method-assign]
+
+    result = client.list_surveys()
+
+    assert len(result) == 100
+    assert len(calls) == 1
+
+
+def test_list_surveys_stops_on_empty_page():
+    """Пустая страница завершает обход, даже если `links.next` присутствует."""
+    client = YandexFormsClient("token", "org")
+
+    def fake_request(method, path, payload=None, params=None):
+        return {"result": [], "links": {"next": "https://x/next"}}
+
+    client._request = fake_request  # type: ignore[method-assign]
+
+    assert client.list_surveys() == []
+
+
+def test_list_surveys_does_not_loop_forever_on_repeating_next():
+    """Повторяющиеся `offset`/`links.next` не приводят к бесконечному циклу."""
+    client = YandexFormsClient("token", "org")
+    calls = []
+
+    def fake_request(method, path, payload=None, params=None):
+        calls.append(params or {})
+        page = [{"id": f"id{i}", "name": "Форма"} for i in range(100)]
+        return {"result": page, "links": {"next": "https://x/next"}}
+
+    client._request = fake_request  # type: ignore[method-assign]
+
+    result = client.list_surveys()
+
+    assert len(calls) == MAX_SURVEY_PAGES
+    assert len(result) == MAX_SURVEY_PAGES * 100
+
+
+def test_next_survey_name_counts_forms_beyond_first_page():
+    """Форма «… 9» на 10-й+ странице учитывается: возвращается «… 10»."""
+    base = "Насколько широк ваш кругозор"
+    all_surveys = [{"id": f"id{i}", "name": "Другое"} for i in range(950)]
+    all_surveys.extend(
+        {"id": f"base{i}", "name": f"{base} {i}"} for i in range(1, 10)
+    )
+    client, calls = _paged_client(all_surveys)
+
+    name = client.next_survey_name(base)
+
+    assert name == f"{base} 10"
+    assert len(calls) > 1
+
+
+def _capped_client(all_surveys, page_size=10):
+    """Сервер ограничивает `limit` сверху и отдаёт ровно `page_size` форм."""
+    client = YandexFormsClient("token", "org")
+    calls = []
+
+    def fake_request(method, path, payload=None, params=None):
+        calls.append(params or {})
+        offset = (params or {}).get("offset", 0)
+        page = all_surveys[offset : offset + page_size]
+        has_next = offset + page_size < len(all_surveys)
+        links = {"next": "https://api.forms.yandex.net/v1/surveys/?offset=x"} if has_next else {}
+        return {"result": page, "links": links}
+
+    client._request = fake_request  # type: ignore[method-assign]
+    return client, calls
+
+
+def test_list_surveys_handles_server_capped_limit():
+    """Запрошен limit=100, но сервер отдаёт по 10: собираются все 3×10=30 форм."""
+    all_surveys = [{"id": f"id{i}", "name": f"Форма {i}"} for i in range(30)]
+    client, calls = _capped_client(all_surveys)
+
+    result = client.list_surveys(limit=100)
+
+    assert len(result) == 30
+    assert [c["offset"] for c in calls] == [0, 10, 20]
+    assert all(c["limit"] == 100 for c in calls)
+
+
+def test_next_survey_name_sees_form_on_third_capped_page():
+    """При серверном лимите 10 форма с 3-й страницы учитывается в нумерации."""
+    base = "Насколько широк ваш кругозор"
+    all_surveys = [{"id": f"id{i}", "name": "Другое"} for i in range(20)]
+    all_surveys.extend(
+        {"id": f"base{i}", "name": f"{base} {i}"} for i in range(1, 10)
+    )
+    client, calls = _capped_client(all_surveys)
+
+    name = client.next_survey_name(base)
+
+    assert name == f"{base} 10"
+    assert len(calls) == 3

@@ -16,6 +16,9 @@ log = logging.getLogger(__name__)
 
 BASE_URL = "https://api.forms.yandex.net/v1"
 
+# Ограничение на число страниц при обходе списка форм: страховка от зацикливания.
+MAX_SURVEY_PAGES = 1000
+
 
 class YandexFormsError(RuntimeError):
     pass
@@ -34,9 +37,17 @@ class YandexFormsClient:
         )
 
     # --- низкоуровневый запрос ---
-    def _request(self, method: str, path: str, payload: Optional[dict] = None) -> Any:
+    def _request(
+        self,
+        method: str,
+        path: str,
+        payload: Optional[dict] = None,
+        params: Optional[dict] = None,
+    ) -> Any:
         url = f"{self.base_url}{path}"
-        response = self.session.request(method, url, json=payload, timeout=60)
+        response = self.session.request(
+            method, url, json=payload, params=params, timeout=60
+        )
         if response.status_code >= 400:
             raise YandexFormsError(
                 f"{method} {path} -> {response.status_code}: {response.text[:500]}"
@@ -46,9 +57,36 @@ class YandexFormsClient:
         return response.json()
 
     # --- API ---
-    def list_surveys(self) -> List[Dict[str, Any]]:
-        data = self._request("GET", "/surveys/")
-        return data.get("result", []) if isinstance(data, dict) else data
+    def list_surveys(self, limit: int = 100) -> List[Dict[str, Any]]:
+        """Получить все доступные формы, обходя страницы API.
+
+        API отдаёт формы страницами (`limit` по умолчанию 10), поэтому без
+        обхода `next_survey_name` видел бы только первые 10 форм и выдавал бы
+        дубликаты номеров. Ориентируемся только на `links.next`: сервер может
+        вернуть меньше запрошенного `limit`, но это ещё не конец списка.
+        Останавливаемся, когда пропал `next_link` или страница пуста.
+        """
+        surveys: List[Dict[str, Any]] = []
+        offset = 0
+        for _ in range(MAX_SURVEY_PAGES):
+            data = self._request(
+                "GET", "/surveys/", params={"limit": limit, "offset": offset}
+            )
+            if not isinstance(data, dict):
+                surveys.extend(data or [])
+                break
+            page = data.get("result") or []
+            surveys.extend(page)
+            next_link = (data.get("links") or {}).get("next")
+            if not page or not next_link:
+                break
+            offset += len(page)
+        else:
+            log.warning(
+                "Список форм: достигнут предел %s страниц, список может быть неполным",
+                MAX_SURVEY_PAGES,
+            )
+        return surveys
 
     def next_survey_name(self, base: str) -> str:
         """Имя со счётчиком: «<base> N», где N — число форм с таким префиксом + 1."""
