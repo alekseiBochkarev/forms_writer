@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-09-25",
+  "last_publish_date": "2026-09-26",
   "published": [
     {
       "date": "2026-09-24",
@@ -176,6 +176,94 @@
           "license": "Public domain"
         }
       ]
+    },
+    {
+      "date": "2026-09-26",
+      "survey_id": "6ab81516bf4fde209feeb13d",
+      "url": "https://forms.yandex.ru/u/6ab81516bf4fde209feeb13d/",
+      "theme": "растения",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Rosa_%27Rosengr%C3%A4fin_Marie_Henriette%27_%28actm%29.jpg/1280px-Rosa_%27Rosengr%C3%A4fin_Marie_Henriette%27_%28actm%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Rosa_%27Rosengr%C3%A4fin_Marie_Henriette%27_(actm).jpg",
+          "title": "Rosa 'Rosengräfin Marie Henriette' (actm).jpg",
+          "author": "Agnes Monkelbaan",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Sunflower_head_2015_G1.jpg/1280px-Sunflower_head_2015_G1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Sunflower_head_2015_G1.jpg",
+          "title": "Sunflower head 2015 G1.jpg",
+          "author": "George Chernilevsky",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Ferocactus_wislizeni_%28Fishhook_Barrel_Cactus%29_fruit.jpg/1280px-Ferocactus_wislizeni_%28Fishhook_Barrel_Cactus%29_fruit.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ferocactus_wislizeni_(Fishhook_Barrel_Cactus)_fruit.jpg",
+          "title": "Ferocactus wislizeni (Fishhook Barrel Cactus) fruit.jpg",
+          "author": "John Owens (talk)",
+          "license": "CC BY 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Adansonia_grandidieri04.jpg/1280px-Adansonia_grandidieri04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Adansonia_grandidieri04.jpg",
+          "title": "Adansonia grandidieri04.jpg",
+          "author": "Bernard Gagnon",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Sequoia_sempervirens_MHNT.BOT.2007.52.2.jpg/1280px-Sequoia_sempervirens_MHNT.BOT.2007.52.2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Sequoia_sempervirens_MHNT.BOT.2007.52.2.jpg",
+          "title": "Sequoia sempervirens MHNT.BOT.2007.52.2.jpg",
+          "author": "Roger Culos",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Cerisier_du_Japon_Prunus_serrulata.jpg/1280px-Cerisier_du_Japon_Prunus_serrulata.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Cerisier_du_Japon_Prunus_serrulata.jpg",
+          "title": "Cerisier du Japon Prunus serrulata.jpg",
+          "author": "Myrabella",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/Fr%C3%BChlingsallee_Tulpenbl%C3%BCte_2010_%281%29.jpg/1280px-Fr%C3%BChlingsallee_Tulpenbl%C3%BCte_2010_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Fr%C3%BChlingsallee_Tulpenbl%C3%BCte_2010_(1).jpg",
+          "title": "Frühlingsallee Tulpenblüte 2010 (1).jpg",
+          "author": "Harke",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/House_-_Santa_Cruz_de_La_Palma_01.jpg/1280px-House_-_Santa_Cruz_de_La_Palma_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:House_-_Santa_Cruz_de_La_Palma_01.jpg",
+          "title": "House - Santa Cruz de La Palma 01.jpg",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Gew%C3%B6hnlicher_T%C3%BCpfelfarn_%28Polypodium_vulgare%29_auf_Spiekeroog_01.jpg/1280px-Gew%C3%B6hnlicher_T%C3%BCpfelfarn_%28Polypodium_vulgare%29_auf_Spiekeroog_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Gew%C3%B6hnlicher_T%C3%BCpfelfarn_(Polypodium_vulgare)_auf_Spiekeroog_01.jpg",
+          "title": "Gewöhnlicher Tüpfelfarn (Polypodium vulgare) auf Spiekeroog 01.jpg",
+          "author": "Stephan Sprinz",
+          "license": "CC BY 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/Nymphaea_alba_in_Duisburg.jpg/1280px-Nymphaea_alba_in_Duisburg.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Nymphaea_alba_in_Duisburg.jpg",
+          "title": "Nymphaea alba in Duisburg.jpg",
+          "author": "DerHexer",
+          "license": "CC BY-SA 3.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -198,11 +286,22 @@
     "картины: Сикстинская мадонна",
     "картины: Боярыня Морозова",
     "картины: Последний день Помпеи",
-    "картины: Утро в сосновом лесу"
+    "картины: Утро в сосновом лесу",
+    "растения: Роза",
+    "растения: Подсолнух",
+    "растения: Кактус",
+    "растения: Баобаб",
+    "растения: Секвойя",
+    "растения: Сакура",
+    "растения: Тюльпан",
+    "растения: Пальма",
+    "растения: Папоротник",
+    "растения: Кувшинка"
   ],
   "used_themes": [
     "советские фильмы",
-    "картины"
+    "картины",
+    "растения"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -228,6 +327,18 @@
       "Боярыня Морозова",
       "Последний день Помпеи",
       "Утро в сосновом лесу"
+    ],
+    "растения": [
+      "Роза",
+      "Подсолнух",
+      "Кактус",
+      "Баобаб",
+      "Секвойя",
+      "Сакура",
+      "Тюльпан",
+      "Пальма",
+      "Папоротник",
+      "Кувшинка"
     ]
   }
 }
