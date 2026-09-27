@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-09-26",
+  "last_publish_date": "2026-09-27",
   "published": [
     {
       "date": "2026-09-24",
@@ -264,6 +264,94 @@
           "license": "CC BY-SA 3.0"
         }
       ]
+    },
+    {
+      "date": "2026-09-27",
+      "survey_id": "6ab96e20969f14112fd83b0b",
+      "url": "https://forms.yandex.ru/u/6ab96e20969f14112fd83b0b/",
+      "theme": "актёры",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/4/46/Leonardo_Dicaprio_Cannes_2019.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Leonardo_Dicaprio_Cannes_2019.jpg",
+          "title": "Leonardo Dicaprio Cannes 2019.jpg",
+          "author": "Georges Biard",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Brad_Pitt-69858.jpg/1280px-Brad_Pitt-69858.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Brad_Pitt-69858.jpg",
+          "title": "Brad Pitt-69858.jpg",
+          "author": "Harald Krichel",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Angelina_Jolie-643531_%28cropped%29.jpg/1280px-Angelina_Jolie-643531_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Angelina_Jolie-643531_(cropped).jpg",
+          "title": "Angelina Jolie-643531 (cropped).jpg",
+          "author": "Harald Krichel",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Tom_Hanks_1995_WH.jpg/1280px-Tom_Hanks_1995_WH.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Tom_Hanks_1995_WH.jpg",
+          "title": "Tom Hanks 1995 WH.jpg",
+          "author": "Clinton Presidential Library",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/92/Robert_Downey%2C_Jr.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Robert_Downey,_Jr.jpg",
+          "title": "Robert Downey, Jr.jpg",
+          "author": "KabanDanish",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/57/Scarlett_Johansson_by_Gage_Skidmore_2_%28cropped%29_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Scarlett_Johansson_by_Gage_Skidmore_2_(cropped)_(cropped).jpg",
+          "title": "Scarlett Johansson by Gage Skidmore 2 (cropped) (cropped).jpg",
+          "author": "Gage Skidmore",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/57/Keanu_Reeves_%2825448963336%29_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Keanu_Reeves_(25448963336)_(2).jpg",
+          "title": "Keanu Reeves (25448963336) (2).jpg",
+          "author": "Gordon Correll",
+          "license": "CC BY-SA 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/93/Academy_Award-winning_actor_Morgan_Freeman_narrates_for_the_opening_ceremony_%2826904746425%29_%28cropped%29_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Academy_Award-winning_actor_Morgan_Freeman_narrates_for_the_opening_ceremony_(26904746425)_(cropped)_3.jpg",
+          "title": "Academy Award-winning actor Morgan Freeman narrates for the opening ceremony (26904746425) (cropped) 3.jpg",
+          "author": "DoD News Features",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Johnny_Depp-2821.jpg/1280px-Johnny_Depp-2821.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Johnny_Depp-2821.jpg",
+          "title": "Johnny Depp-2821.jpg",
+          "author": "Harald Krichel",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/20/ALPACINO_0234e_%2830401875260%29_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:ALPACINO_0234e_(30401875260)_(cropped).jpg",
+          "title": "ALPACINO 0234e (30401875260) (cropped).jpg",
+          "author": "Embajada de EEUU en la Argentina",
+          "license": "CC BY 2.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -296,12 +384,23 @@
     "растения: Тюльпан",
     "растения: Пальма",
     "растения: Папоротник",
-    "растения: Кувшинка"
+    "растения: Кувшинка",
+    "актёры: Леонардо ДиКаприо",
+    "актёры: Брэд Питт",
+    "актёры: Анджелина Джоли",
+    "актёры: Том Хэнкс",
+    "актёры: Роберт Дауни-младший",
+    "актёры: Скарлетт Йоханссон",
+    "актёры: Киану Ривз",
+    "актёры: Морган Фриман",
+    "актёры: Джонни Депп",
+    "актёры: Аль Пачино"
   ],
   "used_themes": [
     "советские фильмы",
     "картины",
-    "растения"
+    "растения",
+    "актёры"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -339,6 +438,18 @@
       "Пальма",
       "Папоротник",
       "Кувшинка"
+    ],
+    "актёры": [
+      "Леонардо ДиКаприо",
+      "Брэд Питт",
+      "Анджелина Джоли",
+      "Том Хэнкс",
+      "Роберт Дауни-младший",
+      "Скарлетт Йоханссон",
+      "Киану Ривз",
+      "Морган Фриман",
+      "Джонни Депп",
+      "Аль Пачино"
     ]
   }
 }
