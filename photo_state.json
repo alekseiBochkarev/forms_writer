@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-09-28",
+  "last_publish_date": "2026-09-29",
   "published": [
     {
       "date": "2026-09-24",
@@ -440,6 +440,94 @@
           "license": "CC BY 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-09-29",
+      "survey_id": "6abc1e6c381ea6002cd8a66c",
+      "url": "https://forms.yandex.ru/u/6abc1e6c381ea6002cd8a66c/",
+      "theme": "достопримечательности и места",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Lightning_striking_the_Eiffel_Tower_-_NOAA.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Lightning_striking_the_Eiffel_Tower_-_NOAA.jpg",
+          "title": "Lightning striking the Eiffel Tower - NOAA.jpg",
+          "author": "Gabriel Loppé",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/National_Park_Service_9-11_Statue_of_Liberty_and_WTC_fire.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:National_Park_Service_9-11_Statue_of_Liberty_and_WTC_fire.jpg",
+          "title": "National Park Service 9-11 Statue of Liberty and WTC fire.jpg",
+          "author": "National Park Service",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Taj_Mahal%2C_Agra%2C_India_edit2.jpg/1280px-Taj_Mahal%2C_Agra%2C_India_edit2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Taj_Mahal,_Agra,_India_edit2.jpg",
+          "title": "Taj Mahal, Agra, India edit2.jpg",
+          "author": "Yann; edited by King of Hearts",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Badaling_China_Great-Wall-of-China-01.jpg/1280px-Badaling_China_Great-Wall-of-China-01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Badaling_China_Great-Wall-of-China-01.jpg",
+          "title": "Badaling China Great-Wall-of-China-01.jpg",
+          "author": "CEphoto, Uwe Aranas",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Colosseum_in_Rome%2C_Italy_-_April_2007.jpg/1280px-Colosseum_in_Rome%2C_Italy_-_April_2007.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Colosseum_in_Rome,_Italy_-_April_2007.jpg",
+          "title": "Colosseum in Rome, Italy - April 2007.jpg",
+          "author": "Diliff",
+          "license": "CC BY-SA 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/80_-_Machu_Picchu_-_Juin_2009_-_edit.jpg/1280px-80_-_Machu_Picchu_-_Juin_2009_-_edit.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:80_-_Machu_Picchu_-_Juin_2009_-_edit.jpg",
+          "title": "80 - Machu Picchu - Juin 2009 - edit.jpg",
+          "author": "Martin St-Amant (S23678)",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Grand_Canyon_Hopi_Point_with_rainbow_2013.jpg/1280px-Grand_Canyon_Hopi_Point_with_rainbow_2013.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Grand_Canyon_Hopi_Point_with_rainbow_2013.jpg",
+          "title": "Grand Canyon Hopi Point with rainbow 2013.jpg",
+          "author": "Tuxyso",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Sydney_%28AU%29%2C_Opera_House_--_2019_--_3054.jpg/1280px-Sydney_%28AU%29%2C_Opera_House_--_2019_--_3054.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Sydney_(AU),_Opera_House_--_2019_--_3054.jpg",
+          "title": "Sydney (AU), Opera House -- 2019 -- 3054.jpg",
+          "author": "Dietmar Rabich",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/%D0%92%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A5%D1%80%D0%B0%D0%BC_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D0%B8%D1%8F_%D0%91%D0%BB%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE_%D1%81_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D1%81%D0%BF%D1%83%D1%81%D0%BA%D0%B0.jpg/1280px-%D0%92%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A5%D1%80%D0%B0%D0%BC_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D0%B8%D1%8F_%D0%91%D0%BB%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE_%D1%81_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D1%81%D0%BF%D1%83%D1%81%D0%BA%D0%B0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%92%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A5%D1%80%D0%B0%D0%BC_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D0%B8%D1%8F_%D0%91%D0%BB%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE_%D1%81_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D1%81%D0%BF%D1%83%D1%81%D0%BA%D0%B0.jpg",
+          "title": "Вид на Храм Василия Блаженного с Васильевского спуска.jpg",
+          "author": "Юрий Д.К.",
+          "license": "CC BY 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/21/22_Schiefer_Turm_von_St._Moritz_%28159145947%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:22_Schiefer_Turm_von_St._Moritz_(159145947).jpg",
+          "title": "22 Schiefer Turm von St. Moritz (159145947).jpg",
+          "author": "pizzodisevo 1937, from MONTEPRANDONE, Italy",
+          "license": "CC BY-SA 2.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -492,14 +580,25 @@
     "животные: Синий кит",
     "животные: Дельфин",
     "животные: Пингвин",
-    "животные: Крокодил"
+    "животные: Крокодил",
+    "достопримечательности и места: Эйфелева башня",
+    "достопримечательности и места: Статуя Свободы",
+    "достопримечательности и места: Тадж-Махал",
+    "достопримечательности и места: Великая Китайская стена",
+    "достопримечательности и места: Колизей",
+    "достопримечательности и места: Мачу-Пикчу",
+    "достопримечательности и места: Гранд-Каньон",
+    "достопримечательности и места: Сиднейский оперный театр",
+    "достопримечательности и места: Храм Василия Блаженного",
+    "достопримечательности и места: Пизанская башня"
   ],
   "used_themes": [
     "советские фильмы",
     "картины",
     "растения",
     "актёры",
-    "животные"
+    "животные",
+    "достопримечательности и места"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -561,6 +660,18 @@
       "Дельфин",
       "Пингвин",
       "Крокодил"
+    ],
+    "достопримечательности и места": [
+      "Эйфелева башня",
+      "Статуя Свободы",
+      "Тадж-Махал",
+      "Великая Китайская стена",
+      "Колизей",
+      "Мачу-Пикчу",
+      "Гранд-Каньон",
+      "Сиднейский оперный театр",
+      "Храм Василия Блаженного",
+      "Пизанская башня"
     ]
   }
 }
