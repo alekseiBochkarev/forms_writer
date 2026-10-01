@@ -21,9 +21,12 @@ def test_question_text_film_theme():
 
 
 def test_question_text_actor_theme():
-    """Темы про актёров -> «Кто на фото?»."""
+    """Темы про актёров/актрис -> «Кто на фото?»."""
     assert photo_flow.question_text("актёры") == "Кто на фото?"
     assert photo_flow.question_text("актеры") == "Кто на фото?"
+    assert photo_flow.question_text("актрисы") == "Кто на фото?"
+    assert photo_flow.question_text("советские актёры") == "Кто на фото?"
+    assert photo_flow.question_text("советские актрисы") == "Кто на фото?"
 
 
 def test_question_text_other_theme():
@@ -32,6 +35,16 @@ def test_question_text_other_theme():
         photo_flow.question_text("животные")
         == "Что (кто) изображено на фотографии?"
     )
+
+
+def test_image_kind_classifies_theme_for_vision():
+    """Класс изображения для vision: film / actor / generic."""
+    assert photo_flow.image_kind("советские фильмы") == "film"
+    assert photo_flow.image_kind("иностранные фильмы") == "film"
+    assert photo_flow.image_kind("советские актёры") == "actor"
+    assert photo_flow.image_kind("советские актрисы") == "actor"
+    assert photo_flow.image_kind("актёры") == "actor"
+    assert photo_flow.image_kind("животные") == "generic"
 
 
 def test_image_query_for_film_uses_bare_entity():
@@ -116,6 +129,28 @@ def test_generate_entities_other_theme_uses_russian(monkeypatch):
     assert "русском" in user.lower()
 
 
+def test_generate_entities_soviet_actresses_hint(monkeypatch):
+    """Для темы про советских актрис подсказка просит именно актрис, по-русски."""
+    captured = _capture_chat_json(monkeypatch, {"entities": ["Нонна Мордюкова"]})
+
+    photo_flow._generate_entities(FakePhotoCfg(), "советские актрисы", 3, [])
+
+    user = captured["user"].lower()
+    assert "актрис" in user
+    assert "русском" in user
+
+
+def test_generate_entities_soviet_actors_hint(monkeypatch):
+    """Для темы про советских актёров подсказка просит именно актёров."""
+    captured = _capture_chat_json(monkeypatch, {"entities": ["Анатолий Папанов"]})
+
+    photo_flow._generate_entities(FakePhotoCfg(), "советские актёры", 3, [])
+
+    user = captured["user"].lower()
+    assert "актёров" in user
+    assert "актрис" not in user
+
+
 def test_generate_distractors_foreign_films_request_original_titles(monkeypatch):
     """Для иностранных фильмов дистракторы — тоже оригинальные названия."""
     captured = _capture_chat_json(monkeypatch, {"distractors": ["Alien", "Jaws", "Heat"]})
@@ -151,6 +186,34 @@ def test_generate_distractors_other_theme_has_no_language_rule(monkeypatch):
     assert "советских" not in user.lower()
 
 
+def test_generate_distractors_soviet_actresses_are_actress_names(monkeypatch):
+    """Для советских актрис дистракторы — имена актрис, а не названия фильмов."""
+    captured = _capture_chat_json(monkeypatch, {"distractors": ["Людмила Гурченко"]})
+
+    photo_flow._generate_distractors(
+        FakePhotoCfg(), "советские актрисы", "Нонна Мордюкова"
+    )
+
+    user = captured["user"].lower()
+    assert "актрис" in user
+    assert "советских" in user
+    assert "фильм" not in user
+
+
+def test_generate_distractors_soviet_actors_are_actor_names(monkeypatch):
+    """Для советских актёров дистракторы — имена актёров, а не названия фильмов."""
+    captured = _capture_chat_json(monkeypatch, {"distractors": ["Юрий Никулин"]})
+
+    photo_flow._generate_distractors(
+        FakePhotoCfg(), "советские актёры", "Анатолий Папанов"
+    )
+
+    user = captured["user"].lower()
+    assert "актёров" in user
+    assert "актрис" not in user
+    assert "фильм" not in user
+
+
 # --- theme_sources ----------------------------------------------------------
 
 
@@ -159,6 +222,14 @@ def test_theme_sources_soviet_requires_film_ru_flag():
     enabled = FakePhotoCfg(film_ru_enabled=True)
     assert photo_flow.theme_sources(enabled, "советские фильмы") == ["ruwiki_film"]
     assert photo_flow.theme_sources(FakePhotoCfg(), "советские фильмы") == []
+
+
+def test_theme_sources_soviet_actors_and_actresses_use_ruwiki():
+    """Советские актёры/актрисы тоже берутся из ruwiki (при FILM_RU_ENABLED)."""
+    enabled = FakePhotoCfg(film_ru_enabled=True)
+    assert photo_flow.theme_sources(enabled, "советские актёры") == ["ruwiki_film"]
+    assert photo_flow.theme_sources(enabled, "советские актрисы") == ["ruwiki_film"]
+    assert photo_flow.theme_sources(FakePhotoCfg(), "советские актрисы") == []
 
 
 def test_theme_sources_foreign_films_use_film_sites():

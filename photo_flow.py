@@ -37,7 +37,9 @@ ASKED_HISTORY_LIMIT = 500
 
 FILM_THEME_RE = re.compile(r"фильм|кино|сериал", re.IGNORECASE)
 SOVIET_THEME_RE = re.compile(r"совет|ссср", re.IGNORECASE)
-ACTOR_THEME_RE = re.compile(r"акт[её]р", re.IGNORECASE)
+# Матчит и «актёр/актер», и «актриса/актрисы».
+ACTOR_THEME_RE = re.compile(r"акт(?:[её]р|рис)", re.IGNORECASE)
+ACTRESS_THEME_RE = re.compile(r"актрис", re.IGNORECASE)
 
 ENTITY_SYSTEM = (
     "Ты — составитель викторин с фотографиями. Ты подбираешь узнаваемые сущности "
@@ -65,6 +67,15 @@ def is_foreign_film_theme(theme: str) -> bool:
     movie-screencaps.com), поэтому названия фильмов нужны в оригинале.
     """
     return is_film_theme(theme) and not SOVIET_THEME_RE.search(theme or "")
+
+
+def image_kind(theme: str) -> str:
+    """Класс изображения для vision-проверки: ``film`` / ``actor`` / ``generic``."""
+    if is_film_theme(theme):
+        return "film"
+    if ACTOR_THEME_RE.search(theme or ""):
+        return "actor"
+    return "generic"
 
 
 def image_query(theme: str, entity: str) -> str:
@@ -132,6 +143,8 @@ def _entity_hint(theme: str) -> str:
         )
     if is_film_theme(theme):
         return "известных фильмов (узнаваемых по кадру)"
+    if ACTRESS_THEME_RE.search(theme):
+        return "известных актрис"
     if ACTOR_THEME_RE.search(theme):
         return "известных актёров"
     return "конкретных объектов, персон или мест, которые можно узнать на фото"
@@ -208,7 +221,13 @@ def _generate_entities(
 def _generate_distractors(cfg, theme: str, entity: str) -> List[str]:
     """Сгенерировать дистракторы строго того же класса, что и верный ответ."""
     language_rule = ""
-    if is_foreign_film_theme(theme):
+    if ACTOR_THEME_RE.search(theme or ""):
+        kind = "актрис" if ACTRESS_THEME_RE.search(theme) else "актёров"
+        prefix = "советских " if SOVIET_THEME_RE.search(theme or "") else ""
+        language_rule = (
+            f"Дистракторы — имена известных {prefix}{kind} на русском языке.\n"
+        )
+    elif is_foreign_film_theme(theme):
         language_rule = (
             "Дистракторы — ОРИГИНАЛЬНЫЕ названия иностранных фильмов "
             "(как правило, на английском), того же языка, что и правильный ответ.\n"
@@ -290,7 +309,9 @@ def _pick_image(
         except RuntimeError as exc:
             log.info("Изображение не скачано для «%s»: %s", entity, exc)
             continue
-        ok, reason = vision.verify_image(cfg, data, mime, entity, theme)
+        ok, reason = vision.verify_image(
+            cfg, data, mime, entity, theme, image_kind(theme)
+        )
         if not ok:
             log.info("Vision отклонила изображение для «%s»: %s", entity, reason)
             continue

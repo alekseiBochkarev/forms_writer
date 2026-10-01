@@ -32,7 +32,7 @@ def test_photo_defaults_when_env_empty():
     assert cfg.photo_image_max_bytes == 8_000_000
     assert cfg.photo_state_file == "photo_state.json"
     assert cfg.openverse_base_url == "https://api.openverse.org/v1"
-    assert cfg.photo_vision_enabled is False
+    assert cfg.photo_vision_enabled is True
     assert cfg.vision_timeout == 120
 
 
@@ -46,6 +46,13 @@ def test_effective_photo_themes_and_min_questions_defaults():
     assert "x" not in DEFAULT_PHOTO_THEMES
 
     assert cfg.effective_photo_min_questions() == cfg.photo_questions_count == 10
+
+
+def test_default_photo_themes_include_soviet_people_and_films():
+    """Во встроенных темах есть советские фильмы, актёры и актрисы."""
+    assert "советские фильмы" in DEFAULT_PHOTO_THEMES
+    assert "советские актёры" in DEFAULT_PHOTO_THEMES
+    assert "советские актрисы" in DEFAULT_PHOTO_THEMES
 
 
 def test_enabled_photo_sources_defaults_and_flags():
