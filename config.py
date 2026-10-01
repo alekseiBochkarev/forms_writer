@@ -64,6 +64,8 @@ DEFAULT_PHOTO_THEMES = [
     "достопримечательности и места",
     "картины",
     "советские фильмы",
+    "советские актёры",
+    "советские актрисы",
     "иностранные фильмы",
     "актёры",
 ]
@@ -156,7 +158,7 @@ class Config:
     vision_base_url: str = ""
     vision_model: str = ""
     vision_timeout: int = 120
-    photo_vision_enabled: bool = False
+    photo_vision_enabled: bool = True
 
     def validate(self, require_questions: bool = True) -> None:
         if self.mode == "photo":
@@ -309,7 +311,7 @@ def load_config(
         film_ru_enabled=_get_bool("FILM_RU_ENABLED", False),
         film_grab_enabled=_get_bool("FILM_GRAB_ENABLED", False),
         movie_screencaps_enabled=_get_bool("MOVIE_SCREENCAPS_ENABLED", False),
-        photo_vision_enabled=_get_bool("PHOTO_VISION_ENABLED", False),
+        photo_vision_enabled=_get_bool("PHOTO_VISION_ENABLED", True),
         vision_timeout=_get_int("VISION_TIMEOUT", 120),
     )
 

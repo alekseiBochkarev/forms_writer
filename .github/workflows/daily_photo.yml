@@ -61,8 +61,9 @@ jobs:
           MOVIE_SCREENCAPS_ENABLED: ${{ vars.MOVIE_SCREENCAPS_ENABLED || 'false' }}
           # Wikimedia требует описательный User-Agent — задайте в Variables.
           WIKIMEDIA_USER_AGENT: ${{ vars.WIKIMEDIA_USER_AGENT }}
-          # Vision-проверка по умолчанию выключена.
-          PHOTO_VISION_ENABLED: ${{ vars.PHOTO_VISION_ENABLED || 'false' }}
+          # Vision-проверка включена по умолчанию (fail-closed): отсекает текст,
+          # постеры и прочие изображения, не соответствующие вопросу.
+          PHOTO_VISION_ENABLED: ${{ vars.PHOTO_VISION_ENABLED || 'true' }}
           PUBLISH: "true"
           PUBLISH_TELEGRAM: "true"
           PUBLISH_VK: "true"
