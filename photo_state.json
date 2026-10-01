@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-09-30",
+  "last_publish_date": "2026-10-01",
   "published": [
     {
       "date": "2026-09-24",
@@ -616,6 +616,94 @@
           "license": "CC BY-SA 3.0"
         }
       ]
+    },
+    {
+      "date": "2026-10-01",
+      "survey_id": "6abecdd4b93f98002a072cd8",
+      "url": "https://forms.yandex.ru/u/6abecdd4b93f98002a072cd8/",
+      "theme": "животные",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/081_White_rhinoceros_%28male%29_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg/1280px-081_White_rhinoceros_%28male%29_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:081_White_rhinoceros_(male)_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg",
+          "title": "081 White rhinoceros (male) in the Kalahari Desert of Namibia Photo by Giles Laurent.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/013_Alpha_male_chimpanzee_at_Kibale_forest_National_Park_Photo_by_Giles_Laurent.jpg/1280px-013_Alpha_male_chimpanzee_at_Kibale_forest_National_Park_Photo_by_Giles_Laurent.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:013_Alpha_male_chimpanzee_at_Kibale_forest_National_Park_Photo_by_Giles_Laurent.jpg",
+          "title": "013 Alpha male chimpanzee at Kibale forest National Park Photo by Giles Laurent.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Koala_and_joey.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Koala_and_joey.jpg",
+          "title": "Koala and joey.jpg",
+          "author": "Benjamint444",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/American_flamingo_%28Phoenicopterus_ruber%29.JPG/1280px-American_flamingo_%28Phoenicopterus_ruber%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:American_flamingo_(Phoenicopterus_ruber).JPG",
+          "title": "American flamingo (Phoenicopterus ruber).JPG",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/%D0%A3%D1%88%D0%B0%D1%81%D1%82%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0.jpg/1280px-%D0%A3%D1%88%D0%B0%D1%81%D1%82%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%A3%D1%88%D0%B0%D1%81%D1%82%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0.jpg",
+          "title": "Ушастая сова.jpg",
+          "author": "Максат79",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Canis_lupus_arctos_%28Pocock%2C_1935%29.jpg/1280px-Canis_lupus_arctos_%28Pocock%2C_1935%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Canis_lupus_arctos_(Pocock,_1935).jpg",
+          "title": "Canis lupus arctos (Pocock, 1935).jpg",
+          "author": "Michael Gäbler",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/%D0%9B%D0%B8%D1%81%D0%B0-%D0%BE%D0%B3%D0%BD%D0%B5%D0%B2%D0%BA%D0%B0_%D0%BD%D0%B0_%D1%84%D0%BE%D0%BD%D0%B5_%D0%92%D0%B8%D0%BB%D1%8E%D1%87%D0%B8%D0%BD%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D0%B2%D1%83%D0%BB%D0%BA%D0%B0%D0%BD%D0%B0.jpg/1280px-%D0%9B%D0%B8%D1%81%D0%B0-%D0%BE%D0%B3%D0%BD%D0%B5%D0%B2%D0%BA%D0%B0_%D0%BD%D0%B0_%D1%84%D0%BE%D0%BD%D0%B5_%D0%92%D0%B8%D0%BB%D1%8E%D1%87%D0%B8%D0%BD%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D0%B2%D1%83%D0%BB%D0%BA%D0%B0%D0%BD%D0%B0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9B%D0%B8%D1%81%D0%B0-%D0%BE%D0%B3%D0%BD%D0%B5%D0%B2%D0%BA%D0%B0_%D0%BD%D0%B0_%D1%84%D0%BE%D0%BD%D0%B5_%D0%92%D0%B8%D0%BB%D1%8E%D1%87%D0%B8%D0%BD%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D0%B2%D1%83%D0%BB%D0%BA%D0%B0%D0%BD%D0%B0.jpg",
+          "title": "Лиса-огневка на фоне Вилючинского вулкана.jpg",
+          "author": "NadezhdaKhaustova",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Brown_bear_%28Ursus_arctos_arctos%29_running.jpg/1280px-Brown_bear_%28Ursus_arctos_arctos%29_running.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Brown_bear_(Ursus_arctos_arctos)_running.jpg",
+          "title": "Brown bear (Ursus arctos arctos) running.jpg",
+          "author": "Malene Thyssen",
+          "license": "CC BY 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Camelus_bactrianus_in_western_Mongolia_06.jpg/1280px-Camelus_bactrianus_in_western_Mongolia_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Camelus_bactrianus_in_western_Mongolia_06.jpg",
+          "title": "Camelus bactrianus in western Mongolia 06.jpg",
+          "author": "Alexandr frolov",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Whale_Shark_AdF.jpg/1280px-Whale_Shark_AdF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Whale_Shark_AdF.jpg",
+          "title": "Whale Shark AdF.jpg",
+          "author": "Arturo de Frias Marques",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -688,10 +776,21 @@
     "актёры: Роберт Де Ниро",
     "актёры: Сильвестр Сталлоне",
     "актёры: Арнольд Шварценеггер",
-    "актёры: Брюс Уиллис"
+    "актёры: Брюс Уиллис",
+    "животные: носорог",
+    "животные: шимпанзе",
+    "животные: коала",
+    "животные: фламинго",
+    "животные: сова",
+    "животные: волк",
+    "животные: лиса",
+    "животные: бурый медведь",
+    "животные: верблюд",
+    "животные: акула"
   ],
   "used_themes": [
-    "актёры"
+    "актёры",
+    "животные"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -762,7 +861,17 @@
       "Синий кит",
       "Дельфин",
       "Пингвин",
-      "Крокодил"
+      "Крокодил",
+      "носорог",
+      "шимпанзе",
+      "коала",
+      "фламинго",
+      "сова",
+      "волк",
+      "лиса",
+      "бурый медведь",
+      "верблюд",
+      "акула"
     ],
     "достопримечательности и места": [
       "Эйфелева башня",
