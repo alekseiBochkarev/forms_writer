@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-01",
+  "last_publish_date": "2026-10-02",
   "published": [
     {
       "date": "2026-09-24",
@@ -704,6 +704,94 @@
           "license": "CC BY-SA 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-10-02",
+      "survey_id": "6ac011f170ad370c921c65e7",
+      "url": "https://forms.yandex.ru/u/6ac011f170ad370c921c65e7/",
+      "theme": "достопримечательности и места",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/All_Gizah_Pyramids.jpg/1280px-All_Gizah_Pyramids.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:All_Gizah_Pyramids.jpg",
+          "title": "All Gizah Pyramids.jpg",
+          "author": "Ricardo Liberato",
+          "license": "CC BY-SA 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Big_Ben_Elizabeth_Tower_London_2023_01.jpg/1280px-Big_Ben_Elizabeth_Tower_London_2023_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Big_Ben_Elizabeth_Tower_London_2023_01.jpg",
+          "title": "Big Ben Elizabeth Tower London 2023 01.jpg",
+          "author": "Julian Herzog (Website)",
+          "license": "CC BY 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Brandenburger_Tor_morgens.jpg/1280px-Brandenburger_Tor_morgens.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Brandenburger_Tor_morgens.jpg",
+          "title": "Brandenburger Tor morgens.jpg",
+          "author": "Thomas Wolf, www.foto-tw.de",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0._%D0%A1%D0%B0%D0%B3%D1%80%D0%B0%D0%B4%D0%B0_%D0%A4%D0%B0%D0%BC%D0%B8%D0%BB%D0%B8%D1%8F_-_panoramio.jpg/1280px-%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0._%D0%A1%D0%B0%D0%B3%D1%80%D0%B0%D0%B4%D0%B0_%D0%A4%D0%B0%D0%BC%D0%B8%D0%BB%D0%B8%D1%8F_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0._%D0%A1%D0%B0%D0%B3%D1%80%D0%B0%D0%B4%D0%B0_%D0%A4%D0%B0%D0%BC%D0%B8%D0%BB%D0%B8%D1%8F_-_panoramio.jpg",
+          "title": "Барселона. Саграда Фамилия - panoramio.jpg",
+          "author": "Рустам Абдрахимов",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/Christ_the_Redeemer_-_Cristo_Redentor.jpg/1280px-Christ_the_Redeemer_-_Cristo_Redentor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Christ_the_Redeemer_-_Cristo_Redentor.jpg",
+          "title": "Christ the Redeemer - Cristo Redentor.jpg",
+          "author": "Arne Müseler",
+          "license": "CC BY-SA 3.0 de"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/3Falls_Niagara.jpg/1280px-3Falls_Niagara.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:3Falls_Niagara.jpg",
+          "title": "3Falls Niagara.jpg",
+          "author": "Saffron Blaze",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Dean_Franklin_-_06.04.03_Mount_Rushmore_Monument_%28by-sa%29.jpg/1280px-Dean_Franklin_-_06.04.03_Mount_Rushmore_Monument_%28by-sa%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Dean_Franklin_-_06.04.03_Mount_Rushmore_Monument_(by-sa).jpg",
+          "title": "Dean Franklin - 06.04.03 Mount Rushmore Monument (by-sa).jpg",
+          "author": "Dean Franklin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Stonehenge%2C_Avebury_and_Associated_Sites-110977.jpg/1280px-Stonehenge%2C_Avebury_and_Associated_Sites-110977.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Stonehenge,_Avebury_and_Associated_Sites-110977.jpg",
+          "title": "Stonehenge, Avebury and Associated Sites-110977.jpg",
+          "author": "Francesco Bandarin",
+          "license": "CC BY-SA 3.0 igo"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Attica_06-13_Athens_35_Parthenon.jpg/1280px-Attica_06-13_Athens_35_Parthenon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Attica_06-13_Athens_35_Parthenon.jpg",
+          "title": "Attica 06-13 Athens 35 Parthenon.jpg",
+          "author": "A.Savin",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/The_Treasury%2C_Petra%2C_Jordan5.jpg/1280px-The_Treasury%2C_Petra%2C_Jordan5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:The_Treasury,_Petra,_Jordan5.jpg",
+          "title": "The Treasury, Petra, Jordan5.jpg",
+          "author": "Diego Delso",
+          "license": "CC BY-SA 3.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -786,11 +874,22 @@
     "животные: лиса",
     "животные: бурый медведь",
     "животные: верблюд",
-    "животные: акула"
+    "животные: акула",
+    "достопримечательности и места: Пирамиды Гизы",
+    "достопримечательности и места: Биг-Бен",
+    "достопримечательности и места: Бранденбургские ворота",
+    "достопримечательности и места: Саграда Фамилия",
+    "достопримечательности и места: Статуя Христа-Искупителя",
+    "достопримечательности и места: Ниагарский водопад",
+    "достопримечательности и места: Гора Рашмор",
+    "достопримечательности и места: Стоунхендж",
+    "достопримечательности и места: Парфенон",
+    "достопримечательности и места: Петра"
   ],
   "used_themes": [
     "актёры",
-    "животные"
+    "животные",
+    "достопримечательности и места"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -883,7 +982,17 @@
       "Гранд-Каньон",
       "Сиднейский оперный театр",
       "Храм Василия Блаженного",
-      "Пизанская башня"
+      "Пизанская башня",
+      "Пирамиды Гизы",
+      "Биг-Бен",
+      "Бранденбургские ворота",
+      "Саграда Фамилия",
+      "Статуя Христа-Искупителя",
+      "Ниагарский водопад",
+      "Гора Рашмор",
+      "Стоунхендж",
+      "Парфенон",
+      "Петра"
     ]
   }
 }
