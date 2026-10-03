@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-02",
+  "last_publish_date": "2026-10-03",
   "published": [
     {
       "date": "2026-09-24",
@@ -792,6 +792,94 @@
           "license": "CC BY-SA 3.0"
         }
       ]
+    },
+    {
+      "date": "2026-10-03",
+      "survey_id": "6ac1504e898afd13b1c04593",
+      "url": "https://forms.yandex.ru/u/6ac1504e898afd13b1c04593/",
+      "theme": "растения",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Ilsfeld_-_Schozach_-_Schozacher_H%C3%B6he_-_Birke_vor_Sonnenuntergangs-Himmel_%281%29.jpg/1280px-Ilsfeld_-_Schozach_-_Schozacher_H%C3%B6he_-_Birke_vor_Sonnenuntergangs-Himmel_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ilsfeld_-_Schozach_-_Schozacher_H%C3%B6he_-_Birke_vor_Sonnenuntergangs-Himmel_(1).jpg",
+          "title": "Ilsfeld - Schozach - Schozacher Höhe - Birke vor Sonnenuntergangs-Himmel (1).jpg",
+          "author": "Roman Eisele",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/Quercus_robur.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Quercus_robur.jpg",
+          "title": "Quercus robur.jpg",
+          "author": "",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Ahornbl%C3%A4tter_%28Acer%29_im_Herbst.jpg/1280px-Ahornbl%C3%A4tter_%28Acer%29_im_Herbst.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ahornbl%C3%A4tter_(Acer)_im_Herbst.jpg",
+          "title": "Ahornblätter (Acer) im Herbst.jpg",
+          "author": "Dnalor 01",
+          "license": "CC BY-SA 3.0 at"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9d/Kuusk_Keila-Paldiski_rdt_%C3%A4%C3%A4res.jpg/1280px-Kuusk_Keila-Paldiski_rdt_%C3%A4%C3%A4res.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Kuusk_Keila-Paldiski_rdt_%C3%A4%C3%A4res.jpg",
+          "title": "Kuusk Keila-Paldiski rdt ääres.jpg",
+          "author": "Ivar Leidus",
+          "license": "CC BY-SA 3.0 ee"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Pinus_strobus_3-eheep_%285098079930%29.jpg/1280px-Pinus_strobus_3-eheep_%285098079930%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Pinus_strobus_3-eheep_(5098079930).jpg",
+          "title": "Pinus strobus 3-eheep (5098079930).jpg",
+          "author": "Superior National Forest",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Dandelion_clock_detail.jpg/1280px-Dandelion_clock_detail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Dandelion_clock_detail.jpg",
+          "title": "Dandelion clock detail.jpg",
+          "author": "che",
+          "license": "CC BY-SA 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Chamomile%40original_size.jpg/1280px-Chamomile%40original_size.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Chamomile@original_size.jpg",
+          "title": "Chamomile@original size.jpg",
+          "author": "Fir0002 20D",
+          "license": "GFDL 1.2"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Convallaria_majalis_inflorescence_-_Keila.jpg/1280px-Convallaria_majalis_inflorescence_-_Keila.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Convallaria_majalis_inflorescence_-_Keila.jpg",
+          "title": "Convallaria majalis inflorescence - Keila.jpg",
+          "author": "Ivar Leidus",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/%D0%9F%D1%80%D0%B8%D0%BC%D0%BE%D1%80%D1%81%D0%BA%D0%B8%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA_%D0%9F%D0%BE%D0%B1%D0%B5%D0%B4%D1%8B%2C_%D1%81%D0%B8%D1%80%D0%B5%D0%BD%D1%8C_%D1%81%D0%BE%D1%80%D1%82%D0%B0_%27%D0%97%D0%B0%D1%89%D0%B8%D1%82%D0%BD%D0%B8%D0%BA%D0%B0%D0%BC_%D0%91%D1%80%D0%B5%D1%81%D1%82%D0%B0%27_01.jpg/1280px-%D0%9F%D1%80%D0%B8%D0%BC%D0%BE%D1%80%D1%81%D0%BA%D0%B8%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA_%D0%9F%D0%BE%D0%B1%D0%B5%D0%B4%D1%8B%2C_%D1%81%D0%B8%D1%80%D0%B5%D0%BD%D1%8C_%D1%81%D0%BE%D1%80%D1%82%D0%B0_%27%D0%97%D0%B0%D1%89%D0%B8%D1%82%D0%BD%D0%B8%D0%BA%D0%B0%D0%BC_%D0%91%D1%80%D0%B5%D1%81%D1%82%D0%B0%27_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9F%D1%80%D0%B8%D0%BC%D0%BE%D1%80%D1%81%D0%BA%D0%B8%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA_%D0%9F%D0%BE%D0%B1%D0%B5%D0%B4%D1%8B,_%D1%81%D0%B8%D1%80%D0%B5%D0%BD%D1%8C_%D1%81%D0%BE%D1%80%D1%82%D0%B0_%27%D0%97%D0%B0%D1%89%D0%B8%D1%82%D0%BD%D0%B8%D0%BA%D0%B0%D0%BC_%D0%91%D1%80%D0%B5%D1%81%D1%82%D0%B0%27_01.jpg",
+          "title": "Приморский парк Победы, сирень сорта 'Защитникам Бреста' 01.jpg",
+          "author": "Екатерина Борисова",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/Gevlekte_orchis_%28Dactylorhiza_maculata%29._Locatie._Nationaal_Park_Lauwersmeer_02.jpg/1280px-Gevlekte_orchis_%28Dactylorhiza_maculata%29._Locatie._Nationaal_Park_Lauwersmeer_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Gevlekte_orchis_(Dactylorhiza_maculata)._Locatie._Nationaal_Park_Lauwersmeer_02.jpg",
+          "title": "Gevlekte orchis (Dactylorhiza maculata). Locatie. Nationaal Park Lauwersmeer 02.jpg",
+          "author": "Dominicus Johannes Bergsma",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -884,12 +972,23 @@
     "достопримечательности и места: Гора Рашмор",
     "достопримечательности и места: Стоунхендж",
     "достопримечательности и места: Парфенон",
-    "достопримечательности и места: Петра"
+    "достопримечательности и места: Петра",
+    "растения: Берёза",
+    "растения: Дуб",
+    "растения: Клён",
+    "растения: Ель",
+    "растения: Сосна",
+    "растения: Одуванчик",
+    "растения: Ромашка",
+    "растения: Ландыш",
+    "растения: Сирень",
+    "растения: Орхидея"
   ],
   "used_themes": [
     "актёры",
     "животные",
-    "достопримечательности и места"
+    "достопримечательности и места",
+    "растения"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -926,7 +1025,17 @@
       "Тюльпан",
       "Пальма",
       "Папоротник",
-      "Кувшинка"
+      "Кувшинка",
+      "Берёза",
+      "Дуб",
+      "Клён",
+      "Ель",
+      "Сосна",
+      "Одуванчик",
+      "Ромашка",
+      "Ландыш",
+      "Сирень",
+      "Орхидея"
     ],
     "актёры": [
       "Леонардо ДиКаприо",
