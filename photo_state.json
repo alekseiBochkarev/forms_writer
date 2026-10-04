@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-03",
+  "last_publish_date": "2026-10-04",
   "published": [
     {
       "date": "2026-09-24",
@@ -880,6 +880,94 @@
           "license": "CC BY-SA 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-10-04",
+      "survey_id": "6ac2a218969f1425447c5db1",
+      "url": "https://forms.yandex.ru/u/6ac2a218969f1425447c5db1/",
+      "theme": "картины",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Aivazovsky%2C_Ivan_-_The_Ninth_Wave.jpg/1280px-Aivazovsky%2C_Ivan_-_The_Ninth_Wave.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aivazovsky,_Ivan_-_The_Ninth_Wave.jpg",
+          "title": "Aivazovsky, Ivan - The Ninth Wave.jpg",
+          "author": "Ivan Aivazovsky",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/%D0%9C%D0%BE%D0%B7%D0%B0%D0%B8%D0%BA%D0%B0_%D0%A2%D0%B0%D0%B9%D0%BD%D0%B0%D1%8F_%D0%B2%D0%B5%D1%87%D0%B5%D1%80%D1%8F_%D0%A1%D0%B8%D0%BB%D0%B8%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D0%B7%D0%B0%D0%B8%D0%BA%D0%B0_%D0%A2%D0%B0%D0%B9%D0%BD%D0%B0%D1%8F_%D0%B2%D0%B5%D1%87%D0%B5%D1%80%D1%8F_%D0%A1%D0%B8%D0%BB%D0%B8%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87.jpg",
+          "title": "Мозаика Тайная вечеря Силиванович.jpg",
+          "author": "Nikodim Silivanovich",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/La_nascita_di_Venere_%28Botticelli%29.jpg/1280px-La_nascita_di_Venere_%28Botticelli%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:La_nascita_di_Venere_(Botticelli).jpg",
+          "title": "La nascita di Venere (Botticelli).jpg",
+          "author": "Unknown authorUnknown author",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/La_ronda_de_noche%2C_por_Rembrandt_van_Rijn.jpg/1280px-La_ronda_de_noche%2C_por_Rembrandt_van_Rijn.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:La_ronda_de_noche,_por_Rembrandt_van_Rijn.jpg",
+          "title": "La ronda de noche, por Rembrandt van Rijn.jpg",
+          "author": "Rembrandt",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Vincent_Willem_van_Gogh_128.jpg/1280px-Vincent_Willem_van_Gogh_128.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Vincent_Willem_van_Gogh_128.jpg",
+          "title": "Vincent Willem van Gogh 128.jpg",
+          "author": "Vincent van Gogh",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Bathing_of_a_Red_Horse_%28Petrov-Vodkin%29.jpg/1280px-Bathing_of_a_Red_Horse_%28Petrov-Vodkin%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Bathing_of_a_Red_Horse_(Petrov-Vodkin).jpg",
+          "title": "Bathing of a Red Horse (Petrov-Vodkin).jpg",
+          "author": "Kuzma Petrov-Vodkin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Iv%C3%A1n_el_Terrible_y_su_hijo%2C_por_Ili%C3%A1_Repin.jpg/1280px-Iv%C3%A1n_el_Terrible_y_su_hijo%2C_por_Ili%C3%A1_Repin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Iv%C3%A1n_el_Terrible_y_su_hijo,_por_Ili%C3%A1_Repin.jpg",
+          "title": "Iván el Terrible y su hijo, por Iliá Repin.jpg",
+          "author": "Ilya Repin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Die_drei_Bogatyr.jpg/1280px-Die_drei_Bogatyr.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Die_drei_Bogatyr.jpg",
+          "title": "Die drei Bogatyr.jpg",
+          "author": "Viktor Vasnetsov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Valentin_Serov_-_%D0%94%D0%B5%D0%B2%D0%BE%D1%87%D0%BA%D0%B0_%D1%81_%D0%BF%D0%B5%D1%80%D1%81%D0%B8%D0%BA%D0%B0%D0%BC%D0%B8._%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%92.%D0%A1.%D0%9C%D0%B0%D0%BC%D0%BE%D0%BD%D1%82%D0%BE%D0%B2%D0%BE%D0%B9_-_Google_Art_Project.jpg/1280px-Valentin_Serov_-_%D0%94%D0%B5%D0%B2%D0%BE%D1%87%D0%BA%D0%B0_%D1%81_%D0%BF%D0%B5%D1%80%D1%81%D0%B8%D0%BA%D0%B0%D0%BC%D0%B8._%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%92.%D0%A1.%D0%9C%D0%B0%D0%BC%D0%BE%D0%BD%D1%82%D0%BE%D0%B2%D0%BE%D0%B9_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Valentin_Serov_-_%D0%94%D0%B5%D0%B2%D0%BE%D1%87%D0%BA%D0%B0_%D1%81_%D0%BF%D0%B5%D1%80%D1%81%D0%B8%D0%BA%D0%B0%D0%BC%D0%B8._%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%92.%D0%A1.%D0%9C%D0%B0%D0%BC%D0%BE%D0%BD%D1%82%D0%BE%D0%B2%D0%BE%D0%B9_-_Google_Art_Project.jpg",
+          "title": "Valentin Serov - Девочка с персиками. Портрет В.С.Мамонтовой - Google Art Project.jpg",
+          "author": "Valentin Serov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Le_matin_de_l%27_ex%C3%A9cution_des_streltsy.jpg/1280px-Le_matin_de_l%27_ex%C3%A9cution_des_streltsy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Le_matin_de_l%27_ex%C3%A9cution_des_streltsy.jpg",
+          "title": "Le matin de l' exécution des streltsy.jpg",
+          "author": "Vasily Surikov",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -982,13 +1070,24 @@
     "растения: Ромашка",
     "растения: Ландыш",
     "растения: Сирень",
-    "растения: Орхидея"
+    "растения: Орхидея",
+    "картины: Девятый вал",
+    "картины: Тайная вечеря",
+    "картины: Рождение Венеры",
+    "картины: Ночной дозор",
+    "картины: Подсолнухи",
+    "картины: Купание красного коня",
+    "картины: Иван Грозный и сын его Иван",
+    "картины: Богатыри",
+    "картины: Девочка с персиками",
+    "картины: Утро стрелецкой казни"
   ],
   "used_themes": [
     "актёры",
     "животные",
     "достопримечательности и места",
-    "растения"
+    "растения",
+    "картины"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -1013,7 +1112,17 @@
       "Сикстинская мадонна",
       "Боярыня Морозова",
       "Последний день Помпеи",
-      "Утро в сосновом лесу"
+      "Утро в сосновом лесу",
+      "Девятый вал",
+      "Тайная вечеря",
+      "Рождение Венеры",
+      "Ночной дозор",
+      "Подсолнухи",
+      "Купание красного коня",
+      "Иван Грозный и сын его Иван",
+      "Богатыри",
+      "Девочка с персиками",
+      "Утро стрелецкой казни"
     ],
     "растения": [
       "Роза",
