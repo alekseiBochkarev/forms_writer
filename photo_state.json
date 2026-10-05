@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-04",
+  "last_publish_date": "2026-10-05",
   "published": [
     {
       "date": "2026-09-24",
@@ -968,6 +968,94 @@
           "license": "CC BY-SA 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-10-05",
+      "survey_id": "6ac4233c70ad3704d034423d",
+      "url": "https://forms.yandex.ru/u/6ac4233c70ad3704d034423d/",
+      "theme": "достопримечательности и места",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Golden_Gate_Bridge_Yang_Ming_Line.jpg/1280px-Golden_Gate_Bridge_Yang_Ming_Line.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Golden_Gate_Bridge_Yang_Ming_Line.jpg",
+          "title": "Golden Gate Bridge Yang Ming Line.jpg",
+          "author": "Cary Bass",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Chichen_Itza_1.jpg/1280px-Chichen_Itza_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Chichen_Itza_1.jpg",
+          "title": "Chichen Itza 1.jpg",
+          "author": "Daniel Schwen",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Alhambra_detail.jpg/1280px-Alhambra_detail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Alhambra_detail.jpg",
+          "title": "Alhambra detail.jpg",
+          "author": "Jebulon",
+          "license": "CC0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Kranh%C3%A4user_Cologne%2C_April_2018_-01.jpg/1280px-Kranh%C3%A4user_Cologne%2C_April_2018_-01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Kranh%C3%A4user_Cologne,_April_2018_-01.jpg",
+          "title": "Kranhäuser Cologne, April 2018 -01.jpg",
+          "author": "Martin Falbisoner",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Vue_a%C3%A9rienne_du_domaine_de_Versailles_par_ToucanWings_-_Creative_Commons_By_Sa_3.0_-_083.jpg/1280px-Vue_a%C3%A9rienne_du_domaine_de_Versailles_par_ToucanWings_-_Creative_Commons_By_Sa_3.0_-_083.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Vue_a%C3%A9rienne_du_domaine_de_Versailles_par_ToucanWings_-_Creative_Commons_By_Sa_3.0_-_083.jpg",
+          "title": "Vue aérienne du domaine de Versailles par ToucanWings - Creative Commons By Sa 3.0 - 083.jpg",
+          "author": "ToucanWings",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/%D0%92%D0%B0%D1%82%D0%B8%D0%BA%D0%B0%D0%BD%2C_%D0%B2%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A1%D0%BE%D0%B1%D0%BE%D1%80_%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D0%B3%D0%BE_%D0%9F%D0%B5%D1%82%D1%80%D0%B0._-_panoramio.jpg/1280px-%D0%92%D0%B0%D1%82%D0%B8%D0%BA%D0%B0%D0%BD%2C_%D0%B2%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A1%D0%BE%D0%B1%D0%BE%D1%80_%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D0%B3%D0%BE_%D0%9F%D0%B5%D1%82%D1%80%D0%B0._-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%92%D0%B0%D1%82%D0%B8%D0%BA%D0%B0%D0%BD,_%D0%B2%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A1%D0%BE%D0%B1%D0%BE%D1%80_%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D0%B3%D0%BE_%D0%9F%D0%B5%D1%82%D1%80%D0%B0._-_panoramio.jpg",
+          "title": "Ватикан, вид на Собор Святого Петра. - panoramio.jpg",
+          "author": "tiger rus",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Aerial_Tower_of_London.jpg/1280px-Aerial_Tower_of_London.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aerial_Tower_of_London.jpg",
+          "title": "Aerial Tower of London.jpg",
+          "author": "Rafa Esteve",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/51714-Terracota-Army.jpg/1280px-51714-Terracota-Army.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:51714-Terracota-Army.jpg",
+          "title": "51714-Terracota-Army.jpg",
+          "author": "xiquinhosilva",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Petermann_Ranges_%28AU%29%2C_Uluru-Kata_Tjuta_National_Park%2C_Uluru%2C_Kuniya_Walk_--_2019_--_3674.jpg/1280px-Petermann_Ranges_%28AU%29%2C_Uluru-Kata_Tjuta_National_Park%2C_Uluru%2C_Kuniya_Walk_--_2019_--_3674.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Petermann_Ranges_(AU),_Uluru-Kata_Tjuta_National_Park,_Uluru,_Kuniya_Walk_--_2019_--_3674.jpg",
+          "title": "Petermann Ranges (AU), Uluru-Kata Tjuta National Park, Uluru, Kuniya Walk -- 2019 -- 3674.jpg",
+          "author": "Dietmar Rabich",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Mount_Fuji_at_sunset%2C_March_2025.jpg/1280px-Mount_Fuji_at_sunset%2C_March_2025.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Mount_Fuji_at_sunset,_March_2025.jpg",
+          "title": "Mount Fuji at sunset, March 2025.jpg",
+          "author": "Romain Guy from San Francisco, USA",
+          "license": "CC0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -1080,14 +1168,20 @@
     "картины: Иван Грозный и сын его Иван",
     "картины: Богатыри",
     "картины: Девочка с персиками",
-    "картины: Утро стрелецкой казни"
+    "картины: Утро стрелецкой казни",
+    "достопримечательности и места: Мост Золотые Ворота",
+    "достопримечательности и места: Чичен-Ица",
+    "достопримечательности и места: Альгамбра",
+    "достопримечательности и места: Кёльнский собор",
+    "достопримечательности и места: Версальский дворец",
+    "достопримечательности и места: Собор Святого Петра (Ватикан)",
+    "достопримечательности и места: Лондонский Тауэр",
+    "достопримечательности и места: Терракотовая армия",
+    "достопримечательности и места: Улуру",
+    "достопримечательности и места: Гора Фудзи"
   ],
   "used_themes": [
-    "актёры",
-    "животные",
-    "достопримечательности и места",
-    "растения",
-    "картины"
+    "достопримечательности и места"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -1210,7 +1304,17 @@
       "Гора Рашмор",
       "Стоунхендж",
       "Парфенон",
-      "Петра"
+      "Петра",
+      "Мост Золотые Ворота",
+      "Чичен-Ица",
+      "Альгамбра",
+      "Кёльнский собор",
+      "Версальский дворец",
+      "Собор Святого Петра (Ватикан)",
+      "Лондонский Тауэр",
+      "Терракотовая армия",
+      "Улуру",
+      "Гора Фудзи"
     ]
   }
 }
