@@ -489,7 +489,7 @@ def load_config(
         dry_run=_get_bool("DRY_RUN", False),
         publish_telegram=_get_bool("PUBLISH_TELEGRAM", True),
         tg_bot_token=os.getenv("TG_BOT_TOKEN", "").strip(),
-        tg_target_channel=os.getenv("TG_TARGET_CHANNEL", "@qa_helper_draft").strip(),
+        tg_target_channel=os.getenv("TG_TARGET_CHANNEL", "").strip(),
         publish_vk=_get_bool("PUBLISH_VK", False),
         vk_access_token=os.getenv("VK_ACCESS_TOKEN", "").strip(),
         vk_group_id=os.getenv("VK_GROUP_ID", "").strip(),

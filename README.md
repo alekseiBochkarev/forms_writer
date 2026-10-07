@@ -118,7 +118,7 @@ python main.py --delete-survey 6aac...
 | `DRY_RUN` | нет | `false` | Только показать план, не обращаться к API |
 | `PUBLISH_TELEGRAM` | нет | `true` | Публиковать анонс в Telegram |
 | `TG_BOT_TOKEN` | нет | — | Токен Telegram-бота (для `@qa_helper_draft` — бот `qa_helper_editor`) |
-| `TG_TARGET_CHANNEL` | нет | `@qa_helper_draft` | Канал анонса старого потока (нужен `@username` или `-100...`) |
+| `TG_TARGET_CHANNEL` | нет | — | Канал СТАРОГО потока (эрудиция/фото), задаётся явно (`@username` или `-100...`) |
 | `PUBLISH_VK` | нет | `false` | Публиковать анонс в VK |
 | `VK_ACCESS_TOKEN` | нет | — | Токен VK с правом `wall` |
 | `VK_GROUP_ID` | нет | — | id VK-группы (положительное число) |

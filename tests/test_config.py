@@ -328,9 +328,10 @@ def test_new_tests_count_zero_is_rejected():
     assert "NEW_TESTS_COUNT" in str(exc.value)
 
 
-def test_default_tg_target_channel_points_to_qa_helper_draft():
+def test_default_tg_target_channel_is_empty():
+    """Канал старого потока задаётся явно (TG_TARGET_CHANNEL), по умолчанию пусто."""
     cfg = load_config({"dry_run": True}, require_questions=False)
-    assert cfg.tg_target_channel == "@qa_helper_draft"
+    assert cfg.tg_target_channel == ""
 
 
 def test_default_photo_themes_narrowed_but_keeps_soviet():
