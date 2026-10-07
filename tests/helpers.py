@@ -86,6 +86,8 @@ class FakePhotoCfg:
         self.photo_image_max_bytes = 8_000_000
         self.photo_state_file = "photo_state.json"
         self.photo_survey_name = "Что на фото"
+        self.photo_title_templates = None
+        self.photo_title_history = 10
         self.shuffle = True
         self.publish = False
         self.number_surveys = False

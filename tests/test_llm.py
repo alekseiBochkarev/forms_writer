@@ -13,6 +13,8 @@ from llm import (
     _extract_json,
     _validate_questions,
     extract_json,
+    generate_conclusion,
+    generate_intro,
     generate_questions,
     post_chat,
 )
@@ -311,3 +313,67 @@ def test_generate_questions_raises_after_retries_exhausted(monkeypatch):
 
     assert calls["n"] == 3
     assert "после 3 запросов" in str(exc.value)
+
+
+# --- generate_intro / generate_conclusion -----------------------------------
+
+
+def _text_cfg(**overrides):
+    base = _cfg()
+    base.intro_min_paragraphs = 2
+    base.intro_max_paragraphs = 4
+    base.outro_min_paragraphs = 1
+    base.outro_max_paragraphs = 3
+    for key, value in overrides.items():
+        setattr(base, key, value)
+    return base
+
+
+def _capture_text_payloads(monkeypatch, key: str, value: str):
+    payloads = []
+
+    def fake_post(url, **kwargs):
+        payloads.append(kwargs["json"])
+        content = json.dumps({key: value}, ensure_ascii=False)
+        return FakeResponse(200, json_data={"choices": [{"message": {"content": content}}]})
+
+    monkeypatch.setattr("llm.requests.post", fake_post)
+    return payloads
+
+
+def test_generate_intro_returns_text_and_prompt_has_no_answers(monkeypatch):
+    """Вводная возвращается, а в промпт попадают только широкие темы."""
+    payloads = _capture_text_payloads(monkeypatch, "intro", "Абзац один.\n\nАбзац два.")
+
+    result = generate_intro(_text_cfg(), ["История", "География"])
+
+    assert result == "Абзац один.\n\nАбзац два."
+    prompt = payloads[0]["messages"][1]["content"]
+    assert "История" in prompt
+    assert "География" in prompt
+    assert "правильн" in prompt.lower()
+
+
+def test_generate_intro_uses_previous_intros_in_prompt(monkeypatch):
+    payloads = _capture_text_payloads(monkeypatch, "intro", "Новый текст")
+
+    generate_intro(_text_cfg(), ["Кино"], ["Старая вводная про фильмы"])
+
+    prompt = payloads[0]["messages"][1]["content"]
+    assert "Старая вводная" in prompt
+
+
+def test_generate_intro_empty_field_raises(monkeypatch):
+    """Пустое поле intro от модели — ошибка, а не тихая публикация."""
+    _capture_text_payloads(monkeypatch, "intro", "   ")
+
+    with pytest.raises(ValueError):
+        generate_intro(_text_cfg(), ["Кино"])
+
+
+def test_generate_conclusion_returns_text(monkeypatch):
+    _capture_text_payloads(monkeypatch, "outro", "Спасибо за участие!")
+
+    result = generate_conclusion(_text_cfg(), ["История"], 10)
+
+    assert result == "Спасибо за участие!"

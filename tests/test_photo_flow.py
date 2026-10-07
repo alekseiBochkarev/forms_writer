@@ -8,6 +8,7 @@ import pytest
 import requests
 from helpers import FakePhotoCfg, FakeResponse
 from photo_sources import ImageCandidate
+from state import save_state, today_utc
 
 
 # --- question_text ----------------------------------------------------------
@@ -633,6 +634,183 @@ def test_publish_deletes_draft_when_minimum_not_reached(monkeypatch, tmp_path):
 # --- _dry_run: недобор вопросов --------------------------------------------
 
 
+# --- дедуп заголовков при нумерации ----------------------------------------
+
+
+class _NumberingClient:
+    """Клиент с суффиксом-нумерацией: next_survey_name добавляет « N»."""
+
+    def __init__(self):
+        self.names = []
+        self.uploaded = []
+
+    def next_survey_name(self, base):
+        return f"{base} {len(self.names) + 2}"
+
+    def create_survey(self, name):
+        self.names.append(name)
+        return f"sid-{len(self.names)}"
+
+    def upload_image(self, survey_id, data, filename, content_type="image/jpeg"):
+        self.uploaded.append(filename)
+        return {"id": f"img-{len(self.uploaded)}", "links": {}, "name": filename}
+
+    def add_enum_question(self, survey_id, **kwargs):
+        return len(self.uploaded)
+
+    def update_survey(self, *a, **k):
+        pass
+
+    def set_access(self, *a, **k):
+        pass
+
+    def publish(self, *a, **k):
+        pass
+
+    def delete_survey(self, *a, **k):
+        pass
+
+
+class _NumberingFactory:
+    def __init__(self, client):
+        self._client = client
+
+    def __call__(self, *a, **k):
+        return self._client
+
+    @staticmethod
+    def public_url(survey_id):
+        return f"https://forms.yandex.ru/u/{survey_id}/"
+
+
+def test_publish_title_dedup_works_with_numbering(monkeypatch, tmp_path):
+    """used_titles хранит базовый заголовок: при NUMBER_SURVEYS=true повторов нет."""
+    client = _NumberingClient()
+    monkeypatch.setattr(photo_flow, "YandexFormsClient", _NumberingFactory(client))
+    monkeypatch.setattr(
+        photo_flow, "_build_questions", lambda *a, **k: [_question("кот"), _question("пёс")]
+    )
+    monkeypatch.setattr(photo_flow.publisher, "publish_announcement", lambda *a, **k: [])
+
+    cfg = FakePhotoCfg(
+        photo_min_questions=2,
+        photo_questions_count=2,
+        number_surveys=True,
+        publish=False,
+        photo_state_file=str(tmp_path / "photo_state.json"),
+        photo_title_templates={"generic": ["Вариант А {count}", "Вариант Б {count}"]},
+    )
+
+    state = {}
+    assert photo_flow._publish(cfg, state, "животные", "Q?", ["кот", "пёс"], 2) == 0
+    first_base = state["used_titles"][0]
+    first_name = state["published"][0]["title"]
+    # в used_titles — базовый заголовок, а имя формы пронумеровано
+    assert first_base in {"Вариант А 2", "Вариант Б 2"}
+    assert first_name.endswith(" 2")
+    assert first_name != first_base
+
+    assert photo_flow._publish(cfg, state, "животные", "Q?", ["кот", "пёс"], 2) == 0
+    assert state["published"][1]["title"].startswith(
+        "Вариант Б 2" if first_base == "Вариант А 2" else "Вариант А 2"
+    )
+    assert len(set(state["used_titles"])) == 2
+
+
+# --- build_survey_name ------------------------------------------------------
+
+
+def test_build_survey_name_uses_template_with_count():
+    """Заголовок строится по шаблону темы и содержит число вопросов."""
+    cfg = FakePhotoCfg(
+        photo_title_templates={"породы собак": ["Породы собак: {count} фото"]}
+    )
+
+    name = photo_flow.build_survey_name(cfg, "породы собак", 10)
+
+    assert name == "Породы собак: 10 фото"
+
+
+def test_build_survey_name_matches_category_by_regex():
+    """Тема сопоставляется с категорией библиотеки по регулярному выражению."""
+    cfg = FakePhotoCfg(
+        photo_title_templates={"советские фильмы": ["Узнайте фильм. {count} вопросов"]}
+    )
+
+    name = photo_flow.build_survey_name(cfg, "советское кино", 8)
+
+    assert name == "Узнайте фильм. 8 вопросов"
+
+
+def test_build_survey_name_skips_spoiler_templates():
+    """Шаблоны со словами из правильных ответов отбрасываются."""
+    cfg = FakePhotoCfg(
+        photo_title_templates={
+            "generic": ["Кто здесь собака? {count}", "Общий заголовок {count}"]
+        }
+    )
+
+    name = photo_flow.build_survey_name(
+        cfg, "животные", 5, correct_answers=["собака"]
+    )
+
+    assert name == "Общий заголовок 5"
+
+
+def test_build_survey_name_avoids_used_titles():
+    """Уже использованный заголовок не выбирается, если есть альтернатива."""
+    cfg = FakePhotoCfg(
+        photo_title_templates={"generic": ["Вариант А {count}", "Вариант Б {count}"]}
+    )
+
+    for _ in range(10):
+        name = photo_flow.build_survey_name(
+            cfg, "животные", 5, used_titles=["Вариант А 5"]
+        )
+        assert name == "Вариант Б 5"
+
+
+def test_build_survey_name_falls_back_to_photo_survey_name():
+    """Если шаблонов нет — фолбэк на PHOTO_SURVEY_NAME с темой."""
+    cfg = FakePhotoCfg(photo_title_templates={}, photo_survey_name="Что на фото")
+
+    name = photo_flow.build_survey_name(cfg, "животные", 10)
+
+    assert name == "Что на фото? Животные"
+
+
+def test_build_survey_name_fallback_checked_for_spoiler():
+    """Фолбэк с темой-спойлером заменяется на базовое PHOTO_SURVEY_NAME."""
+    cfg = FakePhotoCfg(photo_title_templates={}, photo_survey_name="Что на фото")
+
+    name = photo_flow.build_survey_name(
+        cfg, "животные", 10, correct_answers=["Животные"]
+    )
+
+    assert name == "Что на фото"
+
+
+def test_build_survey_name_skips_template_with_broken_placeholder():
+    """Шаблон с неизвестным плейсхолдером пропускается, а не подставляется сырым."""
+    cfg = FakePhotoCfg(
+        photo_title_templates={"generic": ["Плохой {unknown} {count}", "Хороший {count}"]}
+    )
+
+    name = photo_flow.build_survey_name(cfg, "животные", 7)
+
+    assert name == "Хороший 7"
+
+
+def test_build_survey_name_uses_builtin_library_for_builtin_theme():
+    """Встроенная библиотека даёт непустой заголовок для встроенной темы."""
+    cfg = FakePhotoCfg(photo_title_templates=None)
+
+    name = photo_flow.build_survey_name(cfg, "советские фильмы", 10)
+
+    assert name
+    assert "10" in name
+
+
 def test_dry_run_counts_only_entities_with_images(monkeypatch):
     """DRY-RUN не должен засчитывать сущности без найденных изображений.
 
@@ -651,3 +829,110 @@ def test_dry_run_counts_only_entities_with_images(monkeypatch):
     result = photo_flow._dry_run(cfg, "животные", "Q?", ["кот"], 1)
 
     assert result == 1
+
+
+# --- run: защита от повторной публикации в тот же день ----------------------
+
+
+def test_run_photo_daily_guard_blocks_second_run(monkeypatch, tmp_path):
+    """Повторный фото-запуск в тот же день блокируется без сети (код 0)."""
+    state_path = tmp_path / "photo_state.json"
+    save_state(str(state_path), {"last_publish_date": today_utc()})
+
+    monkeypatch.setattr(
+        photo_flow, "YandexFormsClient", lambda *a, **k: pytest.fail("сеть запрещена")
+    )
+    monkeypatch.setattr(
+        photo_flow, "_generate_entities", lambda *a, **k: pytest.fail("LLM запрещена")
+    )
+
+    cfg = FakePhotoCfg(
+        photo_flow_enabled=True,
+        dry_run=False,
+        force=False,
+        photo_state_file=str(state_path),
+    )
+
+    assert photo_flow.run(cfg) == 0
+
+
+# --- build_survey_name: дополнительные крайние случаи ------------------------
+
+
+def test_build_survey_name_unknown_theme_uses_generic_library():
+    """Неизвестная тема не ломает сборку: берётся generic-библиотека с числом."""
+    cfg = FakePhotoCfg(photo_title_templates=None)
+
+    name = photo_flow.build_survey_name(cfg, "неведомая тема xyz", 6)
+
+    assert name
+    assert "6" in name
+
+
+def test_build_survey_name_handles_zero_and_one_count():
+    """count=0 и count=1 корректно подставляются в шаблон."""
+    cfg = FakePhotoCfg(photo_title_templates={"generic": ["Ровно {count}"]})
+
+    assert photo_flow.build_survey_name(cfg, "животные", 0) == "Ровно 0"
+    assert photo_flow.build_survey_name(cfg, "животные", 1) == "Ровно 1"
+
+
+def test_build_survey_name_all_templates_spoiler_falls_back():
+    """Если все шаблоны спойлерят, берётся фолбэк «PHOTO_SURVEY_NAME + тема»."""
+    cfg = FakePhotoCfg(
+        photo_title_templates={"generic": ["Собака {count}", "Щенок {count}"]},
+        photo_survey_name="Что на фото",
+    )
+
+    name = photo_flow.build_survey_name(
+        cfg, "животные", 5, correct_answers=["собака", "щенок"]
+    )
+
+    assert name == "Что на фото? Животные"
+
+
+def test_build_survey_name_safe_fallback_strips_trailing_question_mark():
+    """safe_fallback срезает висячий '?' у PHOTO_SURVEY_NAME.
+
+    Если фолбэк содержит слово из правильного ответа, отдаётся базовое имя
+    без вопросительного знака: «Что на фото?» → «Что на фото».
+    """
+    cfg = FakePhotoCfg(photo_title_templates={}, photo_survey_name="Что на фото?")
+
+    name = photo_flow.build_survey_name(
+        cfg, "животные", 10, correct_answers=["животные"]
+    )
+
+    assert name == "Что на фото"
+
+
+def test_publish_title_history_limits_avoidance(monkeypatch, tmp_path):
+    """Учитываются только последние PHOTO_TITLE_HISTORY заголовков.
+
+    Заголовок, использованный раньше окна истории, снова доступен; иначе при
+    маленьком PHOTO_TITLE_HISTORY выбор был бы заблокирован устаревшими
+    записями. Проверяем через `_publish`: в окне только «Вариант Б 2», значит
+    выбирается «Вариант А 2».
+    """
+    client = _FakeClient()
+    monkeypatch.setattr(photo_flow, "YandexFormsClient", _ClientFactory(client))
+    monkeypatch.setattr(
+        photo_flow,
+        "_build_questions",
+        lambda *a, **k: [_question("кот"), _question("пёс")],
+    )
+    monkeypatch.setattr(photo_flow.publisher, "publish_announcement", lambda *a, **k: [])
+
+    cfg = FakePhotoCfg(
+        photo_min_questions=2,
+        photo_questions_count=2,
+        number_surveys=False,
+        publish=False,
+        photo_title_history=1,
+        photo_title_templates={"generic": ["Вариант А {count}", "Вариант Б {count}"]},
+        photo_state_file=str(tmp_path / "photo_state.json"),
+    )
+    state = {"used_titles": ["Вариант А 2", "Вариант Б 2"]}
+
+    assert photo_flow._publish(cfg, state, "животные", "Q?", ["кот", "пёс"], 2) == 0
+    assert client.actions[0] == ("create", "Вариант А 2")
