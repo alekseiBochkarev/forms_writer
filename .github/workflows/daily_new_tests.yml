@@ -1,0 +1,80 @@
+name: Daily new tests form
+
+on:
+  schedule:
+    # Каждый день в 12:00 UTC (15:00 МСК) — между эрудицией (06:00) и фото (16:00).
+    - cron: "0 12 * * *"
+    # Резервный запуск через 30 минут на случай сбоя основного.
+    - cron: "30 12 * * *"
+  workflow_dispatch: {}  # позволяет запустить вручную из вкладки Actions
+
+concurrency:
+  group: daily-new-tests
+  cancel-in-progress: false
+
+jobs:
+  create-new-tests-form:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    # Бюджет LLM: генерация вопросов + вводная + заключительная + ревью
+    # (плюс возможные регенерации). 120 * (1+1) * 3 = 12 мин на вопросы,
+    # дополнительные вызовы укладываются в 30 мин.
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate and publish new tests form
+        env:
+          # --- секреты: модель и Яндекс Формы ---
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          YANDEX_FORMS_TOKEN: ${{ secrets.YANDEX_FORMS_TOKEN }}
+          YANDEX_ORG_ID: ${{ secrets.YANDEX_ORG_ID }}
+          # --- секреты: публикация анонса (необязательно) ---
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          # --- обычные настройки (Settings -> Variables) ---
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.openai.com/v1' }}
+          LLM_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}
+          # Новый поток публикуется в собственный канал (нужен @username).
+          NEW_TESTS_ENABLED: "true"
+          NEW_TESTS_COUNT: ${{ vars.NEW_TESTS_COUNT || '15' }}
+          NEW_TESTS_PASS_SCORES: ${{ vars.NEW_TESTS_PASS_SCORES || '[10]' }}
+          NEW_TESTS_TOPICS: ${{ vars.NEW_TESTS_TOPICS }}
+          NEW_TESTS_TG_TARGET_CHANNEL: ${{ vars.NEW_TESTS_TG_TARGET_CHANNEL || '@qa_helper_draft' }}
+          NEW_TESTS_PUBLISH_TELEGRAM: "true"
+          NEW_TESTS_PUBLISH_VK: "false"
+          NEW_TESTS_STATE_FILE: "new_state.json"
+          # Эксперимент для нового проекта: включить советское кино (ru.wikipedia).
+          FILM_RU_ENABLED: ${{ vars.FILM_RU_ENABLED || 'true' }}
+          # Вводная/заключительная и обязательное ревью.
+          INTRO_ENABLED: "true"
+          CONCLUSION_ENABLED: "true"
+          REVIEW_ENABLED: "true"
+          REVIEW_MAX_ATTEMPTS: ${{ vars.REVIEW_MAX_ATTEMPTS || '1' }}
+          ANNOUNCE_INTRO: "true"
+          PUBLISH: "true"
+          SHUFFLE: "true"
+          SHOW_RESULTS: "true"
+          SHOW_CORRECT: "true"
+          STATS: "true"
+        run: python main.py --new-tests
+
+      - name: Commit new tests state
+        run: |
+          git config user.name "daily-bot"
+          git config user.email "daily-bot@users.noreply.github.com"
+          git add new_state.json || true
+          git commit -m "Update new tests state" || echo "No changes"
+          # Защита от конфликтов: перед push подтягиваем чужие коммиты.
+          git pull --rebase --autostash || true
+          git push || echo "Nothing to push"

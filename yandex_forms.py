@@ -211,6 +211,19 @@ class YandexFormsClient:
         data = self._request("POST", f"/surveys/{survey_id}/questions/", payload)
         return data["id"]
 
+    def add_comment_question(
+        self, survey_id: str, label: str, header: bool = False
+    ) -> Optional[int]:
+        """Добавить блок-комментарий (тип `comment`) в форму.
+
+        Блок не участвует в подсчёте баллов квиза. При `header=True` текст
+        отображается как заголовок. Требование API подтверждено по документации
+        (QuestionCommentIn): `{"type": "comment", "label": ..., "header": ...}`.
+        """
+        payload = {"type": "comment", "label": label, "header": header}
+        data = self._request("POST", f"/surveys/{survey_id}/questions/", payload)
+        return data.get("id")
+
     def publish(self, survey_id: str) -> None:
         self._request("POST", f"/surveys/{survey_id}/publish/")
 
@@ -306,10 +319,17 @@ def build_quiz_settings(cfg, total: int) -> Dict[str, Any]:
     return quiz
 
 
-def publish_questions(cfg, questions: List[Dict[str, Any]], client: YandexFormsClient) -> str:
+def publish_questions(
+    cfg,
+    questions: List[Dict[str, Any]],
+    client: YandexFormsClient,
+    intro: str = "",
+    outro: str = "",
+) -> str:
     """Создать/наполнить форму вопросами и (опционально) опубликовать.
 
-    Возвращает id формы.
+    Вводная добавляется блоком `comment` первым, заключительная — последним
+    (блоки комментариев не влияют на баллы квиза). Возвращает id формы.
     """
     if cfg.yandex_survey_id:
         survey_id = cfg.yandex_survey_id
@@ -327,6 +347,10 @@ def publish_questions(cfg, questions: List[Dict[str, Any]], client: YandexFormsC
         survey_id = client.create_survey(name)
         log.info("Создана форма «%s»: %s", name, survey_id)
 
+    if getattr(cfg, "intro_enabled", False) and (intro or "").strip():
+        comment_id = client.add_comment_question(survey_id, intro.strip(), header=False)
+        log.info("  + вводная часть (comment id=%s)", comment_id)
+
     for i, q in enumerate(questions, 1):
         qid = client.add_enum_question(
             survey_id,
@@ -337,6 +361,10 @@ def publish_questions(cfg, questions: List[Dict[str, Any]], client: YandexFormsC
             image=q.get("image"),
         )
         log.info("  + вопрос %s: id=%s [%s]", i, qid, q.get("topic", ""))
+
+    if getattr(cfg, "conclusion_enabled", False) and (outro or "").strip():
+        comment_id = client.add_comment_question(survey_id, outro.strip(), header=False)
+        log.info("  + заключительная часть (comment id=%s)", comment_id)
 
     quiz = build_quiz_settings(cfg, total=len(questions))
     client.update_survey(

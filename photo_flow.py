@@ -17,8 +17,9 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import photo_sources
 import publisher
+import review
 import vision
-from config import Config
+from config import DEFAULT_PHOTO_TITLE_TEMPLATES, Config
 from llm import extract_json, post_chat
 from state import load_state, save_state, today_utc
 from yandex_forms import YandexFormsClient, build_quiz_settings
@@ -34,6 +35,9 @@ DISTRACTOR_COUNT = 3
 
 # Глубина истории, которую храним в состоянии (как в main.py).
 ASKED_HISTORY_LIMIT = 500
+
+# Сколько последних заголовков храним в фото-состоянии (для защиты от повторов).
+TITLE_HISTORY_LIMIT = 100
 
 FILM_THEME_RE = re.compile(r"фильм|кино|сериал", re.IGNORECASE)
 SOVIET_THEME_RE = re.compile(r"совет|ссср", re.IGNORECASE)
@@ -133,6 +137,114 @@ def _theme_skip_reason(cfg, theme: str) -> Optional[str]:
 
 def _capitalize(theme: str) -> str:
     return theme[:1].upper() + theme[1:] if theme else theme
+
+
+def _title_category(theme: str) -> str:
+    """Сопоставить тему выпуска с категорией библиотеки заголовков (§10.4)."""
+    value = (theme or "").lower()
+    if SOVIET_THEME_RE.search(value):
+        if ACTRESS_THEME_RE.search(value):
+            return "советские актрисы"
+        if ACTOR_THEME_RE.search(value):
+            return "советские актёры"
+        if FILM_THEME_RE.search(value):
+            return "советские фильмы"
+    if FILM_THEME_RE.search(value):
+        return "иностранные фильмы"
+    if ACTRESS_THEME_RE.search(value):
+        return "советские актрисы"
+    if ACTOR_THEME_RE.search(value):
+        return "актёры"
+    if re.search(r"собак|собач|пс[аеыо]", value):
+        return "породы собак"
+    if re.search(r"птиц|птич", value):
+        return "хищные птицы"
+    if re.search(r"животн|звер|афри", value):
+        return "животные"
+    if re.search(r"растен|цвет|дерев|трав|лекарствен", value):
+        return "растения"
+    if re.search(r"картин|живопис|пейзаж|художник|шедевр", value):
+        return "картины"
+    if re.search(r"город|достопримечательн|стран|мест|путешеств", value):
+        return "достопримечательности"
+    return "generic"
+
+
+def _templates_for_theme(cfg, theme: str) -> List[str]:
+    """Шаблоны заголовков для темы: сначала точное совпадение, затем категория."""
+    templates_map = getattr(cfg, "photo_title_templates", None)
+    if templates_map is None:
+        templates_map = DEFAULT_PHOTO_TITLE_TEMPLATES
+    for key, templates in templates_map.items():
+        if key.lower() == (theme or "").strip().lower():
+            return list(templates)
+    category = _title_category(theme)
+    if category in templates_map:
+        return list(templates_map[category])
+    return list(templates_map.get("generic", []))
+
+
+def _fallback_survey_name(cfg, theme: str) -> str:
+    base = (getattr(cfg, "photo_survey_name", "") or "Что на фото").strip()
+    base = base or "Что на фото"
+    return f"{base.rstrip('?')}? {_capitalize(theme)}"
+
+
+def build_survey_name(
+    cfg,
+    theme: str,
+    count: int,
+    used_titles: Optional[List[str]] = None,
+    correct_answers: Optional[List[str]] = None,
+) -> str:
+    """Собрать заголовок фото-теста по формуле §10.3.
+
+    `[ставка/идентичность] + [конкретная категория] + [число]`. Шаблоны берутся
+    из библиотеки по теме (или `PHOTO_TITLE_TEMPLATES`). Заголовки со словами из
+    правильных ответов отбрасываются (спойлер), уже использованные в последних
+    `PHOTO_TITLE_HISTORY` выпусках — по возможности не повторяются. Если
+    применимых шаблонов нет — фолбэк на `PHOTO_SURVEY_NAME`.
+    """
+    fallback = _fallback_survey_name(cfg, theme)
+    answers = [str(a) for a in (correct_answers or []) if str(a).strip()]
+
+    def safe_fallback() -> str:
+        """Фолбэк без темы, если и он содержит слово из правильного ответа."""
+        if review.contains_spoiler(fallback, answers):
+            base = (
+                (getattr(cfg, "photo_survey_name", "") or "Что на фото")
+                .strip()
+                .rstrip("?")
+            )
+            return base or "Что на фото"
+        return fallback
+
+    templates = _templates_for_theme(cfg, theme)
+    if not templates:
+        return safe_fallback()
+
+    candidates: List[str] = []
+    for template in templates:
+        try:
+            title = template.format(count=count)
+        except (KeyError, IndexError, ValueError):
+            # Шаблон с неизвестным плейсхолдером/фигурными скобками непригоден.
+            log.info("Шаблон заголовка «%s» пропущен: не удалось подставить count", template)
+            continue
+        title = title.strip()
+        if not title:
+            continue
+        if review.contains_spoiler(title, answers):
+            log.info("Заголовок «%s» пропущен: спойлер из правильного ответа", title)
+            continue
+        candidates.append(title)
+
+    if not candidates:
+        return safe_fallback()
+
+    used = set(used_titles or [])
+    fresh = [title for title in candidates if title not in used]
+    return random.choice(fresh or candidates)
 
 
 def _entity_hint(theme: str) -> str:
@@ -482,7 +594,25 @@ def _publish(
 
     client = YandexFormsClient(cfg.yandex_token, cfg.yandex_org_id, cfg.yandex_org_header)
 
-    name = f"{cfg.photo_survey_name.strip().rstrip('?')}? {_capitalize(theme)}"
+    correct_answers = []
+    for q in questions:
+        options = q.get("options") or []
+        index = q.get("correct_index")
+        if isinstance(index, int) and 0 <= index < len(options):
+            correct_answers.append(str(options[index]))
+
+    title_history = getattr(cfg, "photo_title_history", 10) or 10
+    used_titles = list(state.get("used_titles") or [])[-title_history:]
+    base_title = build_survey_name(
+        cfg,
+        theme,
+        len(questions),
+        used_titles=used_titles,
+        correct_answers=correct_answers,
+    )
+    # В used_titles храним базовый заголовок (до нумерации), иначе при
+    # NUMBER_SURVEYS=true сравнение с шаблонами не находило бы повторов.
+    name = base_title
     if cfg.number_surveys:
         name = client.next_survey_name(name)
     survey_id = client.create_survey(name)
@@ -541,7 +671,9 @@ def _publish(
     public_url = YandexFormsClient.public_url(survey_id)
     log.info("Готово. Публичная ссылка: %s", public_url)
 
-    posted = publisher.publish_announcement(cfg, survey_id, len(added), name)
+    # В анонс (Telegram/VK) отдаём базовый заголовок без счётчика нумерации
+    # (нумерация остаётся только в названии формы Яндекс Форм).
+    posted = publisher.publish_announcement(cfg, survey_id, len(added), base_title)
     if posted:
         log.info("Анонс опубликован: %s", ", ".join(posted))
 
@@ -553,6 +685,7 @@ def _publish(
             "survey_id": survey_id,
             "url": public_url,
             "theme": theme,
+            "title": name,
             # автор/лицензия — только в состоянии, в форму и анонс не выводятся
             "images": [q["image"] for q in added],
         }
@@ -560,6 +693,10 @@ def _publish(
     asked = state.setdefault("asked_questions", [])
     asked.extend(f"{q['theme']}: {q['entity']}" for q in added)
     state["asked_questions"] = asked[-ASKED_HISTORY_LIMIT:]
+
+    used_titles = state.setdefault("used_titles", [])
+    used_titles.append(base_title)
+    state["used_titles"] = used_titles[-TITLE_HISTORY_LIMIT:]
 
     used_themes = state.setdefault("used_themes", [])
     if theme not in used_themes:

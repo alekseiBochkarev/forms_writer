@@ -41,6 +41,19 @@ def build_announcement(cfg, survey_id: str, count: int, name: str) -> str:
     return template.format(name=name, count=count, url=url, date=date.today().isoformat())
 
 
+def _inject_intro(text: str, intro: str, url: str) -> str:
+    """Вставить вводную перед строкой с CTA (ссылкой на форму)."""
+    intro = (intro or "").strip()
+    if not intro:
+        return text
+    position = text.rfind(url)
+    if position == -1:
+        return f"{intro}\n\n{text}"
+    line_start = text.rfind("\n", 0, position)
+    line_start = 0 if line_start == -1 else line_start + 1
+    return f"{text[:line_start].rstrip()}\n\n{intro}\n\n{text[line_start:]}"
+
+
 def post_to_telegram(token: str, channel: str, text: str) -> None:
     """Отправить сообщение в Telegram-канал через Bot API."""
     url = f"https://api.telegram.org/bot{token}/sendMessage"
@@ -69,17 +82,24 @@ def post_to_vk(token: str, group_id: str, text: str) -> None:
         raise RuntimeError(f"VK API error: {data['error']}")
 
 
-def publish_announcement(cfg, survey_id: str, count: int, name: str) -> List[str]:
+def publish_announcement(
+    cfg, survey_id: str, count: int, name: str, intro: str = ""
+) -> List[str]:
     """Опубликовать анонс во все настроенные соцсети.
 
-    Возвращает список каналов, куда публикация удалась.
+    Вводная (если задана и включён `announce_intro`) добавляется в текст
+    Telegram-анонса перед CTA. Возвращает список каналов, куда публикация удалась.
     """
     text = build_announcement(cfg, survey_id, count, name)
     posted: List[str] = []
 
     if cfg.publish_telegram:
         if cfg.tg_bot_token and cfg.tg_target_channel:
-            post_to_telegram(cfg.tg_bot_token, cfg.tg_target_channel, text)
+            url = f"https://forms.yandex.ru/u/{survey_id}/"
+            tg_text = text
+            if getattr(cfg, "announce_intro", True):
+                tg_text = _inject_intro(text, intro, url)
+            post_to_telegram(cfg.tg_bot_token, cfg.tg_target_channel, tg_text)
             posted.append("telegram")
             log.info("Анонс опубликован в Telegram")
         else:

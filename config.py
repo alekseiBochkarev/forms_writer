@@ -57,18 +57,153 @@ def _get_str_list(name: str) -> Optional[List[str]]:
     return [str(item).strip() for item in parsed if str(item).strip()]
 
 
+def _get_dict_of_str_lists(name: str) -> Optional[Dict[str, List[str]]]:
+    """JSON-объект вида {"категория": ["шаблон", ...]} из переменной окружения."""
+    value = os.getenv(name)
+    if value is None or value.strip() == "":
+        return None
+    parsed = json.loads(value)
+    if not isinstance(parsed, dict):
+        raise ValueError(f"{name} должен быть JSON-объектом")
+    result: Dict[str, List[str]] = {}
+    for key, templates in parsed.items():
+        if not isinstance(templates, list):
+            raise ValueError(f"{name}: значение «{key}» должно быть массивом строк")
+        result[str(key).strip()] = [
+            str(item).strip() for item in templates if str(item).strip()
+        ]
+    return result
+
+
+def _get_int_list(name: str) -> Optional[List[int]]:
+    """Список целых из JSON-массива или строки вида «7,8» ("7" -> [7])."""
+    value = os.getenv(name)
+    if value is None or value.strip() == "":
+        return None
+    value = value.strip()
+    if value.startswith("["):
+        parsed = json.loads(value)
+        if not isinstance(parsed, list):
+            raise ValueError(f"{name} должен быть JSON-массивом чисел")
+        items = parsed
+    else:
+        items = value.split(",")
+    result = [int(item) for item in items if str(item).strip()]
+    if not result:
+        raise ValueError(f"{name} не содержит чисел")
+    return result
+
+
 # Встроенный список тем фото-тестов (используется, если PHOTO_THEMES не задан).
+# По данным исследования каналов Дзена узкие узнаваемые подгруппы (советское кино,
+# актёры, конкретные группы животных) читаются лучше родовых тем, поэтому список
+# сужен до узнаваемых подгрупп. Советское кино — в приоритете.
 DEFAULT_PHOTO_THEMES = [
-    "животные",
-    "растения",
-    "достопримечательности и места",
-    "картины",
     "советские фильмы",
     "советские актёры",
     "советские актрисы",
     "иностранные фильмы",
-    "актёры",
+    "породы собак",
+    "хищные птицы",
+    "животные Африки",
+    "картины из школьной программы",
+    "пейзажи русских художников",
+    "достопримечательности и места",
 ]
+
+# Шаблоны заголовков фото-тестов по категориям (формула §10.3:
+# [ставка/идентичность] + [конкретная категория] + [число]). {count} —
+# число вопросов выпуска. Ключи задают категорию, а не точную тему: тема
+# выпуска сопоставляется с категорией по регулярным выражениям (photo_flow).
+DEFAULT_PHOTO_TITLE_TEMPLATES: Dict[str, List[str]] = {
+    "советские фильмы": [
+        "Узнайте советский фильм по одному кадру. {count} вопросов",
+        "Вы смотрели эти {count} советских фильмов, если узнаете их по кадру",
+        "Какому советскому фильму принадлежит этот кадр? Тест на {count} вопросов",
+        "Сможете узнать каждый из {count} советских фильмов по кадру?",
+        "Вы настоящий киноман СССР, если ответите верно на все {count} вопросов по кадрам",
+    ],
+    "советские актёры": [
+        "Сможете вспомнить советского актёра по трём фильмам? {count} вопросов",
+        "Узнаете ли вы всех этих советских актёров по фото? Тест из {count} вопросов",
+        "Вы настоящий знаток советского кино, если узнаете всех {count} актёров",
+        "Только 1 из {count} узнаёт советских актёров по фото. Проверьте себя",
+        "Назовите этих {count} советских актёров по фото. Сможете без подсказок?",
+    ],
+    "советские актрисы": [
+        "Узнаете ли вы всех этих советских актрис по фото? Тест из {count} вопросов",
+        "Вы настоящий киноман СССР, если узнаете всех {count} советских актрис",
+        "Сможете назвать каждую из {count} советских актрис по фото?",
+        "Только 1 из {count} узнаёт советских актрис по фото. Проверьте себя",
+    ],
+    "иностранные фильмы": [
+        "Узнайте культовый фильм по одному кадру. Тест из {count} вопросов",
+        "Только настоящий киноман назовёт все {count} фильмов по кадру. А вы?",
+        "Сможете узнать каждый из {count} культовых фильмов по кадру?",
+        "Узнаете ли вы эти {count} фильмов по одному кадру? Тест для киноманов",
+    ],
+    "актёры": [
+        "Узнаете ли вы этих {count} актёров по фото? Тест на внимательность",
+        "Сможете назвать всех {count} актёров на фото?",
+        "Только 1 из {count} узнаёт этих актёров по фото. Проверьте себя",
+    ],
+    "породы собак": [
+        "Породы собак: узнаете ли вы каждую из {count} по фото?",
+        "Вы настоящий собаковод, если назовёте все {count} пород собак",
+        "Узнаете ли вы этих {count} собак по одной фотографии?",
+        "Только 1 из {count} отличает эти породы собак по фото. А вы?",
+    ],
+    "хищные птицы": [
+        "Узнаете ли вы этих {count} хищных птиц по фото? Тест на внимательность",
+        "Вы настоящий знаток природы, если назовёте всех {count} птиц на фото",
+        "Только 1 из {count} узнаёт этих птиц по фото. Проверьте себя",
+    ],
+    "животные": [
+        "Узнаете ли вы этих {count} животных по одной фотографии? Тест на внимательность",
+        "Вы настоящий знаток природы, если назовёте всех {count} животных на фото",
+        "Только 1 из {count} узнаёт этих животных по глазам. Проверьте себя",
+    ],
+    "растения": [
+        "Вы отличаете лекарственные растения от сорняков? Тест из {count} фото",
+        "Назовите эти {count} цветов по фото. Сможете без подсказок?",
+        "Узнаете ли вы эти {count} растения по одной фотографии?",
+    ],
+    "картины": [
+        "Вы помните эти {count} картин из школьной программы? Проверьте по фото",
+        "Узнаете ли вы эти {count} шедевров живописи по фрагменту?",
+        "Тест для знатоков искусства: назовите автора этих {count} картин",
+    ],
+    "достопримечательности": [
+        "Узнаете ли вы эти {count} городов мира по одной фотографии?",
+        "Вы путешественник, если узнаете эти {count} достопримечательностей без подсказок",
+        "Угадайте {count} стран по фото. Без ошибок справятся только эрудиты",
+    ],
+    "generic": [
+        "Узнаете ли вы все {count} на фото? Тест на внимательность",
+        "Только 1 из {count} угадает всё на этих фото. Проверьте себя",
+        "Проверьте себя: назовёте ли вы все {count} по фото?",
+    ],
+}
+
+# Встроенные темы потока «новых тестов»: общая эрудиция + наиболее популярные
+# направления по данным исследования Дзена §2/§9 (в первую очередь
+# ностальгические и узнаваемые).
+DEFAULT_NEW_TESTS_TOPICS = [
+    "общая эрудиция",
+    "советское кино",
+    "советские актёры",
+    "русские народные сказки",
+    "кулинария",
+    "география России",
+    "жители городов",
+    "история России",
+    "литература",
+    "наука и техника",
+]
+
+# Порог по умолчанию для потока новых тестов: 15 вопросов, порог 10/15
+# (формат ЗУМ/БУМ, подтверждён исследованием Дзена §9).
+DEFAULT_NEW_TESTS_PASS_SCORES = [10]
 
 # Источники изображений по умолчанию (порядок важен).
 DEFAULT_PHOTO_SOURCES = ["wikimedia", "openverse"]
@@ -159,10 +294,46 @@ class Config:
     vision_model: str = ""
     vision_timeout: int = 120
     photo_vision_enabled: bool = True
+    # Шаблоны заголовков фото-тестов (переопределение встроенной библиотеки).
+    photo_title_templates: Optional[Dict[str, List[str]]] = None
+    # Сколько последних заголовков фото-тестов запрещено повторять.
+    photo_title_history: int = 10
+
+    # --- Вводная/заключительная и ревью (эрудиция и новые тесты) ---
+    intro_enabled: bool = True
+    conclusion_enabled: bool = True
+    review_enabled: bool = True
+    review_max_attempts: int = 1
+    intro_min_paragraphs: int = 2
+    intro_max_paragraphs: int = 4
+    outro_min_paragraphs: int = 1
+    outro_max_paragraphs: int = 3
+    # Модель ревью; пусто — используется LLM_MODEL.
+    review_model: str = ""
+    # Включать вводную в текст анонса Telegram (перед CTA).
+    announce_intro: bool = True
+
+    # --- Поток «новых тестов» (отдельный канал) ---
+    new_tests_enabled: bool = False
+    # По решению заказчика — 15 вопросов с порогом 10/15.
+    new_tests_count: int = 15
+    new_tests_pass_scores: Optional[List[int]] = None
+    new_tests_min_questions: Optional[int] = None
+    new_tests_topics: Optional[List[str]] = None
+    new_tests_survey_name: str = "Насколько широк ваш кругозор"
+    new_tests_state_file: str = "new_state.json"
+    new_tests_tg_target_channel: str = "@qa_helper_draft"
+    # Отдельный токен бота для нового потока; пусто — используется TG_BOT_TOKEN.
+    new_tests_tg_bot_token: str = ""
+    new_tests_publish_telegram: bool = True
+    new_tests_publish_vk: bool = False
 
     def validate(self, require_questions: bool = True) -> None:
         if self.mode == "photo":
             self._validate_photo(require_questions)
+            return
+        if self.mode == "new_tests":
+            self._validate_new_tests(require_questions)
             return
 
         errors = []
@@ -236,10 +407,45 @@ class Config:
             return list(self.photo_themes)
         return list(DEFAULT_PHOTO_THEMES)
 
+    def _validate_new_tests(self, require_questions: bool = True) -> None:
+        errors = []
+        if not self.dry_run:
+            if not self.yandex_token:
+                errors.append("YANDEX_FORMS_TOKEN не задан")
+            if not self.yandex_org_id:
+                errors.append("YANDEX_ORG_ID (X-Org-Id / X-Cloud-Org-Id) не задан")
+        if require_questions and not self.questions_file and not self.llm_api_key:
+            errors.append(
+                "Для потока новых тестов нужен LLM_API_KEY "
+                "(либо QUESTIONS_FILE с готовыми вопросами)"
+            )
+        if require_questions and self.new_tests_count < 1:
+            errors.append("NEW_TESTS_COUNT должен быть >= 1")
+        if errors:
+            raise ValueError("Ошибки конфигурации:\n  - " + "\n  - ".join(errors))
+
     def effective_photo_min_questions(self) -> int:
         if self.photo_min_questions is None:
             return self.photo_questions_count
         return self.photo_min_questions
+
+    def effective_new_tests_topics(self) -> List[str]:
+        if self.new_tests_topics is not None:
+            return list(self.new_tests_topics)
+        return list(DEFAULT_NEW_TESTS_TOPICS)
+
+    def effective_new_tests_min_questions(self) -> int:
+        if self.new_tests_min_questions is None:
+            return self.new_tests_count
+        return self.new_tests_min_questions
+
+    def effective_new_tests_pass_scores(self) -> List[int]:
+        if self.new_tests_pass_scores:
+            return list(self.new_tests_pass_scores)
+        return list(DEFAULT_NEW_TESTS_PASS_SCORES)
+
+    def effective_review_model(self) -> str:
+        return (self.review_model or "").strip() or self.llm_model
 
 
 def load_config(
@@ -283,8 +489,8 @@ def load_config(
         dry_run=_get_bool("DRY_RUN", False),
         publish_telegram=_get_bool("PUBLISH_TELEGRAM", True),
         tg_bot_token=os.getenv("TG_BOT_TOKEN", "").strip(),
-        tg_target_channel=os.getenv("TG_TARGET_CHANNEL", "").strip(),
-        publish_vk=_get_bool("PUBLISH_VK", True),
+        tg_target_channel=os.getenv("TG_TARGET_CHANNEL", "@qa_helper_draft").strip(),
+        publish_vk=_get_bool("PUBLISH_VK", False),
         vk_access_token=os.getenv("VK_ACCESS_TOKEN", "").strip(),
         vk_group_id=os.getenv("VK_GROUP_ID", "").strip(),
         announce_template=os.getenv("ANNOUNCE_TEMPLATE", "").strip(),
@@ -313,6 +519,35 @@ def load_config(
         movie_screencaps_enabled=_get_bool("MOVIE_SCREENCAPS_ENABLED", False),
         photo_vision_enabled=_get_bool("PHOTO_VISION_ENABLED", True),
         vision_timeout=_get_int("VISION_TIMEOUT", 120),
+        photo_title_templates=_get_dict_of_str_lists("PHOTO_TITLE_TEMPLATES"),
+        photo_title_history=_get_int("PHOTO_TITLE_HISTORY", 10) or 10,
+        # --- Вводная/заключительная и ревью ---
+        intro_enabled=_get_bool("INTRO_ENABLED", True),
+        conclusion_enabled=_get_bool("CONCLUSION_ENABLED", True),
+        review_enabled=_get_bool("REVIEW_ENABLED", True),
+        review_max_attempts=max(0, _get_int("REVIEW_MAX_ATTEMPTS", 1) or 0),
+        intro_min_paragraphs=_get_int("INTRO_MIN_PARAGRAPHS", 2) or 2,
+        intro_max_paragraphs=_get_int("INTRO_MAX_PARAGRAPHS", 4) or 4,
+        outro_min_paragraphs=_get_int("OUTRO_MIN_PARAGRAPHS", 1) or 1,
+        outro_max_paragraphs=_get_int("OUTRO_MAX_PARAGRAPHS", 3) or 3,
+        review_model=os.getenv("REVIEW_MODEL", "").strip(),
+        announce_intro=_get_bool("ANNOUNCE_INTRO", True),
+        # --- Поток новых тестов ---
+        new_tests_enabled=_get_bool("NEW_TESTS_ENABLED", False),
+        new_tests_count=_get_int("NEW_TESTS_COUNT", 15),
+        new_tests_pass_scores=_get_int_list("NEW_TESTS_PASS_SCORES"),
+        new_tests_min_questions=_get_int("NEW_TESTS_MIN_QUESTIONS", None),
+        new_tests_topics=_get_str_list("NEW_TESTS_TOPICS"),
+        new_tests_survey_name=os.getenv(
+            "NEW_TESTS_SURVEY_NAME", "Насколько широк ваш кругозор"
+        ).strip(),
+        new_tests_state_file=os.getenv("NEW_TESTS_STATE_FILE", "new_state.json").strip(),
+        new_tests_tg_target_channel=os.getenv(
+            "NEW_TESTS_TG_TARGET_CHANNEL", "@qa_helper_draft"
+        ).strip(),
+        new_tests_tg_bot_token=os.getenv("NEW_TESTS_TG_BOT_TOKEN", "").strip(),
+        new_tests_publish_telegram=_get_bool("NEW_TESTS_PUBLISH_TELEGRAM", True),
+        new_tests_publish_vk=_get_bool("NEW_TESTS_PUBLISH_VK", False),
     )
 
     # Vision может использовать отдельный ключ/URL/модель, иначе — параметры LLM.
@@ -330,6 +565,8 @@ def load_config(
     # Если минимум не задан явно — он равен числу вопросов.
     if cfg.photo_min_questions is None:
         cfg.photo_min_questions = cfg.photo_questions_count
+    if cfg.new_tests_min_questions is None:
+        cfg.new_tests_min_questions = cfg.new_tests_count
 
     cfg.validate(require_questions=require_questions)
     return cfg

@@ -36,6 +36,9 @@ def save_state(path: str, state: Dict[str, Any]) -> None:
         for theme, items in used.items():
             if isinstance(items, list):
                 used[theme] = items[-300:]
+    # фото-поток: заголовки выпусков храним ограниченно (защита от повторов).
+    if isinstance(state.get("used_titles"), list):
+        state["used_titles"] = state["used_titles"][-100:]
     with open(path, "w", encoding="utf-8") as f:
         json.dump(state, f, ensure_ascii=False, indent=2)
 

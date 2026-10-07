@@ -176,6 +176,129 @@ def post_chat(cfg, payload: Dict[str, Any]) -> Dict[str, Any]:
     ) from last_error
 
 
+TEXT_SYSTEM_PROMPT = (
+    "Ты — автор вводных и заключительных частей для викторин. "
+    "Ты пишешь живо и по-доброму, без канцелярита, и всегда отвечаешь "
+    "строго в формате JSON."
+)
+
+
+def _format_topics(topics: List[str]) -> str:
+    unique = []
+    for topic in topics:
+        value = (topic or "").strip()
+        if value and value not in unique:
+            unique.append(value)
+    return ", ".join(unique[:8]) if unique else "разные области знаний"
+
+
+def _build_intro_prompt(
+    topics: List[str],
+    min_paragraphs: int,
+    max_paragraphs: int,
+    language: str,
+    previous_intros: List[str] | None = None,
+) -> str:
+    avoid_block = ""
+    if previous_intros:
+        listed = "\n".join(f"- {text[:300]}" for text in previous_intros[-5:])
+        avoid_block = (
+            "\nВводные прошлых выпусков (не повторяй их формулировки и обороты):\n"
+            f"{listed}\n"
+        )
+    return (
+        f"Напиши вводную часть теста на языке «{language}» из "
+        f"{min_paragraphs}–{max_paragraphs} абзацев.\n"
+        f"Широкие темы вопросов: {_format_topics(topics)}.\n"
+        "Строй вводную по плану:\n"
+        "1) хук/польза (зачем проходить тест, чем он полезен);\n"
+        "2) анонс 3–5 широких отраслей из списка выше, без конкретных вопросов;\n"
+        "3) мягкий призыв начать.\n"
+        "КРИТИЧЕСКИ ВАЖНО: не называй правильные ответы и их синонимы, "
+        "не подсказывай ответы и не пересказывай формулировки вопросов — "
+        "вводная не должна раскрывать правильные варианты.\n"
+        f"{avoid_block}\n"
+        "Верни JSON строго такого вида:\n"
+        '{"intro": "текст первого абзаца\\n\\nтекст второго абзаца"}\n'
+        "Абзацы разделяй двойным переводом строки. Никакого текста кроме JSON."
+    )
+
+
+def _build_outro_prompt(
+    topics: List[str],
+    count: int,
+    min_paragraphs: int,
+    max_paragraphs: int,
+    language: str,
+) -> str:
+    return (
+        f"Напиши заключительную часть теста на языке «{language}» из "
+        f"{min_paragraphs}–{max_paragraphs} абзацев после {count} вопросов.\n"
+        f"Темы вопросов: {_format_topics(topics)}.\n"
+        "Строй заключительную по плану:\n"
+        "1) тёплая концовка и благодарность за участие;\n"
+        "2) короткая инструкция посмотреть правильные ответы;\n"
+        "3) вопрос для вовлечения читателя (например, был ли вопрос, на который "
+        "он не знал ответа);\n"
+        "4) лёгкий призыв подписаться/поставить лайк/поделиться. Без переспама.\n"
+        "Не называй правильные ответы.\n\n"
+        "Верни JSON строго такого вида:\n"
+        '{"outro": "текст первого абзаца\\n\\nтекст второго абзаца"}\n'
+        "Абзацы разделяй двойным переводом строки. Никакого текста кроме JSON."
+    )
+
+
+def _request_text(cfg, system: str, user: str, key: str) -> str:
+    payload = {
+        "model": cfg.llm_model,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+        "temperature": cfg.llm_temperature,
+        "response_format": {"type": "json_object"},
+    }
+    data = post_chat(cfg, payload)
+    content = data["choices"][0]["message"]["content"]
+    value = str(extract_json(content).get(key) or "").strip()
+    if not value:
+        raise ValueError(f"Модель вернула пустое поле «{key}»")
+    return value
+
+
+def generate_intro(
+    cfg,
+    topics: List[str],
+    previous_intros: List[str] | None = None,
+) -> str:
+    """Сгенерировать вводную часть (2–4 абзаца) по широким темам вопросов.
+
+    В промпт передаются только темы (`q["topic"]`) без ответов и вариантов.
+    """
+    user = _build_intro_prompt(
+        topics,
+        cfg.intro_min_paragraphs,
+        cfg.intro_max_paragraphs,
+        cfg.language,
+        previous_intros,
+    )
+    log.info("Запрашиваю вводную часть у модели %s ...", cfg.llm_model)
+    return _request_text(cfg, TEXT_SYSTEM_PROMPT, user, "intro")
+
+
+def generate_conclusion(cfg, topics: List[str], count: int) -> str:
+    """Сгенерировать заключительную часть (1–3 абзаца) с инструкцией и CTA."""
+    user = _build_outro_prompt(
+        topics,
+        count,
+        cfg.outro_min_paragraphs,
+        cfg.outro_max_paragraphs,
+        cfg.language,
+    )
+    log.info("Запрашиваю заключительную часть у модели %s ...", cfg.llm_model)
+    return _request_text(cfg, TEXT_SYSTEM_PROMPT, user, "outro")
+
+
 def generate_questions(cfg, avoid: List[str] | None = None) -> List[Dict[str, Any]]:
     """Сгенерировать список вопросов через LLM.
 

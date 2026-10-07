@@ -6,7 +6,12 @@ import pytest
 
 import yandex_forms
 from helpers import FakeResponse
-from yandex_forms import MAX_SURVEY_PAGES, YandexFormsClient, YandexFormsError
+from yandex_forms import (
+    MAX_SURVEY_PAGES,
+    YandexFormsClient,
+    YandexFormsError,
+    publish_questions,
+)
 
 
 # --- add_enum_question -----------------------------------------------------
@@ -56,6 +61,138 @@ def test_add_enum_question_marks_only_correct_item():
     items = captured["payload"]["items"]
     assert [it["correct"] for it in items] == [False, False, True, False]
     assert [it["scores"] for it in items] == [0, 0, 1, 0]
+
+
+# --- add_comment_question ---------------------------------------------------
+
+
+def test_add_comment_question_payload():
+    """Блок-комментарий отправляется с типом comment и флагом header."""
+    client, captured = _client_with_captured_request()
+
+    client.add_comment_question("s1", "Вводный текст", header=True)
+
+    assert captured["payload"] == {
+        "type": "comment",
+        "label": "Вводный текст",
+        "header": True,
+    }
+
+
+# --- publish_questions: вводная и заключительная ----------------------------
+
+
+class _CommentClient:
+    def __init__(self):
+        self.comments = []
+        self.questions = []
+        self.updates = []
+
+    def create_survey(self, name):
+        return "sid-1"
+
+    def next_survey_name(self, name):
+        return name
+
+    def add_comment_question(self, survey_id, label, header=False):
+        self.comments.append((label, header))
+        return len(self.comments)
+
+    def add_enum_question(self, survey_id, **kwargs):
+        self.questions.append(kwargs)
+        return len(self.questions)
+
+    def update_survey(self, survey_id, payload):
+        self.updates.append(payload)
+
+    def set_access(self, *a, **k):
+        pass
+
+    def publish(self, *a, **k):
+        pass
+
+
+def _publish_cfg(**overrides):
+    import types
+
+    base = {
+        "yandex_survey_id": None,
+        "clear_existing": False,
+        "survey_name": "Тест",
+        "number_surveys": False,
+        "shuffle": True,
+        "stats": True,
+        "publish": False,
+        "intro_enabled": True,
+        "conclusion_enabled": True,
+        "show_results": True,
+        "show_correct": True,
+        "segments": None,
+        "pass_scores": None,
+    }
+    base.update(overrides)
+    return types.SimpleNamespace(**base)
+
+
+def test_publish_questions_adds_intro_first_and_outro_last():
+    """Вводная — первым блоком, заключительная — последним."""
+    client = _CommentClient()
+    question = {
+        "topic": "t",
+        "question": "Q?",
+        "options": ["a", "b", "c", "d"],
+        "correct_index": 0,
+    }
+
+    publish_questions(
+        _publish_cfg(), [question], client, intro="Вводная", outro="Заключительная"
+    )
+
+    assert client.comments == [("Вводная", False), ("Заключительная", False)]
+    assert len(client.questions) == 1
+
+
+def test_publish_questions_skips_disabled_comments():
+    """При выключенных флагах comment-блоки не добавляются."""
+    client = _CommentClient()
+    question = {
+        "topic": "t",
+        "question": "Q?",
+        "options": ["a", "b", "c", "d"],
+        "correct_index": 0,
+    }
+
+    publish_questions(
+        _publish_cfg(intro_enabled=False, conclusion_enabled=False),
+        [question],
+        client,
+        intro="Вводная",
+        outro="Заключительная",
+    )
+
+    assert client.comments == []
+
+
+def test_publish_questions_quiz_total_counts_only_enum_questions():
+    """total квиза = число enum-вопросов; intro/outro (comment) не учитываются.
+
+    Иначе авто-сегменты квиза строились бы по завышенному знаменателю и
+    результат прохождения считался бы неверно.
+    """
+    client = _CommentClient()
+    questions = [
+        {"topic": "t", "question": "Q1?", "options": ["a", "b", "c", "d"], "correct_index": 0},
+        {"topic": "t", "question": "Q2?", "options": ["a", "b", "c", "d"], "correct_index": 1},
+    ]
+
+    publish_questions(
+        _publish_cfg(), questions, client, intro="Вводная", outro="Заключительная"
+    )
+
+    quiz = client.updates[-1]["quiz"]
+    # 2 enum-вопроса + 2 comment-блока -> total должен быть 2, а не 4
+    assert quiz["items"][-1]["upper_limit"] == 2
+    assert "из 2." in quiz["items"][-1]["description"]
 
 
 # --- upload_image -----------------------------------------------------------

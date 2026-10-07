@@ -10,6 +10,8 @@
     python main.py --rename-survey 6aac... --name "Новое имя"  # переименовать форму
     python main.py --photo               # выпуск фото-теста (одна тема)
     python main.py --photo --photo-theme "советские фильмы"
+    python main.py --new-tests           # поток «новых тестов» (канал @qa_helper_draft)
+    python main.py --new-tests --dry-run # план нового теста без обращения к API
 """
 
 from __future__ import annotations
@@ -17,13 +19,15 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import random
 import sys
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 import photo_flow
+import review
 from config import load_config
 from dedup import DuplicateChecker
-from llm import generate_questions
+from llm import generate_conclusion, generate_intro, generate_questions
 from publisher import publish_announcement
 from state import load_state, save_state, today_utc
 from yandex_forms import YandexFormsClient, publish_questions
@@ -52,6 +56,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--photo", action="store_true", help="создать тест с фотографиями")
     parser.add_argument(
         "--photo-theme", help="тема фото-теста (иначе выбирается случайная)"
+    )
+    parser.add_argument(
+        "--new-tests",
+        action="store_true",
+        help="запустить отдельный поток «новых тестов» (канал @qa_helper_draft)",
     )
     return parser.parse_args()
 
@@ -102,30 +111,260 @@ def _collect_unique_questions(cfg, history: List[str], checker: DuplicateChecker
     )
 
 
+def _topics_of(questions: List[Dict[str, Any]]) -> List[str]:
+    """Широкие темы вопросов для промпта вводной (без ответов и вариантов)."""
+    topics = [(q.get("topic") or "").strip() for q in questions]
+    topics = [topic for topic in topics if topic]
+    return topics or ["общая эрудиция"]
+
+
+def _previous_intros(state_data: Dict[str, Any]) -> List[str]:
+    """Вводные прошлых выпусков (для проверки на шаблонность)."""
+    return [
+        p["intro"]
+        for p in state_data.get("published", [])
+        if isinstance(p, dict) and p.get("intro")
+    ][-10:]
+
+
+def _generate_texts_with_review(
+    cfg, questions: List[Dict[str, Any]], previous_intros: List[str]
+) -> Tuple[str, str, Dict[str, Any]]:
+    """Сгенерировать вводную/заключительную и прогнать обязательное ревью.
+
+    Одна первичная генерация плюс до `REVIEW_MAX_ATTEMPTS` регенераций при
+    не-OK. При исчерпании попыток поднимает RuntimeError — публикация
+    блокируется (код возврата != 0).
+
+    Если вопросы берутся из `QUESTIONS_FILE`, а LLM-ключа нет (запуск без LLM),
+    вводная/заключительная и ревью пропускаются — это сохраняет обратную
+    совместимость режима без модели.
+    """
+    if getattr(cfg, "questions_file", None) and not (
+        getattr(cfg, "llm_api_key", "") or ""
+    ).strip():
+        log.warning(
+            "QUESTIONS_FILE задан без LLM_API_KEY: вводная, заключительная и "
+            "ревью пропущены (режим запуска без LLM)."
+        )
+        return "", "", {"ok": True, "issues": []}
+
+    if not cfg.intro_enabled and not cfg.conclusion_enabled:
+        return "", "", {"ok": True, "issues": []}
+
+    topics = _topics_of(questions)
+    intro = ""
+    outro = ""
+    last_review: Dict[str, Any] = {"ok": True, "issues": []}
+    for attempt in range(cfg.review_max_attempts + 1):
+        if cfg.intro_enabled:
+            intro = generate_intro(cfg, topics, previous_intros)
+        if cfg.conclusion_enabled:
+            outro = generate_conclusion(cfg, topics, len(questions))
+        if not cfg.review_enabled:
+            return intro, outro, {"ok": True, "issues": []}
+        last_review = review.review_texts(
+            cfg, intro, outro, questions, previous_intros
+        )
+        if last_review.get("ok"):
+            log.info("Ревью вводной/заключительной пройдено")
+            return intro, outro, last_review
+        log.warning(
+            "Ревью не пройдено (попытка %s/%s): %s",
+            attempt + 1,
+            cfg.review_max_attempts + 1,
+            "; ".join(last_review.get("issues") or []),
+        )
+    raise RuntimeError(
+        "Ревью вводной/заключительной не пройдено: "
+        + "; ".join(last_review.get("issues") or [])
+    )
+
+
+def _choose_new_tests_theme(cfg, state: Dict[str, Any]) -> str | None:
+    """Выбрать тему нового выпуска с ротацией (как в фото-потоке)."""
+    themes = cfg.effective_new_tests_topics()
+    used = list(state.get("used_themes") or [])
+    candidates = [theme for theme in themes if theme not in used]
+    if not candidates:
+        log.warning("Все темы новых тестов использованы — сбрасываю список")
+        state["used_themes"] = []
+        candidates = themes
+    if not candidates:
+        return None
+    return random.choice(candidates)
+
+
+def _run_new_tests(cfg) -> int:
+    """Отдельный поток «новых тестов»: свои состояние, темы и канал."""
+    if not cfg.new_tests_enabled and not cfg.dry_run:
+        log.error(
+            "Поток новых тестов выключен. Включите его переменной "
+            "NEW_TESTS_ENABLED=true (или задайте её в .env)."
+        )
+        return 1
+    if not cfg.new_tests_enabled and cfg.dry_run:
+        log.info(
+            "Поток новых тестов выключен, но включён --dry-run: "
+            "строю план без публикации."
+        )
+
+    state_data = load_state(cfg.new_tests_state_file)
+
+    if not cfg.dry_run and not cfg.force:
+        if state_data.get("last_publish_date") == today_utc():
+            log.info(
+                "За %s новый тест уже публиковали — пропускаю "
+                "(используйте --force для повтора).",
+                today_utc(),
+            )
+            return 0
+
+    theme = _choose_new_tests_theme(cfg, state_data)
+    if not theme:
+        log.error("Не удалось выбрать тему нового теста")
+        return 1
+
+    # На время выпуска подменяем эрудиционные настройки на параметры потока.
+    cfg.topic = theme
+    cfg.count = cfg.new_tests_count
+    cfg.survey_name = cfg.new_tests_survey_name
+    # Новый поток всегда создаёт новую форму: --survey-id для него игнорируется.
+    cfg.yandex_survey_id = None
+    cfg.pass_scores = random.choice(cfg.effective_new_tests_pass_scores())
+    cfg.segments = None
+    log.info(
+        "Новый тест: тема «%s», вопросов: %s, порог: %s",
+        theme,
+        cfg.count,
+        cfg.pass_scores,
+    )
+
+    history = list(state_data.get("asked_questions") or [])
+    if history:
+        log.info("Учитываю ранее заданные вопросы: %s", len(history))
+    checker = DuplicateChecker(history)
+
+    if cfg.questions_file:
+        log.info("Читаю вопросы из файла: %s", cfg.questions_file)
+        loaded = load_questions_from_file(cfg.questions_file)
+        questions = []
+        for q in loaded:
+            if checker.is_duplicate(q["question"]):
+                log.warning("Пропускаю повтор: %s", q["question"])
+                continue
+            checker.add(q["question"])
+            questions.append(q)
+    else:
+        try:
+            questions = _collect_unique_questions(cfg, history, checker)
+        except RuntimeError as exc:
+            log.error("%s", exc)
+            return 1
+
+    minimum = cfg.effective_new_tests_min_questions()
+    if len(questions) < minimum:
+        log.error(
+            "Вопросов получено %s — меньше минимума %s. Публикация отменена.",
+            len(questions),
+            minimum,
+        )
+        return 1
+
+    log.info("Вопросов получено: %s", len(questions))
+    for i, q in enumerate(questions, 1):
+        correct = q["options"][q["correct_index"]]
+        log.info("  %2d. %s  ->  %s", i, q["question"], correct)
+
+    if cfg.dry_run:
+        log.info(
+            "DRY-RUN нового потока: обращения к Яндекс Формам и соцсетям не будет"
+        )
+        return 0
+
+    previous_intros = _previous_intros(state_data)
+    try:
+        intro, outro, review_result = _generate_texts_with_review(
+            cfg, questions, previous_intros
+        )
+    except Exception as exc:  # noqa: BLE001 - без трейсбека, публикация отменяется
+        log.error("Не удалось подготовить вводную/заключительную: %s", exc)
+        return 1
+
+    # Публикация нового потока идёт в свой Telegram-канал (VK — опционально).
+    cfg.tg_target_channel = cfg.new_tests_tg_target_channel
+    new_tests_bot_token = getattr(cfg, "new_tests_tg_bot_token", "")
+    if new_tests_bot_token:
+        cfg.tg_bot_token = new_tests_bot_token
+    cfg.publish_telegram = cfg.new_tests_publish_telegram
+    cfg.publish_vk = cfg.new_tests_publish_vk
+
+    client = YandexFormsClient(cfg.yandex_token, cfg.yandex_org_id, cfg.yandex_org_header)
+    survey_id = publish_questions(cfg, questions, client, intro=intro, outro=outro)
+    public_url = YandexFormsClient.public_url(survey_id)
+    log.info("Готово. Публичная ссылка: %s", public_url)
+
+    posted = publish_announcement(
+        cfg, survey_id, len(questions), cfg.survey_name, intro=intro
+    )
+    if posted:
+        log.info("Анонс опубликован: %s", ", ".join(posted))
+
+    state_data["last_publish_date"] = today_utc()
+    state_data.setdefault("published", []).append(
+        {
+            "date": today_utc(),
+            "survey_id": survey_id,
+            "url": public_url,
+            "topic": theme,
+            "intro": intro,
+            "outro": outro,
+            "review": review_result,
+        }
+    )
+    asked = state_data.setdefault("asked_questions", [])
+    asked.extend(q["question"] for q in questions)
+    state_data["asked_questions"] = asked[-500:]
+    used_themes = state_data.setdefault("used_themes", [])
+    if theme not in used_themes:
+        used_themes.append(theme)
+    save_state(cfg.new_tests_state_file, state_data)
+    log.info("Состояние сохранено: %s", cfg.new_tests_state_file)
+    return 0
+
+
 def main() -> int:
     args = parse_args()
 
-    if args.photo and (args.check or args.delete_survey or args.rename_survey):
+    if (args.photo or args.new_tests) and (
+        args.check or args.delete_survey or args.rename_survey
+    ):
         log.error(
-            "Флаги --check/--delete-survey/--rename-survey несовместимы с --photo"
+            "Флаги --check/--delete-survey/--rename-survey несовместимы "
+            "с --photo/--new-tests"
         )
         return 2
+    if args.photo and args.new_tests:
+        log.error("Флаги --photo и --new-tests несовместимы")
+        return 2
 
-    if args.photo:
-        ignored = [
-            flag
-            for flag, value in (
-                ("--questions-file", args.questions_file),
-                ("--count", args.count),
-                ("--topic", args.topic),
-                ("--survey-id", args.survey_id),
-                ("--name", args.name),
-            )
-            if value is not None
+    if args.photo or args.new_tests:
+        mode_label = "--photo" if args.photo else "--new-tests"
+        candidates = [
+            ("--count", args.count),
+            ("--topic", args.topic),
+            ("--survey-id", args.survey_id),
+            ("--name", args.name),
+            ("--photo-theme", args.photo_theme if args.new_tests else None),
         ]
+        if args.photo:
+            # В фото-потоке файл готовых вопросов не используется.
+            candidates.append(("--questions-file", args.questions_file))
+        ignored = [flag for flag, value in candidates if value is not None]
         if ignored:
             log.warning(
-                "Эти параметры не применяются к фото-потоку (--photo): %s",
+                "Эти параметры не применяются к режиму %s: %s",
+                mode_label,
                 ", ".join(ignored),
             )
 
@@ -148,6 +387,8 @@ def main() -> int:
         overrides["force"] = True
     if args.photo:
         overrides["mode"] = "photo"
+    if args.new_tests:
+        overrides["mode"] = "new_tests"
     if args.photo_theme:
         overrides["photo_theme"] = args.photo_theme
 
@@ -161,6 +402,10 @@ def main() -> int:
     # Фото-поток: отдельная логика, эрудиция не затрагивается.
     if args.photo:
         return photo_flow.run(cfg, args)
+
+    # Поток новых тестов: собственные состояние, темы и канал.
+    if args.new_tests:
+        return _run_new_tests(cfg)
 
     # Режимы обслуживания: проверка доступа и удаление формы
     if service_mode:
@@ -242,21 +487,40 @@ def main() -> int:
         log.info("DRY-RUN: обращения к Яндекс Формам не будет")
         return 0
 
-    # 3) Создаём и публикуем форму
+    # 3) Вводная/заключительная и обязательное ревью
+    previous_intros = _previous_intros(state_data)
+    try:
+        intro, outro, review_result = _generate_texts_with_review(
+            cfg, questions, previous_intros
+        )
+    except Exception as exc:  # noqa: BLE001 - без трейсбека, публикация отменяется
+        log.error("Не удалось подготовить вводную/заключительную: %s", exc)
+        return 1
+
+    # 4) Создаём и публикуем форму
     client = YandexFormsClient(cfg.yandex_token, cfg.yandex_org_id, cfg.yandex_org_header)
-    survey_id = publish_questions(cfg, questions, client)
+    survey_id = publish_questions(cfg, questions, client, intro=intro, outro=outro)
     public_url = YandexFormsClient.public_url(survey_id)
     log.info("Готово. Публичная ссылка: %s", public_url)
 
-    # 4) Анонс в Telegram и VK
-    posted = publish_announcement(cfg, survey_id, len(questions), cfg.survey_name)
+    # 5) Анонс в Telegram и VK (вводная добавляется в TG перед CTA)
+    posted = publish_announcement(
+        cfg, survey_id, len(questions), cfg.survey_name, intro=intro
+    )
     if posted:
         log.info("Анонс опубликован: %s", ", ".join(posted))
 
-    # 5) Сохраняем состояние (защита от дублей и от повторов вопросов)
+    # 6) Сохраняем состояние (защита от дублей и от повторов вопросов)
     state_data["last_publish_date"] = today_utc()
     state_data.setdefault("published", []).append(
-        {"date": today_utc(), "survey_id": survey_id, "url": public_url}
+        {
+            "date": today_utc(),
+            "survey_id": survey_id,
+            "url": public_url,
+            "intro": intro,
+            "outro": outro,
+            "review": review_result,
+        }
     )
     asked = state_data.setdefault("asked_questions", [])
     asked.extend(q["question"] for q in questions)
