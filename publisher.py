@@ -59,10 +59,18 @@ def post_to_telegram(token: str, channel: str, text: str) -> None:
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     payload = {"chat_id": channel, "text": text}
     response = requests.post(url, json=payload, timeout=30)
-    response.raise_for_status()
-    data = response.json()
-    if not data.get("ok"):
-        raise RuntimeError(f"Telegram API error: {data}")
+    data = None
+    try:
+        data = response.json()
+    except ValueError:
+        data = None
+    if response.status_code >= 400 or not (data or {}).get("ok"):
+        description = (data or {}).get("description")
+        detail = description or (response.text or "")[:500]
+        raise RuntimeError(
+            f"Telegram API error (chat_id={channel!r}, HTTP {response.status_code}): "
+            f"{detail}"
+        )
 
 
 def post_to_vk(token: str, group_id: str, text: str) -> None:
@@ -89,6 +97,9 @@ def publish_announcement(
 
     Вводная (если задана и включён `announce_intro`) добавляется в текст
     Telegram-анонса перед CTA. Возвращает список каналов, куда публикация удалась.
+    Сбой публикации в отдельной соцсети не роняет запуск: форма к этому моменту
+    уже создана и опубликована, поэтому ошибка только логируется, а состояние
+    всё равно сохраняется.
     """
     text = build_announcement(cfg, survey_id, count, name)
     posted: List[str] = []
@@ -99,17 +110,23 @@ def publish_announcement(
             tg_text = text
             if getattr(cfg, "announce_intro", True):
                 tg_text = _inject_intro(text, intro, url)
-            post_to_telegram(cfg.tg_bot_token, cfg.tg_target_channel, tg_text)
-            posted.append("telegram")
-            log.info("Анонс опубликован в Telegram")
+            try:
+                post_to_telegram(cfg.tg_bot_token, cfg.tg_target_channel, tg_text)
+                posted.append("telegram")
+                log.info("Анонс опубликован в Telegram")
+            except Exception as exc:  # noqa: BLE001 - форма уже опубликована
+                log.error("Не удалось опубликовать анонс в Telegram: %s", exc)
         else:
             log.info("Пропускаю Telegram: не заданы TG_BOT_TOKEN / TG_TARGET_CHANNEL")
 
     if cfg.publish_vk:
         if cfg.vk_access_token and cfg.vk_group_id:
-            post_to_vk(cfg.vk_access_token, cfg.vk_group_id, text)
-            posted.append("vk")
-            log.info("Анонс опубликован в VK")
+            try:
+                post_to_vk(cfg.vk_access_token, cfg.vk_group_id, text)
+                posted.append("vk")
+                log.info("Анонс опубликован в VK")
+            except Exception as exc:  # noqa: BLE001 - форма уже опубликована
+                log.error("Не удалось опубликовать анонс в VK: %s", exc)
         else:
             log.info("Пропускаю VK: не заданы VK_ACCESS_TOKEN / VK_GROUP_ID")
 

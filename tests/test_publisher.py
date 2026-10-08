@@ -5,6 +5,7 @@ from __future__ import annotations
 import types
 
 import publisher
+import pytest
 
 
 def test_inject_intro_inserts_before_cta_line():
@@ -80,3 +81,53 @@ def test_publish_announcement_skips_intro_when_disabled(monkeypatch):
     publisher.publish_announcement(cfg, "abc", 10, "Имя", intro="Вводная часть.")
 
     assert "Вводная часть." not in sent["text"]
+
+
+def test_post_to_telegram_reports_api_description(monkeypatch):
+    """Ошибка Telegram содержит description и chat_id — иначе причину не понять."""
+
+    class FakeBadResponse:
+        status_code = 400
+        text = (
+            '{"ok":false,"error_code":400,'
+            '"description":"Bad Request: chat not found"}'
+        )
+
+        def json(self):
+            return {
+                "ok": False,
+                "error_code": 400,
+                "description": "Bad Request: chat not found",
+            }
+
+    monkeypatch.setattr(publisher.requests, "post", lambda *a, **k: FakeBadResponse())
+
+    with pytest.raises(RuntimeError) as exc:
+        publisher.post_to_telegram("token", "@wrong_channel", "текст")
+
+    message = str(exc.value)
+    assert "chat not found" in message
+    assert "@wrong_channel" in message
+
+
+def test_publish_announcement_survives_telegram_failure(monkeypatch):
+    """Сбой Telegram не роняет запуск и не мешает сохранить состояние."""
+
+    def boom(*args, **kwargs):
+        raise RuntimeError("Telegram API error: chat not found")
+
+    monkeypatch.setattr(publisher, "post_to_telegram", boom)
+
+    cfg = types.SimpleNamespace(
+        publish_telegram=True,
+        publish_vk=False,
+        tg_bot_token="t",
+        tg_target_channel="@wrong",
+        announce_intro=True,
+        announce_templates=["Анонс «{name}». Пройти: {url}"],
+        announce_template="",
+    )
+
+    posted = publisher.publish_announcement(cfg, "abc", 10, "Имя", intro="Вв.")
+
+    assert posted == []
