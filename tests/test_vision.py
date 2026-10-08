@@ -174,3 +174,21 @@ def test_vision_generic_kind_forbids_text(monkeypatch):
     text = _instruction_of(captured).lower()
     assert "текст" in text
     assert "синий кит" in text
+
+
+def test_vision_painting_kind_requires_reproduction(monkeypatch):
+    """Для живописи инструкция требует репродукцию картины и отклоняет портреты автора."""
+    captured = _mock_vision_response(
+        monkeypatch, '{"match": true, "confidence": 0.9, "problems": []}'
+    )
+    cfg = FakePhotoCfg(photo_vision_enabled=True, vision_api_key="vk")
+
+    vision.verify_image(
+        cfg, b"data", "image/jpeg", "Девятый вал", "картины", "painting"
+    )
+
+    text = _instruction_of(captured).lower()
+    assert "репродукци" in text
+    assert "картин" in text
+    assert "художник" in text
+    assert "девятый вал" in text
