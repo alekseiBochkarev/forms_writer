@@ -44,6 +44,11 @@ SOVIET_THEME_RE = re.compile(r"совет|ссср", re.IGNORECASE)
 # Матчит и «актёр/актер», и «актриса/актрисы».
 ACTOR_THEME_RE = re.compile(r"акт(?:[её]р|рис)", re.IGNORECASE)
 ACTRESS_THEME_RE = re.compile(r"актрис", re.IGNORECASE)
+# Темы про живопись: спрашиваем автора картины, а не её название.
+PAINTING_THEME_RE = re.compile(r"картин|живопис|пейзаж|художник", re.IGNORECASE)
+
+# Разделитель «автор | название» в сущностях живописи.
+PAINTING_SEP = "|"
 
 ENTITY_SYSTEM = (
     "Ты — составитель викторин с фотографиями. Ты подбираешь узнаваемые сущности "
@@ -51,8 +56,42 @@ ENTITY_SYSTEM = (
 )
 
 
+def is_painting_theme(theme: str) -> bool:
+    """Тема про живопись — вопрос задаётся про автора картины."""
+    return bool(PAINTING_THEME_RE.search(theme or ""))
+
+
+def split_painting(entity: str) -> Tuple[str, str]:
+    """Разобрать сущность живописи «автор | название» на (автор, название).
+
+    Для неразмеченной строки возвращает (entity, entity): это позволяет
+    деградировать к прежнему поведению, если LLM не вернула пару.
+    """
+    author, sep, title = str(entity or "").partition(PAINTING_SEP)
+    author = author.strip()
+    title = title.strip()
+    if not sep or not author or not title:
+        value = str(entity or "").strip()
+        return value, value
+    return author, title
+
+
+def answer_and_query(theme: str, entity: str) -> Tuple[str, str]:
+    """Вернуть (правильный ответ, поисковый запрос для изображения).
+
+    Для живописи ответ — автор, а изображение ищется по названию картины.
+    Для остальных тем ответ и запрос совпадают с сущностью.
+    """
+    if is_painting_theme(theme):
+        author, title = split_painting(entity)
+        return author, title
+    return entity, entity
+
+
 def question_text(theme: str) -> str:
     """Формулировка вопроса в зависимости от темы выпуска."""
+    if is_painting_theme(theme):
+        return "Кто автор этой картины?"
     if FILM_THEME_RE.search(theme):
         return "Кадр из какого фильма?"
     if ACTOR_THEME_RE.search(theme):
@@ -74,7 +113,9 @@ def is_foreign_film_theme(theme: str) -> bool:
 
 
 def image_kind(theme: str) -> str:
-    """Класс изображения для vision-проверки: ``film`` / ``actor`` / ``generic``."""
+    """Класс изображения для vision-проверки: ``film`` / ``actor`` / ``painting`` / ``generic``."""
+    if is_painting_theme(theme):
+        return "painting"
     if is_film_theme(theme):
         return "film"
     if ACTOR_THEME_RE.search(theme or ""):
@@ -248,6 +289,11 @@ def build_survey_name(
 
 
 def _entity_hint(theme: str) -> str:
+    if is_painting_theme(theme):
+        return (
+            "известных картин; для каждой укажи автора (художника) и название "
+            "картины — вопрос будет про автора"
+        )
     if is_foreign_film_theme(theme):
         return (
             "известных иностранных фильмов; указывай ОРИГИНАЛЬНЫЕ названия "
@@ -298,13 +344,31 @@ def _chat_json(cfg, system: str, user: str) -> Dict[str, Any]:
 def _generate_entities(
     cfg, theme: str, count: int, used: List[str]
 ) -> List[str]:
-    """Сгенерировать сущности темы, исключая уже использованные."""
+    """Сгенерировать сущности темы, исключая уже использованные.
+
+    Для тем про живопись возвращает строки вида «автор | название»: вопрос
+    задаётся про автора, а изображение ищется по названию картины.
+    """
     avoid_block = ""
     if used:
         listed = "\n".join(f"- {item}" for item in used[-100:])
         avoid_block = (
             "\nНе повторяй сущности, которые уже были раньше:\n"
             f"{listed}\n"
+        )
+    painting = is_painting_theme(theme)
+    if painting:
+        shape = (
+            "Верни JSON строго такого вида:\n"
+            '{"entities": [{"author": "Иван Айвазовский", '
+            '"title": "Девятый вал"}]}\n'
+            "Никакого текста кроме JSON."
+        )
+    else:
+        shape = (
+            "Верни JSON строго такого вида:\n"
+            '{"entities": ["...", "..."]}\n'
+            "Никакого текста кроме JSON."
         )
     user = (
         f"Составь список ровно из {count} {_entity_hint(theme)} по теме «{theme}».\n"
@@ -314,26 +378,59 @@ def _generate_entities(
         "- только широко известные, однозначно узнаваемые варианты;\n"
         "- разные пункты не должны быть похожи друг на друга.\n"
         f"{avoid_block}\n"
-        "Верни JSON строго такого вида:\n"
-        '{"entities": ["...", "..."]}\n'
-        "Никакого текста кроме JSON."
+        f"{shape}"
     )
     data = _chat_json(cfg, ENTITY_SYSTEM, user)
     items = data.get("entities") or data.get("items") or []
     used_canon = {str(x).strip().lower() for x in used}
     result: List[str] = []
     for item in items:
-        name = str(item).strip()
+        if painting:
+            name = _painting_entity_from_item(item)
+            if not name:
+                continue
+        else:
+            name = str(item).strip()
         if name and name.lower() not in used_canon:
             used_canon.add(name.lower())
             result.append(name)
     return result
 
 
+def _painting_entity_from_item(item: Any) -> str:
+    """Собрать «автор | название» из ответа LLM для тем живописи.
+
+    Поддерживает объект ``{"author": ..., "title": ...}``; строку с
+    PAINTING_SEP принимает как есть; прочие строки игнорирует (нельзя надёжно
+    выделить автора).
+    """
+    if isinstance(item, dict):
+        author = str(
+            item.get("author") or item.get("художник") or item.get("artist") or ""
+        ).strip()
+        title = str(
+            item.get("title") or item.get("картина") or item.get("painting") or ""
+        ).strip()
+        if author and title:
+            return f"{author}{PAINTING_SEP}{title}"
+        return ""
+    text = str(item).strip()
+    if PAINTING_SEP in text:
+        author, _, title = text.partition(PAINTING_SEP)
+        if author.strip() and title.strip():
+            return text
+    return ""
+
+
 def _generate_distractors(cfg, theme: str, entity: str) -> List[str]:
     """Сгенерировать дистракторы строго того же класса, что и верный ответ."""
     language_rule = ""
-    if ACTOR_THEME_RE.search(theme or ""):
+    if is_painting_theme(theme):
+        language_rule = (
+            "Дистракторы — имена известных художников (авторов картин) "
+            "на русском языке.\n"
+        )
+    elif ACTOR_THEME_RE.search(theme or ""):
         kind = "актрис" if ACTRESS_THEME_RE.search(theme) else "актёров"
         prefix = "советских " if SOVIET_THEME_RE.search(theme or "") else ""
         language_rule = (
@@ -507,18 +604,19 @@ def _dry_run(
     for entity in entities:
         if planned >= need:
             break
-        built = _build_options(cfg, theme, entity)
+        answer, search_term = answer_and_query(theme, entity)
+        built = _build_options(cfg, theme, answer)
         if not built:
             log.info("Пропускаю сущность «%s»: не удалось получить варианты", entity)
             continue
         options, correct_index = built
-        candidates = _search_candidates(cfg, theme, entity)
+        candidates = _search_candidates(cfg, theme, search_term)
         if not candidates:
             log.info("Пропускаю сущность «%s»: изображение не найдено", entity)
             continue
         planned += 1
         log.info("  %2d. %s", planned, question)
-        log.info("      правильный ответ: %s", entity)
+        log.info("      правильный ответ: %s", answer)
         for i, option in enumerate(options):
             log.info("        %s%s", option, " *" if i == correct_index else "")
         log.info("      кандидаты изображения:")
@@ -541,12 +639,13 @@ def _build_questions(
     for entity in entities:
         if len(questions) >= need:
             break
-        built = _build_options(cfg, theme, entity)
+        answer, search_term = answer_and_query(theme, entity)
+        built = _build_options(cfg, theme, answer)
         if not built:
             log.info("Пропускаю сущность «%s»: не удалось получить варианты", entity)
             continue
         options, correct_index = built
-        picked = _pick_image(cfg, theme, entity)
+        picked = _pick_image(cfg, theme, search_term)
         if not picked:
             log.info("Пропускаю сущность «%s»: изображение не подобрано", entity)
             continue
@@ -567,7 +666,7 @@ def _build_questions(
         log.info(
             "  + вопрос %s: «%s» [%s, %s]",
             len(questions),
-            entity,
+            answer,
             candidate.source,
             candidate.license or "лицензия не указана",
         )

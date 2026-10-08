@@ -215,6 +215,154 @@ def test_generate_distractors_soviet_actors_are_actor_names(monkeypatch):
     assert "фильм" not in user
 
 
+# --- живопись: спрашиваем автора, а не название картины ----------------------
+
+
+def test_question_text_painting_theme_asks_author():
+    """Темы про живопись -> «Кто автор этой картины?»."""
+    assert photo_flow.question_text("картины") == "Кто автор этой картины?"
+    assert (
+        photo_flow.question_text("картины из школьной программы")
+        == "Кто автор этой картины?"
+    )
+    assert (
+        photo_flow.question_text("пейзажи русских художников")
+        == "Кто автор этой картины?"
+    )
+
+
+def test_image_kind_painting_theme():
+    """Живопись -> класс изображения painting для vision."""
+    assert photo_flow.image_kind("картины") == "painting"
+    assert photo_flow.image_kind("пейзажи русских художников") == "painting"
+
+
+def test_is_painting_theme_detection():
+    assert photo_flow.is_painting_theme("картины из школьной программы")
+    assert photo_flow.is_painting_theme("Пейзажи русских художников")
+    assert photo_flow.is_painting_theme("живопись")
+    assert not photo_flow.is_painting_theme("животные")
+    assert not photo_flow.is_painting_theme("советские фильмы")
+
+
+def test_split_painting_and_answer_and_query():
+    """Сущность живописи «автор | название» разделяется на ответ и запрос."""
+    assert photo_flow.split_painting("Иван Айвазовский|Девятый вал") == (
+        "Иван Айвазовский",
+        "Девятый вал",
+    )
+    answer, query = photo_flow.answer_and_query(
+        "картины", "Иван Айвазовский|Девятый вал"
+    )
+    assert answer == "Иван Айвазовский"
+    assert query == "Девятый вал"
+    # Для обычных тем ответ и запрос совпадают с сущностью.
+    assert photo_flow.answer_and_query("животные", "кот") == ("кот", "кот")
+
+
+def test_split_painting_without_separator_degrades_gracefully():
+    """Строка без разделителя не ломает разбор (возвращается как ответ и запрос)."""
+    assert photo_flow.split_painting("Девятый вал") == ("Девятый вал", "Девятый вал")
+
+
+def test_generate_entities_painting_returns_author_and_title(monkeypatch):
+    """Для живописи сущности собираются в «автор | название»."""
+    _capture_chat_json(
+        monkeypatch,
+        {
+            "entities": [
+                {"author": "Иван Айвазовский", "title": "Девятый вал"},
+                {"author": "Иван Шишкин", "title": "Утро в сосновом лесу"},
+            ]
+        },
+    )
+
+    result = photo_flow._generate_entities(FakePhotoCfg(), "картины", 2, [])
+
+    assert result == [
+        "Иван Айвазовский|Девятый вал",
+        "Иван Шишкин|Утро в сосновом лесу",
+    ]
+
+
+def test_generate_entities_painting_prompt_mentions_author(monkeypatch):
+    """Промпт живописи просит автора и название, а не только название."""
+    captured = _capture_chat_json(
+        monkeypatch, {"entities": [{"author": "Иван Шишкин", "title": "Рожь"}]}
+    )
+
+    photo_flow._generate_entities(FakePhotoCfg(), "картины", 1, [])
+
+    user = captured["user"].lower()
+    assert "автор" in user
+    assert "художник" in user
+
+
+def test_generate_entities_painting_drops_items_without_author(monkeypatch):
+    """Записи без автора или названия отбрасываются (нельзя определить ответ)."""
+    _capture_chat_json(
+        monkeypatch,
+        {"entities": [{"author": "", "title": "Рожь"}, {"author": "Иван Шишкин"}]},
+    )
+
+    assert photo_flow._generate_entities(FakePhotoCfg(), "картины", 2, []) == []
+
+
+def test_generate_distractors_painting_are_artists(monkeypatch):
+    """Для живописи дистракторы — имена художников."""
+    captured = _capture_chat_json(
+        monkeypatch, {"distractors": ["Иван Шишкин", "Василий Поленов"]}
+    )
+
+    photo_flow._generate_distractors(FakePhotoCfg(), "картины", "Иван Айвазовский")
+
+    user = captured["user"].lower()
+    assert "художник" in user
+    assert "авторов картин" in user
+
+
+def test_build_questions_painting_uses_author_answer_and_title_image(monkeypatch):
+    """Живопись: верный ответ — автор, изображение ищется по названию картины."""
+    cfg = FakePhotoCfg()
+    seen = {}
+
+    def fake_build_options(c, theme, entity):
+        seen["answer"] = entity
+        return (
+            ["Иван Айвазовский", "Иван Шишкин", "Василий Поленов", "Карл Брюллов"],
+            0,
+        )
+
+    def fake_pick_image(c, theme, entity):
+        seen["query"] = entity
+        cand = ImageCandidate(
+            source="wikimedia",
+            url="u",
+            page_url="p",
+            title="t",
+            author="a",
+            license="CC",
+            mime="image/jpeg",
+        )
+        return b"x", "image/jpeg", cand
+
+    monkeypatch.setattr(photo_flow, "_build_options", fake_build_options)
+    monkeypatch.setattr(photo_flow, "_pick_image", fake_pick_image)
+
+    questions = photo_flow._build_questions(
+        cfg,
+        "картины",
+        photo_flow.question_text("картины"),
+        ["Иван Айвазовский|Девятый вал"],
+        1,
+    )
+
+    assert seen["answer"] == "Иван Айвазовский"
+    assert seen["query"] == "Девятый вал"
+    assert questions[0]["question"] == "Кто автор этой картины?"
+    assert questions[0]["options"][questions[0]["correct_index"]] == "Иван Айвазовский"
+
+
 # --- theme_sources ----------------------------------------------------------
 
 

@@ -66,7 +66,7 @@ jobs:
           PHOTO_VISION_ENABLED: ${{ vars.PHOTO_VISION_ENABLED || 'true' }}
           PUBLISH: "true"
           PUBLISH_TELEGRAM: "true"
-          PUBLISH_VK: "true"
+          PUBLISH_VK: "false"
         run: python main.py --photo
 
       - name: Commit photo state
