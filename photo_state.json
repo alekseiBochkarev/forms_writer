@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-07",
+  "last_publish_date": "2026-10-08",
   "published": [
     {
       "date": "2026-09-24",
@@ -1233,6 +1233,95 @@
           "license": "Public domain"
         }
       ]
+    },
+    {
+      "date": "2026-10-08",
+      "survey_id": "6ac805f0bf4fde002bf3f424",
+      "url": "https://forms.yandex.ru/u/6ac805f0bf4fde002bf3f424/",
+      "theme": "хищные птицы",
+      "title": "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/015_Wild_Golden_Eagle_in_flight_at_Pfyn-Finges_%28Switzerland%29_Photo_by_Giles_Laurent.jpg/1280px-015_Wild_Golden_Eagle_in_flight_at_Pfyn-Finges_%28Switzerland%29_Photo_by_Giles_Laurent.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:015_Wild_Golden_Eagle_in_flight_at_Pfyn-Finges_(Switzerland)_Photo_by_Giles_Laurent.jpg",
+          "title": "015 Wild Golden Eagle in flight at Pfyn-Finges (Switzerland) Photo by Giles Laurent.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Falco_peregrinus_-_01.jpg/1280px-Falco_peregrinus_-_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Falco_peregrinus_-_01.jpg",
+          "title": "Falco peregrinus - 01.jpg",
+          "author": "Carlos Delgado",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/American_kestrel_%2844273%29.jpg/1280px-American_kestrel_%2844273%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:American_kestrel_(44273).jpg",
+          "title": "American kestrel (44273).jpg",
+          "author": "Rhododendrites",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Buteo_buteo_juv_Log_%282%29.jpg/1280px-Buteo_buteo_juv_Log_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Buteo_buteo_juv_Log_(2).jpg",
+          "title": "Buteo buteo juv Log (2).jpg",
+          "author": "Yerpo",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Balbuzard_pecheur_Lac_de_Tunis.jpg/1280px-Balbuzard_pecheur_Lac_de_Tunis.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Balbuzard_pecheur_Lac_de_Tunis.jpg",
+          "title": "Balbuzard pecheur Lac de Tunis.jpg",
+          "author": "El Golli Mohamed",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Haliaeetus_leucocephalus_LC0195_edit_1.jpg/1280px-Haliaeetus_leucocephalus_LC0195_edit_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Haliaeetus_leucocephalus_LC0195_edit_1.jpg",
+          "title": "Haliaeetus leucocephalus LC0195 edit 1.jpg",
+          "author": "Haliaeetus_leucocephalus_LC0195.jpg: Jörg Hempel\nderivative work: Samwb123 (talk)",
+          "license": "CC BY-SA 3.0 de"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Buitre_negro.jpg/1280px-Buitre_negro.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Buitre_negro.jpg",
+          "title": "Buitre negro.jpg",
+          "author": "Juan Lacruz",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Neophron-1.jpg/1280px-Neophron-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Neophron-1.jpg",
+          "title": "Neophron-1.jpg",
+          "author": "Artemy Voikhansky",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/Bubo_bubo_portrait.jpg/1280px-Bubo_bubo_portrait.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Bubo_bubo_portrait.jpg",
+          "title": "Bubo bubo portrait.jpg",
+          "author": "Flickr user indygnome",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/%D0%9A%D0%B8%D1%80%D0%BA%D0%BA%D0%BE%D0%BB%D0%B0%D1%85%D1%82%D0%B8%2C_%D0%9A%D0%B0%D1%80%D0%B5%D0%BB%D1%8C%D1%81%D0%BA%D0%B8%D0%B9_%D0%B7%D0%BE%D0%BE%D0%BF%D0%B0%D1%80%D0%BA%2C_%D0%BF%D0%BE%D0%BB%D1%8F%D1%80%D0%BD%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0_%282%29.jpg/1280px-%D0%9A%D0%B8%D1%80%D0%BA%D0%BA%D0%BE%D0%BB%D0%B0%D1%85%D1%82%D0%B8%2C_%D0%9A%D0%B0%D1%80%D0%B5%D0%BB%D1%8C%D1%81%D0%BA%D0%B8%D0%B9_%D0%B7%D0%BE%D0%BE%D0%BF%D0%B0%D1%80%D0%BA%2C_%D0%BF%D0%BE%D0%BB%D1%8F%D1%80%D0%BD%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9A%D0%B8%D1%80%D0%BA%D0%BA%D0%BE%D0%BB%D0%B0%D1%85%D1%82%D0%B8,_%D0%9A%D0%B0%D1%80%D0%B5%D0%BB%D1%8C%D1%81%D0%BA%D0%B8%D0%B9_%D0%B7%D0%BE%D0%BE%D0%BF%D0%B0%D1%80%D0%BA,_%D0%BF%D0%BE%D0%BB%D1%8F%D1%80%D0%BD%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0_(2).jpg",
+          "title": "Киркколахти, Карельский зоопарк, полярная сова (2).jpg",
+          "author": "Avsolov",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -1375,12 +1464,23 @@
     "картины из школьной программы: Неизвестная",
     "картины из школьной программы: Купание красного коня",
     "картины из школьной программы: Девятый вал",
-    "картины из школьной программы: Аленушка"
+    "картины из школьной программы: Аленушка",
+    "хищные птицы: Беркут",
+    "хищные птицы: Сапсан",
+    "хищные птицы: Пустельга",
+    "хищные птицы: Канюк",
+    "хищные птицы: Скопа",
+    "хищные птицы: Белоголовый орлан",
+    "хищные птицы: Гриф",
+    "хищные птицы: Стервятник",
+    "хищные птицы: Филин",
+    "хищные птицы: Полярная сова"
   ],
   "used_themes": [
     "достопримечательности и места",
     "актёры",
-    "картины из школьной программы"
+    "картины из школьной программы",
+    "хищные птицы"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -1536,9 +1636,22 @@
       "Купание красного коня",
       "Девятый вал",
       "Аленушка"
+    ],
+    "хищные птицы": [
+      "Беркут",
+      "Сапсан",
+      "Пустельга",
+      "Канюк",
+      "Скопа",
+      "Белоголовый орлан",
+      "Гриф",
+      "Стервятник",
+      "Филин",
+      "Полярная сова"
     ]
   },
   "used_titles": [
-    "Узнаете ли вы эти 10 шедевров живописи по фрагменту?"
+    "Узнаете ли вы эти 10 шедевров живописи по фрагменту?",
+    "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя"
   ]
 }
