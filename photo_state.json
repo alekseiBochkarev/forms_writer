@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-08",
+  "last_publish_date": "2026-10-09",
   "published": [
     {
       "date": "2026-09-24",
@@ -1322,6 +1322,95 @@
           "license": "CC BY-SA 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-10-09",
+      "survey_id": "6ac94eb670ad370e7d5b2525",
+      "url": "https://forms.yandex.ru/u/6ac94eb670ad370e7d5b2525/",
+      "theme": "пейзажи русских художников",
+      "title": "Вы помните эти 10 картин из школьной программы? Проверьте по фото 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Aivazovsky%2C_Ivan_-_The_Ninth_Wave.jpg/1280px-Aivazovsky%2C_Ivan_-_The_Ninth_Wave.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aivazovsky,_Ivan_-_The_Ninth_Wave.jpg",
+          "title": "Aivazovsky, Ivan - The Ninth Wave.jpg",
+          "author": "Ivan Aivazovsky",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/98/Morning_in_a_Pine_Forest_%28Shishkin%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Morning_in_a_Pine_Forest_(Shishkin).jpg",
+          "title": "Morning in a Pine Forest (Shishkin).jpg",
+          "author": "Ivan Shishkin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/0857Ha._%D0%9A%D1%83%D0%B8%D0%BD%D0%B4%D0%B6%D0%B8_%D0%90.%D0%98._%D0%9B%D1%83%D0%BD%D0%BD%D0%B0%D1%8F_%D0%BD%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5.jpg/1280px-0857Ha._%D0%9A%D1%83%D0%B8%D0%BD%D0%B4%D0%B6%D0%B8_%D0%90.%D0%98._%D0%9B%D1%83%D0%BD%D0%BD%D0%B0%D1%8F_%D0%BD%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:0857Ha._%D0%9A%D1%83%D0%B8%D0%BD%D0%B4%D0%B6%D0%B8_%D0%90.%D0%98._%D0%9B%D1%83%D0%BD%D0%BD%D0%B0%D1%8F_%D0%BD%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5.jpg",
+          "title": "0857Ha. Куинджи А.И. Лунная ночь на Днепре.jpg",
+          "author": "Arkhip Kuindzhi",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Aleksey_Savrasov_-_%D0%93%D1%80%D0%B0%D1%87%D0%B8_%D0%BF%D1%80%D0%B8%D0%BB%D0%B5%D1%82%D0%B5%D0%BB%D0%B8_-_Google_Art_Project.jpg/1280px-Aleksey_Savrasov_-_%D0%93%D1%80%D0%B0%D1%87%D0%B8_%D0%BF%D1%80%D0%B8%D0%BB%D0%B5%D1%82%D0%B5%D0%BB%D0%B8_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aleksey_Savrasov_-_%D0%93%D1%80%D0%B0%D1%87%D0%B8_%D0%BF%D1%80%D0%B8%D0%BB%D0%B5%D1%82%D0%B5%D0%BB%D0%B8_-_Google_Art_Project.jpg",
+          "title": "Aleksey Savrasov - Грачи прилетели - Google Art Project.jpg",
+          "author": "Alexei Savrasov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Fedor_Vasilyev_-_%D0%9C%D0%BE%D0%BA%D1%80%D1%8B%D0%B9_%D0%BB%D1%83%D0%B3_-_Google_Art_Project.jpg/1280px-Fedor_Vasilyev_-_%D0%9C%D0%BE%D0%BA%D1%80%D1%8B%D0%B9_%D0%BB%D1%83%D0%B3_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Fedor_Vasilyev_-_%D0%9C%D0%BE%D0%BA%D1%80%D1%8B%D0%B9_%D0%BB%D1%83%D0%B3_-_Google_Art_Project.jpg",
+          "title": "Fedor Vasilyev - Мокрый луг - Google Art Project.jpg",
+          "author": "Fyodor Vasilyev",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Moscow_Courtyard_%28Polenov%2C_1878%29_-_Google_Art_Project.jpg/1280px-Moscow_Courtyard_%28Polenov%2C_1878%29_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Moscow_Courtyard_(Polenov,_1878)_-_Google_Art_Project.jpg",
+          "title": "Moscow Courtyard (Polenov, 1878) - Google Art Project.jpg",
+          "author": "Vasily Polenov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Nicholas_Roerich%2C_Guests_from_Overseas.jpg/1280px-Nicholas_Roerich%2C_Guests_from_Overseas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Nicholas_Roerich,_Guests_from_Overseas.jpg",
+          "title": "Nicholas Roerich, Guests from Overseas.jpg",
+          "author": "Nicholas Roerich",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Rylov_Blue_Expanse.jpg/1280px-Rylov_Blue_Expanse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Rylov_Blue_Expanse.jpg",
+          "title": "Rylov Blue Expanse.jpg",
+          "author": "Arkady Rylov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Grabar_February_azure_1904_gtg.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Grabar_February_azure_1904_gtg.jpg",
+          "title": "Grabar February azure 1904 gtg.jpg",
+          "author": "Igor Grabar",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/%D0%97%D0%B8%D0%BC%D0%BD%D0%B8%D0%B9_%D0%B2%D0%B5%D1%87%D0%B5%D1%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%97%D0%B8%D0%BC%D0%BD%D0%B8%D0%B9_%D0%B2%D0%B5%D1%87%D0%B5%D1%80.jpg",
+          "title": "Зимний вечер.jpg",
+          "author": "Mikhail Guzhavin",
+          "license": "Public domain"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -1474,13 +1563,24 @@
     "хищные птицы: Гриф",
     "хищные птицы: Стервятник",
     "хищные птицы: Филин",
-    "хищные птицы: Полярная сова"
+    "хищные птицы: Полярная сова",
+    "пейзажи русских художников: Иван Айвазовский|Девятый вал",
+    "пейзажи русских художников: Иван Шишкин|Утро в сосновом лесу",
+    "пейзажи русских художников: Архип Куинджи|Лунная ночь на Днепре",
+    "пейзажи русских художников: Алексей Саврасов|Грачи прилетели",
+    "пейзажи русских художников: Фёдор Васильев|Мокрый луг",
+    "пейзажи русских художников: Василий Поленов|Московский дворик",
+    "пейзажи русских художников: Николай Рерих|Заморские гости",
+    "пейзажи русских художников: Аркадий Рылов|В голубом просторе",
+    "пейзажи русских художников: Игорь Грабарь|Февральская лазурь",
+    "пейзажи русских художников: Николай Крымов|Зимний вечер"
   ],
   "used_themes": [
     "достопримечательности и места",
     "актёры",
     "картины из школьной программы",
-    "хищные птицы"
+    "хищные птицы",
+    "пейзажи русских художников"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -1648,10 +1748,23 @@
       "Стервятник",
       "Филин",
       "Полярная сова"
+    ],
+    "пейзажи русских художников": [
+      "Иван Айвазовский|Девятый вал",
+      "Иван Шишкин|Утро в сосновом лесу",
+      "Архип Куинджи|Лунная ночь на Днепре",
+      "Алексей Саврасов|Грачи прилетели",
+      "Фёдор Васильев|Мокрый луг",
+      "Василий Поленов|Московский дворик",
+      "Николай Рерих|Заморские гости",
+      "Аркадий Рылов|В голубом просторе",
+      "Игорь Грабарь|Февральская лазурь",
+      "Николай Крымов|Зимний вечер"
     ]
   },
   "used_titles": [
     "Узнаете ли вы эти 10 шедевров живописи по фрагменту?",
-    "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя"
+    "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя",
+    "Вы помните эти 10 картин из школьной программы? Проверьте по фото"
   ]
 }
