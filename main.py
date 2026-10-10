@@ -153,18 +153,19 @@ def _generate_texts_with_review(
         return "", "", {"ok": True, "issues": []}
 
     topics = _topics_of(questions)
+    theme = (getattr(cfg, "topic", "") or "").strip()
     intro = ""
     outro = ""
     last_review: Dict[str, Any] = {"ok": True, "issues": []}
     for attempt in range(cfg.review_max_attempts + 1):
         if cfg.intro_enabled:
-            intro = generate_intro(cfg, topics, previous_intros)
+            intro = generate_intro(cfg, topics, previous_intros, theme=theme)
         if cfg.conclusion_enabled:
-            outro = generate_conclusion(cfg, topics, len(questions))
+            outro = generate_conclusion(cfg, topics, len(questions), theme=theme)
         if not cfg.review_enabled:
             return intro, outro, {"ok": True, "issues": []}
         last_review = review.review_texts(
-            cfg, intro, outro, questions, previous_intros
+            cfg, intro, outro, questions, previous_intros, theme=theme
         )
         if last_review.get("ok"):
             log.info("Ревью вводной/заключительной пройдено")

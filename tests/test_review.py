@@ -156,11 +156,13 @@ def test_review_skips_disabled_outro(monkeypatch):
     """При CONCLUSION_ENABLED=false заключительная не попадает в промпт."""
     captured = {}
 
-    def fake_llm(cfg, intro, outro, questions, previous, check_intro, check_outro):
+    def fake_llm(
+        cfg, intro, outro, questions, previous, check_intro, check_outro, theme=None
+    ):
         captured["check_intro"] = check_intro
         captured["check_outro"] = check_outro
         captured["prompt"] = review._build_prompt(
-            intro, outro, questions, previous, check_intro, check_outro
+            intro, outro, questions, previous, check_intro, check_outro, theme
         )
         return {"ok": True, "issues": []}
 
@@ -256,3 +258,37 @@ def test_review_texts_non_dict_payload_is_fail_closed(monkeypatch, payload):
 
     assert result["ok"] is False
     assert result["issues"]
+
+
+# --- review_texts: сквозная тема и мягкое правило про темы -------------------
+
+
+def test_review_texts_forwards_theme(monkeypatch):
+    """Сквозная тема выпуска передаётся в LLM-ревью."""
+    captured = {}
+
+    def fake_llm(
+        cfg, intro, outro, questions, previous, check_intro, check_outro, theme=None
+    ):
+        captured["theme"] = theme
+        return {"ok": True, "issues": []}
+
+    monkeypatch.setattr(review, "_llm_review", fake_llm)
+
+    review.review_texts(
+        _cfg(), "вводная", "заключение", [_question()], theme="кулинария"
+    )
+
+    assert captured["theme"] == "кулинария"
+
+
+def test_build_prompt_includes_theme_and_soft_topic_rule():
+    """Промпт ревью содержит сквозную тему и не требует перечислять все темы."""
+    prompt = review._build_prompt(
+        "вводная", "заключение", [_question()], None, True, True, "кулинария"
+    )
+
+    assert "Сквозная тема выпуска" in prompt
+    assert "кулинария" in prompt
+    # Мягкое правило: обобщённый/неполный список тем не считается проблемой.
+    assert "НЕ является проблемой" in prompt

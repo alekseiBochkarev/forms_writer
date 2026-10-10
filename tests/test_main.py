@@ -201,8 +201,12 @@ def _texts_cfg(**overrides):
 
 
 def test_generate_texts_and_review_ok_first_try(monkeypatch):
-    monkeypatch.setattr("main.generate_intro", lambda cfg, topics, prev=None: "intro")
-    monkeypatch.setattr("main.generate_conclusion", lambda cfg, topics, count: "outro")
+    monkeypatch.setattr(
+        "main.generate_intro", lambda cfg, topics, prev=None, theme=None: "intro"
+    )
+    monkeypatch.setattr(
+        "main.generate_conclusion", lambda cfg, topics, count, theme=None: "outro"
+    )
     monkeypatch.setattr(
         "main.review.review_texts", lambda *a, **k: {"ok": True, "issues": []}
     )
@@ -224,7 +228,7 @@ def test_generate_texts_regenerates_on_not_ok(monkeypatch):
         {"ok": True, "issues": []},
     ]
 
-    def fake_intro(cfg, topics, prev=None):
+    def fake_intro(cfg, topics, prev=None, theme=None):
         calls["intro"] += 1
         return f"intro-{calls['intro']}"
 
