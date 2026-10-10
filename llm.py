@@ -198,6 +198,7 @@ def _build_intro_prompt(
     max_paragraphs: int,
     language: str,
     previous_intros: List[str] | None = None,
+    theme: str | None = None,
 ) -> str:
     avoid_block = ""
     if previous_intros:
@@ -206,17 +207,25 @@ def _build_intro_prompt(
             "\nВводные прошлых выпусков (не повторяй их формулировки и обороты):\n"
             f"{listed}\n"
         )
+    theme_block = ""
+    if (theme or "").strip():
+        theme_block = (
+            f"Сквозная тема выпуска: «{theme.strip()}». Обязательно обыграй её "
+            "во вводной (как общий повод/настроение), но НЕ раскрывай ответы.\n"
+        )
     return (
         f"Напиши вводную часть теста на языке «{language}» из "
         f"{min_paragraphs}–{max_paragraphs} абзацев.\n"
         f"Широкие темы вопросов: {_format_topics(topics)}.\n"
+        f"{theme_block}"
         "Строй вводную по плану:\n"
         "1) хук/польза (зачем проходить тест, чем он полезен);\n"
         "2) анонс 3–5 широких отраслей из списка выше, без конкретных вопросов;\n"
         "3) мягкий призыв начать.\n"
         "КРИТИЧЕСКИ ВАЖНО: не называй правильные ответы и их синонимы, "
         "не подсказывай ответы и не пересказывай формулировки вопросов — "
-        "вводная не должна раскрывать правильные варианты.\n"
+        "вводная не должна раскрывать правильные варианты. Перечислять все темы "
+        "не нужно — достаточно нескольких широких направлений.\n"
         f"{avoid_block}\n"
         "Верни JSON строго такого вида:\n"
         '{"intro": "текст первого абзаца\\n\\nтекст второго абзаца"}\n'
@@ -230,18 +239,24 @@ def _build_outro_prompt(
     min_paragraphs: int,
     max_paragraphs: int,
     language: str,
+    theme: str | None = None,
 ) -> str:
+    theme_block = ""
+    if (theme or "").strip():
+        theme_block = f"Сквозная тема выпуска: «{theme.strip()}».\n"
     return (
         f"Напиши заключительную часть теста на языке «{language}» из "
         f"{min_paragraphs}–{max_paragraphs} абзацев после {count} вопросов.\n"
         f"Темы вопросов: {_format_topics(topics)}.\n"
+        f"{theme_block}"
         "Строй заключительную по плану:\n"
         "1) тёплая концовка и благодарность за участие;\n"
         "2) короткая инструкция посмотреть правильные ответы;\n"
         "3) вопрос для вовлечения читателя (например, был ли вопрос, на который "
         "он не знал ответа);\n"
         "4) лёгкий призыв подписаться/поставить лайк/поделиться. Без переспама.\n"
-        "Не называй правильные ответы.\n\n"
+        "Не называй правильные ответы. Не придумывай образы и факты, которых нет "
+        "в тесте.\n\n"
         "Верни JSON строго такого вида:\n"
         '{"outro": "текст первого абзаца\\n\\nтекст второго абзаца"}\n'
         "Абзацы разделяй двойным переводом строки. Никакого текста кроме JSON."
@@ -270,10 +285,12 @@ def generate_intro(
     cfg,
     topics: List[str],
     previous_intros: List[str] | None = None,
+    theme: str | None = None,
 ) -> str:
     """Сгенерировать вводную часть (2–4 абзаца) по широким темам вопросов.
 
-    В промпт передаются только темы (`q["topic"]`) без ответов и вариантов.
+    В промпт передаются только темы (`q["topic"]`) и сквозная тема выпуска
+    (`theme`) без ответов и вариантов.
     """
     user = _build_intro_prompt(
         topics,
@@ -281,12 +298,15 @@ def generate_intro(
         cfg.intro_max_paragraphs,
         cfg.language,
         previous_intros,
+        theme,
     )
     log.info("Запрашиваю вводную часть у модели %s ...", cfg.llm_model)
     return _request_text(cfg, TEXT_SYSTEM_PROMPT, user, "intro")
 
 
-def generate_conclusion(cfg, topics: List[str], count: int) -> str:
+def generate_conclusion(
+    cfg, topics: List[str], count: int, theme: str | None = None
+) -> str:
     """Сгенерировать заключительную часть (1–3 абзаца) с инструкцией и CTA."""
     user = _build_outro_prompt(
         topics,
@@ -294,6 +314,7 @@ def generate_conclusion(cfg, topics: List[str], count: int) -> str:
         cfg.outro_min_paragraphs,
         cfg.outro_max_paragraphs,
         cfg.language,
+        theme,
     )
     log.info("Запрашиваю заключительную часть у модели %s ...", cfg.llm_model)
     return _request_text(cfg, TEXT_SYSTEM_PROMPT, user, "outro")

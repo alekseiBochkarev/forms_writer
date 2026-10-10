@@ -363,6 +363,35 @@ def test_generate_intro_uses_previous_intros_in_prompt(monkeypatch):
     assert "Старая вводная" in prompt
 
 
+def test_generate_intro_includes_run_theme(monkeypatch):
+    """Сквозная тема выпуска попадает во вводную (но не раскрывает ответы)."""
+    payloads = _capture_text_payloads(monkeypatch, "intro", "Текст")
+
+    generate_intro(_text_cfg(), ["История"], theme="кулинария")
+
+    prompt = payloads[0]["messages"][1]["content"]
+    assert "кулинария" in prompt
+    assert "Сквозная тема" in prompt
+
+
+def test_generate_intro_without_theme_has_no_theme_block(monkeypatch):
+    payloads = _capture_text_payloads(monkeypatch, "intro", "Текст")
+
+    generate_intro(_text_cfg(), ["История"])
+
+    prompt = payloads[0]["messages"][1]["content"]
+    assert "Сквозная тема" not in prompt
+
+
+def test_generate_conclusion_includes_run_theme(monkeypatch):
+    payloads = _capture_text_payloads(monkeypatch, "outro", "Спасибо")
+
+    generate_conclusion(_text_cfg(), ["История"], 15, theme="кулинария")
+
+    prompt = payloads[0]["messages"][1]["content"]
+    assert "кулинария" in prompt
+
+
 def test_generate_intro_empty_field_raises(monkeypatch):
     """Пустое поле intro от модели — ошибка, а не тихая публикация."""
     _capture_text_payloads(monkeypatch, "intro", "   ")

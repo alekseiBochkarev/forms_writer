@@ -74,6 +74,7 @@ def _build_prompt(
     previous_intros: Optional[List[str]],
     check_intro: bool,
     check_outro: bool,
+    theme: Optional[str] = None,
 ) -> str:
     topics = [
         str(q.get("topic", "")).strip()
@@ -113,8 +114,10 @@ def _build_prompt(
         rules += [
             "- во вводной встречается правильный ответ, его синоним или "
             "прямая подсказка;",
-            "- анонсированные во вводной темы не соответствуют фактическим "
-            "вопросам;",
+            "- вводная анонсирует область/тему, которой среди фактических "
+            "вопросов вообще НЕТ (полное противоречие содержанию). "
+            "Перечислить все темы во вводной НЕ требуется: меньший или "
+            "обобщённый список — это нормально и НЕ является проблемой;",
             "- вводная шаблонная или повторяет формулировки прошлых выпусков;",
         ]
     if check_outro:
@@ -129,8 +132,12 @@ def _build_prompt(
         for name, enabled in (("вводную", check_intro), ("заключительную", check_outro))
         if enabled
     )
+    theme_line = ""
+    if (theme or "").strip():
+        theme_line = f"Сквозная тема выпуска: «{theme.strip()}».\n\n"
     return (
         f"Проверь {checked} части теста.\n\n"
+        f"{theme_line}"
         f"Темы вопросов: {', '.join(topics) or 'разные области'}.\n\n"
         f"Фактические вопросы и верные ответы:\n{questions_block}\n\n"
         + "\n\n".join(parts)
@@ -153,6 +160,7 @@ def _llm_review(
     previous_intros: Optional[List[str]],
     check_intro: bool,
     check_outro: bool,
+    theme: Optional[str] = None,
 ) -> Dict[str, Any]:
     payload = {
         "model": cfg.effective_review_model(),
@@ -161,7 +169,13 @@ def _llm_review(
             {
                 "role": "user",
                 "content": _build_prompt(
-                    intro, outro, questions, previous_intros, check_intro, check_outro
+                    intro,
+                    outro,
+                    questions,
+                    previous_intros,
+                    check_intro,
+                    check_outro,
+                    theme,
                 ),
             },
         ],
@@ -179,6 +193,7 @@ def review_texts(
     outro: str,
     questions: List[Dict[str, Any]],
     previous_intros: Optional[List[str]] = None,
+    theme: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Провести ревью вводной/заключительной части.
 
@@ -207,7 +222,14 @@ def review_texts(
 
     try:
         data = _llm_review(
-            cfg, intro, outro, questions, previous_intros, check_intro, check_outro
+            cfg,
+            intro,
+            outro,
+            questions,
+            previous_intros,
+            check_intro,
+            check_outro,
+            theme,
         )
     except Exception as exc:  # noqa: BLE001 - сбой ревью блокирует публикацию
         log.warning("LLM-ревью не выполнено: %s", exc)
