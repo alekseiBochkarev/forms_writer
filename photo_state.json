@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-11",
+  "last_publish_date": "2026-10-12",
   "published": [
     {
       "date": "2026-09-24",
@@ -1589,6 +1589,95 @@
           "license": "CC BY-SA 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-10-12",
+      "survey_id": "6acd62fdbf4fde162fa8c81d",
+      "url": "https://forms.yandex.ru/u/6acd62fdbf4fde162fa8c81d/",
+      "theme": "пейзажи русских художников",
+      "title": "Тест для знатоков искусства: назовите автора этих 10 картин 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/61/Leonid_Pasternak_-_The_Moscow_Kremlin_in_the_March_Sun%2C_1917.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Leonid_Pasternak_-_The_Moscow_Kremlin_in_the_March_Sun,_1917.jpg",
+          "title": "Leonid Pasternak - The Moscow Kremlin in the March Sun, 1917.jpg",
+          "author": "L.Pasternak",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Kreml_Kality.jpg/1280px-Kreml_Kality.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Kreml_Kality.jpg",
+          "title": "Kreml Kality.jpg",
+          "author": "Apollinary Vasnetsov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Boris_Kustodiev_-_Shrovetide_-_Google_Art_Project.jpg/1280px-Boris_Kustodiev_-_Shrovetide_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Boris_Kustodiev_-_Shrovetide_-_Google_Art_Project.jpg",
+          "title": "Boris Kustodiev - Shrovetide - Google Art Project.jpg",
+          "author": "Boris Kustodiev",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/3/35/Korovin_Winter_1894.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Korovin_Winter_1894.jpg",
+          "title": "Korovin Winter 1894.jpg",
+          "author": "Konstantin Korovin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Nikolai_Dubovskoi_-_Calm_Before_the_Storm_-_Google_Art_Project.jpg/1280px-Nikolai_Dubovskoi_-_Calm_Before_the_Storm_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Nikolai_Dubovskoi_-_Calm_Before_the_Storm_-_Google_Art_Project.jpg",
+          "title": "Nikolai Dubovskoi - Calm Before the Storm - Google Art Project.jpg",
+          "author": "Nikolay Nikanorovich Dubovskoy",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Ostrouhov_Siverko.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ostrouhov_Siverko.jpg",
+          "title": "Ostrouhov Siverko.jpg",
+          "author": "Ilya Ostroukhov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/Ivan_Shishkin_-_%D0%A0%D0%BE%D0%B6%D1%8C_-_Google_Art_Project.jpg/1280px-Ivan_Shishkin_-_%D0%A0%D0%BE%D0%B6%D1%8C_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ivan_Shishkin_-_%D0%A0%D0%BE%D0%B6%D1%8C_-_Google_Art_Project.jpg",
+          "title": "Ivan Shishkin - Рожь - Google Art Project.jpg",
+          "author": "Ivan Shishkin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/0/05/Fedor_Vasilev_-_The_Thaw.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Fedor_Vasilev_-_The_Thaw.JPG",
+          "title": "Fedor Vasilev - The Thaw.JPG",
+          "author": "Fyodor Vasilyev",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/94/Polenov_Overgrown_pond_GRM_1880.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Polenov_Overgrown_pond_GRM_1880.jpg",
+          "title": "Polenov Overgrown pond GRM 1880.jpg",
+          "author": "Vasily Polenov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/%D0%A0%D1%8B%D0%BB%D0%BE%D0%B2_%D0%90%D1%80%D0%BA%D0%B0%D0%B4%D0%B8%D0%B9_%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%D0%BE%D0%B2%D0%B8%D1%87_%D0%97%D0%B5%D0%BB%D0%B5%D0%BD%D1%8B%D0%B9_%D1%88%D1%83%D0%BC._1902_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%A0%D1%8B%D0%BB%D0%BE%D0%B2_%D0%90%D1%80%D0%BA%D0%B0%D0%B4%D0%B8%D0%B9_%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%D0%BE%D0%B2%D0%B8%D1%87_%D0%97%D0%B5%D0%BB%D0%B5%D0%BD%D1%8B%D0%B9_%D1%88%D1%83%D0%BC._1902_2.jpg",
+          "title": "Рылов Аркадий Александрович Зеленый шум. 1902 2.jpg",
+          "author": "Arkady Rylov",
+          "license": "Public domain"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -1771,16 +1860,20 @@
     "животные Африки: Зебра",
     "животные Африки: Гепард",
     "животные Африки: Горилла",
-    "животные Африки: Шимпанзе"
+    "животные Африки: Шимпанзе",
+    "пейзажи русских художников: Константин Юон|Мартовское солнце",
+    "пейзажи русских художников: Аполлинарий Васнецов|Московский Кремль при Иване Калите",
+    "пейзажи русских художников: Борис Кустодиев|Масленица",
+    "пейзажи русских художников: Константин Коровин|Зимой",
+    "пейзажи русских художников: Николай Дубовской|Притихло",
+    "пейзажи русских художников: Илья Остроухов|Сиверко",
+    "пейзажи русских художников: Иван Шишкин|Рожь",
+    "пейзажи русских художников: Фёдор Васильев|Оттепель",
+    "пейзажи русских художников: Василий Поленов|Заросший пруд",
+    "пейзажи русских художников: Аркадий Рылов|Зелёный шум"
   ],
   "used_themes": [
-    "достопримечательности и места",
-    "актёры",
-    "картины из школьной программы",
-    "хищные птицы",
-    "пейзажи русских художников",
-    "породы собак",
-    "животные Африки"
+    "пейзажи русских художников"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -1959,7 +2052,17 @@
       "Николай Рерих|Заморские гости",
       "Аркадий Рылов|В голубом просторе",
       "Игорь Грабарь|Февральская лазурь",
-      "Николай Крымов|Зимний вечер"
+      "Николай Крымов|Зимний вечер",
+      "Константин Юон|Мартовское солнце",
+      "Аполлинарий Васнецов|Московский Кремль при Иване Калите",
+      "Борис Кустодиев|Масленица",
+      "Константин Коровин|Зимой",
+      "Николай Дубовской|Притихло",
+      "Илья Остроухов|Сиверко",
+      "Иван Шишкин|Рожь",
+      "Фёдор Васильев|Оттепель",
+      "Василий Поленов|Заросший пруд",
+      "Аркадий Рылов|Зелёный шум"
     ],
     "породы собак": [
       "Немецкая овчарка",
@@ -1991,6 +2094,7 @@
     "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя",
     "Вы помните эти 10 картин из школьной программы? Проверьте по фото",
     "Вы настоящий собаковод, если назовёте все 10 пород собак",
-    "Только 1 из 10 узнаёт этих животных по глазам. Проверьте себя"
+    "Только 1 из 10 узнаёт этих животных по глазам. Проверьте себя",
+    "Тест для знатоков искусства: назовите автора этих 10 картин"
   ]
 }
