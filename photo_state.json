@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-09-25",
+  "last_publish_date": "2026-10-11",
   "published": [
     {
       "date": "2026-09-24",
@@ -176,6 +176,1419 @@
           "license": "Public domain"
         }
       ]
+    },
+    {
+      "date": "2026-09-26",
+      "survey_id": "6ab81516bf4fde209feeb13d",
+      "url": "https://forms.yandex.ru/u/6ab81516bf4fde209feeb13d/",
+      "theme": "растения",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Rosa_%27Rosengr%C3%A4fin_Marie_Henriette%27_%28actm%29.jpg/1280px-Rosa_%27Rosengr%C3%A4fin_Marie_Henriette%27_%28actm%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Rosa_%27Rosengr%C3%A4fin_Marie_Henriette%27_(actm).jpg",
+          "title": "Rosa 'Rosengräfin Marie Henriette' (actm).jpg",
+          "author": "Agnes Monkelbaan",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Sunflower_head_2015_G1.jpg/1280px-Sunflower_head_2015_G1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Sunflower_head_2015_G1.jpg",
+          "title": "Sunflower head 2015 G1.jpg",
+          "author": "George Chernilevsky",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Ferocactus_wislizeni_%28Fishhook_Barrel_Cactus%29_fruit.jpg/1280px-Ferocactus_wislizeni_%28Fishhook_Barrel_Cactus%29_fruit.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ferocactus_wislizeni_(Fishhook_Barrel_Cactus)_fruit.jpg",
+          "title": "Ferocactus wislizeni (Fishhook Barrel Cactus) fruit.jpg",
+          "author": "John Owens (talk)",
+          "license": "CC BY 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Adansonia_grandidieri04.jpg/1280px-Adansonia_grandidieri04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Adansonia_grandidieri04.jpg",
+          "title": "Adansonia grandidieri04.jpg",
+          "author": "Bernard Gagnon",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Sequoia_sempervirens_MHNT.BOT.2007.52.2.jpg/1280px-Sequoia_sempervirens_MHNT.BOT.2007.52.2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Sequoia_sempervirens_MHNT.BOT.2007.52.2.jpg",
+          "title": "Sequoia sempervirens MHNT.BOT.2007.52.2.jpg",
+          "author": "Roger Culos",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Cerisier_du_Japon_Prunus_serrulata.jpg/1280px-Cerisier_du_Japon_Prunus_serrulata.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Cerisier_du_Japon_Prunus_serrulata.jpg",
+          "title": "Cerisier du Japon Prunus serrulata.jpg",
+          "author": "Myrabella",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/Fr%C3%BChlingsallee_Tulpenbl%C3%BCte_2010_%281%29.jpg/1280px-Fr%C3%BChlingsallee_Tulpenbl%C3%BCte_2010_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Fr%C3%BChlingsallee_Tulpenbl%C3%BCte_2010_(1).jpg",
+          "title": "Frühlingsallee Tulpenblüte 2010 (1).jpg",
+          "author": "Harke",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/House_-_Santa_Cruz_de_La_Palma_01.jpg/1280px-House_-_Santa_Cruz_de_La_Palma_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:House_-_Santa_Cruz_de_La_Palma_01.jpg",
+          "title": "House - Santa Cruz de La Palma 01.jpg",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Gew%C3%B6hnlicher_T%C3%BCpfelfarn_%28Polypodium_vulgare%29_auf_Spiekeroog_01.jpg/1280px-Gew%C3%B6hnlicher_T%C3%BCpfelfarn_%28Polypodium_vulgare%29_auf_Spiekeroog_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Gew%C3%B6hnlicher_T%C3%BCpfelfarn_(Polypodium_vulgare)_auf_Spiekeroog_01.jpg",
+          "title": "Gewöhnlicher Tüpfelfarn (Polypodium vulgare) auf Spiekeroog 01.jpg",
+          "author": "Stephan Sprinz",
+          "license": "CC BY 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/Nymphaea_alba_in_Duisburg.jpg/1280px-Nymphaea_alba_in_Duisburg.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Nymphaea_alba_in_Duisburg.jpg",
+          "title": "Nymphaea alba in Duisburg.jpg",
+          "author": "DerHexer",
+          "license": "CC BY-SA 3.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "survey_id": "6ab96e20969f14112fd83b0b",
+      "url": "https://forms.yandex.ru/u/6ab96e20969f14112fd83b0b/",
+      "theme": "актёры",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/4/46/Leonardo_Dicaprio_Cannes_2019.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Leonardo_Dicaprio_Cannes_2019.jpg",
+          "title": "Leonardo Dicaprio Cannes 2019.jpg",
+          "author": "Georges Biard",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Brad_Pitt-69858.jpg/1280px-Brad_Pitt-69858.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Brad_Pitt-69858.jpg",
+          "title": "Brad Pitt-69858.jpg",
+          "author": "Harald Krichel",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Angelina_Jolie-643531_%28cropped%29.jpg/1280px-Angelina_Jolie-643531_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Angelina_Jolie-643531_(cropped).jpg",
+          "title": "Angelina Jolie-643531 (cropped).jpg",
+          "author": "Harald Krichel",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Tom_Hanks_1995_WH.jpg/1280px-Tom_Hanks_1995_WH.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Tom_Hanks_1995_WH.jpg",
+          "title": "Tom Hanks 1995 WH.jpg",
+          "author": "Clinton Presidential Library",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/92/Robert_Downey%2C_Jr.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Robert_Downey,_Jr.jpg",
+          "title": "Robert Downey, Jr.jpg",
+          "author": "KabanDanish",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/57/Scarlett_Johansson_by_Gage_Skidmore_2_%28cropped%29_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Scarlett_Johansson_by_Gage_Skidmore_2_(cropped)_(cropped).jpg",
+          "title": "Scarlett Johansson by Gage Skidmore 2 (cropped) (cropped).jpg",
+          "author": "Gage Skidmore",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/57/Keanu_Reeves_%2825448963336%29_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Keanu_Reeves_(25448963336)_(2).jpg",
+          "title": "Keanu Reeves (25448963336) (2).jpg",
+          "author": "Gordon Correll",
+          "license": "CC BY-SA 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/93/Academy_Award-winning_actor_Morgan_Freeman_narrates_for_the_opening_ceremony_%2826904746425%29_%28cropped%29_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Academy_Award-winning_actor_Morgan_Freeman_narrates_for_the_opening_ceremony_(26904746425)_(cropped)_3.jpg",
+          "title": "Academy Award-winning actor Morgan Freeman narrates for the opening ceremony (26904746425) (cropped) 3.jpg",
+          "author": "DoD News Features",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Johnny_Depp-2821.jpg/1280px-Johnny_Depp-2821.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Johnny_Depp-2821.jpg",
+          "title": "Johnny Depp-2821.jpg",
+          "author": "Harald Krichel",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/20/ALPACINO_0234e_%2830401875260%29_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:ALPACINO_0234e_(30401875260)_(cropped).jpg",
+          "title": "ALPACINO 0234e (30401875260) (cropped).jpg",
+          "author": "Embajada de EEUU en la Argentina",
+          "license": "CC BY 2.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "survey_id": "6abadcf270ad373746a578ee",
+      "url": "https://forms.yandex.ru/u/6abadcf270ad373746a578ee/",
+      "theme": "животные",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/8/8b/05_%D0%90%D0%BC%D1%83%D1%80%D1%81%D0%BA%D0%B8%D0%B9-%D1%82%D0%B8%D0%B3%D1%80-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:05_%D0%90%D0%BC%D1%83%D1%80%D1%81%D0%BA%D0%B8%D0%B9-%D1%82%D0%B8%D0%B3%D1%80-1.jpg",
+          "title": "05 Амурский-тигр-1.jpg",
+          "author": "Леонид Рошка",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/1280px-African_Bush_Elephant.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:African_Bush_Elephant.jpg",
+          "title": "African Bush Elephant.jpg",
+          "author": "Muhammad Mahdi Karim Facebook\n\n\n\n\n\nThe making of this document was supported by Wikimedia CH. (Submit your project!)\nFor all the files concerned, please see the category Supported by Wikimedia CH.\n\n\nالعربية ∙ বাংলা ∙ čeština ∙ Deutsch ∙ English ∙ Esperanto ∙ español ∙ français ∙ galego ∙ हिन्दी ∙ magyar ∙ italiano ∙ 日本語 ∙ македонски ∙ Nederlands ∙ português do Brasil ∙ rumantsch ∙ русский ∙ sicilianu ∙ slovenščina ∙ தமிழ் ∙ українська ∙ 中文 ∙ +/−",
+          "license": "GFDL 1.2"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Polar_Bear_AdF.jpg/1280px-Polar_Bear_AdF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Polar_Bear_AdF.jpg",
+          "title": "Polar Bear AdF.jpg",
+          "author": "Arturo de Frias Marques",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Ailuropoda_melanoleuca_%28Panda_g%C3%A9ant%29_-_445.jpg/1280px-Ailuropoda_melanoleuca_%28Panda_g%C3%A9ant%29_-_445.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ailuropoda_melanoleuca_(Panda_g%C3%A9ant)_-_445.jpg",
+          "title": "Ailuropoda melanoleuca (Panda géant) - 445.jpg",
+          "author": "Another one of my pictures:\n\n\n\nThis photograph was taken by Medium69 (William Crochot) and released under the license stated below. You are free to use it for any purpose as long as you credit the author (William Crochot), the Source (Wikimedia Commons) and the license (CC-BY-SA 4.0) in close relation to the image.\n\n\n\n\n\nPlease do not upload an updated image here without consultation with the Author. The author would like to make corrections only at his own source RAW. This ensures that the changes are preserved.Please if you think that any changes should be required, please inform the author.Otherwise you can upload a new image with a new name. Please use one of the templates derivative or extract.",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Giraffe-closeup-head.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Giraffe-closeup-head.jpg",
+          "title": "Giraffe-closeup-head.jpg",
+          "author": "Rob Hooft",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Macropods_at_Perth_Zoo.jpg/1280px-Macropods_at_Perth_Zoo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Macropods_at_Perth_Zoo.jpg",
+          "title": "Macropods at Perth Zoo.jpg",
+          "author": "Gameraquai",
+          "license": "CC0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/13/Selfharmarm.jpg/1280px-Selfharmarm.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Selfharmarm.jpg",
+          "title": "Selfharmarm.jpg",
+          "author": "Skottniss",
+          "license": "CC0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Eilat_Dolphin_Reef_%283%29.jpg/1280px-Eilat_Dolphin_Reef_%283%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Eilat_Dolphin_Reef_(3).jpg",
+          "title": "Eilat Dolphin Reef (3).jpg",
+          "author": "טל שמע",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/0/07/African_penguins.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:African_penguins.jpg",
+          "title": "African penguins.jpg",
+          "author": "User:Salimfadhley",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Crocodylus_porosus_%28AM_LH622-2a%29.jpg/1280px-Crocodylus_porosus_%28AM_LH622-2a%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Crocodylus_porosus_(AM_LH622-2a).jpg",
+          "title": "Crocodylus porosus (AM LH622-2a).jpg",
+          "author": "",
+          "license": "CC BY 4.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-09-29",
+      "survey_id": "6abc1e6c381ea6002cd8a66c",
+      "url": "https://forms.yandex.ru/u/6abc1e6c381ea6002cd8a66c/",
+      "theme": "достопримечательности и места",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Lightning_striking_the_Eiffel_Tower_-_NOAA.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Lightning_striking_the_Eiffel_Tower_-_NOAA.jpg",
+          "title": "Lightning striking the Eiffel Tower - NOAA.jpg",
+          "author": "Gabriel Loppé",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/National_Park_Service_9-11_Statue_of_Liberty_and_WTC_fire.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:National_Park_Service_9-11_Statue_of_Liberty_and_WTC_fire.jpg",
+          "title": "National Park Service 9-11 Statue of Liberty and WTC fire.jpg",
+          "author": "National Park Service",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Taj_Mahal%2C_Agra%2C_India_edit2.jpg/1280px-Taj_Mahal%2C_Agra%2C_India_edit2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Taj_Mahal,_Agra,_India_edit2.jpg",
+          "title": "Taj Mahal, Agra, India edit2.jpg",
+          "author": "Yann; edited by King of Hearts",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Badaling_China_Great-Wall-of-China-01.jpg/1280px-Badaling_China_Great-Wall-of-China-01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Badaling_China_Great-Wall-of-China-01.jpg",
+          "title": "Badaling China Great-Wall-of-China-01.jpg",
+          "author": "CEphoto, Uwe Aranas",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Colosseum_in_Rome%2C_Italy_-_April_2007.jpg/1280px-Colosseum_in_Rome%2C_Italy_-_April_2007.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Colosseum_in_Rome,_Italy_-_April_2007.jpg",
+          "title": "Colosseum in Rome, Italy - April 2007.jpg",
+          "author": "Diliff",
+          "license": "CC BY-SA 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/80_-_Machu_Picchu_-_Juin_2009_-_edit.jpg/1280px-80_-_Machu_Picchu_-_Juin_2009_-_edit.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:80_-_Machu_Picchu_-_Juin_2009_-_edit.jpg",
+          "title": "80 - Machu Picchu - Juin 2009 - edit.jpg",
+          "author": "Martin St-Amant (S23678)",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Grand_Canyon_Hopi_Point_with_rainbow_2013.jpg/1280px-Grand_Canyon_Hopi_Point_with_rainbow_2013.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Grand_Canyon_Hopi_Point_with_rainbow_2013.jpg",
+          "title": "Grand Canyon Hopi Point with rainbow 2013.jpg",
+          "author": "Tuxyso",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Sydney_%28AU%29%2C_Opera_House_--_2019_--_3054.jpg/1280px-Sydney_%28AU%29%2C_Opera_House_--_2019_--_3054.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Sydney_(AU),_Opera_House_--_2019_--_3054.jpg",
+          "title": "Sydney (AU), Opera House -- 2019 -- 3054.jpg",
+          "author": "Dietmar Rabich",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/%D0%92%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A5%D1%80%D0%B0%D0%BC_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D0%B8%D1%8F_%D0%91%D0%BB%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE_%D1%81_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D1%81%D0%BF%D1%83%D1%81%D0%BA%D0%B0.jpg/1280px-%D0%92%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A5%D1%80%D0%B0%D0%BC_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D0%B8%D1%8F_%D0%91%D0%BB%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE_%D1%81_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D1%81%D0%BF%D1%83%D1%81%D0%BA%D0%B0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%92%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A5%D1%80%D0%B0%D0%BC_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D0%B8%D1%8F_%D0%91%D0%BB%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE_%D1%81_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D1%81%D0%BF%D1%83%D1%81%D0%BA%D0%B0.jpg",
+          "title": "Вид на Храм Василия Блаженного с Васильевского спуска.jpg",
+          "author": "Юрий Д.К.",
+          "license": "CC BY 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/21/22_Schiefer_Turm_von_St._Moritz_%28159145947%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:22_Schiefer_Turm_von_St._Moritz_(159145947).jpg",
+          "title": "22 Schiefer Turm von St. Moritz (159145947).jpg",
+          "author": "pizzodisevo 1937, from MONTEPRANDONE, Italy",
+          "license": "CC BY-SA 2.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-09-30",
+      "survey_id": "6abd70eb381ea605a941d643",
+      "url": "https://forms.yandex.ru/u/6abd70eb381ea605a941d643/",
+      "theme": "актёры",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/27/TomCruiseDec08MTV_cropped.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:TomCruiseDec08MTV_cropped.jpg",
+          "title": "TomCruiseDec08MTV cropped.jpg",
+          "author": "MTV Live at http://www.mtv.ca/live",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Denzel_Washington_2018.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Denzel_Washington_2018.jpg",
+          "title": "Denzel Washington 2018.jpg",
+          "author": "MTV UK",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/8/8b/102710.PAL.003_Ford%2C_Harrison_2010_HOF_Portrait_%28SDASM_Archives%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:102710.PAL.003_Ford,_Harrison_2010_HOF_Portrait_(SDASM_Archives).jpg",
+          "title": "102710.PAL.003 Ford, Harrison 2010 HOF Portrait (SDASM Archives).jpg",
+          "author": "SDASM Archives",
+          "license": "No restrictions"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Julia_Roberts_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Julia_Roberts_(cropped).jpg",
+          "title": "Julia Roberts (cropped).jpg",
+          "author": "KazLovesPinoe",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Meryl_Streep_%282071470089%29_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Meryl_Streep_(2071470089)_(cropped).jpg",
+          "title": "Meryl Streep (2071470089) (cropped).jpg",
+          "author": "derivative work: Wildhartlivie (talk)\nMerylstreep.jpg: Original uploader was Phoenix Hacker at en.wikipedia\nLater versions were uploaded by Rdcarter, Staecker at en.wikipedia.\n\n(Original text : Alan Light)",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Jack_Nicholson.0920.jpg/1280px-Jack_Nicholson.0920.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Jack_Nicholson.0920.jpg",
+          "title": "Jack Nicholson.0920.jpg",
+          "author": "Franz Richter (User:FRZ)",
+          "license": "CC BY-SA 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/58/Robert_De_Niro_Cannes_2016.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Robert_De_Niro_Cannes_2016.jpg",
+          "title": "Robert De Niro Cannes 2016.jpg",
+          "author": "Georges Biard",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Flickr_-_nicogenin_-_66%C3%A8me_Festival_de_Venise_%28Mostra%29_-_Sylvester_Stallone_%2826%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Flickr_-_nicogenin_-_66%C3%A8me_Festival_de_Venise_(Mostra)_-_Sylvester_Stallone_(26).jpg",
+          "title": "Flickr - nicogenin - 66ème Festival de Venise (Mostra) - Sylvester Stallone (26).jpg",
+          "author": "nicolas genin from Paris, France",
+          "license": "CC BY-SA 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Gov._Arnold_Schwarzenegger.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Gov._Arnold_Schwarzenegger.jpg",
+          "title": "Gov. Arnold Schwarzenegger.jpg",
+          "author": "US Embassy",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Bruce_Willis_by_Gage_Skidmore_2.jpg/1280px-Bruce_Willis_by_Gage_Skidmore_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Bruce_Willis_by_Gage_Skidmore_2.jpg",
+          "title": "Bruce Willis by Gage Skidmore 2.jpg",
+          "author": "Gage Skidmore",
+          "license": "CC BY-SA 3.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-01",
+      "survey_id": "6abecdd4b93f98002a072cd8",
+      "url": "https://forms.yandex.ru/u/6abecdd4b93f98002a072cd8/",
+      "theme": "животные",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/081_White_rhinoceros_%28male%29_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg/1280px-081_White_rhinoceros_%28male%29_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:081_White_rhinoceros_(male)_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg",
+          "title": "081 White rhinoceros (male) in the Kalahari Desert of Namibia Photo by Giles Laurent.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/013_Alpha_male_chimpanzee_at_Kibale_forest_National_Park_Photo_by_Giles_Laurent.jpg/1280px-013_Alpha_male_chimpanzee_at_Kibale_forest_National_Park_Photo_by_Giles_Laurent.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:013_Alpha_male_chimpanzee_at_Kibale_forest_National_Park_Photo_by_Giles_Laurent.jpg",
+          "title": "013 Alpha male chimpanzee at Kibale forest National Park Photo by Giles Laurent.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Koala_and_joey.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Koala_and_joey.jpg",
+          "title": "Koala and joey.jpg",
+          "author": "Benjamint444",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/American_flamingo_%28Phoenicopterus_ruber%29.JPG/1280px-American_flamingo_%28Phoenicopterus_ruber%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:American_flamingo_(Phoenicopterus_ruber).JPG",
+          "title": "American flamingo (Phoenicopterus ruber).JPG",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/%D0%A3%D1%88%D0%B0%D1%81%D1%82%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0.jpg/1280px-%D0%A3%D1%88%D0%B0%D1%81%D1%82%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%A3%D1%88%D0%B0%D1%81%D1%82%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0.jpg",
+          "title": "Ушастая сова.jpg",
+          "author": "Максат79",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Canis_lupus_arctos_%28Pocock%2C_1935%29.jpg/1280px-Canis_lupus_arctos_%28Pocock%2C_1935%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Canis_lupus_arctos_(Pocock,_1935).jpg",
+          "title": "Canis lupus arctos (Pocock, 1935).jpg",
+          "author": "Michael Gäbler",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/%D0%9B%D0%B8%D1%81%D0%B0-%D0%BE%D0%B3%D0%BD%D0%B5%D0%B2%D0%BA%D0%B0_%D0%BD%D0%B0_%D1%84%D0%BE%D0%BD%D0%B5_%D0%92%D0%B8%D0%BB%D1%8E%D1%87%D0%B8%D0%BD%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D0%B2%D1%83%D0%BB%D0%BA%D0%B0%D0%BD%D0%B0.jpg/1280px-%D0%9B%D0%B8%D1%81%D0%B0-%D0%BE%D0%B3%D0%BD%D0%B5%D0%B2%D0%BA%D0%B0_%D0%BD%D0%B0_%D1%84%D0%BE%D0%BD%D0%B5_%D0%92%D0%B8%D0%BB%D1%8E%D1%87%D0%B8%D0%BD%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D0%B2%D1%83%D0%BB%D0%BA%D0%B0%D0%BD%D0%B0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9B%D0%B8%D1%81%D0%B0-%D0%BE%D0%B3%D0%BD%D0%B5%D0%B2%D0%BA%D0%B0_%D0%BD%D0%B0_%D1%84%D0%BE%D0%BD%D0%B5_%D0%92%D0%B8%D0%BB%D1%8E%D1%87%D0%B8%D0%BD%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D0%B2%D1%83%D0%BB%D0%BA%D0%B0%D0%BD%D0%B0.jpg",
+          "title": "Лиса-огневка на фоне Вилючинского вулкана.jpg",
+          "author": "NadezhdaKhaustova",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Brown_bear_%28Ursus_arctos_arctos%29_running.jpg/1280px-Brown_bear_%28Ursus_arctos_arctos%29_running.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Brown_bear_(Ursus_arctos_arctos)_running.jpg",
+          "title": "Brown bear (Ursus arctos arctos) running.jpg",
+          "author": "Malene Thyssen",
+          "license": "CC BY 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Camelus_bactrianus_in_western_Mongolia_06.jpg/1280px-Camelus_bactrianus_in_western_Mongolia_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Camelus_bactrianus_in_western_Mongolia_06.jpg",
+          "title": "Camelus bactrianus in western Mongolia 06.jpg",
+          "author": "Alexandr frolov",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Whale_Shark_AdF.jpg/1280px-Whale_Shark_AdF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Whale_Shark_AdF.jpg",
+          "title": "Whale Shark AdF.jpg",
+          "author": "Arturo de Frias Marques",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-02",
+      "survey_id": "6ac011f170ad370c921c65e7",
+      "url": "https://forms.yandex.ru/u/6ac011f170ad370c921c65e7/",
+      "theme": "достопримечательности и места",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/All_Gizah_Pyramids.jpg/1280px-All_Gizah_Pyramids.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:All_Gizah_Pyramids.jpg",
+          "title": "All Gizah Pyramids.jpg",
+          "author": "Ricardo Liberato",
+          "license": "CC BY-SA 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Big_Ben_Elizabeth_Tower_London_2023_01.jpg/1280px-Big_Ben_Elizabeth_Tower_London_2023_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Big_Ben_Elizabeth_Tower_London_2023_01.jpg",
+          "title": "Big Ben Elizabeth Tower London 2023 01.jpg",
+          "author": "Julian Herzog (Website)",
+          "license": "CC BY 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Brandenburger_Tor_morgens.jpg/1280px-Brandenburger_Tor_morgens.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Brandenburger_Tor_morgens.jpg",
+          "title": "Brandenburger Tor morgens.jpg",
+          "author": "Thomas Wolf, www.foto-tw.de",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0._%D0%A1%D0%B0%D0%B3%D1%80%D0%B0%D0%B4%D0%B0_%D0%A4%D0%B0%D0%BC%D0%B8%D0%BB%D0%B8%D1%8F_-_panoramio.jpg/1280px-%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0._%D0%A1%D0%B0%D0%B3%D1%80%D0%B0%D0%B4%D0%B0_%D0%A4%D0%B0%D0%BC%D0%B8%D0%BB%D0%B8%D1%8F_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0._%D0%A1%D0%B0%D0%B3%D1%80%D0%B0%D0%B4%D0%B0_%D0%A4%D0%B0%D0%BC%D0%B8%D0%BB%D0%B8%D1%8F_-_panoramio.jpg",
+          "title": "Барселона. Саграда Фамилия - panoramio.jpg",
+          "author": "Рустам Абдрахимов",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/Christ_the_Redeemer_-_Cristo_Redentor.jpg/1280px-Christ_the_Redeemer_-_Cristo_Redentor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Christ_the_Redeemer_-_Cristo_Redentor.jpg",
+          "title": "Christ the Redeemer - Cristo Redentor.jpg",
+          "author": "Arne Müseler",
+          "license": "CC BY-SA 3.0 de"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/3Falls_Niagara.jpg/1280px-3Falls_Niagara.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:3Falls_Niagara.jpg",
+          "title": "3Falls Niagara.jpg",
+          "author": "Saffron Blaze",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Dean_Franklin_-_06.04.03_Mount_Rushmore_Monument_%28by-sa%29.jpg/1280px-Dean_Franklin_-_06.04.03_Mount_Rushmore_Monument_%28by-sa%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Dean_Franklin_-_06.04.03_Mount_Rushmore_Monument_(by-sa).jpg",
+          "title": "Dean Franklin - 06.04.03 Mount Rushmore Monument (by-sa).jpg",
+          "author": "Dean Franklin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Stonehenge%2C_Avebury_and_Associated_Sites-110977.jpg/1280px-Stonehenge%2C_Avebury_and_Associated_Sites-110977.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Stonehenge,_Avebury_and_Associated_Sites-110977.jpg",
+          "title": "Stonehenge, Avebury and Associated Sites-110977.jpg",
+          "author": "Francesco Bandarin",
+          "license": "CC BY-SA 3.0 igo"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Attica_06-13_Athens_35_Parthenon.jpg/1280px-Attica_06-13_Athens_35_Parthenon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Attica_06-13_Athens_35_Parthenon.jpg",
+          "title": "Attica 06-13 Athens 35 Parthenon.jpg",
+          "author": "A.Savin",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/The_Treasury%2C_Petra%2C_Jordan5.jpg/1280px-The_Treasury%2C_Petra%2C_Jordan5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:The_Treasury,_Petra,_Jordan5.jpg",
+          "title": "The Treasury, Petra, Jordan5.jpg",
+          "author": "Diego Delso",
+          "license": "CC BY-SA 3.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-03",
+      "survey_id": "6ac1504e898afd13b1c04593",
+      "url": "https://forms.yandex.ru/u/6ac1504e898afd13b1c04593/",
+      "theme": "растения",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Ilsfeld_-_Schozach_-_Schozacher_H%C3%B6he_-_Birke_vor_Sonnenuntergangs-Himmel_%281%29.jpg/1280px-Ilsfeld_-_Schozach_-_Schozacher_H%C3%B6he_-_Birke_vor_Sonnenuntergangs-Himmel_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ilsfeld_-_Schozach_-_Schozacher_H%C3%B6he_-_Birke_vor_Sonnenuntergangs-Himmel_(1).jpg",
+          "title": "Ilsfeld - Schozach - Schozacher Höhe - Birke vor Sonnenuntergangs-Himmel (1).jpg",
+          "author": "Roman Eisele",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/Quercus_robur.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Quercus_robur.jpg",
+          "title": "Quercus robur.jpg",
+          "author": "",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Ahornbl%C3%A4tter_%28Acer%29_im_Herbst.jpg/1280px-Ahornbl%C3%A4tter_%28Acer%29_im_Herbst.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ahornbl%C3%A4tter_(Acer)_im_Herbst.jpg",
+          "title": "Ahornblätter (Acer) im Herbst.jpg",
+          "author": "Dnalor 01",
+          "license": "CC BY-SA 3.0 at"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9d/Kuusk_Keila-Paldiski_rdt_%C3%A4%C3%A4res.jpg/1280px-Kuusk_Keila-Paldiski_rdt_%C3%A4%C3%A4res.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Kuusk_Keila-Paldiski_rdt_%C3%A4%C3%A4res.jpg",
+          "title": "Kuusk Keila-Paldiski rdt ääres.jpg",
+          "author": "Ivar Leidus",
+          "license": "CC BY-SA 3.0 ee"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Pinus_strobus_3-eheep_%285098079930%29.jpg/1280px-Pinus_strobus_3-eheep_%285098079930%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Pinus_strobus_3-eheep_(5098079930).jpg",
+          "title": "Pinus strobus 3-eheep (5098079930).jpg",
+          "author": "Superior National Forest",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Dandelion_clock_detail.jpg/1280px-Dandelion_clock_detail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Dandelion_clock_detail.jpg",
+          "title": "Dandelion clock detail.jpg",
+          "author": "che",
+          "license": "CC BY-SA 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Chamomile%40original_size.jpg/1280px-Chamomile%40original_size.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Chamomile@original_size.jpg",
+          "title": "Chamomile@original size.jpg",
+          "author": "Fir0002 20D",
+          "license": "GFDL 1.2"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Convallaria_majalis_inflorescence_-_Keila.jpg/1280px-Convallaria_majalis_inflorescence_-_Keila.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Convallaria_majalis_inflorescence_-_Keila.jpg",
+          "title": "Convallaria majalis inflorescence - Keila.jpg",
+          "author": "Ivar Leidus",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/%D0%9F%D1%80%D0%B8%D0%BC%D0%BE%D1%80%D1%81%D0%BA%D0%B8%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA_%D0%9F%D0%BE%D0%B1%D0%B5%D0%B4%D1%8B%2C_%D1%81%D0%B8%D1%80%D0%B5%D0%BD%D1%8C_%D1%81%D0%BE%D1%80%D1%82%D0%B0_%27%D0%97%D0%B0%D1%89%D0%B8%D1%82%D0%BD%D0%B8%D0%BA%D0%B0%D0%BC_%D0%91%D1%80%D0%B5%D1%81%D1%82%D0%B0%27_01.jpg/1280px-%D0%9F%D1%80%D0%B8%D0%BC%D0%BE%D1%80%D1%81%D0%BA%D0%B8%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA_%D0%9F%D0%BE%D0%B1%D0%B5%D0%B4%D1%8B%2C_%D1%81%D0%B8%D1%80%D0%B5%D0%BD%D1%8C_%D1%81%D0%BE%D1%80%D1%82%D0%B0_%27%D0%97%D0%B0%D1%89%D0%B8%D1%82%D0%BD%D0%B8%D0%BA%D0%B0%D0%BC_%D0%91%D1%80%D0%B5%D1%81%D1%82%D0%B0%27_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9F%D1%80%D0%B8%D0%BC%D0%BE%D1%80%D1%81%D0%BA%D0%B8%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA_%D0%9F%D0%BE%D0%B1%D0%B5%D0%B4%D1%8B,_%D1%81%D0%B8%D1%80%D0%B5%D0%BD%D1%8C_%D1%81%D0%BE%D1%80%D1%82%D0%B0_%27%D0%97%D0%B0%D1%89%D0%B8%D1%82%D0%BD%D0%B8%D0%BA%D0%B0%D0%BC_%D0%91%D1%80%D0%B5%D1%81%D1%82%D0%B0%27_01.jpg",
+          "title": "Приморский парк Победы, сирень сорта 'Защитникам Бреста' 01.jpg",
+          "author": "Екатерина Борисова",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/Gevlekte_orchis_%28Dactylorhiza_maculata%29._Locatie._Nationaal_Park_Lauwersmeer_02.jpg/1280px-Gevlekte_orchis_%28Dactylorhiza_maculata%29._Locatie._Nationaal_Park_Lauwersmeer_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Gevlekte_orchis_(Dactylorhiza_maculata)._Locatie._Nationaal_Park_Lauwersmeer_02.jpg",
+          "title": "Gevlekte orchis (Dactylorhiza maculata). Locatie. Nationaal Park Lauwersmeer 02.jpg",
+          "author": "Dominicus Johannes Bergsma",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-04",
+      "survey_id": "6ac2a218969f1425447c5db1",
+      "url": "https://forms.yandex.ru/u/6ac2a218969f1425447c5db1/",
+      "theme": "картины",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Aivazovsky%2C_Ivan_-_The_Ninth_Wave.jpg/1280px-Aivazovsky%2C_Ivan_-_The_Ninth_Wave.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aivazovsky,_Ivan_-_The_Ninth_Wave.jpg",
+          "title": "Aivazovsky, Ivan - The Ninth Wave.jpg",
+          "author": "Ivan Aivazovsky",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/%D0%9C%D0%BE%D0%B7%D0%B0%D0%B8%D0%BA%D0%B0_%D0%A2%D0%B0%D0%B9%D0%BD%D0%B0%D1%8F_%D0%B2%D0%B5%D1%87%D0%B5%D1%80%D1%8F_%D0%A1%D0%B8%D0%BB%D0%B8%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D0%B7%D0%B0%D0%B8%D0%BA%D0%B0_%D0%A2%D0%B0%D0%B9%D0%BD%D0%B0%D1%8F_%D0%B2%D0%B5%D1%87%D0%B5%D1%80%D1%8F_%D0%A1%D0%B8%D0%BB%D0%B8%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87.jpg",
+          "title": "Мозаика Тайная вечеря Силиванович.jpg",
+          "author": "Nikodim Silivanovich",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/La_nascita_di_Venere_%28Botticelli%29.jpg/1280px-La_nascita_di_Venere_%28Botticelli%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:La_nascita_di_Venere_(Botticelli).jpg",
+          "title": "La nascita di Venere (Botticelli).jpg",
+          "author": "Unknown authorUnknown author",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/La_ronda_de_noche%2C_por_Rembrandt_van_Rijn.jpg/1280px-La_ronda_de_noche%2C_por_Rembrandt_van_Rijn.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:La_ronda_de_noche,_por_Rembrandt_van_Rijn.jpg",
+          "title": "La ronda de noche, por Rembrandt van Rijn.jpg",
+          "author": "Rembrandt",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Vincent_Willem_van_Gogh_128.jpg/1280px-Vincent_Willem_van_Gogh_128.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Vincent_Willem_van_Gogh_128.jpg",
+          "title": "Vincent Willem van Gogh 128.jpg",
+          "author": "Vincent van Gogh",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Bathing_of_a_Red_Horse_%28Petrov-Vodkin%29.jpg/1280px-Bathing_of_a_Red_Horse_%28Petrov-Vodkin%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Bathing_of_a_Red_Horse_(Petrov-Vodkin).jpg",
+          "title": "Bathing of a Red Horse (Petrov-Vodkin).jpg",
+          "author": "Kuzma Petrov-Vodkin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Iv%C3%A1n_el_Terrible_y_su_hijo%2C_por_Ili%C3%A1_Repin.jpg/1280px-Iv%C3%A1n_el_Terrible_y_su_hijo%2C_por_Ili%C3%A1_Repin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Iv%C3%A1n_el_Terrible_y_su_hijo,_por_Ili%C3%A1_Repin.jpg",
+          "title": "Iván el Terrible y su hijo, por Iliá Repin.jpg",
+          "author": "Ilya Repin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Die_drei_Bogatyr.jpg/1280px-Die_drei_Bogatyr.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Die_drei_Bogatyr.jpg",
+          "title": "Die drei Bogatyr.jpg",
+          "author": "Viktor Vasnetsov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Valentin_Serov_-_%D0%94%D0%B5%D0%B2%D0%BE%D1%87%D0%BA%D0%B0_%D1%81_%D0%BF%D0%B5%D1%80%D1%81%D0%B8%D0%BA%D0%B0%D0%BC%D0%B8._%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%92.%D0%A1.%D0%9C%D0%B0%D0%BC%D0%BE%D0%BD%D1%82%D0%BE%D0%B2%D0%BE%D0%B9_-_Google_Art_Project.jpg/1280px-Valentin_Serov_-_%D0%94%D0%B5%D0%B2%D0%BE%D1%87%D0%BA%D0%B0_%D1%81_%D0%BF%D0%B5%D1%80%D1%81%D0%B8%D0%BA%D0%B0%D0%BC%D0%B8._%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%92.%D0%A1.%D0%9C%D0%B0%D0%BC%D0%BE%D0%BD%D1%82%D0%BE%D0%B2%D0%BE%D0%B9_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Valentin_Serov_-_%D0%94%D0%B5%D0%B2%D0%BE%D1%87%D0%BA%D0%B0_%D1%81_%D0%BF%D0%B5%D1%80%D1%81%D0%B8%D0%BA%D0%B0%D0%BC%D0%B8._%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%92.%D0%A1.%D0%9C%D0%B0%D0%BC%D0%BE%D0%BD%D1%82%D0%BE%D0%B2%D0%BE%D0%B9_-_Google_Art_Project.jpg",
+          "title": "Valentin Serov - Девочка с персиками. Портрет В.С.Мамонтовой - Google Art Project.jpg",
+          "author": "Valentin Serov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Le_matin_de_l%27_ex%C3%A9cution_des_streltsy.jpg/1280px-Le_matin_de_l%27_ex%C3%A9cution_des_streltsy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Le_matin_de_l%27_ex%C3%A9cution_des_streltsy.jpg",
+          "title": "Le matin de l' exécution des streltsy.jpg",
+          "author": "Vasily Surikov",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-05",
+      "survey_id": "6ac4233c70ad3704d034423d",
+      "url": "https://forms.yandex.ru/u/6ac4233c70ad3704d034423d/",
+      "theme": "достопримечательности и места",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Golden_Gate_Bridge_Yang_Ming_Line.jpg/1280px-Golden_Gate_Bridge_Yang_Ming_Line.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Golden_Gate_Bridge_Yang_Ming_Line.jpg",
+          "title": "Golden Gate Bridge Yang Ming Line.jpg",
+          "author": "Cary Bass",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Chichen_Itza_1.jpg/1280px-Chichen_Itza_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Chichen_Itza_1.jpg",
+          "title": "Chichen Itza 1.jpg",
+          "author": "Daniel Schwen",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Alhambra_detail.jpg/1280px-Alhambra_detail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Alhambra_detail.jpg",
+          "title": "Alhambra detail.jpg",
+          "author": "Jebulon",
+          "license": "CC0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Kranh%C3%A4user_Cologne%2C_April_2018_-01.jpg/1280px-Kranh%C3%A4user_Cologne%2C_April_2018_-01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Kranh%C3%A4user_Cologne,_April_2018_-01.jpg",
+          "title": "Kranhäuser Cologne, April 2018 -01.jpg",
+          "author": "Martin Falbisoner",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Vue_a%C3%A9rienne_du_domaine_de_Versailles_par_ToucanWings_-_Creative_Commons_By_Sa_3.0_-_083.jpg/1280px-Vue_a%C3%A9rienne_du_domaine_de_Versailles_par_ToucanWings_-_Creative_Commons_By_Sa_3.0_-_083.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Vue_a%C3%A9rienne_du_domaine_de_Versailles_par_ToucanWings_-_Creative_Commons_By_Sa_3.0_-_083.jpg",
+          "title": "Vue aérienne du domaine de Versailles par ToucanWings - Creative Commons By Sa 3.0 - 083.jpg",
+          "author": "ToucanWings",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/%D0%92%D0%B0%D1%82%D0%B8%D0%BA%D0%B0%D0%BD%2C_%D0%B2%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A1%D0%BE%D0%B1%D0%BE%D1%80_%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D0%B3%D0%BE_%D0%9F%D0%B5%D1%82%D1%80%D0%B0._-_panoramio.jpg/1280px-%D0%92%D0%B0%D1%82%D0%B8%D0%BA%D0%B0%D0%BD%2C_%D0%B2%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A1%D0%BE%D0%B1%D0%BE%D1%80_%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D0%B3%D0%BE_%D0%9F%D0%B5%D1%82%D1%80%D0%B0._-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%92%D0%B0%D1%82%D0%B8%D0%BA%D0%B0%D0%BD,_%D0%B2%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%A1%D0%BE%D0%B1%D0%BE%D1%80_%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D0%B3%D0%BE_%D0%9F%D0%B5%D1%82%D1%80%D0%B0._-_panoramio.jpg",
+          "title": "Ватикан, вид на Собор Святого Петра. - panoramio.jpg",
+          "author": "tiger rus",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Aerial_Tower_of_London.jpg/1280px-Aerial_Tower_of_London.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aerial_Tower_of_London.jpg",
+          "title": "Aerial Tower of London.jpg",
+          "author": "Rafa Esteve",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/51714-Terracota-Army.jpg/1280px-51714-Terracota-Army.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:51714-Terracota-Army.jpg",
+          "title": "51714-Terracota-Army.jpg",
+          "author": "xiquinhosilva",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Petermann_Ranges_%28AU%29%2C_Uluru-Kata_Tjuta_National_Park%2C_Uluru%2C_Kuniya_Walk_--_2019_--_3674.jpg/1280px-Petermann_Ranges_%28AU%29%2C_Uluru-Kata_Tjuta_National_Park%2C_Uluru%2C_Kuniya_Walk_--_2019_--_3674.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Petermann_Ranges_(AU),_Uluru-Kata_Tjuta_National_Park,_Uluru,_Kuniya_Walk_--_2019_--_3674.jpg",
+          "title": "Petermann Ranges (AU), Uluru-Kata Tjuta National Park, Uluru, Kuniya Walk -- 2019 -- 3674.jpg",
+          "author": "Dietmar Rabich",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Mount_Fuji_at_sunset%2C_March_2025.jpg/1280px-Mount_Fuji_at_sunset%2C_March_2025.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Mount_Fuji_at_sunset,_March_2025.jpg",
+          "title": "Mount Fuji at sunset, March 2025.jpg",
+          "author": "Romain Guy from San Francisco, USA",
+          "license": "CC0"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-06",
+      "survey_id": "6ac55ded381ea60dff591d20",
+      "url": "https://forms.yandex.ru/u/6ac55ded381ea60dff591d20/",
+      "theme": "актёры",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/53/Marlon_Brando_publicity_for_One-Eyed_Jacks.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Marlon_Brando_publicity_for_One-Eyed_Jacks.png",
+          "title": "Marlon Brando publicity for One-Eyed Jacks.png",
+          "author": "None visible/Paramount Pictures",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/68/ClintEastwoodSept10TIFF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:ClintEastwoodSept10TIFF.jpg",
+          "title": "ClintEastwoodSept10TIFF.jpg",
+          "author": "gdcgraphics at https://www.flickr.com/photos/gdcgraphics/",
+          "license": "CC BY-SA 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/4/47/AnthonyHopkins10TIFF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:AnthonyHopkins10TIFF.jpg",
+          "title": "AnthonyHopkins10TIFF.jpg",
+          "author": "gdcgraphics at https://www.flickr.com/photos/gdcgraphics/",
+          "license": "CC BY-SA 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Russ_le_Roq_%28Russell_Crowe%29%2C_1981.jpg/1280px-Russ_le_Roq_%28Russell_Crowe%29%2C_1981.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Russ_le_Roq_(Russell_Crowe),_1981.jpg",
+          "title": "Russ le Roq (Russell Crowe), 1981.jpg",
+          "author": "Rykenberg Photography",
+          "license": "CC BY 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Hugh_Jackman_by_Gage_Skidmore_3.jpg/1280px-Hugh_Jackman_by_Gage_Skidmore_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Hugh_Jackman_by_Gage_Skidmore_3.jpg",
+          "title": "Hugh Jackman by Gage Skidmore 3.jpg",
+          "author": "Gage Skidmore",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/George_Clooney_2012.jpg/1280px-George_Clooney_2012.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:George_Clooney_2012.jpg",
+          "title": "George Clooney 2012.jpg",
+          "author": "Paul Bird",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/22/Judi_Dench_2015.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Judi_Dench_2015.jpg",
+          "title": "Judi Dench 2015.jpg",
+          "author": "The National Churches Trust from London",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Cate_Blanchett-0547_%28cropped%29.jpg/1280px-Cate_Blanchett-0547_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Cate_Blanchett-0547_(cropped).jpg",
+          "title": "Cate Blanchett-0547 (cropped).jpg",
+          "author": "Harald Krichel",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Christian_Bale-7837.jpg/1280px-Christian_Bale-7837.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Christian_Bale-7837.jpg",
+          "title": "Christian Bale-7837.jpg",
+          "author": "Harald Krichel",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Joaquin_Phoenix-64908_%28cropped%29.jpg/1280px-Joaquin_Phoenix-64908_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Joaquin_Phoenix-64908_(cropped).jpg",
+          "title": "Joaquin Phoenix-64908 (cropped).jpg",
+          "author": "Harald Krichel",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-07",
+      "survey_id": "6ac6b2fab93f980028e0c6d3",
+      "url": "https://forms.yandex.ru/u/6ac6b2fab93f980028e0c6d3/",
+      "theme": "картины из школьной программы",
+      "title": "Узнаете ли вы эти 10 шедевров живописи по фрагменту? 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/%D0%A2%D1%80%D0%B8_%D0%B1%D0%BE%D0%B3%D0%B0%D1%82%D1%8B%D1%80%D1%8F.jpg/1280px-%D0%A2%D1%80%D0%B8_%D0%B1%D0%BE%D0%B3%D0%B0%D1%82%D1%8B%D1%80%D1%8F.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%A2%D1%80%D0%B8_%D0%B1%D0%BE%D0%B3%D0%B0%D1%82%D1%8B%D1%80%D1%8F.jpg",
+          "title": "Три богатыря.jpg",
+          "author": "LEhAN",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/1280px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg",
+          "title": "Mona Lisa, by Leonardo da Vinci, from C2RMF retouched.jpg",
+          "author": "Leonardo da Vinci",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Karl_Briullov%2C_The_Last_Day_of_Pompeii_%281827%E2%80%931833%29.jpg/1280px-Karl_Briullov%2C_The_Last_Day_of_Pompeii_%281827%E2%80%931833%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Karl_Briullov,_The_Last_Day_of_Pompeii_(1827%E2%80%931833).jpg",
+          "title": "Karl Briullov, The Last Day of Pompeii (1827–1833).jpg",
+          "author": "Karl Bryullov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Aleksey_Savrasov_-_Le_retour_des_corbeaux.jpg/1280px-Aleksey_Savrasov_-_Le_retour_des_corbeaux.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aleksey_Savrasov_-_Le_retour_des_corbeaux.jpg",
+          "title": "Aleksey Savrasov - Le retour des corbeaux.jpg",
+          "author": "Pierre André Leclercq",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Le_matin_de_l%27_ex%C3%A9cution_des_streltsy.jpg/1280px-Le_matin_de_l%27_ex%C3%A9cution_des_streltsy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Le_matin_de_l%27_ex%C3%A9cution_des_streltsy.jpg",
+          "title": "Le matin de l' exécution des streltsy.jpg",
+          "author": "Vasily Surikov",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Valentin_Serov_-_%D0%94%D0%B5%D0%B2%D0%BE%D1%87%D0%BA%D0%B0_%D1%81_%D0%BF%D0%B5%D1%80%D1%81%D0%B8%D0%BA%D0%B0%D0%BC%D0%B8._%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%92.%D0%A1.%D0%9C%D0%B0%D0%BC%D0%BE%D0%BD%D1%82%D0%BE%D0%B2%D0%BE%D0%B9_-_Google_Art_Project.jpg/1280px-Valentin_Serov_-_%D0%94%D0%B5%D0%B2%D0%BE%D1%87%D0%BA%D0%B0_%D1%81_%D0%BF%D0%B5%D1%80%D1%81%D0%B8%D0%BA%D0%B0%D0%BC%D0%B8._%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%92.%D0%A1.%D0%9C%D0%B0%D0%BC%D0%BE%D0%BD%D1%82%D0%BE%D0%B2%D0%BE%D0%B9_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Valentin_Serov_-_%D0%94%D0%B5%D0%B2%D0%BE%D1%87%D0%BA%D0%B0_%D1%81_%D0%BF%D0%B5%D1%80%D1%81%D0%B8%D0%BA%D0%B0%D0%BC%D0%B8._%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%92.%D0%A1.%D0%9C%D0%B0%D0%BC%D0%BE%D0%BD%D1%82%D0%BE%D0%B2%D0%BE%D0%B9_-_Google_Art_Project.jpg",
+          "title": "Valentin Serov - Девочка с персиками. Портрет В.С.Мамонтовой - Google Art Project.jpg",
+          "author": "Valentin Serov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Kramskoy_Portrait_of_a_Woman.jpg/1280px-Kramskoy_Portrait_of_a_Woman.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Kramskoy_Portrait_of_a_Woman.jpg",
+          "title": "Kramskoy Portrait of a Woman.jpg",
+          "author": "Ivan Kramskoi",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Bathing_of_a_Red_Horse_%28Petrov-Vodkin%29.jpg/1280px-Bathing_of_a_Red_Horse_%28Petrov-Vodkin%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Bathing_of_a_Red_Horse_(Petrov-Vodkin).jpg",
+          "title": "Bathing of a Red Horse (Petrov-Vodkin).jpg",
+          "author": "Kuzma Petrov-Vodkin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Aivazovsky%2C_Ivan_-_The_Ninth_Wave.jpg/1280px-Aivazovsky%2C_Ivan_-_The_Ninth_Wave.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aivazovsky,_Ivan_-_The_Ninth_Wave.jpg",
+          "title": "Aivazovsky, Ivan - The Ninth Wave.jpg",
+          "author": "Ivan Aivazovsky",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Vasnetsov_alyonushka_crop.jpg/1280px-Vasnetsov_alyonushka_crop.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Vasnetsov_alyonushka_crop.jpg",
+          "title": "Vasnetsov alyonushka crop.jpg",
+          "author": "",
+          "license": "Public domain"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-08",
+      "survey_id": "6ac805f0bf4fde002bf3f424",
+      "url": "https://forms.yandex.ru/u/6ac805f0bf4fde002bf3f424/",
+      "theme": "хищные птицы",
+      "title": "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/015_Wild_Golden_Eagle_in_flight_at_Pfyn-Finges_%28Switzerland%29_Photo_by_Giles_Laurent.jpg/1280px-015_Wild_Golden_Eagle_in_flight_at_Pfyn-Finges_%28Switzerland%29_Photo_by_Giles_Laurent.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:015_Wild_Golden_Eagle_in_flight_at_Pfyn-Finges_(Switzerland)_Photo_by_Giles_Laurent.jpg",
+          "title": "015 Wild Golden Eagle in flight at Pfyn-Finges (Switzerland) Photo by Giles Laurent.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Falco_peregrinus_-_01.jpg/1280px-Falco_peregrinus_-_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Falco_peregrinus_-_01.jpg",
+          "title": "Falco peregrinus - 01.jpg",
+          "author": "Carlos Delgado",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/American_kestrel_%2844273%29.jpg/1280px-American_kestrel_%2844273%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:American_kestrel_(44273).jpg",
+          "title": "American kestrel (44273).jpg",
+          "author": "Rhododendrites",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Buteo_buteo_juv_Log_%282%29.jpg/1280px-Buteo_buteo_juv_Log_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Buteo_buteo_juv_Log_(2).jpg",
+          "title": "Buteo buteo juv Log (2).jpg",
+          "author": "Yerpo",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Balbuzard_pecheur_Lac_de_Tunis.jpg/1280px-Balbuzard_pecheur_Lac_de_Tunis.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Balbuzard_pecheur_Lac_de_Tunis.jpg",
+          "title": "Balbuzard pecheur Lac de Tunis.jpg",
+          "author": "El Golli Mohamed",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Haliaeetus_leucocephalus_LC0195_edit_1.jpg/1280px-Haliaeetus_leucocephalus_LC0195_edit_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Haliaeetus_leucocephalus_LC0195_edit_1.jpg",
+          "title": "Haliaeetus leucocephalus LC0195 edit 1.jpg",
+          "author": "Haliaeetus_leucocephalus_LC0195.jpg: Jörg Hempel\nderivative work: Samwb123 (talk)",
+          "license": "CC BY-SA 3.0 de"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Buitre_negro.jpg/1280px-Buitre_negro.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Buitre_negro.jpg",
+          "title": "Buitre negro.jpg",
+          "author": "Juan Lacruz",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Neophron-1.jpg/1280px-Neophron-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Neophron-1.jpg",
+          "title": "Neophron-1.jpg",
+          "author": "Artemy Voikhansky",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/Bubo_bubo_portrait.jpg/1280px-Bubo_bubo_portrait.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Bubo_bubo_portrait.jpg",
+          "title": "Bubo bubo portrait.jpg",
+          "author": "Flickr user indygnome",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/%D0%9A%D0%B8%D1%80%D0%BA%D0%BA%D0%BE%D0%BB%D0%B0%D1%85%D1%82%D0%B8%2C_%D0%9A%D0%B0%D1%80%D0%B5%D0%BB%D1%8C%D1%81%D0%BA%D0%B8%D0%B9_%D0%B7%D0%BE%D0%BE%D0%BF%D0%B0%D1%80%D0%BA%2C_%D0%BF%D0%BE%D0%BB%D1%8F%D1%80%D0%BD%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0_%282%29.jpg/1280px-%D0%9A%D0%B8%D1%80%D0%BA%D0%BA%D0%BE%D0%BB%D0%B0%D1%85%D1%82%D0%B8%2C_%D0%9A%D0%B0%D1%80%D0%B5%D0%BB%D1%8C%D1%81%D0%BA%D0%B8%D0%B9_%D0%B7%D0%BE%D0%BE%D0%BF%D0%B0%D1%80%D0%BA%2C_%D0%BF%D0%BE%D0%BB%D1%8F%D1%80%D0%BD%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9A%D0%B8%D1%80%D0%BA%D0%BA%D0%BE%D0%BB%D0%B0%D1%85%D1%82%D0%B8,_%D0%9A%D0%B0%D1%80%D0%B5%D0%BB%D1%8C%D1%81%D0%BA%D0%B8%D0%B9_%D0%B7%D0%BE%D0%BE%D0%BF%D0%B0%D1%80%D0%BA,_%D0%BF%D0%BE%D0%BB%D1%8F%D1%80%D0%BD%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0_(2).jpg",
+          "title": "Киркколахти, Карельский зоопарк, полярная сова (2).jpg",
+          "author": "Avsolov",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-09",
+      "survey_id": "6ac94eb670ad370e7d5b2525",
+      "url": "https://forms.yandex.ru/u/6ac94eb670ad370e7d5b2525/",
+      "theme": "пейзажи русских художников",
+      "title": "Вы помните эти 10 картин из школьной программы? Проверьте по фото 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Aivazovsky%2C_Ivan_-_The_Ninth_Wave.jpg/1280px-Aivazovsky%2C_Ivan_-_The_Ninth_Wave.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aivazovsky,_Ivan_-_The_Ninth_Wave.jpg",
+          "title": "Aivazovsky, Ivan - The Ninth Wave.jpg",
+          "author": "Ivan Aivazovsky",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/98/Morning_in_a_Pine_Forest_%28Shishkin%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Morning_in_a_Pine_Forest_(Shishkin).jpg",
+          "title": "Morning in a Pine Forest (Shishkin).jpg",
+          "author": "Ivan Shishkin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/0857Ha._%D0%9A%D1%83%D0%B8%D0%BD%D0%B4%D0%B6%D0%B8_%D0%90.%D0%98._%D0%9B%D1%83%D0%BD%D0%BD%D0%B0%D1%8F_%D0%BD%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5.jpg/1280px-0857Ha._%D0%9A%D1%83%D0%B8%D0%BD%D0%B4%D0%B6%D0%B8_%D0%90.%D0%98._%D0%9B%D1%83%D0%BD%D0%BD%D0%B0%D1%8F_%D0%BD%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:0857Ha._%D0%9A%D1%83%D0%B8%D0%BD%D0%B4%D0%B6%D0%B8_%D0%90.%D0%98._%D0%9B%D1%83%D0%BD%D0%BD%D0%B0%D1%8F_%D0%BD%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5.jpg",
+          "title": "0857Ha. Куинджи А.И. Лунная ночь на Днепре.jpg",
+          "author": "Arkhip Kuindzhi",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Aleksey_Savrasov_-_%D0%93%D1%80%D0%B0%D1%87%D0%B8_%D0%BF%D1%80%D0%B8%D0%BB%D0%B5%D1%82%D0%B5%D0%BB%D0%B8_-_Google_Art_Project.jpg/1280px-Aleksey_Savrasov_-_%D0%93%D1%80%D0%B0%D1%87%D0%B8_%D0%BF%D1%80%D0%B8%D0%BB%D0%B5%D1%82%D0%B5%D0%BB%D0%B8_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aleksey_Savrasov_-_%D0%93%D1%80%D0%B0%D1%87%D0%B8_%D0%BF%D1%80%D0%B8%D0%BB%D0%B5%D1%82%D0%B5%D0%BB%D0%B8_-_Google_Art_Project.jpg",
+          "title": "Aleksey Savrasov - Грачи прилетели - Google Art Project.jpg",
+          "author": "Alexei Savrasov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Fedor_Vasilyev_-_%D0%9C%D0%BE%D0%BA%D1%80%D1%8B%D0%B9_%D0%BB%D1%83%D0%B3_-_Google_Art_Project.jpg/1280px-Fedor_Vasilyev_-_%D0%9C%D0%BE%D0%BA%D1%80%D1%8B%D0%B9_%D0%BB%D1%83%D0%B3_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Fedor_Vasilyev_-_%D0%9C%D0%BE%D0%BA%D1%80%D1%8B%D0%B9_%D0%BB%D1%83%D0%B3_-_Google_Art_Project.jpg",
+          "title": "Fedor Vasilyev - Мокрый луг - Google Art Project.jpg",
+          "author": "Fyodor Vasilyev",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Moscow_Courtyard_%28Polenov%2C_1878%29_-_Google_Art_Project.jpg/1280px-Moscow_Courtyard_%28Polenov%2C_1878%29_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Moscow_Courtyard_(Polenov,_1878)_-_Google_Art_Project.jpg",
+          "title": "Moscow Courtyard (Polenov, 1878) - Google Art Project.jpg",
+          "author": "Vasily Polenov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Nicholas_Roerich%2C_Guests_from_Overseas.jpg/1280px-Nicholas_Roerich%2C_Guests_from_Overseas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Nicholas_Roerich,_Guests_from_Overseas.jpg",
+          "title": "Nicholas Roerich, Guests from Overseas.jpg",
+          "author": "Nicholas Roerich",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Rylov_Blue_Expanse.jpg/1280px-Rylov_Blue_Expanse.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Rylov_Blue_Expanse.jpg",
+          "title": "Rylov Blue Expanse.jpg",
+          "author": "Arkady Rylov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Grabar_February_azure_1904_gtg.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Grabar_February_azure_1904_gtg.jpg",
+          "title": "Grabar February azure 1904 gtg.jpg",
+          "author": "Igor Grabar",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/%D0%97%D0%B8%D0%BC%D0%BD%D0%B8%D0%B9_%D0%B2%D0%B5%D1%87%D0%B5%D1%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%97%D0%B8%D0%BC%D0%BD%D0%B8%D0%B9_%D0%B2%D0%B5%D1%87%D0%B5%D1%80.jpg",
+          "title": "Зимний вечер.jpg",
+          "author": "Mikhail Guzhavin",
+          "license": "Public domain"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-10",
+      "survey_id": "6aca94ee70ad3700272cf98e",
+      "url": "https://forms.yandex.ru/u/6aca94ee70ad3700272cf98e/",
+      "theme": "породы собак",
+      "title": "Вы настоящий собаковод, если назовёте все 10 пород собак 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/20110425_German_Shepherd_Dog_8505.jpg/1280px-20110425_German_Shepherd_Dog_8505.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:20110425_German_Shepherd_Dog_8505.jpg",
+          "title": "20110425 German Shepherd Dog 8505.jpg",
+          "author": "Jakub Hałun",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/A_Golden_Retriever-9_%28Barras%29.JPG/1280px-A_Golden_Retriever-9_%28Barras%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:A_Golden_Retriever-9_(Barras).JPG",
+          "title": "A Golden Retriever-9 (Barras).JPG",
+          "author": "Barras",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/Inzell_2017_Kat_A1_ZBYSZEK_Kunert_-9513.jpg/1280px-Inzell_2017_Kat_A1_ZBYSZEK_Kunert_-9513.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Inzell_2017_Kat_A1_ZBYSZEK_Kunert_-9513.jpg",
+          "title": "Inzell 2017 Kat A1 ZBYSZEK Kunert -9513.jpg",
+          "author": "Isiwal",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Jack_Russell_Terrier_1.jpg/1280px-Jack_Russell_Terrier_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Jack_Russell_Terrier_1.jpg",
+          "title": "Jack Russell Terrier 1.jpg",
+          "author": "Plank",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/French_bulldog_in_life_jacket.jpg/1280px-French_bulldog_in_life_jacket.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:French_bulldog_in_life_jacket.jpg",
+          "title": "French bulldog in life jacket.jpg",
+          "author": "W.carter",
+          "license": "CC0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Dachshund_and_Beagle.jpg/1280px-Dachshund_and_Beagle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Dachshund_and_Beagle.jpg",
+          "title": "Dachshund and Beagle.jpg",
+          "author": "Slyronit",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/d/da/DKV_Rottweilers_Shakira_Von_Der_Korperkraft.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:DKV_Rottweilers_Shakira_Von_Der_Korperkraft.jpg",
+          "title": "DKV Rottweilers Shakira Von Der Korperkraft.jpg",
+          "author": "DogArticles",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Corgi_Puppy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Corgi_Puppy.jpg",
+          "title": "Corgi Puppy.jpg",
+          "author": "Lili7777",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Labrador_Retriever_-_Yellow.JPG/1280px-Labrador_Retriever_-_Yellow.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Labrador_Retriever_-_Yellow.JPG",
+          "title": "Labrador Retriever - Yellow.JPG",
+          "author": "Skansken",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Dalmatian_fetching_a_stick.jpg/1280px-Dalmatian_fetching_a_stick.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Dalmatian_fetching_a_stick.jpg",
+          "title": "Dalmatian fetching a stick.jpg",
+          "author": "Lucasbosch",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "survey_id": "6acbe8c670ad3730dd2cf999",
+      "url": "https://forms.yandex.ru/u/6acbe8c670ad3730dd2cf999/",
+      "theme": "животные Африки",
+      "title": "Только 1 из 10 узнаёт этих животных по глазам. Проверьте себя 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/1280px-African_Bush_Elephant.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:African_Bush_Elephant.jpg",
+          "title": "African Bush Elephant.jpg",
+          "author": "Muhammad Mahdi Karim Facebook\n\n\n\n\n\nThe making of this document was supported by Wikimedia CH. (Submit your project!)\nFor all the files concerned, please see the category Supported by Wikimedia CH.\n\n\nالعربية ∙ বাংলা ∙ čeština ∙ Deutsch ∙ English ∙ Esperanto ∙ español ∙ français ∙ galego ∙ हिन्दी ∙ magyar ∙ italiano ∙ 日本語 ∙ македонски ∙ Nederlands ∙ português do Brasil ∙ rumantsch ∙ русский ∙ sicilianu ∙ slovenščina ∙ தமிழ் ∙ українська ∙ 中文 ∙ +/−",
+          "license": "GFDL 1.2"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Giraffe-closeup-head.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Giraffe-closeup-head.jpg",
+          "title": "Giraffe-closeup-head.jpg",
+          "author": "Rob Hooft",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Kalahari_lion_%28Panthera_leo%29_male_cub_4_months.jpg/1280px-Kalahari_lion_%28Panthera_leo%29_male_cub_4_months.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Kalahari_lion_(Panthera_leo)_male_cub_4_months.jpg",
+          "title": "Kalahari lion (Panthera leo) male cub 4 months.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Leopard_%28Panthera_pardus_pardus%29_Kruger.jpg/1280px-Leopard_%28Panthera_pardus_pardus%29_Kruger.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus_pardus)_Kruger.jpg",
+          "title": "Leopard (Panthera pardus pardus) Kruger.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/075_White_rhinoceros_mother_and_her_newborn_baby_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg/1280px-075_White_rhinoceros_mother_and_her_newborn_baby_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:075_White_rhinoceros_mother_and_her_newborn_baby_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg",
+          "title": "075 White rhinoceros mother and her newborn baby in the Kalahari Desert of Namibia Photo by Giles Laurent.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b3/Hipop%C3%B3tamo_%28Hippopotamus_amphibius%29%2C_parque_nacional_de_Chobe%2C_Botsuana%2C_2018-07-28%2C_DD_82.jpg/1280px-Hipop%C3%B3tamo_%28Hippopotamus_amphibius%29%2C_parque_nacional_de_Chobe%2C_Botsuana%2C_2018-07-28%2C_DD_82.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Hipop%C3%B3tamo_(Hippopotamus_amphibius),_parque_nacional_de_Chobe,_Botsuana,_2018-07-28,_DD_82.jpg",
+          "title": "Hipopótamo (Hippopotamus amphibius), parque nacional de Chobe, Botsuana, 2018-07-28, DD 82.jpg",
+          "author": "Diego Delso",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Equus_zebra_hartmannae_-_Etosha_2015.jpg/1280px-Equus_zebra_hartmannae_-_Etosha_2015.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Equus_zebra_hartmannae_-_Etosha_2015.jpg",
+          "title": "Equus zebra hartmannae - Etosha 2015.jpg",
+          "author": "Yathin S Krishnappa",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Acinonyx_jubatus_-Southern_Namibia-8.jpg/1280px-Acinonyx_jubatus_-Southern_Namibia-8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Acinonyx_jubatus_-Southern_Namibia-8.jpg",
+          "title": "Acinonyx jubatus -Southern Namibia-8.jpg",
+          "author": "Joachim Huber",
+          "license": "CC BY-SA 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Mountain_gorilla%2C_2-year-old%2C_Mubare_Group%2C_Buhoma%2C_Bwindi_Impenetrable_Forest%2C_Uganda.jpg/1280px-Mountain_gorilla%2C_2-year-old%2C_Mubare_Group%2C_Buhoma%2C_Bwindi_Impenetrable_Forest%2C_Uganda.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Mountain_gorilla,_2-year-old,_Mubare_Group,_Buhoma,_Bwindi_Impenetrable_Forest,_Uganda.jpg",
+          "title": "Mountain gorilla, 2-year-old, Mubare Group, Buhoma, Bwindi Impenetrable Forest, Uganda.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/013_Alpha_male_chimpanzee_at_Kibale_forest_National_Park_Photo_by_Giles_Laurent.jpg/1280px-013_Alpha_male_chimpanzee_at_Kibale_forest_National_Park_Photo_by_Giles_Laurent.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:013_Alpha_male_chimpanzee_at_Kibale_forest_National_Park_Photo_by_Giles_Laurent.jpg",
+          "title": "013 Alpha male chimpanzee at Kibale forest National Park Photo by Giles Laurent.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -198,11 +1611,176 @@
     "картины: Сикстинская мадонна",
     "картины: Боярыня Морозова",
     "картины: Последний день Помпеи",
-    "картины: Утро в сосновом лесу"
+    "картины: Утро в сосновом лесу",
+    "растения: Роза",
+    "растения: Подсолнух",
+    "растения: Кактус",
+    "растения: Баобаб",
+    "растения: Секвойя",
+    "растения: Сакура",
+    "растения: Тюльпан",
+    "растения: Пальма",
+    "растения: Папоротник",
+    "растения: Кувшинка",
+    "актёры: Леонардо ДиКаприо",
+    "актёры: Брэд Питт",
+    "актёры: Анджелина Джоли",
+    "актёры: Том Хэнкс",
+    "актёры: Роберт Дауни-младший",
+    "актёры: Скарлетт Йоханссон",
+    "актёры: Киану Ривз",
+    "актёры: Морган Фриман",
+    "актёры: Джонни Депп",
+    "актёры: Аль Пачино",
+    "животные: Амурский тигр",
+    "животные: Африканский слон",
+    "животные: Белый медведь",
+    "животные: Большая панда",
+    "животные: Жираф",
+    "животные: Кенгуру",
+    "животные: Синий кит",
+    "животные: Дельфин",
+    "животные: Пингвин",
+    "животные: Крокодил",
+    "достопримечательности и места: Эйфелева башня",
+    "достопримечательности и места: Статуя Свободы",
+    "достопримечательности и места: Тадж-Махал",
+    "достопримечательности и места: Великая Китайская стена",
+    "достопримечательности и места: Колизей",
+    "достопримечательности и места: Мачу-Пикчу",
+    "достопримечательности и места: Гранд-Каньон",
+    "достопримечательности и места: Сиднейский оперный театр",
+    "достопримечательности и места: Храм Василия Блаженного",
+    "достопримечательности и места: Пизанская башня",
+    "актёры: Том Круз",
+    "актёры: Дензел Вашингтон",
+    "актёры: Харрисон Форд",
+    "актёры: Джулия Робертс",
+    "актёры: Мэрил Стрип",
+    "актёры: Джек Николсон",
+    "актёры: Роберт Де Ниро",
+    "актёры: Сильвестр Сталлоне",
+    "актёры: Арнольд Шварценеггер",
+    "актёры: Брюс Уиллис",
+    "животные: носорог",
+    "животные: шимпанзе",
+    "животные: коала",
+    "животные: фламинго",
+    "животные: сова",
+    "животные: волк",
+    "животные: лиса",
+    "животные: бурый медведь",
+    "животные: верблюд",
+    "животные: акула",
+    "достопримечательности и места: Пирамиды Гизы",
+    "достопримечательности и места: Биг-Бен",
+    "достопримечательности и места: Бранденбургские ворота",
+    "достопримечательности и места: Саграда Фамилия",
+    "достопримечательности и места: Статуя Христа-Искупителя",
+    "достопримечательности и места: Ниагарский водопад",
+    "достопримечательности и места: Гора Рашмор",
+    "достопримечательности и места: Стоунхендж",
+    "достопримечательности и места: Парфенон",
+    "достопримечательности и места: Петра",
+    "растения: Берёза",
+    "растения: Дуб",
+    "растения: Клён",
+    "растения: Ель",
+    "растения: Сосна",
+    "растения: Одуванчик",
+    "растения: Ромашка",
+    "растения: Ландыш",
+    "растения: Сирень",
+    "растения: Орхидея",
+    "картины: Девятый вал",
+    "картины: Тайная вечеря",
+    "картины: Рождение Венеры",
+    "картины: Ночной дозор",
+    "картины: Подсолнухи",
+    "картины: Купание красного коня",
+    "картины: Иван Грозный и сын его Иван",
+    "картины: Богатыри",
+    "картины: Девочка с персиками",
+    "картины: Утро стрелецкой казни",
+    "достопримечательности и места: Мост Золотые Ворота",
+    "достопримечательности и места: Чичен-Ица",
+    "достопримечательности и места: Альгамбра",
+    "достопримечательности и места: Кёльнский собор",
+    "достопримечательности и места: Версальский дворец",
+    "достопримечательности и места: Собор Святого Петра (Ватикан)",
+    "достопримечательности и места: Лондонский Тауэр",
+    "достопримечательности и места: Терракотовая армия",
+    "достопримечательности и места: Улуру",
+    "достопримечательности и места: Гора Фудзи",
+    "актёры: Марлон Брандо",
+    "актёры: Клинт Иствуд",
+    "актёры: Энтони Хопкинс",
+    "актёры: Рассел Кроу",
+    "актёры: Хью Джекман",
+    "актёры: Джордж Клуни",
+    "актёры: Джуди Денч",
+    "актёры: Кейт Бланшетт",
+    "актёры: Кристиан Бейл",
+    "актёры: Хоакин Феникс",
+    "картины из школьной программы: Три богатыря",
+    "картины из школьной программы: Мона Лиза",
+    "картины из школьной программы: Последний день Помпеи",
+    "картины из школьной программы: Грачи прилетели",
+    "картины из школьной программы: Утро стрелецкой казни",
+    "картины из школьной программы: Девочка с персиками",
+    "картины из школьной программы: Неизвестная",
+    "картины из школьной программы: Купание красного коня",
+    "картины из школьной программы: Девятый вал",
+    "картины из школьной программы: Аленушка",
+    "хищные птицы: Беркут",
+    "хищные птицы: Сапсан",
+    "хищные птицы: Пустельга",
+    "хищные птицы: Канюк",
+    "хищные птицы: Скопа",
+    "хищные птицы: Белоголовый орлан",
+    "хищные птицы: Гриф",
+    "хищные птицы: Стервятник",
+    "хищные птицы: Филин",
+    "хищные птицы: Полярная сова",
+    "пейзажи русских художников: Иван Айвазовский|Девятый вал",
+    "пейзажи русских художников: Иван Шишкин|Утро в сосновом лесу",
+    "пейзажи русских художников: Архип Куинджи|Лунная ночь на Днепре",
+    "пейзажи русских художников: Алексей Саврасов|Грачи прилетели",
+    "пейзажи русских художников: Фёдор Васильев|Мокрый луг",
+    "пейзажи русских художников: Василий Поленов|Московский дворик",
+    "пейзажи русских художников: Николай Рерих|Заморские гости",
+    "пейзажи русских художников: Аркадий Рылов|В голубом просторе",
+    "пейзажи русских художников: Игорь Грабарь|Февральская лазурь",
+    "пейзажи русских художников: Николай Крымов|Зимний вечер",
+    "породы собак: Немецкая овчарка",
+    "породы собак: Золотистый ретривер",
+    "породы собак: Сибирский хаски",
+    "породы собак: Джек-рассел-терьер",
+    "породы собак: Французский бульдог",
+    "породы собак: Такса",
+    "породы собак: Ротвейлер",
+    "породы собак: Корги",
+    "породы собак: Лабрадор-ретривер",
+    "породы собак: Далматинец",
+    "животные Африки: Африканский слон",
+    "животные Африки: Жираф",
+    "животные Африки: Лев",
+    "животные Африки: Леопард",
+    "животные Африки: Носорог",
+    "животные Африки: Бегемот",
+    "животные Африки: Зебра",
+    "животные Африки: Гепард",
+    "животные Африки: Горилла",
+    "животные Африки: Шимпанзе"
   ],
   "used_themes": [
-    "советские фильмы",
-    "картины"
+    "достопримечательности и места",
+    "актёры",
+    "картины из школьной программы",
+    "хищные птицы",
+    "пейзажи русских художников",
+    "породы собак",
+    "животные Африки"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -227,7 +1805,192 @@
       "Сикстинская мадонна",
       "Боярыня Морозова",
       "Последний день Помпеи",
-      "Утро в сосновом лесу"
+      "Утро в сосновом лесу",
+      "Девятый вал",
+      "Тайная вечеря",
+      "Рождение Венеры",
+      "Ночной дозор",
+      "Подсолнухи",
+      "Купание красного коня",
+      "Иван Грозный и сын его Иван",
+      "Богатыри",
+      "Девочка с персиками",
+      "Утро стрелецкой казни"
+    ],
+    "растения": [
+      "Роза",
+      "Подсолнух",
+      "Кактус",
+      "Баобаб",
+      "Секвойя",
+      "Сакура",
+      "Тюльпан",
+      "Пальма",
+      "Папоротник",
+      "Кувшинка",
+      "Берёза",
+      "Дуб",
+      "Клён",
+      "Ель",
+      "Сосна",
+      "Одуванчик",
+      "Ромашка",
+      "Ландыш",
+      "Сирень",
+      "Орхидея"
+    ],
+    "актёры": [
+      "Леонардо ДиКаприо",
+      "Брэд Питт",
+      "Анджелина Джоли",
+      "Том Хэнкс",
+      "Роберт Дауни-младший",
+      "Скарлетт Йоханссон",
+      "Киану Ривз",
+      "Морган Фриман",
+      "Джонни Депп",
+      "Аль Пачино",
+      "Том Круз",
+      "Дензел Вашингтон",
+      "Харрисон Форд",
+      "Джулия Робертс",
+      "Мэрил Стрип",
+      "Джек Николсон",
+      "Роберт Де Ниро",
+      "Сильвестр Сталлоне",
+      "Арнольд Шварценеггер",
+      "Брюс Уиллис",
+      "Марлон Брандо",
+      "Клинт Иствуд",
+      "Энтони Хопкинс",
+      "Рассел Кроу",
+      "Хью Джекман",
+      "Джордж Клуни",
+      "Джуди Денч",
+      "Кейт Бланшетт",
+      "Кристиан Бейл",
+      "Хоакин Феникс"
+    ],
+    "животные": [
+      "Амурский тигр",
+      "Африканский слон",
+      "Белый медведь",
+      "Большая панда",
+      "Жираф",
+      "Кенгуру",
+      "Синий кит",
+      "Дельфин",
+      "Пингвин",
+      "Крокодил",
+      "носорог",
+      "шимпанзе",
+      "коала",
+      "фламинго",
+      "сова",
+      "волк",
+      "лиса",
+      "бурый медведь",
+      "верблюд",
+      "акула"
+    ],
+    "достопримечательности и места": [
+      "Эйфелева башня",
+      "Статуя Свободы",
+      "Тадж-Махал",
+      "Великая Китайская стена",
+      "Колизей",
+      "Мачу-Пикчу",
+      "Гранд-Каньон",
+      "Сиднейский оперный театр",
+      "Храм Василия Блаженного",
+      "Пизанская башня",
+      "Пирамиды Гизы",
+      "Биг-Бен",
+      "Бранденбургские ворота",
+      "Саграда Фамилия",
+      "Статуя Христа-Искупителя",
+      "Ниагарский водопад",
+      "Гора Рашмор",
+      "Стоунхендж",
+      "Парфенон",
+      "Петра",
+      "Мост Золотые Ворота",
+      "Чичен-Ица",
+      "Альгамбра",
+      "Кёльнский собор",
+      "Версальский дворец",
+      "Собор Святого Петра (Ватикан)",
+      "Лондонский Тауэр",
+      "Терракотовая армия",
+      "Улуру",
+      "Гора Фудзи"
+    ],
+    "картины из школьной программы": [
+      "Три богатыря",
+      "Мона Лиза",
+      "Последний день Помпеи",
+      "Грачи прилетели",
+      "Утро стрелецкой казни",
+      "Девочка с персиками",
+      "Неизвестная",
+      "Купание красного коня",
+      "Девятый вал",
+      "Аленушка"
+    ],
+    "хищные птицы": [
+      "Беркут",
+      "Сапсан",
+      "Пустельга",
+      "Канюк",
+      "Скопа",
+      "Белоголовый орлан",
+      "Гриф",
+      "Стервятник",
+      "Филин",
+      "Полярная сова"
+    ],
+    "пейзажи русских художников": [
+      "Иван Айвазовский|Девятый вал",
+      "Иван Шишкин|Утро в сосновом лесу",
+      "Архип Куинджи|Лунная ночь на Днепре",
+      "Алексей Саврасов|Грачи прилетели",
+      "Фёдор Васильев|Мокрый луг",
+      "Василий Поленов|Московский дворик",
+      "Николай Рерих|Заморские гости",
+      "Аркадий Рылов|В голубом просторе",
+      "Игорь Грабарь|Февральская лазурь",
+      "Николай Крымов|Зимний вечер"
+    ],
+    "породы собак": [
+      "Немецкая овчарка",
+      "Золотистый ретривер",
+      "Сибирский хаски",
+      "Джек-рассел-терьер",
+      "Французский бульдог",
+      "Такса",
+      "Ротвейлер",
+      "Корги",
+      "Лабрадор-ретривер",
+      "Далматинец"
+    ],
+    "животные Африки": [
+      "Африканский слон",
+      "Жираф",
+      "Лев",
+      "Леопард",
+      "Носорог",
+      "Бегемот",
+      "Зебра",
+      "Гепард",
+      "Горилла",
+      "Шимпанзе"
     ]
-  }
+  },
+  "used_titles": [
+    "Узнаете ли вы эти 10 шедевров живописи по фрагменту?",
+    "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя",
+    "Вы помните эти 10 картин из школьной программы? Проверьте по фото",
+    "Вы настоящий собаковод, если назовёте все 10 пород собак",
+    "Только 1 из 10 узнаёт этих животных по глазам. Проверьте себя"
+  ]
 }
