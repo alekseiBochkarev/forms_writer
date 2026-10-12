@@ -383,6 +383,18 @@ def test_generate_intro_without_theme_has_no_theme_block(monkeypatch):
     assert "Сквозная тема" not in prompt
 
 
+def test_generate_intro_forbids_answer_words(monkeypatch):
+    """Слова-ответы передаются во вводную как запрет на упоминание."""
+    payloads = _capture_text_payloads(monkeypatch, "intro", "Текст")
+
+    generate_intro(_text_cfg(), ["Картография"], avoid_words=["Пробки", "Широта"])
+
+    prompt = payloads[0]["messages"][1]["content"]
+    assert "ЗАПРЕЩЕНО" in prompt
+    assert "Пробки" in prompt
+    assert "Широта" in prompt
+
+
 def test_generate_conclusion_includes_run_theme(monkeypatch):
     payloads = _capture_text_payloads(monkeypatch, "outro", "Спасибо")
 

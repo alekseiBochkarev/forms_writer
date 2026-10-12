@@ -26,9 +26,41 @@ REVIEW_SYSTEM = (
 # значимыми при проверке на спойлер.
 _WORD_RE = re.compile(r"[а-яёa-z]{4,}", re.IGNORECASE)
 
+# Частые служебные/обобщающие слова: сами по себе не раскрывают ответ и не
+# должны давать ложных срабатываний (например, «карты» из ответа
+# «Фрагменты карты, которые подгружаются частями»).
+_STOPWORDS = {
+    "карта", "карты", "карте", "карту", "картой", "картах", "картами", "карт",
+    "онлайн", "которые", "который", "которая", "которое", "которых", "которым",
+    "часть", "части", "частей", "частями", "можно", "нужно", "чтобы", "когда",
+    "также", "более", "менее", "между", "через", "вместе", "самый", "самых",
+    "самая", "самое", "данные", "данных", "точка", "точки", "точек", "точкой",
+    "точками", "этот", "эта", "эти", "этих", "всего", "очень", "режим",
+    "форма", "форме", "формы", "весь", "всех", "какой", "какие", "какая",
+}
+
 
 def _words(text: str) -> Set[str]:
-    return set(_WORD_RE.findall((text or "").lower()))
+    return {
+        word
+        for word in _WORD_RE.findall((text or "").lower())
+        if word not in _STOPWORDS
+    }
+
+
+def spoiler_words(text: str, correct_answers: Optional[List[str]]) -> List[str]:
+    """Слова текста, совпавшие с правильными ответами (для диагностики)."""
+    if not text:
+        return []
+    text_words = _words(text)
+    if not text_words:
+        return []
+    matched: List[str] = []
+    for answer in correct_answers or []:
+        for word in _words(str(answer)) & text_words:
+            if word not in matched:
+                matched.append(word)
+    return matched
 
 
 def contains_spoiler(text: str, correct_answers: Optional[List[str]]) -> bool:
@@ -37,15 +69,7 @@ def contains_spoiler(text: str, correct_answers: Optional[List[str]]) -> bool:
     Служит быстрой детерминированной страховкой от подсказок во вводной и в
     заголовке: точные совпадения слов (регистр и пунктуация не важны).
     """
-    if not text:
-        return False
-    text_words = _words(text)
-    if not text_words:
-        return False
-    for answer in correct_answers or []:
-        if _words(str(answer)) & text_words:
-            return True
-    return False
+    return bool(spoiler_words(text, correct_answers))
 
 
 def review_title(
@@ -217,8 +241,13 @@ def review_texts(
 
     issues: List[str] = []
     answers = _correct_answers(questions)
-    if check_intro and contains_spoiler(intro, answers):
-        issues.append("во вводной встречается слово из правильного ответа")
+    if check_intro:
+        matched = spoiler_words(intro, answers)
+        if matched:
+            issues.append(
+                "во вводной встречается слово из правильного ответа: "
+                + ", ".join(matched)
+            )
 
     try:
         data = _llm_review(

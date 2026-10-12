@@ -154,12 +154,16 @@ def _generate_texts_with_review(
 
     topics = _topics_of(questions)
     theme = (getattr(cfg, "topic", "") or "").strip()
+    # Слова-ответы запрещаем во вводной, чтобы она не раскрывала варианты.
+    avoid_words = review._correct_answers(questions)
     intro = ""
     outro = ""
     last_review: Dict[str, Any] = {"ok": True, "issues": []}
     for attempt in range(cfg.review_max_attempts + 1):
         if cfg.intro_enabled:
-            intro = generate_intro(cfg, topics, previous_intros, theme=theme)
+            intro = generate_intro(
+                cfg, topics, previous_intros, theme=theme, avoid_words=avoid_words
+            )
         if cfg.conclusion_enabled:
             outro = generate_conclusion(cfg, topics, len(questions), theme=theme)
         if not cfg.review_enabled:
@@ -201,7 +205,7 @@ def _run_new_tests(cfg) -> int:
     if not cfg.new_tests_enabled and not cfg.dry_run:
         log.error(
             "Поток новых тестов выключен. Включите его переменной "
-            "NEW_TESTS_ENABLED=true (или задайте её в .env)."
+            "NEW_TESTS_ENABLED=true (или задайте её в ..env)."
         )
         return 1
     if not cfg.new_tests_enabled and cfg.dry_run:

@@ -68,7 +68,7 @@ python -m venv .venv
 # Linux/macOS: source .venv/bin/activate
 pip install -r requirements.txt
 
-cp .env.example .env   # заполните .env
+cp ..env.example ..env   # заполните ..env
 python main.py --dry-run
 python main.py
 ```
