@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-12",
+  "last_publish_date": "2026-10-13",
   "published": [
     {
       "date": "2026-09-24",
@@ -1678,6 +1678,95 @@
           "license": "Public domain"
         }
       ]
+    },
+    {
+      "date": "2026-10-13",
+      "survey_id": "6ace9bd470ad372c0aa2bc51",
+      "url": "https://forms.yandex.ru/u/6ace9bd470ad372c0aa2bc51/",
+      "theme": "животные Африки",
+      "title": "Узнаете ли вы этих 10 животных по одной фотографии? Тест на внимательность 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Struthio_camelus_%28captive%29_in_Jardim_Zool%C3%B3gico_de_Curitiba.jpg/1280px-Struthio_camelus_%28captive%29_in_Jardim_Zool%C3%B3gico_de_Curitiba.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Struthio_camelus_(captive)_in_Jardim_Zool%C3%B3gico_de_Curitiba.jpg",
+          "title": "Struthio camelus (captive) in Jardim Zoológico de Curitiba.jpg",
+          "author": "Wilfredor",
+          "license": "CC0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c4/Meerkat_%28Suricata_suricatta%29.jpg/1280px-Meerkat_%28Suricata_suricatta%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Meerkat_(Suricata_suricatta).jpg",
+          "title": "Meerkat (Suricata suricatta).jpg",
+          "author": "Hans Hillewaert",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/African_buffalo_%28Syncerus_caffer%29_male_with_Oxpecker.jpg/1280px-African_buffalo_%28Syncerus_caffer%29_male_with_Oxpecker.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:African_buffalo_(Syncerus_caffer)_male_with_Oxpecker.jpg",
+          "title": "African buffalo (Syncerus caffer) male with Oxpecker.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Cocodrilo_del_Nilo_%28Crocodylus_niloticus%29%2C_parque_nacional_de_Chobe%2C_Botsuana%2C_2018-07-28%2C_DD_86.jpg/1280px-Cocodrilo_del_Nilo_%28Crocodylus_niloticus%29%2C_parque_nacional_de_Chobe%2C_Botsuana%2C_2018-07-28%2C_DD_86.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Cocodrilo_del_Nilo_(Crocodylus_niloticus),_parque_nacional_de_Chobe,_Botsuana,_2018-07-28,_DD_86.jpg",
+          "title": "Cocodrilo del Nilo (Crocodylus niloticus), parque nacional de Chobe, Botsuana, 2018-07-28, DD 86.jpg",
+          "author": "Diego Delso",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Crocuta_crocuta.jpg/1280px-Crocuta_crocuta.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Crocuta_crocuta.jpg",
+          "title": "Crocuta crocuta.jpg",
+          "author": "Ikiwaner",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/2012-wildebeest-fight.jpg/1280px-2012-wildebeest-fight.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:2012-wildebeest-fight.jpg",
+          "title": "2012-wildebeest-fight.jpg",
+          "author": "Yathin S Krishnappa",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Aepyceros_melampus.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aepyceros_melampus.jpg",
+          "title": "Aepyceros melampus.jpg",
+          "author": "Hans Hillewaert",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/93/Mandril.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Mandril.jpg",
+          "title": "Mandril.jpg",
+          "author": "Malene Thyssen",
+          "license": "CC BY 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Nolan_warthogs_%28Phacochoerus_africanus_africanus%29_juveniles_drinking.jpg/1280px-Nolan_warthogs_%28Phacochoerus_africanus_africanus%29_juveniles_drinking.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Nolan_warthogs_(Phacochoerus_africanus_africanus)_juveniles_drinking.jpg",
+          "title": "Nolan warthogs (Phacochoerus africanus africanus) juveniles drinking.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Marabou_stork_%28Leptoptilos_crumenifer%29_head.jpg/1280px-Marabou_stork_%28Leptoptilos_crumenifer%29_head.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Marabou_stork_(Leptoptilos_crumenifer)_head.jpg",
+          "title": "Marabou stork (Leptoptilos crumenifer) head.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -1870,10 +1959,21 @@
     "пейзажи русских художников: Иван Шишкин|Рожь",
     "пейзажи русских художников: Фёдор Васильев|Оттепель",
     "пейзажи русских художников: Василий Поленов|Заросший пруд",
-    "пейзажи русских художников: Аркадий Рылов|Зелёный шум"
+    "пейзажи русских художников: Аркадий Рылов|Зелёный шум",
+    "животные Африки: Африканский страус",
+    "животные Африки: Сурикат",
+    "животные Африки: Африканский буйвол",
+    "животные Африки: Крокодил нильский",
+    "животные Африки: Гиена пятнистая",
+    "животные Африки: Антилопа гну",
+    "животные Африки: Импала",
+    "животные Африки: Мандрил",
+    "животные Африки: Африканский бородавочник",
+    "животные Африки: Африканский марабу"
   ],
   "used_themes": [
-    "пейзажи русских художников"
+    "пейзажи русских художников",
+    "животные Африки"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -2086,7 +2186,17 @@
       "Зебра",
       "Гепард",
       "Горилла",
-      "Шимпанзе"
+      "Шимпанзе",
+      "Африканский страус",
+      "Сурикат",
+      "Африканский буйвол",
+      "Крокодил нильский",
+      "Гиена пятнистая",
+      "Антилопа гну",
+      "Импала",
+      "Мандрил",
+      "Африканский бородавочник",
+      "Африканский марабу"
     ]
   },
   "used_titles": [
@@ -2095,6 +2205,7 @@
     "Вы помните эти 10 картин из школьной программы? Проверьте по фото",
     "Вы настоящий собаковод, если назовёте все 10 пород собак",
     "Только 1 из 10 узнаёт этих животных по глазам. Проверьте себя",
-    "Тест для знатоков искусства: назовите автора этих 10 картин"
+    "Тест для знатоков искусства: назовите автора этих 10 картин",
+    "Узнаете ли вы этих 10 животных по одной фотографии? Тест на внимательность"
   ]
 }
