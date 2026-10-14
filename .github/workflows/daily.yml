@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: write
     # Бюджет LLM: 120 с * (1+1) * 3 попытки = 12 мин < 25 мин.
-    timeout-minutes: 25
+    timeout-minutes: 45
 
     steps:
       - name: Checkout

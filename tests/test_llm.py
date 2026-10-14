@@ -10,6 +10,7 @@ import requests
 from helpers import FakeResponse
 
 from llm import (
+    _build_user_prompt,
     _extract_json,
     _validate_questions,
     extract_json,
@@ -418,3 +419,62 @@ def test_generate_conclusion_returns_text(monkeypatch):
     result = generate_conclusion(_text_cfg(), ["История"], 10)
 
     assert result == "Спасибо за участие!"
+
+
+# --- творческие личности: промпт вопросов -----------------------------------
+
+
+def test_build_user_prompt_personality_focus():
+    """Тест об одной личности: все вопросы о ней, акцент на редких фактах."""
+    prompt = _build_user_prompt("Фёдор Шаляпин", 15, "ru", personality_focus=True)
+
+    assert "жизни и творчестве" in prompt
+    assert "Шаляпин" in prompt
+    assert "НЕ самые известные" in prompt
+    assert "РАЗНЫХ областей" not in prompt
+
+
+def test_build_user_prompt_personality_mix():
+    """В общий тест подмешиваются N вопросов о деятелях искусства."""
+    prompt = _build_user_prompt("общая эрудиция", 15, "ru", personality_mix=2)
+
+    assert "деятелях искусства" in prompt
+    assert "2 вопрос" in prompt
+
+
+def test_build_user_prompt_no_personality_block_by_default():
+    prompt = _build_user_prompt("общая эрудиция", 15, "ru")
+
+    assert "деятелях искусства" not in prompt
+    assert "жизни и творчестве" not in prompt
+
+
+def test_generate_questions_uses_personality_focus_from_cfg(monkeypatch):
+    """generate_questions читает cfg.personality_focus и меняет промпт."""
+    captured = {}
+
+    def fake_post(url, **kwargs):
+        captured["prompt"] = kwargs["json"]["messages"][1]["content"]
+        content = json.dumps(
+            {
+                "questions": [
+                    {
+                        "topic": "Биография",
+                        "question": "Вопрос?",
+                        "options": ["а", "б", "в", "г"],
+                        "correct_index": 0,
+                    }
+                ]
+            },
+            ensure_ascii=False,
+        )
+        return FakeResponse(
+            200, json_data={"choices": [{"message": {"content": content}}]}
+        )
+
+    monkeypatch.setattr("llm.requests.post", fake_post)
+
+    cfg = _text_cfg(topic="Фёдор Шаляпин", count=1, personality_focus=True)
+    generate_questions(cfg)
+
+    assert "жизни и творчестве" in captured["prompt"]

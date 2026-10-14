@@ -18,7 +18,14 @@ SYSTEM_PROMPT = (
 )
 
 
-def _build_user_prompt(topic: str, count: int, language: str, avoid: List[str] | None = None) -> str:
+def _build_user_prompt(
+    topic: str,
+    count: int,
+    language: str,
+    avoid: List[str] | None = None,
+    personality_focus: bool = False,
+    personality_mix: int = 0,
+) -> str:
     avoid_block = ""
     if avoid:
         listed = "\n".join(f"- {q}" for q in avoid[:150])
@@ -27,28 +34,52 @@ def _build_user_prompt(topic: str, count: int, language: str, avoid: List[str] |
             "Ниже список уже заданных вопросов — не используй их и не перефразируй:\n"
             f"{listed}\n"
         )
+    if personality_focus:
+        head = (
+            f"Составь ровно {count} вопросов о жизни и творчестве «{topic}» "
+            f"на языке «{language}».\n"
+        )
+        theme_block = (
+            "- все вопросы — об этой личности (разные грани: биография, творчество, "
+            "окружение, признание, места, редкие детали);\n"
+            "- опирайся на достоверные, но НЕ самые известные факты "
+            "(биографические редкости: кто открыл талант, где дебютировал, где музей "
+            "и т.п.); избегай общеизвестных школьных фактов и спорных формулировок;\n"
+        )
+    else:
+        head = f"Составь ровно {count} вопросов на тему «{topic}» на языке «{language}».\n"
+        theme_block = (
+            "- вопросы из РАЗНЫХ областей (история, география, наука, литература, "
+            "искусство, спорт, технологии, языкознание и т.п.), без повторов тем;\n"
+        )
+    mix_block = ""
+    if not personality_focus and personality_mix > 0:
+        mix_block = (
+            f"- включи {personality_mix} вопрос(а) с биографическими фактами о "
+            "знаменитых деятелях искусства (не самые известные факты);\n"
+        )
     return (
-        f"Составь ровно {count} вопросов на тему «{topic}» на языке «{language}».\n"
-        "Требования:\n"
-        "- вопросы из РАЗНЫХ областей (история, география, наука, литература, искусство, "
-        "спорт, технологии, языкознание и т.п.), без повторов тем;\n"
-        "- все вопросы должны быть разными и не повторять друг друга;\n"
-        "- у каждого вопроса ровно 4 варианта ответа и РОВНО ОДИН правильный;\n"
-        "- факты должны быть достоверными и однозначными, без спорных формулировок;\n"
-        "- варианты должны быть правдоподобными, но только один — верный.\n"
-        f"{avoid_block}\n"
-        "Верни JSON строго такого вида:\n"
-        "{\n"
-        '  "questions": [\n'
-        "    {\n"
-        '      "topic": "История",\n'
-        '      "question": "В каком году ... ?",\n'
-        '      "options": ["...", "...", "...", "..."],\n'
-        "      \"correct_index\": 2\n"
-        "    }\n"
-        "  ]\n"
-        "}\n"
-        "Никакого текста кроме JSON."
+        head
+        + "Требования:\n"
+        + theme_block
+        + mix_block
+        + "- все вопросы должны быть разными и не повторять друг друга;\n"
+        + "- у каждого вопроса ровно 4 варианта ответа и РОВНО ОДИН правильный;\n"
+        + "- факты должны быть достоверными и однозначными, без спорных формулировок;\n"
+        + "- варианты должны быть правдоподобными, но только один — верный.\n"
+        + f"{avoid_block}\n"
+        + "Верни JSON строго такого вида:\n"
+        + "{\n"
+        + '  "questions": [\n'
+        + "    {\n"
+        + '      "topic": "История",\n'
+        + '      "question": "В каком году ... ?",\n'
+        + '      "options": ["...", "...", "...", "..."],\n'
+        + '      "correct_index": 2\n'
+        + "    }\n"
+        + "  ]\n"
+        + "}\n"
+        + "Никакого текста кроме JSON."
     )
 
 
@@ -342,14 +373,29 @@ def generate_questions(cfg, avoid: List[str] | None = None) -> List[Dict[str, An
 
     avoid — список ранее заданных вопросов, которые повторять не нужно.
     Возвращает список словарей: topic, question, options[4], correct_index.
+
+    Если `cfg.personality_focus` включён — все вопросы об одной личности
+    (`cfg.topic`); иначе при `cfg.personality_mix_count > 0` в общий тест
+    добавляются вопросы о деятелях искусства.
     """
+    personality_focus = bool(getattr(cfg, "personality_focus", False))
+    personality_mix = (
+        0 if personality_focus else int(getattr(cfg, "personality_mix_count", 0) or 0)
+    )
     payload = {
         "model": cfg.llm_model,
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
             {
                 "role": "user",
-                "content": _build_user_prompt(cfg.topic, cfg.count, cfg.language, avoid),
+                "content": _build_user_prompt(
+                    cfg.topic,
+                    cfg.count,
+                    cfg.language,
+                    avoid,
+                    personality_focus,
+                    personality_mix,
+                ),
             },
         ],
         "temperature": cfg.llm_temperature,

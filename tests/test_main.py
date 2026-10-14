@@ -13,6 +13,7 @@ from dedup import DuplicateChecker
 from state import today_utc
 from main import (
     _choose_new_tests_theme,
+    _choose_personality,
     _collect_unique_questions,
     _generate_texts_with_review,
     _run_new_tests,
@@ -185,6 +186,27 @@ def test_collect_unique_keeps_previous_questions_on_failure(monkeypatch):
     ]
 
 
+def test_collect_unique_applies_factcheck(monkeypatch):
+    """Факт-чек отбрасывает недостоверные вопросы до накопления."""
+    good = _question()
+    bad = {**_question(), "question": "Сомнительный факт?"}
+
+    monkeypatch.setattr(
+        "main.generate_questions", lambda cfg, avoid=None: [good, bad]
+    )
+    monkeypatch.setattr(
+        "main.factcheck.filter_questions",
+        lambda cfg, questions: [
+            q for q in questions if q["question"] != "Сомнительный факт?"
+        ],
+    )
+
+    cfg = types.SimpleNamespace(count=1)
+    result = _collect_unique_questions(cfg, [], DuplicateChecker())
+
+    assert [q["question"] for q in result] == ["В каком году?"]
+
+
 # --- _generate_texts_with_review --------------------------------------------
 
 
@@ -279,6 +301,7 @@ def _new_tests_cfg(state_path, **overrides):
         "new_tests_publish_vk": False,
         "new_tests_topics": ["советское кино", "кулинария"],
         "new_tests_pass_scores": [7, 8],
+        "new_tests_personalities": ["Фёдор Шаляпин", "Михаил Врубель"],
         "questions_file": None,
         "dry_run": True,
         "force": True,
@@ -297,6 +320,9 @@ def _new_tests_cfg(state_path, **overrides):
     cfg.effective_new_tests_topics = lambda: list(cfg.new_tests_topics)
     cfg.effective_new_tests_min_questions = lambda: cfg.new_tests_min_questions
     cfg.effective_new_tests_pass_scores = lambda: list(cfg.new_tests_pass_scores)
+    cfg.effective_new_tests_personalities = lambda: list(
+        cfg.new_tests_personalities or []
+    )
     return cfg
 
 
@@ -343,6 +369,45 @@ def test_run_new_tests_dry_run_bypasses_disabled_gate(monkeypatch, tmp_path):
     )
 
     assert _run_new_tests(cfg) == 0
+
+
+# --- творческие личности -----------------------------------------------------
+
+
+def test_choose_personality_rotates_and_resets():
+    cfg = _new_tests_cfg("x", new_tests_personalities=["A", "B"])
+
+    state = {"used_personalities": ["A"]}
+    assert _choose_personality(cfg, state) == "B"
+
+    state = {"used_personalities": ["A", "B"]}
+    picked = _choose_personality(cfg, state)
+    assert picked in {"A", "B"}
+    assert state["used_personalities"] == []
+
+
+def test_run_new_tests_personality_topic_selects_person(monkeypatch, tmp_path):
+    """Спецтема «творческая личность» → конкретная личность и режим фокуса."""
+    captured = {}
+
+    def fake_collect(cfg, history, checker):
+        captured["topic"] = cfg.topic
+        captured["focus"] = cfg.personality_focus
+        return [_question() for _ in range(cfg.count)]
+
+    monkeypatch.setattr("main._collect_unique_questions", fake_collect)
+
+    cfg = _new_tests_cfg(
+        tmp_path / "new_state.json",
+        new_tests_topics=["творческая личность"],
+        new_tests_personalities=["Фёдор Шаляпин", "Михаил Врубель"],
+        new_tests_count=1,
+        new_tests_min_questions=1,
+    )
+
+    assert _run_new_tests(cfg) == 0
+    assert captured["focus"] is True
+    assert captured["topic"] in {"Фёдор Шаляпин", "Михаил Врубель"}
 
 
 class _NewTestsClientFactory:
@@ -414,6 +479,39 @@ def test_run_new_tests_publishes_and_writes_state(monkeypatch, tmp_path):
     assert state["published"][0]["review"] == {"ok": True, "issues": []}
     assert state["asked_questions"]
     assert state["used_themes"] == [state["published"][0]["topic"]]
+
+
+def test_run_new_tests_personality_writes_marker_and_person(monkeypatch, tmp_path):
+    """Спецтема: в used_themes — маркер, в used_personalities — личность."""
+    state_path = tmp_path / "new_state.json"
+    monkeypatch.setattr("main.YandexFormsClient", _NewTestsClientFactory())
+    monkeypatch.setattr(
+        "main.publish_questions", lambda cfg, q, c, intro="", outro="": "sid-1"
+    )
+    monkeypatch.setattr("main.publish_announcement", lambda *a, **k: [])
+
+    cfg = _new_tests_cfg(
+        state_path,
+        dry_run=False,
+        force=True,
+        questions_file=str(SAMPLES),
+        llm_api_key="",
+        new_tests_topics=["творческая личность"],
+        new_tests_personalities=["Фёдор Шаляпин", "Михаил Врубель"],
+        new_tests_count=10,
+        new_tests_min_questions=10,
+    )
+
+    assert _run_new_tests(cfg) == 0
+
+    from state import load_state
+
+    state = load_state(str(state_path))
+    person = state["published"][0]["topic"]
+    assert person in {"Фёдор Шаляпин", "Михаил Врубель"}
+    assert state["published"][0]["personality"] == person
+    assert state["used_themes"] == ["творческая личность"]
+    assert state["used_personalities"] == [person]
 
 
 def test_run_new_tests_daily_guard_blocks_second_run(monkeypatch, tmp_path):
