@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-13",
+  "last_publish_date": "2026-10-14",
   "published": [
     {
       "date": "2026-09-24",
@@ -1767,6 +1767,95 @@
           "license": "CC BY-SA 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-10-14",
+      "survey_id": "6acfde8d70ad374742a2bc49",
+      "url": "https://forms.yandex.ru/u/6acfde8d70ad374742a2bc49/",
+      "theme": "породы собак",
+      "title": "Узнаете ли вы этих 10 собак по одной фотографии? 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/AKC_Helena_Fall_Dog_Show_2011_%286187041897%29.jpg/1280px-AKC_Helena_Fall_Dog_Show_2011_%286187041897%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:AKC_Helena_Fall_Dog_Show_2011_(6187041897).jpg",
+          "title": "AKC Helena Fall Dog Show 2011 (6187041897).jpg",
+          "author": "SheltieBoy from USA",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Beagle_puppy_Cadet_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Beagle_puppy_Cadet_2.jpg",
+          "title": "Beagle puppy Cadet 2.jpg",
+          "author": "Soccersmp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Boxer_female_brown.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Boxer_female_brown.jpg",
+          "title": "Boxer female brown.jpg",
+          "author": "Flickr user boxercab",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Rocky_m%C3%A9g_mindig_b%C3%BCd%C3%B6s.jpg/1280px-Rocky_m%C3%A9g_mindig_b%C3%BCd%C3%B6s.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Rocky_m%C3%A9g_mindig_b%C3%BCd%C3%B6s.jpg",
+          "title": "Rocky még mindig büdös.jpg",
+          "author": "Johannes Maximilian",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/59/Blue_Merle_Shetland_Sheepdog.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Blue_Merle_Shetland_Sheepdog.jpg",
+          "title": "Blue Merle Shetland Sheepdog.jpg",
+          "author": "Frightenedhamsterr",
+          "license": "CC0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Dobermann_Father-and-son.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Dobermann_Father-and-son.jpg",
+          "title": "Dobermann Father-and-son.jpg",
+          "author": "Fran Hogan",
+          "license": "CC BY 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/3/3a/A_St._Bernard_dog_with_barrel.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:A_St._Bernard_dog_with_barrel.JPG",
+          "title": "A St. Bernard dog with barrel.JPG",
+          "author": "BKP",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/8/85/Pug_fawn.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Pug_fawn.jpg",
+          "title": "Pug fawn.jpg",
+          "author": "Canarian",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Blubble_Head_English_Chihuahua_-_Warhol.jpg/1280px-Blubble_Head_English_Chihuahua_-_Warhol.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Blubble_Head_English_Chihuahua_-_Warhol.jpg",
+          "title": "Blubble Head English Chihuahua - Warhol.jpg",
+          "author": "Carlos.ferreira.rejas",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/3/30/%D0%9F%D0%BE%D0%BC%D0%B5%D1%80%D0%B0%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_%D1%88%D0%BF%D0%B8%D1%86_%28Pomeranian%29_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9F%D0%BE%D0%BC%D0%B5%D1%80%D0%B0%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_%D1%88%D0%BF%D0%B8%D1%86_(Pomeranian)_01.jpg",
+          "title": "Померанский шпиц (Pomeranian) 01.jpg",
+          "author": "Novoklimov",
+          "license": "CC0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -1969,11 +2058,22 @@
     "животные Африки: Импала",
     "животные Африки: Мандрил",
     "животные Африки: Африканский бородавочник",
-    "животные Африки: Африканский марабу"
+    "животные Африки: Африканский марабу",
+    "породы собак: Пудель",
+    "породы собак: Бигль",
+    "породы собак: Боксер",
+    "породы собак: Шарпей",
+    "породы собак: Шелти",
+    "породы собак: Доберман",
+    "породы собак: Сенбернар",
+    "породы собак: Мопс",
+    "породы собак: Чихуахуа",
+    "породы собак: Померанский шпиц"
   ],
   "used_themes": [
     "пейзажи русских художников",
-    "животные Африки"
+    "животные Африки",
+    "породы собак"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -2174,7 +2274,17 @@
       "Ротвейлер",
       "Корги",
       "Лабрадор-ретривер",
-      "Далматинец"
+      "Далматинец",
+      "Пудель",
+      "Бигль",
+      "Боксер",
+      "Шарпей",
+      "Шелти",
+      "Доберман",
+      "Сенбернар",
+      "Мопс",
+      "Чихуахуа",
+      "Померанский шпиц"
     ],
     "животные Африки": [
       "Африканский слон",
@@ -2206,6 +2316,7 @@
     "Вы настоящий собаковод, если назовёте все 10 пород собак",
     "Только 1 из 10 узнаёт этих животных по глазам. Проверьте себя",
     "Тест для знатоков искусства: назовите автора этих 10 картин",
-    "Узнаете ли вы этих 10 животных по одной фотографии? Тест на внимательность"
+    "Узнаете ли вы этих 10 животных по одной фотографии? Тест на внимательность",
+    "Узнаете ли вы этих 10 собак по одной фотографии?"
   ]
 }
