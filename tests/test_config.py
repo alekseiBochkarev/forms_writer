@@ -9,6 +9,7 @@ from config import (
     DEFAULT_PHOTO_SOURCES,
     DEFAULT_PHOTO_THEMES,
     KNOWN_PHOTO_SOURCES,
+    PERSONALITY_TOPIC,
     load_config,
 )
 
@@ -281,6 +282,23 @@ def test_new_tests_defaults():
     assert cfg.new_tests_state_file == "new_state.json"
     assert cfg.new_tests_tg_target_channel == "@qa_helper_draft"
     assert cfg.new_tests_publish_vk is False
+
+
+def test_personality_defaults():
+    """Спецтема «творческая личность»: список личностей и микс по умолчанию."""
+    cfg = load_config({"dry_run": True}, require_questions=False)
+
+    assert PERSONALITY_TOPIC in cfg.effective_new_tests_topics()
+    assert cfg.personality_mix_count == 1
+    persons = cfg.effective_new_tests_personalities()
+    assert persons
+    assert "Фёдор Шаляпин" in persons
+
+
+def test_personality_mix_count_from_env(monkeypatch):
+    monkeypatch.setenv("PERSONALITY_MIX_COUNT", "0")
+    cfg = load_config({"dry_run": True}, require_questions=False)
+    assert cfg.personality_mix_count == 0
 
 
 def test_new_tests_pass_scores_parsing():

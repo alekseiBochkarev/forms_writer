@@ -23,9 +23,10 @@ import random
 import sys
 from typing import Any, Dict, List, Tuple
 
+import factcheck
 import photo_flow
 import review
-from config import load_config
+from config import PERSONALITY_TOPIC, load_config
 from dedup import DuplicateChecker
 from llm import generate_conclusion, generate_intro, generate_questions
 from publisher import publish_announcement
@@ -97,6 +98,7 @@ def _collect_unique_questions(cfg, history: List[str], checker: DuplicateChecker
         except Exception as exc:  # noqa: BLE001 - транзиентный сбой одной попытки
             log.warning("Попытка %s: не удалось получить вопросы (%s)", attempt, exc)
             continue
+        batch = factcheck.filter_questions(cfg, batch)
         for q in batch:
             if checker.is_duplicate(q["question"]):
                 log.info("  повтор, пропускаю: %s", q["question"])
@@ -154,12 +156,16 @@ def _generate_texts_with_review(
 
     topics = _topics_of(questions)
     theme = (getattr(cfg, "topic", "") or "").strip()
+    # Слова-ответы запрещаем во вводной, чтобы она не раскрывала варианты.
+    avoid_words = review._correct_answers(questions)
     intro = ""
     outro = ""
     last_review: Dict[str, Any] = {"ok": True, "issues": []}
     for attempt in range(cfg.review_max_attempts + 1):
         if cfg.intro_enabled:
-            intro = generate_intro(cfg, topics, previous_intros, theme=theme)
+            intro = generate_intro(
+                cfg, topics, previous_intros, theme=theme, avoid_words=avoid_words
+            )
         if cfg.conclusion_enabled:
             outro = generate_conclusion(cfg, topics, len(questions), theme=theme)
         if not cfg.review_enabled:
@@ -196,6 +202,20 @@ def _choose_new_tests_theme(cfg, state: Dict[str, Any]) -> str | None:
     return random.choice(candidates)
 
 
+def _choose_personality(cfg, state: Dict[str, Any]) -> str | None:
+    """Выбрать творческую личность для тематического выпуска (с ротацией)."""
+    persons = cfg.effective_new_tests_personalities()
+    used = list(state.get("used_personalities") or [])
+    candidates = [person for person in persons if person not in used]
+    if not candidates:
+        log.warning("Все творческие личности использованы — сбрасываю список")
+        state["used_personalities"] = []
+        candidates = persons
+    if not candidates:
+        return None
+    return random.choice(candidates)
+
+
 def _run_new_tests(cfg) -> int:
     """Отдельный поток «новых тестов»: свои состояние, темы и канал."""
     if not cfg.new_tests_enabled and not cfg.dry_run:
@@ -226,14 +246,33 @@ def _run_new_tests(cfg) -> int:
         log.error("Не удалось выбрать тему нового теста")
         return 1
 
+    # Тема, выбранная для ротации (маркер для спецтемы сохраняем отдельно).
+    selected_theme = theme
+    personality: str | None = None
+    if theme == PERSONALITY_TOPIC:
+        personality = _choose_personality(cfg, state_data)
+        if not personality:
+            log.error("Не удалось выбрать творческую личность для выпуска")
+            return 1
+        theme = personality
+        cfg.personality_focus = True
+        log.info("Тематический выпуск о творческой личности: %s", personality)
+
     # На время выпуска подменяем эрудиционные настройки на параметры потока.
     cfg.topic = theme
     cfg.count = cfg.new_tests_count
-    cfg.survey_name = cfg.new_tests_survey_name
+    cfg.pass_scores = random.choice(cfg.effective_new_tests_pass_scores())
+    if personality:
+        cfg.survey_name = (
+            f"{personality}: тест на {cfg.pass_scores}/{cfg.count} вопросов"
+        )
+    else:
+        cfg.survey_name = cfg.new_tests_survey_name
     # Новый поток всегда создаёт новую форму: --survey-id для него игнорируется.
     cfg.yandex_survey_id = None
-    cfg.pass_scores = random.choice(cfg.effective_new_tests_pass_scores())
     cfg.segments = None
+    # Микс личностей работает для общих тем; при фокусе на одной личности его
+    # отключает сам генератор (см. llm.generate_questions).
     log.info(
         "Новый тест: тема «%s», вопросов: %s, порог: %s",
         theme,
@@ -318,6 +357,7 @@ def _run_new_tests(cfg) -> int:
             "survey_id": survey_id,
             "url": public_url,
             "topic": theme,
+            "personality": personality,
             "intro": intro,
             "outro": outro,
             "review": review_result,
@@ -327,8 +367,12 @@ def _run_new_tests(cfg) -> int:
     asked.extend(q["question"] for q in questions)
     state_data["asked_questions"] = asked[-500:]
     used_themes = state_data.setdefault("used_themes", [])
-    if theme not in used_themes:
-        used_themes.append(theme)
+    if selected_theme not in used_themes:
+        used_themes.append(selected_theme)
+    if personality:
+        used_personalities = state_data.setdefault("used_personalities", [])
+        if personality not in used_personalities:
+            used_personalities.append(personality)
     save_state(cfg.new_tests_state_file, state_data)
     log.info("Состояние сохранено: %s", cfg.new_tests_state_file)
     return 0
@@ -476,7 +520,11 @@ def main() -> int:
             checker.add(q["question"])
             questions.append(q)
     else:
-        questions = _collect_unique_questions(cfg, history, checker)
+        try:
+            questions = _collect_unique_questions(cfg, history, checker)
+        except RuntimeError as exc:
+            log.error("%s", exc)
+            return 1
 
     log.info("Вопросов получено: %s", len(questions))
     for i, q in enumerate(questions, 1):

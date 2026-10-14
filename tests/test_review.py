@@ -211,6 +211,37 @@ def test_contains_spoiler_short_words_do_not_trigger():
     assert review.contains_spoiler("Начнём игру", ["идут", "он"]) is False
 
 
+def test_contains_spoiler_ignores_generic_words_in_answer():
+    """Общие слова из длинного ответа не считаются спойлером, значимые — да."""
+    answer = "Фрагменты карты, которые подгружаются частями"
+    assert review.contains_spoiler("Поговорим про карты и онлайн", [answer]) is False
+    assert review.contains_spoiler("Это фрагменты", [answer]) is True
+
+
+def test_spoiler_words_reports_matches():
+    """spoiler_words возвращает совпавшие слова из правильных ответов."""
+    assert set(
+        review.spoiler_words("Это пробки и картография", ["Пробки", "Картография"])
+    ) == {"пробки", "картография"}
+    assert review.spoiler_words("обычный текст", ["Пробки"]) == []
+
+
+def test_review_texts_issue_names_spoiler_word(monkeypatch):
+    """При спойлере в issue указано конкретное слово из ответа."""
+    monkeypatch.setattr(review, "_llm_review", lambda *a, **k: {"ok": True, "issues": []})
+    question = {
+        "topic": "Карты",
+        "question": "Как называют загруженность дорог?",
+        "options": ["Пробки", "Гололёд", "Развязки", "Парковки"],
+        "correct_index": 0,
+    }
+
+    result = review.review_texts(_cfg(), "Поговорим про пробки", "outro", [question])
+
+    assert result["ok"] is False
+    assert any("пробки" in issue for issue in result["issues"])
+
+
 def test_contains_spoiler_word_forms_not_detected():
     """Документирует ограничение: ловятся только точные словоформы.
 

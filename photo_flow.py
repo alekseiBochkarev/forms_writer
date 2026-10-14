@@ -814,7 +814,7 @@ def run(cfg: Config, args: Any = None) -> int:
     if not cfg.photo_flow_enabled:
         log.error(
             "Фото-поток выключен. Включите его переменной окружения "
-            "PHOTO_FLOW_ENABLED=true (или задайте её в .env)."
+            "PHOTO_FLOW_ENABLED=true (или задайте её в ..env)."
         )
         return 1
 

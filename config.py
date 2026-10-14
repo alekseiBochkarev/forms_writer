@@ -1,6 +1,6 @@
 """Загрузка и проверка настроек приложения.
 
-Все настройки берутся из переменных окружения (или файла .env при локальном
+Все настройки берутся из переменных окружения (или файла ..env при локальном
 запуске). Для GitHub Actions значения задаются через Secrets.
 """
 
@@ -190,6 +190,7 @@ DEFAULT_PHOTO_TITLE_TEMPLATES: Dict[str, List[str]] = {
 # ностальгические и узнаваемые).
 DEFAULT_NEW_TESTS_TOPICS = [
     "общая эрудиция",
+    "творческая личность",
     "советское кино",
     "советские актёры",
     "русские народные сказки",
@@ -200,6 +201,39 @@ DEFAULT_NEW_TESTS_TOPICS = [
     "литература",
     "наука и техника",
 ]
+
+# Маркер темы «творческая личность»: для такого выпуска автоматически выбирается
+# одна конкретная узнаваемая личность из списка ниже (с ротацией).
+PERSONALITY_TOPIC = "творческая личность"
+
+# Встроенный список узнаваемых деятелей искусства и культуры для отдельных
+# тематических выпусков (одна личность на выпуск). Список можно переопределить
+# переменной NEW_TESTS_PERSONALITIES.
+DEFAULT_ARTIST_PERSONALITIES = [
+    "Фёдор Шаляпин",
+    "Михаил Врубель",
+    "Илья Репин",
+    "Иван Айвазовский",
+    "Николай Рерих",
+    "Исаак Левитан",
+    "Валентин Серов",
+    "Пётр Чайковский",
+    "Сергей Рахманинов",
+    "Сергей Прокофьев",
+    "Дмитрий Шостакович",
+    "Антон Чехов",
+    "Александр Пушкин",
+    "Лев Толстой",
+    "Фёдор Достоевский",
+    "Михаил Булгаков",
+    "Марина Цветаева",
+    "Анна Ахматова",
+    "Сергей Есенин",
+    "Владимир Маяковский",
+]
+
+# Сколько вопросов о творческих личностях подмешивать в общий тест эрудиции.
+DEFAULT_PERSONALITY_MIX_COUNT = 1
 
 # Порог по умолчанию для потока новых тестов: 15 вопросов, порог 10/15
 # (формат ЗУМ/БУМ, подтверждён исследованием Дзена §9).
@@ -328,6 +362,19 @@ class Config:
     new_tests_publish_telegram: bool = True
     new_tests_publish_vk: bool = False
 
+    # --- Творческие личности ---
+    # Список деятелей искусства для тематических выпусков «творческая личность».
+    new_tests_personalities: Optional[List[str]] = None
+    # Сколько вопросов о личностях подмешивать в общий тест эрудиции.
+    personality_mix_count: int = DEFAULT_PERSONALITY_MIX_COUNT
+    # Признак тематического выпуска об одной личности (выставляется в рантайме).
+    personality_focus: bool = False
+
+    # --- Факт-чекинг вопросов ---
+    factcheck_enabled: bool = True
+    # Модель факт-чека; пусто — используется модель ревью / LLM_MODEL.
+    factcheck_model: str = ""
+
     def validate(self, require_questions: bool = True) -> None:
         if self.mode == "photo":
             self._validate_photo(require_questions)
@@ -444,8 +491,20 @@ class Config:
             return list(self.new_tests_pass_scores)
         return list(DEFAULT_NEW_TESTS_PASS_SCORES)
 
+    def effective_new_tests_personalities(self) -> List[str]:
+        if self.new_tests_personalities:
+            return list(self.new_tests_personalities)
+        return list(DEFAULT_ARTIST_PERSONALITIES)
+
     def effective_review_model(self) -> str:
         return (self.review_model or "").strip() or self.llm_model
+
+    def effective_factcheck_model(self) -> str:
+        return (
+            (self.factcheck_model or "").strip()
+            or (self.review_model or "").strip()
+            or self.llm_model
+        )
 
 
 def load_config(
@@ -457,10 +516,11 @@ def load_config(
         llm_base_url=os.getenv("LLM_BASE_URL", "https://api.openai.com/v1").rstrip("/"),
         llm_model=os.getenv("LLM_MODEL", "gpt-4o-mini").strip(),
         llm_temperature=_get_float("LLM_TEMPERATURE", 0.8),
-        # Бюджет LLM: LLM_TIMEOUT * (LLM_RETRIES + 1 + 1) * max_attempts (main)
-        # должен укладываться в timeout-minutes workflow. Дополнительный +1 —
-        # возможный fallback-запрос на внешнюю попытку. При дефолтах
-        # 120 * (1+1+1) * 3 = 1080 с = 18 мин < 25 мин (daily.yml).
+        # Бюджет LLM: на каждую попытку генерации теперь приходится два вызова
+        # (генерация вопросов + факт-чек), каждый — до LLM_RETRIES+1+1 запросов.
+        # Худший случай при дефолтах:
+        #   2 * 120 * (1+1+1) * 3 = 2160 с = 36 мин < 45 мин (daily.yml).
+        # Дополнительный +1 — возможный fallback-запрос на внешнюю попытку.
         # Фото-поток делает много вызовов на выпуск, его бюджет считается
         # отдельно (см. .github/workflows/daily_photo.yml).
         llm_timeout=_get_int("LLM_TIMEOUT", 120) or 120,
@@ -548,6 +608,13 @@ def load_config(
         new_tests_tg_bot_token=os.getenv("NEW_TESTS_TG_BOT_TOKEN", "").strip(),
         new_tests_publish_telegram=_get_bool("NEW_TESTS_PUBLISH_TELEGRAM", True),
         new_tests_publish_vk=_get_bool("NEW_TESTS_PUBLISH_VK", False),
+        new_tests_personalities=_get_str_list("NEW_TESTS_PERSONALITIES"),
+        # --- Творческие личности ---
+        personality_mix_count=max(0, _get_int("PERSONALITY_MIX_COUNT", DEFAULT_PERSONALITY_MIX_COUNT) or 0),
+        personality_focus=False,
+        # --- Факт-чекинг вопросов ---
+        factcheck_enabled=_get_bool("FACTCHECK_ENABLED", True),
+        factcheck_model=os.getenv("FACTCHECK_MODEL", "").strip(),
     )
 
     # Vision может использовать отдельный ключ/URL/модель, иначе — параметры LLM.
