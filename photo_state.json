@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-14",
+  "last_publish_date": "2026-10-15",
   "published": [
     {
       "date": "2026-09-24",
@@ -1856,6 +1856,95 @@
           "license": "CC0"
         }
       ]
+    },
+    {
+      "date": "2026-10-15",
+      "survey_id": "6ad12c50bf4fde5943a8c81d",
+      "url": "https://forms.yandex.ru/u/6ad12c50bf4fde5943a8c81d/",
+      "theme": "хищные птицы",
+      "title": "Вы настоящий знаток природы, если назовёте всех 10 птиц на фото 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/8/81/Northern_Goshawk_ad_M2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Northern_Goshawk_ad_M2.jpg",
+          "title": "Northern Goshawk ad M2.jpg",
+          "author": "Norbert Kenntner, Berlin",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Accipiter_nisus_edit.jpg/1280px-Accipiter_nisus_edit.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Accipiter_nisus_edit.jpg",
+          "title": "Accipiter nisus edit.jpg",
+          "author": "Pierre Dalous",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Falco_cherrug_1_%28Bohu%C5%A1_%C4%8C%C3%AD%C4%8Del%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Falco_cherrug_1_(Bohu%C5%A1_%C4%8C%C3%AD%C4%8Del).jpg",
+          "title": "Falco cherrug 1 (Bohuš Číčel).jpg",
+          "author": "Bohuš Číčel (https://www.flickr.com/photos/bcicel/)",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Falco_rusticolus_Belgrade_ZOO.jpg/1280px-Falco_rusticolus_Belgrade_ZOO.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Falco_rusticolus_Belgrade_ZOO.jpg",
+          "title": "Falco rusticolus Belgrade ZOO.jpg",
+          "author": "Gmihail at Serbian Wikipedia",
+          "license": "CC BY-SA 3.0 rs"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Circus_cyaneus_265961899.jpg/1280px-Circus_cyaneus_265961899.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Circus_cyaneus_265961899.jpg",
+          "title": "Circus cyaneus 265961899.jpg",
+          "author": "Александр Чегодаев",
+          "license": "CC0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Black_kite_impersonating_an_osprey.jpg/1280px-Black_kite_impersonating_an_osprey.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Black_kite_impersonating_an_osprey.jpg",
+          "title": "Black kite impersonating an osprey.jpg",
+          "author": "Prasan Shrestha",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/%D0%9E%D1%80%D0%BB%D0%B0%D0%BD-%D0%B1%D0%B5%D0%BB%D0%BE%D1%85%D0%B2%D0%BE%D1%81%D1%82_%D0%93%D1%80%D0%BE%D0%B4%D0%BD%D0%BE.JPG/1280px-%D0%9E%D1%80%D0%BB%D0%B0%D0%BD-%D0%B1%D0%B5%D0%BB%D0%BE%D1%85%D0%B2%D0%BE%D1%81%D1%82_%D0%93%D1%80%D0%BE%D0%B4%D0%BD%D0%BE.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%80%D0%BB%D0%B0%D0%BD-%D0%B1%D0%B5%D0%BB%D0%BE%D1%85%D0%B2%D0%BE%D1%81%D1%82_%D0%93%D1%80%D0%BE%D0%B4%D0%BD%D0%BE.JPG",
+          "title": "Орлан-белохвост Гродно.JPG",
+          "author": "Шатилло Г.В.",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Tyto_alba_%28Scopoli%2C_1769%29.jpg/1280px-Tyto_alba_%28Scopoli%2C_1769%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Tyto_alba_(Scopoli,_1769).jpg",
+          "title": "Tyto alba (Scopoli, 1769).jpg",
+          "author": "Michael Gäbler",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/%D0%A3%D1%88%D0%B0%D1%81%D1%82%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0.jpg/1280px-%D0%A3%D1%88%D0%B0%D1%81%D1%82%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%A3%D1%88%D0%B0%D1%81%D1%82%D0%B0%D1%8F_%D1%81%D0%BE%D0%B2%D0%B0.jpg",
+          "title": "Ушастая сова.jpg",
+          "author": "Максат79",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Strix_nebulosa_%28Chouette_lapone%29_-_393.jpg/1280px-Strix_nebulosa_%28Chouette_lapone%29_-_393.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Strix_nebulosa_(Chouette_lapone)_-_393.jpg",
+          "title": "Strix nebulosa (Chouette lapone) - 393.jpg",
+          "author": "Another one of my pictures:\n\n\n\nThis photograph was taken by Medium69 (William Crochot) and released under the license stated below. You are free to use it for any purpose as long as you credit the author (William Crochot), the Source (Wikimedia Commons) and the license (CC-BY-SA 4.0) in close relation to the image.\n\n\n\n\n\nPlease do not upload an updated image here without consultation with the Author. The author would like to make corrections only at his own source RAW. This ensures that the changes are preserved.Please if you think that any changes should be required, please inform the author.Otherwise you can upload a new image with a new name. Please use one of the templates derivative or extract.",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -2068,12 +2157,23 @@
     "породы собак: Сенбернар",
     "породы собак: Мопс",
     "породы собак: Чихуахуа",
-    "породы собак: Померанский шпиц"
+    "породы собак: Померанский шпиц",
+    "хищные птицы: Ястреб-тетеревятник",
+    "хищные птицы: Ястреб-перепелятник",
+    "хищные птицы: Сокол-балобан",
+    "хищные птицы: Сокол-кречет",
+    "хищные птицы: Лунь полевой",
+    "хищные птицы: Коршун черный",
+    "хищные птицы: Орлан-белохвост",
+    "хищные птицы: Сова-сипуха",
+    "хищные птицы: Ушастая сова",
+    "хищные птицы: Бородатая неясыть"
   ],
   "used_themes": [
     "пейзажи русских художников",
     "животные Африки",
-    "породы собак"
+    "породы собак",
+    "хищные птицы"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -2240,7 +2340,17 @@
       "Гриф",
       "Стервятник",
       "Филин",
-      "Полярная сова"
+      "Полярная сова",
+      "Ястреб-тетеревятник",
+      "Ястреб-перепелятник",
+      "Сокол-балобан",
+      "Сокол-кречет",
+      "Лунь полевой",
+      "Коршун черный",
+      "Орлан-белохвост",
+      "Сова-сипуха",
+      "Ушастая сова",
+      "Бородатая неясыть"
     ],
     "пейзажи русских художников": [
       "Иван Айвазовский|Девятый вал",
@@ -2317,6 +2427,7 @@
     "Только 1 из 10 узнаёт этих животных по глазам. Проверьте себя",
     "Тест для знатоков искусства: назовите автора этих 10 картин",
     "Узнаете ли вы этих 10 животных по одной фотографии? Тест на внимательность",
-    "Узнаете ли вы этих 10 собак по одной фотографии?"
+    "Узнаете ли вы этих 10 собак по одной фотографии?",
+    "Вы настоящий знаток природы, если назовёте всех 10 птиц на фото"
   ]
 }
