@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-15",
+  "last_publish_date": "2026-10-16",
   "published": [
     {
       "date": "2026-09-24",
@@ -1945,6 +1945,95 @@
           "license": "CC BY-SA 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-10-16",
+      "survey_id": "6ad2788570ad378d95a2bc49",
+      "url": "https://forms.yandex.ru/u/6ad2788570ad378d95a2bc49/",
+      "theme": "картины из школьной программы",
+      "title": "Узнаете ли вы эти 10 шедевров живописи по фрагменту? 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/98/Morning_in_a_Pine_Forest_%28Shishkin%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Morning_in_a_Pine_Forest_(Shishkin).jpg",
+          "title": "Morning in a Pine Forest (Shishkin).jpg",
+          "author": "Ivan Shishkin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Ilia_Efimovich_Repin_%281844-1930%29_-_Volga_Boatmen_%281870-1873%29.jpg/1280px-Ilia_Efimovich_Repin_%281844-1930%29_-_Volga_Boatmen_%281870-1873%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ilia_Efimovich_Repin_(1844-1930)_-_Volga_Boatmen_(1870-1873).jpg",
+          "title": "Ilia Efimovich Repin (1844-1930) - Volga Boatmen (1870-1873).jpg",
+          "author": "Ilya Repin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Knight_at_the_crossroads_by_Vasnetsov%2C_sketch_%281878%3F%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Knight_at_the_crossroads_by_Vasnetsov,_sketch_(1878%3F).jpg",
+          "title": "Knight at the crossroads by Vasnetsov, sketch (1878?).jpg",
+          "author": "Viktor Vasnetsov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Mikhail_Vrubel_-_%D0%94%D0%B5%D0%BC%D0%BE%D0%BD_%28%D1%81%D0%B8%D0%B4%D1%8F%D1%89%D0%B8%D0%B9%29_-_Google_Art_Project.jpg/1280px-Mikhail_Vrubel_-_%D0%94%D0%B5%D0%BC%D0%BE%D0%BD_%28%D1%81%D0%B8%D0%B4%D1%8F%D1%89%D0%B8%D0%B9%29_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Mikhail_Vrubel_-_%D0%94%D0%B5%D0%BC%D0%BE%D0%BD_(%D1%81%D0%B8%D0%B4%D1%8F%D1%89%D0%B8%D0%B9)_-_Google_Art_Project.jpg",
+          "title": "Mikhail Vrubel - Демон (сидящий) - Google Art Project.jpg",
+          "author": "Mikhail Vrubel",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80_%D0%90._%D0%98%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2_-_%D0%AF%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_%D0%A5%D1%80%D0%B8%D1%81%D1%82%D0%B0_%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D1%83_%28%D0%AF%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_%D0%9C%D0%B5%D1%81%D1%81%D0%B8%D0%B8%29_-_Google_Arts_%26_Culture.jpg/1280px-%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80_%D0%90._%D0%98%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2_-_%D0%AF%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_%D0%A5%D1%80%D0%B8%D1%81%D1%82%D0%B0_%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D1%83_%28%D0%AF%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_%D0%9C%D0%B5%D1%81%D1%81%D0%B8%D0%B8%29_-_Google_Arts_%26_Culture.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80_%D0%90._%D0%98%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2_-_%D0%AF%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_%D0%A5%D1%80%D0%B8%D1%81%D1%82%D0%B0_%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D1%83_(%D0%AF%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_%D0%9C%D0%B5%D1%81%D1%81%D0%B8%D0%B8)_-_Google_Arts_%26_Culture.jpg",
+          "title": "Александр А. Иванов - Явление Христа народу (Явление Мессии) - Google Arts & Culture.jpg",
+          "author": "Alexander Ivanov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Pavel_Fedotov_-_The_Major_Makes_a_Proposal_%28Inspecting_a_Bride_in_a_Merchant%27s_House%29_-_Google_Art_Project.jpg/1280px-Pavel_Fedotov_-_The_Major_Makes_a_Proposal_%28Inspecting_a_Bride_in_a_Merchant%27s_House%29_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Pavel_Fedotov_-_The_Major_Makes_a_Proposal_(Inspecting_a_Bride_in_a_Merchant%27s_House)_-_Google_Art_Project.jpg",
+          "title": "Pavel Fedotov - The Major Makes a Proposal (Inspecting a Bride in a Merchant's House) - Google Art Project.jpg",
+          "author": "Pavel Fedotov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/0857Ha._%D0%9A%D1%83%D0%B8%D0%BD%D0%B4%D0%B6%D0%B8_%D0%90.%D0%98._%D0%9B%D1%83%D0%BD%D0%BD%D0%B0%D1%8F_%D0%BD%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5.jpg/1280px-0857Ha._%D0%9A%D1%83%D0%B8%D0%BD%D0%B4%D0%B6%D0%B8_%D0%90.%D0%98._%D0%9B%D1%83%D0%BD%D0%BD%D0%B0%D1%8F_%D0%BD%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:0857Ha._%D0%9A%D1%83%D0%B8%D0%BD%D0%B4%D0%B6%D0%B8_%D0%90.%D0%98._%D0%9B%D1%83%D0%BD%D0%BD%D0%B0%D1%8F_%D0%BD%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5.jpg",
+          "title": "0857Ha. Куинджи А.И. Лунная ночь на Днепре.jpg",
+          "author": "Arkhip Kuindzhi",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Boyarina_Morozova_de_V.Surikov_galerie_Tretyakov.jpg/1280px-Boyarina_Morozova_de_V.Surikov_galerie_Tretyakov.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Boyarina_Morozova_de_V.Surikov_galerie_Tretyakov.jpg",
+          "title": "Boyarina Morozova de V.Surikov galerie Tretyakov.jpg",
+          "author": "Vasily Surikov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Ivan_Kramskoy_-_%D0%A5%D1%80%D0%B8%D1%81%D1%82%D0%BE%D1%81_%D0%B2_%D0%BF%D1%83%D1%81%D1%82%D1%8B%D0%BD%D0%B5_-_Google_Art_Project.jpg/1280px-Ivan_Kramskoy_-_%D0%A5%D1%80%D0%B8%D1%81%D1%82%D0%BE%D1%81_%D0%B2_%D0%BF%D1%83%D1%81%D1%82%D1%8B%D0%BD%D0%B5_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ivan_Kramskoy_-_%D0%A5%D1%80%D0%B8%D1%81%D1%82%D0%BE%D1%81_%D0%B2_%D0%BF%D1%83%D1%81%D1%82%D1%8B%D0%BD%D0%B5_-_Google_Art_Project.jpg",
+          "title": "Ivan Kramskoy - Христос в пустыне - Google Art Project.jpg",
+          "author": "Ivan Kramskoi",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Moscow_Courtyard_%28Polenov%2C_1878%29_-_Google_Art_Project.jpg/1280px-Moscow_Courtyard_%28Polenov%2C_1878%29_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Moscow_Courtyard_(Polenov,_1878)_-_Google_Art_Project.jpg",
+          "title": "Moscow Courtyard (Polenov, 1878) - Google Art Project.jpg",
+          "author": "Vasily Polenov",
+          "license": "Public domain"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -2167,13 +2256,24 @@
     "хищные птицы: Орлан-белохвост",
     "хищные птицы: Сова-сипуха",
     "хищные птицы: Ушастая сова",
-    "хищные птицы: Бородатая неясыть"
+    "хищные птицы: Бородатая неясыть",
+    "картины из школьной программы: Иван Шишкин|Утро в сосновом лесу",
+    "картины из школьной программы: Илья Репин|Бурлаки на Волге",
+    "картины из школьной программы: Виктор Васнецов|Витязь на распутье",
+    "картины из школьной программы: Михаил Врубель|Демон сидящий",
+    "картины из школьной программы: Александр Иванов|Явление Христа народу",
+    "картины из школьной программы: Павел Федотов|Сватовство майора",
+    "картины из школьной программы: Архип Куинджи|Лунная ночь на Днепре",
+    "картины из школьной программы: Василий Суриков|Боярыня Морозова",
+    "картины из школьной программы: Иван Крамской|Христос в пустыне",
+    "картины из школьной программы: Василий Поленов|Московский дворик"
   ],
   "used_themes": [
     "пейзажи русских художников",
     "животные Африки",
     "породы собак",
-    "хищные птицы"
+    "хищные птицы",
+    "картины из школьной программы"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -2328,7 +2428,17 @@
       "Неизвестная",
       "Купание красного коня",
       "Девятый вал",
-      "Аленушка"
+      "Аленушка",
+      "Иван Шишкин|Утро в сосновом лесу",
+      "Илья Репин|Бурлаки на Волге",
+      "Виктор Васнецов|Витязь на распутье",
+      "Михаил Врубель|Демон сидящий",
+      "Александр Иванов|Явление Христа народу",
+      "Павел Федотов|Сватовство майора",
+      "Архип Куинджи|Лунная ночь на Днепре",
+      "Василий Суриков|Боярыня Морозова",
+      "Иван Крамской|Христос в пустыне",
+      "Василий Поленов|Московский дворик"
     ],
     "хищные птицы": [
       "Беркут",
@@ -2428,6 +2538,7 @@
     "Тест для знатоков искусства: назовите автора этих 10 картин",
     "Узнаете ли вы этих 10 животных по одной фотографии? Тест на внимательность",
     "Узнаете ли вы этих 10 собак по одной фотографии?",
-    "Вы настоящий знаток природы, если назовёте всех 10 птиц на фото"
+    "Вы настоящий знаток природы, если назовёте всех 10 птиц на фото",
+    "Узнаете ли вы эти 10 шедевров живописи по фрагменту?"
   ]
 }
