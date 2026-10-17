@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-16",
+  "last_publish_date": "2026-10-17",
   "published": [
     {
       "date": "2026-09-24",
@@ -2034,6 +2034,95 @@
           "license": "Public domain"
         }
       ]
+    },
+    {
+      "date": "2026-10-17",
+      "survey_id": "6ad3b984bf4fde9170a8c81d",
+      "url": "https://forms.yandex.ru/u/6ad3b984bf4fde9170a8c81d/",
+      "theme": "достопримечательности и места",
+      "title": "Узнаете ли вы эти 10 городов мира по одной фотографии? 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Moscow_05-2012_Kremlin_22.jpg/1280px-Moscow_05-2012_Kremlin_22.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Moscow_05-2012_Kremlin_22.jpg",
+          "title": "Moscow 05-2012 Kremlin 22.jpg",
+          "author": "A.Savin",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Beijing_Forbidden_City_water_vessel-20071018-RM-150052.jpg/1280px-Beijing_Forbidden_City_water_vessel-20071018-RM-150052.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Beijing_Forbidden_City_water_vessel-20071018-RM-150052.jpg",
+          "title": "Beijing Forbidden City water vessel-20071018-RM-150052.jpg",
+          "author": "Ermell",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Cour_Napol%C3%A9on_at_night_-_Louvre.jpg/1280px-Cour_Napol%C3%A9on_at_night_-_Louvre.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Cour_Napol%C3%A9on_at_night_-_Louvre.jpg",
+          "title": "Cour Napoléon at night - Louvre.jpg",
+          "author": "Benh LIEU SONG",
+          "license": "CC BY 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/2016_Angkor%2C_Angkor_Wat%2C_Brama_Angkor_Wat_%2821%29.jpg/1280px-2016_Angkor%2C_Angkor_Wat%2C_Brama_Angkor_Wat_%2821%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:2016_Angkor,_Angkor_Wat,_Brama_Angkor_Wat_(21).jpg",
+          "title": "2016 Angkor, Angkor Wat, Brama Angkor Wat (21).jpg",
+          "author": "Marcin Konsek",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/00_1854_Iguaz%C3%BA-Wasserf%C3%A4lle_-_S%C3%BCdamerika.jpg/1280px-00_1854_Iguaz%C3%BA-Wasserf%C3%A4lle_-_S%C3%BCdamerika.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:00_1854_Iguaz%C3%BA-Wasserf%C3%A4lle_-_S%C3%BCdamerika.jpg",
+          "title": "00 1854 Iguazú-Wasserfälle - Südamerika.jpg",
+          "author": "W. Bulach",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Neuschwanstein_Castle_2024-02.jpg/1280px-Neuschwanstein_Castle_2024-02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Neuschwanstein_Castle_2024-02.jpg",
+          "title": "Neuschwanstein Castle 2024-02.jpg",
+          "author": "Wilfredor",
+          "license": "CC0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Giovanni_Antonio_Canal%2C_il_Canaletto_-_Piazza_San_Marco_-_WGA03883.jpg/1280px-Giovanni_Antonio_Canal%2C_il_Canaletto_-_Piazza_San_Marco_-_WGA03883.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Giovanni_Antonio_Canal,_il_Canaletto_-_Piazza_San_Marco_-_WGA03883.jpg",
+          "title": "Giovanni Antonio Canal, il Canaletto - Piazza San Marco - WGA03883.jpg",
+          "author": "Giovanni Antonio Canal",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Matterhorn%2C_March_2019_%2801%29.jpg/1280px-Matterhorn%2C_March_2019_%2801%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Matterhorn,_March_2019_(01).jpg",
+          "title": "Matterhorn, March 2019 (01).jpg",
+          "author": "Liridon",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/%C3%8Ele_de_P%C3%A2ques_1872_by_Pierre_Loti.jpg/1280px-%C3%8Ele_de_P%C3%A2ques_1872_by_Pierre_Loti.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%C3%8Ele_de_P%C3%A2ques_1872_by_Pierre_Loti.jpg",
+          "title": "Île de Pâques 1872 by Pierre Loti.jpg",
+          "author": "ru:Пьер Лоти",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/80/E-burg_asv2019-05_img13_White_House.jpg/1280px-E-burg_asv2019-05_img13_White_House.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:E-burg_asv2019-05_img13_White_House.jpg",
+          "title": "E-burg asv2019-05 img13 White House.jpg",
+          "author": "A.Savin",
+          "license": "FAL"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -2266,14 +2355,25 @@
     "картины из школьной программы: Архип Куинджи|Лунная ночь на Днепре",
     "картины из школьной программы: Василий Суриков|Боярыня Морозова",
     "картины из школьной программы: Иван Крамской|Христос в пустыне",
-    "картины из школьной программы: Василий Поленов|Московский дворик"
+    "картины из школьной программы: Василий Поленов|Московский дворик",
+    "достопримечательности и места: Московский Кремль",
+    "достопримечательности и места: Запретный город",
+    "достопримечательности и места: Лувр",
+    "достопримечательности и места: Ангкор-Ват",
+    "достопримечательности и места: Водопады Игуасу",
+    "достопримечательности и места: Замок Нойшванштайн",
+    "достопримечательности и места: Площадь Святого Марка",
+    "достопримечательности и места: Маттерхорн",
+    "достопримечательности и места: Моаи на острове Пасхи",
+    "достопримечательности и места: Белый дом"
   ],
   "used_themes": [
     "пейзажи русских художников",
     "животные Африки",
     "породы собак",
     "хищные птицы",
-    "картины из школьной программы"
+    "картины из школьной программы",
+    "достопримечательности и места"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -2416,7 +2516,17 @@
       "Лондонский Тауэр",
       "Терракотовая армия",
       "Улуру",
-      "Гора Фудзи"
+      "Гора Фудзи",
+      "Московский Кремль",
+      "Запретный город",
+      "Лувр",
+      "Ангкор-Ват",
+      "Водопады Игуасу",
+      "Замок Нойшванштайн",
+      "Площадь Святого Марка",
+      "Маттерхорн",
+      "Моаи на острове Пасхи",
+      "Белый дом"
     ],
     "картины из школьной программы": [
       "Три богатыря",
@@ -2539,6 +2649,7 @@
     "Узнаете ли вы этих 10 животных по одной фотографии? Тест на внимательность",
     "Узнаете ли вы этих 10 собак по одной фотографии?",
     "Вы настоящий знаток природы, если назовёте всех 10 птиц на фото",
-    "Узнаете ли вы эти 10 шедевров живописи по фрагменту?"
+    "Узнаете ли вы эти 10 шедевров живописи по фрагменту?",
+    "Узнаете ли вы эти 10 городов мира по одной фотографии?"
   ]
 }
