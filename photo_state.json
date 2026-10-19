@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-18",
+  "last_publish_date": "2026-10-19",
   "published": [
     {
       "date": "2026-09-24",
@@ -2212,6 +2212,95 @@
           "license": "CC BY-SA 3.0"
         }
       ]
+    },
+    {
+      "date": "2026-10-19",
+      "survey_id": "6ad68851bf4fded2d2a8c81d",
+      "url": "https://forms.yandex.ru/u/6ad68851bf4fded2d2a8c81d/",
+      "theme": "животные Африки",
+      "title": "Вы настоящий знаток природы, если назовёте всех 10 животных на фото 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Giraffidae_Okapia_johnstoni_3.2.jpg/1280px-Giraffidae_Okapia_johnstoni_3.2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Giraffidae_Okapia_johnstoni_3.2.jpg",
+          "title": "Giraffidae Okapia johnstoni 3.2.jpg",
+          "author": "NasserHalaweh",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/African_penguin%2C_Cape_Town_%28_1050598%29.jpg/1280px-African_penguin%2C_Cape_Town_%28_1050598%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:African_penguin,_Cape_Town_(_1050598).jpg",
+          "title": "African penguin, Cape Town ( 1050598).jpg",
+          "author": "Matti Blume",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Orycteropus_afer_175359469.jpg/1280px-Orycteropus_afer_175359469.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Orycteropus_afer_175359469.jpg",
+          "title": "Orycteropus afer 175359469.jpg",
+          "author": "Kelly Abram",
+          "license": "CC BY 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Papio_hamadryas_%28aka%29.jpg/1280px-Papio_hamadryas_%28aka%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Papio_hamadryas_(aka).jpg",
+          "title": "Papio hamadryas (aka).jpg",
+          "author": "André Karwath aka Aka",
+          "license": "CC BY-SA 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/001_Golden_jackal_and_azureum_flowers_in_Jim_Corbett_National_Park_Photo_by_Giles_Laurent.jpg/1280px-001_Golden_jackal_and_azureum_flowers_in_Jim_Corbett_National_Park_Photo_by_Giles_Laurent.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:001_Golden_jackal_and_azureum_flowers_in_Jim_Corbett_National_Park_Photo_by_Giles_Laurent.jpg",
+          "title": "001 Golden jackal and azureum flowers in Jim Corbett National Park Photo by Giles Laurent.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/50/Felidae_-_Leptailurus_serval_%28Serval%29_%288300229302%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Felidae_-_Leptailurus_serval_(Serval)_(8300229302).jpg",
+          "title": "Felidae - Leptailurus serval (Serval) (8300229302).jpg",
+          "author": "Ettore Balocchi",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Caracal_Caracal-001.jpg/1280px-Caracal_Caracal-001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Caracal_Caracal-001.jpg",
+          "title": "Caracal Caracal-001.jpg",
+          "author": "Leo za1",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Eland_com%C3%BAn_%28Taurotragus_oryx%29%2C_reserva_natural_Mas%C3%A1i_Mara%2C_Kenia%2C_2024-05-20%2C_DD_08.jpg/1280px-Eland_com%C3%BAn_%28Taurotragus_oryx%29%2C_reserva_natural_Mas%C3%A1i_Mara%2C_Kenia%2C_2024-05-20%2C_DD_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Eland_com%C3%BAn_(Taurotragus_oryx),_reserva_natural_Mas%C3%A1i_Mara,_Kenia,_2024-05-20,_DD_08.jpg",
+          "title": "Eland común (Taurotragus oryx), reserva natural Masái Mara, Kenia, 2024-05-20, DD 08.jpg",
+          "author": "Diego Delso",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Tragelaphus_strepsiceros.jpg/1280px-Tragelaphus_strepsiceros.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Tragelaphus_strepsiceros.jpg",
+          "title": "Tragelaphus strepsiceros.jpg",
+          "author": "Hans Hillewaert",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Gemsbok_%28Oryx_gazella%29_male.jpg/1280px-Gemsbok_%28Oryx_gazella%29_male.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Gemsbok_(Oryx_gazella)_male.jpg",
+          "title": "Gemsbok (Oryx gazella) male.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -2464,10 +2553,21 @@
     "породы собак: Английский бульдог",
     "породы собак: Бернский зенненхунд",
     "породы собак: Мальтийская болонка",
-    "породы собак: Йоркширский терьер"
+    "породы собак: Йоркширский терьер",
+    "животные Африки: Окапи",
+    "животные Африки: Африканский пингвин",
+    "животные Африки: Трубкозуб",
+    "животные Африки: Бабуин",
+    "животные Африки: Шакал",
+    "животные Африки: Сервал",
+    "животные Африки: Каракал",
+    "животные Африки: Канна",
+    "животные Африки: Куду",
+    "животные Африки: Орикс"
   ],
   "used_themes": [
-    "породы собак"
+    "породы собак",
+    "животные Африки"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -2740,7 +2840,17 @@
       "Импала",
       "Мандрил",
       "Африканский бородавочник",
-      "Африканский марабу"
+      "Африканский марабу",
+      "Окапи",
+      "Африканский пингвин",
+      "Трубкозуб",
+      "Бабуин",
+      "Шакал",
+      "Сервал",
+      "Каракал",
+      "Канна",
+      "Куду",
+      "Орикс"
     ]
   },
   "used_titles": [
@@ -2755,6 +2865,7 @@
     "Вы настоящий знаток природы, если назовёте всех 10 птиц на фото",
     "Узнаете ли вы эти 10 шедевров живописи по фрагменту?",
     "Узнаете ли вы эти 10 городов мира по одной фотографии?",
-    "Породы собак: узнаете ли вы каждую из 10 по фото?"
+    "Породы собак: узнаете ли вы каждую из 10 по фото?",
+    "Вы настоящий знаток природы, если назовёте всех 10 животных на фото"
   ]
 }
