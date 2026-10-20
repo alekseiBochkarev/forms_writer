@@ -75,6 +75,9 @@ jobs:
           git config user.email "daily-bot@users.noreply.github.com"
           git add new_state.json || true
           git commit -m "Update new tests state" || echo "No changes"
+          # Перед push проверяем, что new_state.json валидный JSON.
+          python -c "import json; json.load(open('new_state.json', encoding='utf-8-sig'))" \
+            || { echo "new_state.json повреждён — push отменён"; exit 1; }
           # Защита от конфликтов: перед push подтягиваем чужие коммиты.
           git pull --rebase --autostash || true
           git push || echo "Nothing to push"

@@ -136,6 +136,43 @@ def test_save_state_caps_asked_questions(tmp_path: Path):
     assert saved["asked_questions"] == asked[-500:]
 
 
+def test_load_state_repairs_missing_comma(tmp_path: Path):
+    """Потерянная при слиянии запятая между строками списка чинится автоматически."""
+    path = tmp_path / "state.json"
+    broken = (
+        '{\n'
+        '  "last_publish_date": "2026-10-14",\n'
+        '  "published": [],\n'
+        '  "asked_questions": [\n'
+        '    "Вопрос первый"\n'
+        '    "Вопрос второй",\n'
+        '    "Вопрос третий"\n'
+        '  ]\n'
+        '}'
+    )
+    path.write_text(broken, encoding="utf-8")
+
+    state = load_state(str(path))
+
+    assert state["last_publish_date"] == "2026-10-14"
+    assert state["asked_questions"] == ["Вопрос первый", "Вопрос второй", "Вопрос третий"]
+    # битая копия сохранена рядом
+    assert (tmp_path / "state.json.broken").read_text(encoding="utf-8") == broken
+
+
+def test_load_state_unrecoverable_raises(tmp_path: Path):
+    """Непочиняемый файл приводит к понятной ошибке, а не к битому состоянию."""
+    path = tmp_path / "state.json"
+    path.write_text("{ это не json вообще", encoding="utf-8")
+
+    try:
+        load_state(str(path))
+    except ValueError as exc:
+        assert "повреждён" in str(exc)
+    else:
+        raise AssertionError("ожидался ValueError")
+
+
 def test_today_utc_format():
     """today_utc возвращает ISO-дату в UTC."""
     value = today_utc()
