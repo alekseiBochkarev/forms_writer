@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-19",
+  "last_publish_date": "2026-10-20",
   "published": [
     {
       "date": "2026-09-24",
@@ -2301,6 +2301,95 @@
           "license": "CC BY-SA 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-10-20",
+      "survey_id": "6ad7cade70ad371d35a2bc49",
+      "url": "https://forms.yandex.ru/u/6ad7cade70ad371d35a2bc49/",
+      "theme": "достопримечательности и места",
+      "title": "Вы путешественник, если узнаете эти 10 достопримечательностей без подсказок 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/1/10/Empire_State_Building_%28aerial_view%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Empire_State_Building_(aerial_view).jpg",
+          "title": "Empire State Building (aerial view).jpg",
+          "author": "Sam Valadi",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/New_york_times_square-terabass.jpg/1280px-New_york_times_square-terabass.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:New_york_times_square-terabass.jpg",
+          "title": "New york times square-terabass.jpg",
+          "author": "Terabass",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/8850_%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0._%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%B0%D1%8F_%D0%BF%D0%BB%D0%BE%D1%89%D0%B0%D0%B4%D1%8C._1896%D0%B3%28%D1%86%D0%B2.%D0%BE%D1%82%D0%BA%D1%80._8850%281%29_P.Z.jpg/1280px-8850_%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0._%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%B0%D1%8F_%D0%BF%D0%BB%D0%BE%D1%89%D0%B0%D0%B4%D1%8C._1896%D0%B3%28%D1%86%D0%B2.%D0%BE%D1%82%D0%BA%D1%80._8850%281%29_P.Z.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:8850_%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0._%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%B0%D1%8F_%D0%BF%D0%BB%D0%BE%D1%89%D0%B0%D0%B4%D1%8C._1896%D0%B3(%D1%86%D0%B2.%D0%BE%D1%82%D0%BA%D1%80._8850(1)_P.Z.jpg",
+          "title": "8850 Москва. Красная площадь. 1896г(цв.откр. 8850(1) P.Z.jpg",
+          "author": "Павлов (P.Z.)",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Siegestor_bei_Nacht.JPG/1280px-Siegestor_bei_Nacht.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Siegestor_bei_Nacht.JPG",
+          "title": "Siegestor bei Nacht.JPG",
+          "author": "Martin Falbisoner",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Cath%C3%A9drale_Notre_Dame%2C_Paris_30_September_2015.jpg/1280px-Cath%C3%A9drale_Notre_Dame%2C_Paris_30_September_2015.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Cath%C3%A9drale_Notre_Dame,_Paris_30_September_2015.jpg",
+          "title": "Cathédrale Notre Dame, Paris 30 September 2015.jpg",
+          "author": "Antonin Subtil",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Burj_Khalifa_%2816260269606%29.jpg/1280px-Burj_Khalifa_%2816260269606%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Burj_Khalifa_(16260269606).jpg",
+          "title": "Burj Khalifa (16260269606).jpg",
+          "author": "Laika ac",
+          "license": "CC BY-SA 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Panoramic_view_of_the_Hagia_Sophia_of_Trabzon.jpg/1280px-Panoramic_view_of_the_Hagia_Sophia_of_Trabzon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Panoramic_view_of_the_Hagia_Sophia_of_Trabzon.jpg",
+          "title": "Panoramic view of the Hagia Sophia of Trabzon.jpg",
+          "author": "User:Balkanique",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/Cataratas_Victoria%2C_Zambia-Zimbabue%2C_2018-07-27%2C_DD_30-34_PAN.jpg/1280px-Cataratas_Victoria%2C_Zambia-Zimbabue%2C_2018-07-27%2C_DD_30-34_PAN.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Cataratas_Victoria,_Zambia-Zimbabue,_2018-07-27,_DD_30-34_PAN.jpg",
+          "title": "Cataratas Victoria, Zambia-Zimbabue, 2018-07-27, DD 30-34 PAN.jpg",
+          "author": "Diego Delso",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/1/1b/GreatBarrierReef-EO.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:GreatBarrierReef-EO.JPG",
+          "title": "GreatBarrierReef-EO.JPG",
+          "author": "NASA, by MISR",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/20110810_North_Face_of_Everest_Tibet_China_Panoramic.jpg/1280px-20110810_North_Face_of_Everest_Tibet_China_Panoramic.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:20110810_North_Face_of_Everest_Tibet_China_Panoramic.jpg",
+          "title": "20110810 North Face of Everest Tibet China Panoramic.jpg",
+          "author": "User:Ggia",
+          "license": "CC BY-SA 3.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -2563,11 +2652,22 @@
     "животные Африки: Каракал",
     "животные Африки: Канна",
     "животные Африки: Куду",
-    "животные Африки: Орикс"
+    "животные Африки: Орикс",
+    "достопримечательности и места: Эмпайр-стейт-билдинг",
+    "достопримечательности и места: Таймс-сквер",
+    "достопримечательности и места: Красная площадь",
+    "достопримечательности и места: Триумфальная арка",
+    "достопримечательности и места: Собор Парижской Богоматери",
+    "достопримечательности и места: Бурдж-Халифа",
+    "достопримечательности и места: Храм Святой Софии",
+    "достопримечательности и места: Водопад Виктория",
+    "достопримечательности и места: Великий Барьерный риф",
+    "достопримечательности и места: Гора Эверест"
   ],
   "used_themes": [
     "породы собак",
-    "животные Африки"
+    "животные Африки",
+    "достопримечательности и места"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -2720,7 +2820,17 @@
       "Площадь Святого Марка",
       "Маттерхорн",
       "Моаи на острове Пасхи",
-      "Белый дом"
+      "Белый дом",
+      "Эмпайр-стейт-билдинг",
+      "Таймс-сквер",
+      "Красная площадь",
+      "Триумфальная арка",
+      "Собор Парижской Богоматери",
+      "Бурдж-Халифа",
+      "Храм Святой Софии",
+      "Водопад Виктория",
+      "Великий Барьерный риф",
+      "Гора Эверест"
     ],
     "картины из школьной программы": [
       "Три богатыря",
@@ -2866,6 +2976,7 @@
     "Узнаете ли вы эти 10 шедевров живописи по фрагменту?",
     "Узнаете ли вы эти 10 городов мира по одной фотографии?",
     "Породы собак: узнаете ли вы каждую из 10 по фото?",
-    "Вы настоящий знаток природы, если назовёте всех 10 животных на фото"
+    "Вы настоящий знаток природы, если назовёте всех 10 животных на фото",
+    "Вы путешественник, если узнаете эти 10 достопримечательностей без подсказок"
   ]
 }
