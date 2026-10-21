@@ -244,11 +244,14 @@ class YandexFormsClient:
         return f"https://forms.yandex.ru/u/{survey_id}/"
 
 
-def build_quiz_settings(cfg, total: int) -> Dict[str, Any]:
+def build_quiz_settings(cfg, total: int, pass_score: Optional[int] = None) -> Dict[str, Any]:
     """Собрать блок quiz с учётом настроек.
 
     Приоритет: SEQUENCES (диапазоны) -> PASS_SCORES (порог) -> авто-сегменты.
+    `pass_score` переопределяет `cfg.pass_scores` (используется рубриками, у
+    которых порог задаётся своей рубрикой, а не настройкой потока).
     """
+    effective_pass = pass_score if pass_score is not None else cfg.pass_scores
     quiz: Dict[str, Any] = {
         "show_results": cfg.show_results,
         "show_correct": cfg.show_correct,
@@ -264,16 +267,16 @@ def build_quiz_settings(cfg, total: int) -> Dict[str, Any]:
             }
             for seg in cfg.segments
         ]
-        if cfg.pass_scores is not None:
-            quiz["pass_scores"] = cfg.pass_scores
+        if effective_pass is not None:
+            quiz["pass_scores"] = effective_pass
         return quiz
 
-    if cfg.pass_scores is not None:
+    if effective_pass is not None:
         quiz["calc_method"] = "scores"
-        quiz["pass_scores"] = cfg.pass_scores
+        quiz["pass_scores"] = effective_pass
         quiz["items"] = [
             {
-                "title": "Тест пройден" if cfg.pass_scores else "",
+                "title": "Тест пройден" if effective_pass else "",
                 "description": "Спасибо за прохождение теста!",
             }
         ]

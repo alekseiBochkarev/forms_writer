@@ -1,0 +1,158 @@
+name: Daily rubrics experiment
+
+on:
+  schedule:
+    # Эксперимент с рубриками: три выпуска в одном слоте 13:00 UTC (16:00 МСК) —
+    # между «новыми тестами» (12:00) и фото (16:00). Суммарно с остальными
+    # daily*.yml это даёт 4-5 публикаций в день. Запуск один в день: резервный
+    # здесь бессмысленен (повтор заблокирует allow_publish_rubric), при сбое job
+    # — ручной перезапуск: gh run rerun <id> --failed.
+    - cron: "0 13 * * *"
+  workflow_dispatch: {}  # позволяет запустить вручную из вкладки Actions
+
+concurrency:
+  group: daily-rubrics
+  cancel-in-progress: false
+
+jobs:
+  # Рубрики a/b/c публикуются параллельно (matrix) и каждая коммитит общее
+  # rubrics_state.json тем же паттерном, что и другие workflow (pull --rebase
+  # --autostash + push). Ограничение «не чаще раза в UTC-день» — на рубрику
+  # (allow_publish_rubric), поэтому разные рубрики в одном слоте допустимы.
+  #
+  # Резервного cron нет: второй запуск в тот же UTC-день заблокировал бы
+  # allow_publish_rubric и только потратил бы раннер-время. При сбое —
+  # gh run rerun <run-id> --failed (или перезапуск из вкладки Actions).
+  #
+  # Если захочется развести анонсы по времени, чтобы они не наслаивались в
+  # Telegram, вынесите каждую рубрику в отдельный workflow со своим cron
+  # (напр. a — 08:00, b — 11:00, c — 14:00 UTC): скопируйте job
+  # create-rubric-forms, уберите strategy.matrix и подставьте конкретный id в
+  # `--rubric`, поменяйте cron и concurrency.group.
+  create-rubric-forms:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    # Рубрики a/b — фото-конвейер (много LLM-вызовов), c — ловушки (генерация с
+    # запасом + фактчек). Худший случай сопоставим с daily_photo, берём 60 мин.
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        rubric: [a, b, c]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate and publish rubric "${{ matrix.rubric }}" form
+        env:
+          # --- секреты: модель и Яндекс Формы ---
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          YANDEX_FORMS_TOKEN: ${{ secrets.YANDEX_FORMS_TOKEN }}
+          YANDEX_ORG_ID: ${{ secrets.YANDEX_ORG_ID }}
+          # --- секреты: публикация анонса (необязательно) ---
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_TARGET_CHANNEL: ${{ secrets.TG_TARGET_CHANNEL }}
+          VK_ACCESS_TOKEN: ${{ secrets.VK_ACCESS_TOKEN }}
+          VK_GROUP_ID: ${{ secrets.VK_GROUP_ID }}
+          # --- обычные настройки (Settings -> Variables) ---
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.openai.com/v1' }}
+          LLM_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}
+          # Фото-рубрикам нужны источники изображений (как в daily_photo.yml).
+          FILM_RU_ENABLED: ${{ vars.FILM_RU_ENABLED || 'false' }}
+          FILM_GRAB_ENABLED: ${{ vars.FILM_GRAB_ENABLED || 'false' }}
+          MOVIE_SCREENCAPS_ENABLED: ${{ vars.MOVIE_SCREENCAPS_ENABLED || 'false' }}
+          WIKIMEDIA_USER_AGENT: ${{ vars.WIKIMEDIA_USER_AGENT }}
+          PUBLISH: "true"
+          SHUFFLE: "true"
+          SHOW_RESULTS: "true"
+          SHOW_CORRECT: "true"
+          STATS: "true"
+          RUBRIC: ${{ matrix.rubric }}
+        run: python main.py --rubric "$RUBRIC"
+
+      - name: Commit rubrics state
+        run: |
+          git config user.name "daily-bot"
+          git config user.email "daily-bot@users.noreply.github.com"
+          git add rubrics_state.json || true
+          git commit -m "Update rubrics state (${{ matrix.rubric }})" || echo "No changes"
+          # Перед push проверяем, что rubrics_state.json валидный JSON.
+          python -c "import json; json.load(open('rubrics_state.json', encoding='utf-8-sig'))" \
+            || { echo "rubrics_state.json повреждён — push отменён"; exit 1; }
+          # Защита от конфликтов matrix-джобов: перед push подтягиваем чужие
+          # коммиты (свежие состояния других рубрик) и только потом пушим.
+          git pull --rebase --autostash || true
+          git push || echo "Nothing to push"
+
+  # Отдельный job после матрицы: сначала обновляем метрики свежих форм
+  # (wrong_pct), затем при наличии провала переупаковываем рубрику-ловушку «c».
+  # Отдельный checkout даёт свежий rubrics_state.json (со вчерашней метрикой и
+  # уже опубликованным сегодня выпуском «c»), поэтому решение о репаке
+  # принимается по актуальным данным.
+  metrics-and-repack:
+    runs-on: ubuntu-latest
+    needs: create-rubric-forms
+    permissions:
+      contents: write
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Update rubric metrics
+        env:
+          YANDEX_FORMS_TOKEN: ${{ secrets.YANDEX_FORMS_TOKEN }}
+          YANDEX_ORG_ID: ${{ secrets.YANDEX_ORG_ID }}
+          RUBRIC_MIN_MEDIAN: ${{ vars.RUBRIC_MIN_MEDIAN || '50' }}
+        run: python rubric_metrics.py
+
+      - name: Repack failed trap rubric
+        env:
+          # --- секреты: модель и Яндекс Формы ---
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          YANDEX_FORMS_TOKEN: ${{ secrets.YANDEX_FORMS_TOKEN }}
+          YANDEX_ORG_ID: ${{ secrets.YANDEX_ORG_ID }}
+          # --- секреты: публикация анонса (необязательно) ---
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_TARGET_CHANNEL: ${{ secrets.TG_TARGET_CHANNEL }}
+          VK_ACCESS_TOKEN: ${{ secrets.VK_ACCESS_TOKEN }}
+          VK_GROUP_ID: ${{ secrets.VK_GROUP_ID }}
+          # --- обычные настройки (Settings -> Variables) ---
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.openai.com/v1' }}
+          LLM_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}
+          RUBRIC_REPACK_WRONG_PCT: ${{ vars.RUBRIC_REPACK_WRONG_PCT || '60' }}
+          PUBLISH: "true"
+          SHUFFLE: "true"
+          SHOW_RESULTS: "true"
+          SHOW_CORRECT: "true"
+          STATS: "true"
+        # Репак не обязателен: если кандидатов нет — шаг завершается кодом 0.
+        run: python main.py --rubric c --repack
+
+      - name: Commit rubrics state
+        run: |
+          git config user.name "daily-bot"
+          git config user.email "daily-bot@users.noreply.github.com"
+          git add rubrics_state.json || true
+          git commit -m "Update rubrics state (repack/metrics)" || echo "No changes"
+          python -c "import json; json.load(open('rubrics_state.json', encoding='utf-8-sig'))" \
+            || { echo "rubrics_state.json повреждён — push отменён"; exit 1; }
+          git pull --rebase --autostash || true
+          git push || echo "Nothing to push"

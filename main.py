@@ -12,6 +12,9 @@
     python main.py --photo --photo-theme "советские фильмы"
     python main.py --new-tests           # поток «новых тестов» (канал @qa_helper_draft)
     python main.py --new-tests --dry-run # план нового теста без обращения к API
+    python main.py --rubric a            # выпустить рубрику эксперимента «a»
+    python main.py --rubric b --dry-run  # план выпуска рубрики «b» без API
+    python main.py --rubric c --repack   # переупаковать провал рубрики «c» (тот же тест, новый заголовок)
 """
 
 from __future__ import annotations
@@ -26,6 +29,7 @@ from typing import Any, Dict, List, Tuple
 import factcheck
 import photo_flow
 import review
+import rubric_flow
 from config import PERSONALITY_TOPIC, load_config
 from dedup import DuplicateChecker
 from llm import generate_conclusion, generate_intro, generate_questions
@@ -62,6 +66,17 @@ def parse_args() -> argparse.Namespace:
         "--new-tests",
         action="store_true",
         help="запустить отдельный поток «новых тестов» (канал @qa_helper_draft)",
+    )
+    parser.add_argument(
+        "--rubric",
+        metavar="ID",
+        help="выпустить рубрику эксперимента по её id (например a/b/c)",
+    )
+    parser.add_argument(
+        "--repack",
+        action="store_true",
+        help="переупаковать провальную публикацию рубрики (--rubric) с новым "
+        "заголовком (вопросы те же); без кандидатов — выход 0",
     )
     return parser.parse_args()
 
@@ -392,6 +407,21 @@ def main() -> int:
     if args.photo and args.new_tests:
         log.error("Флаги --photo и --new-tests несовместимы")
         return 2
+    if args.rubric and (
+        args.photo
+        or args.new_tests
+        or args.check
+        or args.delete_survey
+        or args.rename_survey
+    ):
+        log.error(
+            "Флаг --rubric несовместим с --photo/--new-tests/"
+            "--check/--delete-survey/--rename-survey"
+        )
+        return 2
+    if args.repack and not args.rubric:
+        log.error("Флаг --repack используется только вместе с --rubric ID")
+        return 2
 
     if args.photo or args.new_tests:
         mode_label = "--photo" if args.photo else "--new-tests"
@@ -439,10 +469,41 @@ def main() -> int:
 
     service_mode = bool(args.check or args.delete_survey or args.rename_survey)
     try:
-        cfg = load_config(overrides, require_questions=not service_mode)
+        # В режиме рубрики содержимое задаёт сама рубрика, а не настройки
+        # эрудиции/фото, поэтому требования к вопросам/ключам не проверяем.
+        require_questions = not (service_mode or args.rubric)
+        cfg = load_config(overrides, require_questions=require_questions)
     except ValueError as exc:
         log.error("%s", exc)
         return 2
+
+    # Эксперимент с рубриками: отдельный конвейер и свой state-файл.
+    if args.rubric:
+        rubric_id = args.rubric.strip()
+        if cfg.rubrics is None or cfg.rubrics.get(rubric_id) is None:
+            available = rubric_flow.available_rubric_ids(cfg)
+            log.error(
+                "Неизвестная рубрика «%s». Доступны: %s",
+                rubric_id,
+                ", ".join(available) if available else "нет включённых",
+            )
+            return 2
+        state_data = load_state(cfg.rubrics_state_file)
+        if args.repack:
+            return rubric_flow.run_rubric_repack(
+                cfg,
+                state_data,
+                rubric_id,
+                dry_run=cfg.dry_run,
+                force=cfg.force,
+            )
+        return rubric_flow.run_rubric(
+            cfg,
+            state_data,
+            rubric_id,
+            dry_run=cfg.dry_run,
+            force=cfg.force,
+        )
 
     # Фото-поток: отдельная логика, эрудиция не затрагивается.
     if args.photo:

@@ -625,6 +625,8 @@ class _Args:
         self.photo = False
         self.photo_theme = None
         self.new_tests = False
+        self.rubric = None
+        self.repack = False
         self.__dict__.update(overrides)
 
 
