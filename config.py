@@ -33,6 +33,21 @@ def _get_int(name: str, default: Optional[int]) -> Optional[int]:
     return int(value)
 
 
+def _get_int_safe(name: str, default: int) -> int:
+    """Целое из переменной окружения; пустое или нечисловое значение -> default.
+
+    В отличие от `_get_int`, не падает на мусорном значении: используется для
+    необязательных порогов, где дефолт безопаснее ошибки загрузки конфига.
+    """
+    value = os.getenv(name)
+    if value is None or value.strip() == "":
+        return default
+    try:
+        return int(value.strip())
+    except ValueError:
+        return default
+
+
 def _get_float(name: str, default: float) -> float:
     value = os.getenv(name)
     if value is None or value.strip() == "":
@@ -242,6 +257,91 @@ DEFAULT_NEW_TESTS_PASS_SCORES = [10]
 # Источники изображений по умолчанию (порядок важен).
 DEFAULT_PHOTO_SOURCES = ["wikimedia", "openverse"]
 
+# Разрешённые источники вопросов для рубрик (эксперимент с рубриками).
+KNOWN_RUBRIC_SOURCES = ("photo", "trap")
+
+# Порог «провала» для репака рубрики-ловушки: доля ошибшихся (`wrong_pct`), при
+# которой публикация считается провальной и её можно переупаковать (репак) с тем
+# же содержанием, но новым заголовком. Переопределяется RUBRIC_REPACK_WRONG_PCT.
+DEFAULT_RUBRIC_REPACK_WRONG_PCT = 60
+# Минимум ответов формы, при котором метрика доли ошибшихся считается
+# достаточной для решения о репаке (иначе выборка мала — репак не делаем).
+DEFAULT_RUBRIC_REPACK_MIN_ANSWERS = 10
+# Порог вердикта «ниже порога» в rubric_metrics.py: по медиане ЧИСЛА ОТВЕТОВ
+# формы за 7 дней (прокси просмотров — просмотров API Яндекс Форм не отдаёт).
+# Переопределяется RUBRIC_MIN_MEDIAN.
+DEFAULT_RUBRIC_MIN_MEDIAN = 50
+
+# Встроенный реестр рубрик эксперимента (используется, если RUBRICS не задан).
+# title_templates — шаблоны заголовков с плейсхолдерами: {series_no} — номер
+# выпуска серии, {threshold} — порог, {count} — число вопросов, {n} — то же,
+# что {count}. Рубрики переопределяются переменной окружения RUBRICS (JSON).
+DEFAULT_RUBRICS: List[Dict[str, Any]] = [
+    {
+        "id": "a",
+        "series_name": "Знаток по кино",
+        "source": "photo",
+        "questions_count": 8,
+        "threshold": 6,
+        "comment_prompt": (
+            "А теперь расскажите в комментариях: какой ваш любимый советский "
+            "фильм и почему именно он?"
+        ),
+        "title_templates": [
+            "Тест. Узнаёте эти советские фильмы по кадрам? "
+            "{threshold} из {count} — вы знаток кино {series_no}",
+            "Вы настоящий знаток советского кино, если угадаете "
+            "{threshold} из {count} фильмов по кадру. Выпуск {series_no}",
+            "Кадры из советских фильмов: соберёте {threshold} из {count}? "
+            "Тест {series_no}",
+        ],
+        "enabled": True,
+        "slot": "morning",
+    },
+    {
+        "id": "b",
+        "series_name": "Знаток по фото",
+        "source": "photo",
+        "questions_count": 10,
+        "threshold": 8,
+        "comment_prompt": (
+            "Напишите в комментариях, кого или что вы угадали легче всего — "
+            "так станет понятно, какие темы подбираем лучше всего."
+        ),
+        "title_templates": [
+            "Вы настоящий искусствовед, если угадаете {threshold}/{count} "
+            "картин по фото. Тест {series_no}",
+            "Вы настоящий кинолог, если угадаете {threshold}/{count} "
+            "пород по фото. Проверьте себя {series_no}",
+            "Вы настоящий знаток картин, если угадаете {threshold}/{count} "
+            "шедевров по фрагменту. Выпуск {series_no}",
+        ],
+        "enabled": True,
+        "slot": "evening",
+    },
+    {
+        "id": "c",
+        "series_name": "Ловушка",
+        "source": "trap",
+        "questions_count": 10,
+        "threshold": 8,
+        "comment_prompt": (
+            "Вопрос в конце: на каком вопросе вы попались в ловушку? "
+            "Расскажите в комментариях."
+        ),
+        "title_templates": [
+            "Тест. {wrong_pct}% прошедших ошибаются в этих вопросах. "
+            "Сможете взять {threshold} из {count}? {series_no}",
+            "Меньше половины прошедших этот тест не ошибаются. "
+            "А вы возьмёте {threshold} из {count}? Выпуск {series_no}",
+            "Даже эрудиты спотыкаются о эти вопросы: соберёте "
+            "{threshold} из {count}? Тест {series_no}",
+        ],
+        "enabled": True,
+        "slot": "afternoon",
+    },
+]
+
 KNOWN_PHOTO_SOURCES = (
     "wikimedia",
     "openverse",
@@ -249,6 +349,107 @@ KNOWN_PHOTO_SOURCES = (
     "filmgrab",
     "movscreencaps",
 )
+
+
+@dataclass
+class Rubric:
+    """Рубрика теста для эксперимента: серия выпусков с одним форматом."""
+
+    id: str
+    title_templates: List[str]
+    series_name: str
+    questions_count: int
+    threshold: int
+    source: str
+    comment_prompt: str
+    enabled: bool
+    slot: str
+
+    def validate(self) -> None:
+        errors = []
+        if not self.id:
+            errors.append("У рубрики пустой id")
+        if self.source not in KNOWN_RUBRIC_SOURCES:
+            errors.append(
+                f"Рубрика «{self.id}»: неизвестный source «{self.source}». "
+                "Допустимые: " + ", ".join(KNOWN_RUBRIC_SOURCES)
+            )
+        if self.questions_count < 1:
+            errors.append(f"Рубрика «{self.id}»: questions_count должен быть >= 1")
+        if self.threshold < 1:
+            errors.append(f"Рубрика «{self.id}»: threshold должен быть >= 1")
+        elif self.threshold >= self.questions_count:
+            errors.append(
+                f"Рубрика «{self.id}»: threshold ({self.threshold}) должен быть "
+                f"меньше questions_count ({self.questions_count})"
+            )
+        if errors:
+            raise ValueError("Ошибки конфигурации:\n  - " + "\n  - ".join(errors))
+
+
+@dataclass
+class Rubrics_config:
+    """Реестр рубрик эксперимента (ключ словаря — id рубрики)."""
+
+    rubrics: Dict[str, Rubric]
+
+    def enabled_rubrics(self) -> List[Rubric]:
+        return [rubric for rubric in self.rubrics.values() if rubric.enabled]
+
+    def get(self, rubric_id: str) -> Optional[Rubric]:
+        return self.rubrics.get(rubric_id)
+
+
+def _rubric_from_dict(data: Any) -> Rubric:
+    """Собрать Rubric из JSON-объекта с проверкой типов и значений."""
+    if not isinstance(data, dict):
+        raise ValueError("RUBRICS: каждая рубрика должна быть JSON-объектом")
+    rubric_id = str(data.get("id", "")).strip()
+    templates = data.get("title_templates", [])
+    if not isinstance(templates, list):
+        raise ValueError(f"RUBRICS: title_templates рубрики «{rubric_id or '?'}» "
+                         "должен быть массивом строк")
+    title_templates = [str(t).strip() for t in templates if str(t).strip()]
+    return Rubric(
+        id=rubric_id,
+        title_templates=title_templates,
+        series_name=str(data.get("series_name", "")).strip(),
+        questions_count=int(data.get("questions_count", 0)),
+        threshold=int(data.get("threshold", 0)),
+        source=str(data.get("source", "")).strip(),
+        comment_prompt=str(data.get("comment_prompt", "")).strip(),
+        enabled=bool(data.get("enabled", True)),
+        slot=str(data.get("slot", "")).strip(),
+    )
+
+
+def load_rubrics() -> Rubrics_config:
+    """Загрузить реестр рубрик из RUBRICS (JSON) или взять встроенный по умолчанию."""
+    value = os.getenv("RUBRICS")
+    if value is None or value.strip() == "":
+        raw_items = list(DEFAULT_RUBRICS)
+    else:
+        parsed = json.loads(value)
+        if not isinstance(parsed, list):
+            raise ValueError("RUBRICS должен быть JSON-массивом объектов рубрик")
+        raw_items = parsed
+    rubrics: Dict[str, Rubric] = {}
+    for item in raw_items:
+        rubric = _rubric_from_dict(item)
+        rubric.validate()
+        if not rubric.series_name:
+            raise ValueError(
+                f"Ошибки конфигурации:\n  - Рубрика «{rubric.id or '?'}»: "
+                "пустой series_name"
+            )
+        if rubric.id in rubrics:
+            raise ValueError(
+                f"Ошибки конфигурации:\n  - Дублирующийся id рубрики «{rubric.id}»"
+            )
+        rubrics[rubric.id] = rubric
+    if not rubrics:
+        raise ValueError("RUBRICS не содержит ни одной рубрики")
+    return Rubrics_config(rubrics=rubrics)
 
 
 @dataclass
@@ -374,6 +575,20 @@ class Config:
     factcheck_enabled: bool = True
     # Модель факт-чека; пусто — используется модель ревью / LLM_MODEL.
     factcheck_model: str = ""
+
+    # --- Эксперимент с рубриками ---
+    # Реестр рубрик (RUBRICS или встроенный DEFAULT_RUBRICS); None — не загружен.
+    rubrics: Optional[Rubrics_config] = None
+    # Отдельный state-файл рубрик (не смешивается с фото/эрудицией).
+    rubrics_state_file: str = "rubrics_state.json"
+    # Порог доли ошибшихся (`wrong_pct` >= значение) для репака провальной
+    # публикации рубрики-ловушки.
+    rubric_repack_wrong_pct: int = DEFAULT_RUBRIC_REPACK_WRONG_PCT
+    # Минимум ответов формы, при котором метрика достаточна для решения о репаке.
+    rubric_repack_min_answers: int = DEFAULT_RUBRIC_REPACK_MIN_ANSWERS
+    # Порог вердикта «ниже порога» в rubric_metrics.py: медиана ЧИСЛА ОТВЕТОВ
+    # (прокси просмотров) за 7 дней не должна быть ниже этого значения.
+    rubric_min_median: int = DEFAULT_RUBRIC_MIN_MEDIAN
 
     def validate(self, require_questions: bool = True) -> None:
         if self.mode == "photo":
@@ -616,6 +831,17 @@ def load_config(
         factcheck_enabled=_get_bool("FACTCHECK_ENABLED", True),
         factcheck_model=os.getenv("FACTCHECK_MODEL", "").strip(),
     )
+
+    # Реестр рубрик эксперимента: RUBRICS (JSON) или встроенный список.
+    cfg.rubrics = load_rubrics()
+    cfg.rubrics_state_file = os.getenv("RUBRICS_STATE_FILE", "rubrics_state.json").strip()
+    cfg.rubric_repack_wrong_pct = _get_int(
+        "RUBRIC_REPACK_WRONG_PCT", DEFAULT_RUBRIC_REPACK_WRONG_PCT
+    )
+    cfg.rubric_repack_min_answers = _get_int(
+        "RUBRIC_REPACK_MIN_ANSWERS", DEFAULT_RUBRIC_REPACK_MIN_ANSWERS
+    )
+    cfg.rubric_min_median = _get_int_safe("RUBRIC_MIN_MEDIAN", DEFAULT_RUBRIC_MIN_MEDIAN)
 
     # Vision может использовать отдельный ключ/URL/модель, иначе — параметры LLM.
     cfg.vision_api_key = (os.getenv("VISION_API_KEY") or "").strip() or cfg.llm_api_key

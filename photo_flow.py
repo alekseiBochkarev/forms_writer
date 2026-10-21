@@ -231,6 +231,57 @@ def _fallback_survey_name(cfg, theme: str) -> str:
     return f"{base.rstrip('?')}? {_capitalize(theme)}"
 
 
+def render_title(
+    templates: List[str],
+    fields: Dict[str, Any],
+    used_titles: Optional[List[str]] = None,
+    correct_answers: Optional[List[str]] = None,
+    fallback: str = "",
+) -> str:
+    """Собрать заголовок из готового списка шаблонов (общая логика потоков).
+
+    Переиспользуется фото-потоком и рубриками: подставляет `fields` в каждый
+    шаблон, отбрасывает заголовки-спойлеры (слова из правильных ответов), среди
+    оставшихся старается не повторять уже использованные в `used_titles`. Если
+    применимых шаблонов нет — возвращает `fallback` (без спойлера).
+    """
+    answers = [str(a) for a in (correct_answers or []) if str(a).strip()]
+
+    def safe_fallback() -> str:
+        """Фолбэк без спойлера: если он сам содержит слово ответа — пустая строка."""
+        if review.contains_spoiler(fallback, answers):
+            return ""
+        return fallback
+
+    if not templates:
+        return safe_fallback()
+
+    candidates: List[str] = []
+    for template in templates:
+        try:
+            title = template.format(**fields)
+        except (KeyError, IndexError, ValueError):
+            # Шаблон с неизвестным плейсхолдером/фигурными скобками непригоден.
+            log.info(
+                "Шаблон заголовка «%s» пропущен: не удалось подставить поля", template
+            )
+            continue
+        title = title.strip()
+        if not title:
+            continue
+        if review.contains_spoiler(title, answers):
+            log.info("Заголовок «%s» пропущен: спойлер из правильного ответа", title)
+            continue
+        candidates.append(title)
+
+    if not candidates:
+        return safe_fallback()
+
+    used = set(used_titles or [])
+    fresh = [title for title in candidates if title not in used]
+    return random.choice(fresh or candidates)
+
+
 def build_survey_name(
     cfg,
     theme: str,
@@ -247,45 +298,19 @@ def build_survey_name(
     применимых шаблонов нет — фолбэк на `PHOTO_SURVEY_NAME`.
     """
     fallback = _fallback_survey_name(cfg, theme)
-    answers = [str(a) for a in (correct_answers or []) if str(a).strip()]
-
-    def safe_fallback() -> str:
-        """Фолбэк без темы, если и он содержит слово из правильного ответа."""
-        if review.contains_spoiler(fallback, answers):
-            base = (
-                (getattr(cfg, "photo_survey_name", "") or "Что на фото")
-                .strip()
-                .rstrip("?")
-            )
-            return base or "Что на фото"
-        return fallback
-
     templates = _templates_for_theme(cfg, theme)
-    if not templates:
-        return safe_fallback()
-
-    candidates: List[str] = []
-    for template in templates:
-        try:
-            title = template.format(count=count)
-        except (KeyError, IndexError, ValueError):
-            # Шаблон с неизвестным плейсхолдером/фигурными скобками непригоден.
-            log.info("Шаблон заголовка «%s» пропущен: не удалось подставить count", template)
-            continue
-        title = title.strip()
-        if not title:
-            continue
-        if review.contains_spoiler(title, answers):
-            log.info("Заголовок «%s» пропущен: спойлер из правильного ответа", title)
-            continue
-        candidates.append(title)
-
-    if not candidates:
-        return safe_fallback()
-
-    used = set(used_titles or [])
-    fresh = [title for title in candidates if title not in used]
-    return random.choice(fresh or candidates)
+    title = render_title(
+        templates,
+        {"count": count},
+        used_titles=used_titles,
+        correct_answers=correct_answers,
+        fallback=fallback,
+    )
+    if title:
+        return title
+    # Все шаблоны и фолбэк оказались спойлерами — отдаём базовое имя без темы.
+    base = (getattr(cfg, "photo_survey_name", "") or "Что на фото").strip().rstrip("?")
+    return base or "Что на фото"
 
 
 def _entity_hint(theme: str) -> str:
@@ -673,44 +698,28 @@ def _build_questions(
     return questions
 
 
-def _publish(
+def publish_photo_form(
     cfg,
-    state: Dict[str, Any],
-    theme: str,
-    question: str,
-    entities: List[str],
-    need: int,
-) -> int:
-    questions = _build_questions(cfg, theme, question, entities, need)
-    minimum = cfg.effective_photo_min_questions()
-    if len(questions) < minimum:
-        log.error(
-            "Подготовлено %s вопросов — меньше минимума %s. Публикация отменена.",
-            len(questions),
-            minimum,
-        )
-        return 1
+    questions: List[Dict[str, Any]],
+    minimum: int,
+    used_titles: List[str],
+    correct_answers: List[str],
+    title_builder,
+    pass_score: Optional[int] = None,
+    comment_prompt: Optional[str] = None,
+) -> Optional[Dict[str, Any]]:
+    """Создать, наполнить и опубликовать форму — без записи состояния.
+
+    Переиспользуется фото-потоком и рубриками. `title_builder(used_titles,
+    correct_answers)` собирает базовый заголовок; `pass_score` переопределяет
+    порог квиза; `comment_prompt` добавляет блок-комментарий в конце формы.
+    Возвращает dict c `survey_id`, `public_url`, `base_title`, `name`, `added`
+    либо None, если публикация отменена (недобор вопросов).
+    """
+    base_title = title_builder(used_titles, correct_answers)
 
     client = YandexFormsClient(cfg.yandex_token, cfg.yandex_org_id, cfg.yandex_org_header)
 
-    correct_answers = []
-    for q in questions:
-        options = q.get("options") or []
-        index = q.get("correct_index")
-        if isinstance(index, int) and 0 <= index < len(options):
-            correct_answers.append(str(options[index]))
-
-    title_history = getattr(cfg, "photo_title_history", 10) or 10
-    used_titles = list(state.get("used_titles") or [])[-title_history:]
-    base_title = build_survey_name(
-        cfg,
-        theme,
-        len(questions),
-        used_titles=used_titles,
-        correct_answers=correct_answers,
-    )
-    # В used_titles храним базовый заголовок (до нумерации), иначе при
-    # NUMBER_SURVEYS=true сравнение с шаблонами не находило бы повторов.
     name = base_title
     if cfg.number_surveys:
         name = client.next_survey_name(name)
@@ -754,9 +763,13 @@ def _publish(
             log.info("Черновик формы %s удалён", survey_id)
         except Exception as exc:  # noqa: BLE001 - не мешаем корректному коду возврата
             log.warning("Не удалось удалить черновик формы %s: %s", survey_id, exc)
-        return 1
+        return None
 
-    quiz = build_quiz_settings(cfg, total=len(added))
+    if (comment_prompt or "").strip():
+        client.add_comment_question(survey_id, comment_prompt.strip(), header=False)
+        log.info("  + вопрос для комментариев (comment)")
+
+    quiz = build_quiz_settings(cfg, total=len(added), pass_score=pass_score)
     client.update_survey(survey_id, {"quiz": quiz, "stats": cfg.stats, "need_auth": False})
     log.info("Настройки теста применены (stats=%s)", cfg.stats)
 
@@ -769,6 +782,69 @@ def _publish(
 
     public_url = YandexFormsClient.public_url(survey_id)
     log.info("Готово. Публичная ссылка: %s", public_url)
+
+    return {
+        "survey_id": survey_id,
+        "public_url": public_url,
+        "base_title": base_title,
+        "name": name,
+        "added": added,
+    }
+
+
+def _publish(
+    cfg,
+    state: Dict[str, Any],
+    theme: str,
+    question: str,
+    entities: List[str],
+    need: int,
+) -> int:
+    questions = _build_questions(cfg, theme, question, entities, need)
+    minimum = cfg.effective_photo_min_questions()
+    if len(questions) < minimum:
+        log.error(
+            "Подготовлено %s вопросов — меньше минимума %s. Публикация отменена.",
+            len(questions),
+            minimum,
+        )
+        return 1
+
+    correct_answers = []
+    for q in questions:
+        options = q.get("options") or []
+        index = q.get("correct_index")
+        if isinstance(index, int) and 0 <= index < len(options):
+            correct_answers.append(str(options[index]))
+
+    title_history = getattr(cfg, "photo_title_history", 10) or 10
+    used_titles = list(state.get("used_titles") or [])[-title_history:]
+
+    def title_builder(_used, _answers):
+        return build_survey_name(
+            cfg,
+            theme,
+            len(questions),
+            used_titles=_used,
+            correct_answers=_answers,
+        )
+
+    result = publish_photo_form(
+        cfg,
+        questions,
+        minimum=minimum,
+        used_titles=used_titles,
+        correct_answers=correct_answers,
+        title_builder=title_builder,
+    )
+    if result is None:
+        return 1
+
+    base_title = result["base_title"]
+    name = result["name"]
+    added = result["added"]
+    survey_id = result["survey_id"]
+    public_url = result["public_url"]
 
     # В анонс (Telegram/VK) отдаём базовый заголовок без счётчика нумерации
     # (нумерация остаётся только в названии формы Яндекс Форм).
@@ -793,9 +869,9 @@ def _publish(
     asked.extend(f"{q['theme']}: {q['entity']}" for q in added)
     state["asked_questions"] = asked[-ASKED_HISTORY_LIMIT:]
 
-    used_titles = state.setdefault("used_titles", [])
-    used_titles.append(base_title)
-    state["used_titles"] = used_titles[-TITLE_HISTORY_LIMIT:]
+    used_titles_state = state.setdefault("used_titles", [])
+    used_titles_state.append(base_title)
+    state["used_titles"] = used_titles_state[-TITLE_HISTORY_LIMIT:]
 
     used_themes = state.setdefault("used_themes", [])
     if theme not in used_themes:
