@@ -77,14 +77,15 @@ def build_rubric_title(
     used_titles: Optional[List[str]] = None,
     correct_answers: Optional[List[str]] = None,
     wrong_pct: Optional[str] = None,
+    theme: Optional[str] = None,
 ) -> str:
     """Собрать заголовок рубрики из её шаблонов с анти-спойлером и историей.
 
     Плейсхолдеры: `{series_no}` (номер выпуска вида «№7»), `{threshold}`,
     `{count}`/`{n}` (число вопросов), `{wrong_pct}` (для рубрик-ловушек —
     динамическая метрика «NN%» из истории либо мягкая статичная формулировка).
-    Анти-спойлер и защита от повторов — общая логика с фото-потоком
-    (`photo_flow.render_title`).
+    Анти-спойлер, проверка соответствия теме и защита от повторов — общая логика
+    с фото-потоком (`photo_flow.render_title`).
     """
     fields = {
         "series_no": f"№{series_no}",
@@ -99,13 +100,29 @@ def build_rubric_title(
         used_titles=used_titles,
         correct_answers=correct_answers,
         fallback=rubric.series_name,
+        theme=theme or "",
     )
     return title or rubric.series_name
 
 
-def _rubric_theme(cfg, rubric: Rubric, state: Dict[str, Any]) -> Optional[str]:
-    """Выбрать тему выпуска рубрики через фото-конвейер (с ротацией)."""
-    return photo_flow._choose_theme(cfg, state)
+def _rubric_theme(
+    cfg, rubric: Rubric, state: Dict[str, Any]
+) -> Optional[str]:
+    """Выбрать тему выпуска рубрики.
+
+    Темы берёт из `rubric.themes` (если заданы) — иначе заголовок серии может
+    не соответствовать содержанию (например «угадаете картинки», а в выпуске
+    животные). Ротация и проверка доступности источников — общие с фото-потоком.
+    """
+    override = rubric.theme_candidates(cfg.effective_photo_themes())
+    if rubric.themes and not override:
+        log.error(
+            "Рубрика «%s»: ни одна из тем %s не найдена в PHOTO_THEMES",
+            rubric.id,
+            rubric.themes,
+        )
+        return None
+    return photo_flow._choose_theme(cfg, state, themes_override=override)
 
 
 def _published_questions(cfg, survey_id: str) -> List[Dict[str, Any]]:
@@ -443,7 +460,12 @@ def _dry_run(
     title_history = getattr(cfg, "photo_title_history", 10) or 10
     used_titles = list(state.get("used_titles") or [])[-title_history:]
     title = build_rubric_title(
-        rubric, series_no, need, used_titles=used_titles, correct_answers=correct_answers
+        rubric,
+        series_no,
+        need,
+        used_titles=used_titles,
+        correct_answers=correct_answers,
+        theme=theme,
     )
     log.info("  заголовок: %s", title)
 
@@ -527,6 +549,7 @@ def _publish(
             count,
             used_titles=_used,
             correct_answers=_answers,
+            theme=theme,
         )
 
     result = photo_flow.publish_photo_form(

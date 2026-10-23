@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 try:
@@ -304,6 +304,9 @@ DEFAULT_RUBRICS: List[Dict[str, Any]] = [
         "source": "photo",
         "questions_count": 10,
         "threshold": 8,
+        # Шаблоны называют категорию («картин», «пород»), поэтому темы
+        # зафиксированы: заголовок обязан соответствовать содержанию.
+        "themes": ["картины из школьной программы", "породы собак"],
         "comment_prompt": (
             "Напишите в комментариях, кого или что вы угадали легче всего — "
             "так станет понятно, какие темы подбираем лучше всего."
@@ -364,6 +367,9 @@ class Rubric:
     comment_prompt: str
     enabled: bool
     slot: str
+    # Темы фото-рубрики: выпуски берутся только отсюда. Пусто — весь список
+    # PHOTO_THEMES (тогда шаблоны заголовков не должны называть категорию).
+    themes: List[str] = field(default_factory=list)
 
     def validate(self) -> None:
         errors = []
@@ -385,6 +391,22 @@ class Rubric:
             )
         if errors:
             raise ValueError("Ошибки конфигурации:\n  - " + "\n  - ".join(errors))
+
+    def theme_candidates(self, all_themes: List[str]) -> List[str]:
+        """Темы-кандидаты рубрики: свой список (иначе — все темы фото-потока).
+
+        Темы, отсутствующие в `PHOTO_THEMES`, отбрасываются: выпуск по такой теме
+        потом невозможно воспроизвести настройками.
+        """
+        if not self.themes:
+            return list(all_themes)
+        known = {str(t).strip().lower(): str(t).strip() for t in all_themes}
+        result: List[str] = []
+        for theme in self.themes:
+            matched = known.get(theme.strip().lower())
+            if matched and matched not in result:
+                result.append(matched)
+        return result
 
 
 @dataclass
@@ -410,6 +432,11 @@ def _rubric_from_dict(data: Any) -> Rubric:
         raise ValueError(f"RUBRICS: title_templates рубрики «{rubric_id or '?'}» "
                          "должен быть массивом строк")
     title_templates = [str(t).strip() for t in templates if str(t).strip()]
+    raw_themes = data.get("themes", [])
+    if not isinstance(raw_themes, list):
+        raise ValueError(f"RUBRICS: themes рубрики «{rubric_id or '?'}» "
+                         "должен быть массивом строк")
+    themes = [str(t).strip() for t in raw_themes if str(t).strip()]
     return Rubric(
         id=rubric_id,
         title_templates=title_templates,
@@ -420,6 +447,7 @@ def _rubric_from_dict(data: Any) -> Rubric:
         comment_prompt=str(data.get("comment_prompt", "")).strip(),
         enabled=bool(data.get("enabled", True)),
         slot=str(data.get("slot", "")).strip(),
+        themes=themes,
     )
 
 
