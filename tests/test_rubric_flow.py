@@ -21,9 +21,10 @@ from state import load_state, record_publish, save_state, today_utc
 
 def _rubric_cfg(tmp_path, **overrides):
     """Конфиг для рубрик: реестр из config + поля фото-потока для конвейера."""
+    rubrics = load_config({"dry_run": True}, require_questions=False).rubrics
     base = {
         "photo_theme": "животные",
-        "photo_themes": ["животные"],
+        "photo_themes": ["животные"] + list(rubrics.get("b").themes),
         "photo_sources": ["wikimedia"],
         "photo_questions_count": 8,
         "photo_min_questions": 1,
@@ -176,11 +177,11 @@ def test_rubric_a_dry_run_builds_title_and_questions(monkeypatch, tmp_path):
     # Перехватим сборку плана: зафиксируем, что build_rubric_title вызван с серией/порогом.
     real_title = rubric_flow.build_rubric_title
 
-    def spy_title(rubric, series_no, count, used_titles=None, correct_answers=None):
+    def spy_title(rubric, series_no, count, used_titles=None, correct_answers=None, **kw):
         captured["series_no"] = series_no
         captured["count"] = count
         captured["threshold"] = rubric.threshold
-        return real_title(rubric, series_no, count, used_titles, correct_answers)
+        return real_title(rubric, series_no, count, used_titles, correct_answers, **kw)
 
     monkeypatch.setattr(rubric_flow, "build_rubric_title", spy_title)
 
@@ -209,7 +210,12 @@ def test_rubric_b_dry_run_uses_own_title_and_threshold(monkeypatch, tmp_path):
     """DRY-RUN рубрики «b»: свой заголовок (не фото-библиотека) и порог 8/10."""
     _no_network(monkeypatch)
 
-    cfg = _rubric_cfg(tmp_path, photo_theme="породы собак", dry_run=True)
+    cfg = _rubric_cfg(
+        tmp_path,
+        photo_theme="",
+        photo_themes=list(cfg_b_themes()),
+        dry_run=True,
+    )
     state = load_state(cfg.rubrics_state_file)
 
     # Заголовок должен собраться из шаблонов рубрики b (порог 8, серия №1).
@@ -218,6 +224,63 @@ def test_rubric_b_dry_run_uses_own_title_and_threshold(monkeypatch, tmp_path):
     assert "8" in title and "10" in title
 
     assert rubric_flow.run_rubric(cfg, state, "b", dry_run=True) == 0
+
+
+def cfg_b_themes():
+    """Темы рубрики «b» из реестра — используются в тестах, чтобы не зависеть от них вручную."""
+    rubrics = load_config({"dry_run": True}, require_questions=False).rubrics
+    return list(rubrics.get("b").themes)
+
+
+def test_rubric_b_theme_comes_from_rubric_not_photo_themes(monkeypatch, tmp_path):
+    """Рубрика «b» берёт тему из своего списка: животные вне её тем не выбираются."""
+    _no_network(monkeypatch)
+    captured = {}
+
+    def spy_dry_run(cfg, state, rubric, theme, series_no):
+        captured["theme"] = theme
+        return 0
+
+    monkeypatch.setattr(rubric_flow, "_dry_run", spy_dry_run)
+
+    cfg = _rubric_cfg(
+        tmp_path,
+        photo_theme="",
+        photo_themes=["животные Африки", "породы собак"],
+        dry_run=True,
+    )
+    state = load_state(cfg.rubrics_state_file)
+
+    assert rubric_flow.run_rubric(cfg, state, "b", dry_run=True) == 0
+    assert captured["theme"] == "породы собак"
+
+
+def test_rubric_b_title_never_promises_wrong_class(monkeypatch, tmp_path):
+    """Заголовок рубрики «b» не обещает «картины» на выпуске про собак."""
+    _no_network(monkeypatch)
+    cfg = _rubric_cfg(tmp_path, dry_run=True)
+    rubric = cfg.rubrics.get("b")
+
+    title = rubric_flow.build_rubric_title(rubric, 1, 10, theme="породы собак")
+    assert "картин" not in title.lower()
+    assert "№1" in title and "8" in title
+
+
+def test_title_matches_theme_filters_other_class():
+    """title_matches_theme: заголовок про картины не подходит теме про животных."""
+    assert photo_flow.title_matches_theme(
+        "Вы настоящий искусствовед, если угадаете 8/10 картин по фото",
+        "картины из школьной программы",
+    )
+    assert photo_flow.title_matches_theme(
+        "Вы настоящий кинолог, если угадаете 8/10 пород по фото", "породы собак"
+    )
+    assert not photo_flow.title_matches_theme(
+        "Вы настоящий искусствовед, если угадаете 8/10 картин по фото",
+        "животные Африки",
+    )
+    # заголовок без маркеров класса подходит любой теме
+    assert photo_flow.title_matches_theme("Знаток по фото №1", "животные Африки")
 
 
 def test_rubric_dry_run_does_not_touch_network(monkeypatch, tmp_path):

@@ -180,6 +180,62 @@ def _capitalize(theme: str) -> str:
     return theme[:1].upper() + theme[1:] if theme else theme
 
 
+# Категории тем, чей класс сущностей строгий: «картины» — только живопись,
+# «животные» — только фауна и т.п. Используется для проверки заголовка.
+_STRICT_TITLE_CATEGORIES = (
+    "породы собак",
+    "хищные птицы",
+    "животные",
+    "растения",
+    "картины",
+    "достопримечательности",
+)
+
+# Признаки класса сущностей в заголовке (regex -> категории заголовков, которым
+# такой заголовок подходит). Если заголовок содержит маркер одного класса, а
+# тема относится к другому строгому классу — заголовок не подходит выпуску.
+_TITLE_CLASS_MARKERS: List[Tuple[re.Pattern, Tuple[str, ...]]] = [
+    (
+        re.compile(r"картин|живопис|шедевр|полотн|фрагмент", re.IGNORECASE),
+        ("картины",),
+    ),
+    (re.compile(r"пород", re.IGNORECASE), ("породы собак",)),
+    (re.compile(r"птиц|птич", re.IGNORECASE), ("хищные птицы",)),
+    (
+        re.compile(r"животн|звер", re.IGNORECASE),
+        ("животные", "породы собак", "хищные птицы"),
+    ),
+    (
+        re.compile(r"растен|цвет[а-яё]*\b|дерев|трав", re.IGNORECASE),
+        ("растения",),
+    ),
+    (
+        re.compile(
+            r"город|достопримечательн|стран|мест|путешеств", re.IGNORECASE
+        ),
+        ("достопримечательности",),
+    ),
+]
+
+
+def title_matches_theme(title: str, theme: str) -> bool:
+    """Подходит ли заголовок теме выпуска по классу сущностей.
+
+    Ловит рассогласование «заголовок обещает картинки, а в выпуске животные»:
+    маркер класса в заголовке должен относиться к категории темы. Заголовки без
+    явных маркеров (и темы вне строгих категорий) считаются подходящими.
+    """
+    if not (title or "").strip():
+        return True
+    category = _title_category(theme)
+    if category not in _STRICT_TITLE_CATEGORIES:
+        return True
+    for marker_re, allowed in _TITLE_CLASS_MARKERS:
+        if marker_re.search(title) and category not in allowed:
+            return False
+    return True
+
+
 def _title_category(theme: str) -> str:
     """Сопоставить тему выпуска с категорией библиотеки заголовков (§10.4)."""
     value = (theme or "").lower()
@@ -237,19 +293,24 @@ def render_title(
     used_titles: Optional[List[str]] = None,
     correct_answers: Optional[List[str]] = None,
     fallback: str = "",
+    theme: str = "",
 ) -> str:
     """Собрать заголовок из готового списка шаблонов (общая логика потоков).
 
     Переиспользуется фото-потоком и рубриками: подставляет `fields` в каждый
-    шаблон, отбрасывает заголовки-спойлеры (слова из правильных ответов), среди
-    оставшихся старается не повторять уже использованные в `used_titles`. Если
-    применимых шаблонов нет — возвращает `fallback` (без спойлера).
+    шаблон, отбрасывает заголовки-спойлеры (слова из правильных ответов) и
+    заголовки не по теме (`theme` — класс сущностей не совпадает с обещанным в
+    заголовке), среди оставшихся старается не повторять уже использованные в
+    `used_titles`. Если применимых шаблонов нет — возвращает `fallback` (без
+    спойлера).
     """
     answers = [str(a) for a in (correct_answers or []) if str(a).strip()]
 
     def safe_fallback() -> str:
         """Фолбэк без спойлера: если он сам содержит слово ответа — пустая строка."""
         if review.contains_spoiler(fallback, answers):
+            return ""
+        if not title_matches_theme(fallback, theme):
             return ""
         return fallback
 
@@ -271,6 +332,11 @@ def render_title(
             continue
         if review.contains_spoiler(title, answers):
             log.info("Заголовок «%s» пропущен: спойлер из правильного ответа", title)
+            continue
+        if not title_matches_theme(title, theme):
+            log.info(
+                "Заголовок «%s» пропущен: не соответствует теме «%s»", title, theme
+            )
             continue
         candidates.append(title)
 
@@ -305,6 +371,7 @@ def build_survey_name(
         used_titles=used_titles,
         correct_answers=correct_answers,
         fallback=fallback,
+        theme=theme,
     )
     if title:
         return title
@@ -584,11 +651,14 @@ def _warn_wikimedia(cfg) -> None:
         )
 
 
-def _choose_theme(cfg, state: Dict[str, Any]) -> Optional[str]:
+def _choose_theme(
+    cfg, state: Dict[str, Any], themes_override: Optional[List[str]] = None
+) -> Optional[str]:
     """Выбрать тему выпуска: заданную вручную или случайную неиспользованную.
 
     Темы, для которых `theme_sources` пуст (например, фильмы при выключенных
     кино-флагах), пропускаются — иначе боевой запуск соберёт неправильные фото.
+    `themes_override` сужает список тем (рубрики со своим набором тем).
     """
     if cfg.photo_theme:
         reason = _theme_skip_reason(cfg, cfg.photo_theme)
@@ -598,7 +668,12 @@ def _choose_theme(cfg, state: Dict[str, Any]) -> Optional[str]:
         log.info("Тема задана явно: %s", cfg.photo_theme)
         return cfg.photo_theme
 
-    themes = cfg.effective_photo_themes()
+    if themes_override:
+        themes = list(themes_override)
+        if len(themes) == 1:
+            log.info("Рубрика задала единственную тему: %s", themes[0])
+    else:
+        themes = cfg.effective_photo_themes()
     available: List[str] = []
     for theme in themes:
         reason = _theme_skip_reason(cfg, theme)
