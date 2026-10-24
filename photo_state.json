@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-21",
+  "last_publish_date": "2026-10-24",
   "published": [
     {
       "date": "2026-09-24",
@@ -2479,6 +2479,95 @@
           "license": "Public domain"
         }
       ]
+    },
+    {
+      "date": "2026-10-24",
+      "survey_id": "6adcfa72bf4fde40f407e95d",
+      "url": "https://forms.yandex.ru/u/6adcfa72bf4fde40f407e95d/",
+      "theme": "хищные птицы",
+      "title": "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя 2",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Hobby_%28Falco_subbuteo%29_juvenile_Danube_delta.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Hobby_(Falco_subbuteo)_juvenile_Danube_delta.jpg",
+          "title": "Hobby (Falco subbuteo) juvenile Danube delta.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Falco_vespertinus_NAUMANN.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Falco_vespertinus_NAUMANN.jpg",
+          "title": "Falco vespertinus NAUMANN.jpg",
+          "author": "",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Falco_columbarius_Male.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Falco_columbarius_Male.jpg",
+          "title": "Falco columbarius Male.jpg",
+          "author": "Raj Boora from Edmonton, Canada",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Aquila_nipalensis_orientalis_qtl1.jpg/1280px-Aquila_nipalensis_orientalis_qtl1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aquila_nipalensis_orientalis_qtl1.jpg",
+          "title": "Aquila nipalensis orientalis qtl1.jpg",
+          "author": "Quartl",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/Greater_Spotted_Eagle_in_Jodbeed_Gadhwala_Conservation_Reserve_November_2025_by_Tisha_Mukherjee_01.jpg/1280px-Greater_Spotted_Eagle_in_Jodbeed_Gadhwala_Conservation_Reserve_November_2025_by_Tisha_Mukherjee_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Greater_Spotted_Eagle_in_Jodbeed_Gadhwala_Conservation_Reserve_November_2025_by_Tisha_Mukherjee_01.jpg",
+          "title": "Greater Spotted Eagle in Jodbeed Gadhwala Conservation Reserve November 2025 by Tisha Mukherjee 01.jpg",
+          "author": "Tisha Mukherjee",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Black-chested_snake-eagle_%28Circaetus_pectoralis%29.jpg/1280px-Black-chested_snake-eagle_%28Circaetus_pectoralis%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Black-chested_snake-eagle_(Circaetus_pectoralis).jpg",
+          "title": "Black-chested snake-eagle (Circaetus pectoralis).jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Oriental_honey_buzzard_Mudumalai_Mar21_DSC01405.jpg/1280px-Oriental_honey_buzzard_Mudumalai_Mar21_DSC01405.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Oriental_honey_buzzard_Mudumalai_Mar21_DSC01405.jpg",
+          "title": "Oriental honey buzzard Mudumalai Mar21 DSC01405.jpg",
+          "author": "Timothy A. Gonsalves",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Western_Marsh_Harrier_in_Baruipur_November_2025_by_Tisha_Mukherjee_03.jpg/1280px-Western_Marsh_Harrier_in_Baruipur_November_2025_by_Tisha_Mukherjee_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Western_Marsh_Harrier_in_Baruipur_November_2025_by_Tisha_Mukherjee_03.jpg",
+          "title": "Western Marsh Harrier in Baruipur November 2025 by Tisha Mukherjee 03.jpg",
+          "author": "Tisha Mukherjee",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Milvus_milvus_%28portrait%29.jpg/1280px-Milvus_milvus_%28portrait%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Milvus_milvus_(portrait).jpg",
+          "title": "Milvus milvus (portrait).jpg",
+          "author": "Hans Hillewaert",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/Booted_Eagle_by_Tisha_Mukherjee_02.jpg/1280px-Booted_Eagle_by_Tisha_Mukherjee_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Booted_Eagle_by_Tisha_Mukherjee_02.jpg",
+          "title": "Booted Eagle by Tisha Mukherjee 02.jpg",
+          "author": "Tisha Mukherjee",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -2761,13 +2850,24 @@
     "картины из школьной программы: Валентин Серов|Мика Морозов",
     "картины из школьной программы: Борис Кустодиев|Купчиха за чаем",
     "картины из школьной программы: Карл Брюллов|Всадница",
-    "картины из школьной программы: Николай Ге|Петр I допрашивает царевича Алексея"
+    "картины из школьной программы: Николай Ге|Петр I допрашивает царевича Алексея",
+    "хищные птицы: Чеглок",
+    "хищные птицы: Кобчик",
+    "хищные птицы: Дербник",
+    "хищные птицы: Степной орёл",
+    "хищные птицы: Большой подорлик",
+    "хищные птицы: Змееяд",
+    "хищные птицы: Обыкновенный осоед",
+    "хищные птицы: Болотный лунь",
+    "хищные птицы: Красный коршун",
+    "хищные птицы: Орёл-карлик"
   ],
   "used_themes": [
     "породы собак",
     "животные Африки",
     "достопримечательности и места",
-    "картины из школьной программы"
+    "картины из школьной программы",
+    "хищные птицы"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -2984,7 +3084,17 @@
       "Орлан-белохвост",
       "Сова-сипуха",
       "Ушастая сова",
-      "Бородатая неясыть"
+      "Бородатая неясыть",
+      "Чеглок",
+      "Кобчик",
+      "Дербник",
+      "Степной орёл",
+      "Большой подорлик",
+      "Змееяд",
+      "Обыкновенный осоед",
+      "Болотный лунь",
+      "Красный коршун",
+      "Орёл-карлик"
     ],
     "пейзажи русских художников": [
       "Иван Айвазовский|Девятый вал",
@@ -3088,6 +3198,7 @@
     "Породы собак: узнаете ли вы каждую из 10 по фото?",
     "Вы настоящий знаток природы, если назовёте всех 10 животных на фото",
     "Вы путешественник, если узнаете эти 10 достопримечательностей без подсказок",
-    "Вы помните эти 10 картин из школьной программы? Проверьте по фото"
+    "Вы помните эти 10 картин из школьной программы? Проверьте по фото",
+    "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя"
   ]
 }
