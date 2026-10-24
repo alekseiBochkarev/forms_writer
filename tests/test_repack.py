@@ -333,8 +333,10 @@ def test_repack_publishes_new_form_marks_repack_of(monkeypatch, tmp_path):
     # wrong_pct не переносится: метрику пишет только rubric_metrics по ответам
     assert "wrong_pct" not in new_entry
     assert "answers_count" not in new_entry
-    # порог квиза = threshold рубрики, форма опубликована
-    assert client.quizzes[0]["quiz"]["pass_scores"] == 8
+    # в квизе сегменты, а не режим «зачёт/незачёт»; форма опубликована
+    quiz = client.quizzes[0]["quiz"]
+    assert "pass_scores" not in quiz
+    assert quiz["calc_method"] == "range"
     assert client.published == ["sid-repack"]
 
 

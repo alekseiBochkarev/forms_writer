@@ -318,10 +318,13 @@ def test_publish_sets_questions_threshold_title_comment_and_state(monkeypatch, t
     for q in client.questions:
         assert q["image"] is None
         assert 0 <= q["correct_index"] < 4
-    # порог квиза = threshold рубрики
+    # порог рубрики не передаётся в quiz: в режиме сегментов он игнорируется
     quiz = client.quizzes[0]["quiz"]
-    assert quiz["pass_scores"] == rubric.threshold
-    assert quiz["calc_method"] == "scores"
+    assert "pass_scores" not in quiz
+    assert quiz["calc_method"] == "range"
+    # сегменты результатов строятся для формы с порогом
+    assert len(quiz["items"]) == 4
+    assert quiz["items"][-1]["upper_limit"] == need
     # comment-вопрос из comment_prompt ровно один
     assert client.comments == [rubric.comment_prompt]
     assert client.published == ["sid-trap"]

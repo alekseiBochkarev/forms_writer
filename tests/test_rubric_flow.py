@@ -295,8 +295,8 @@ def test_rubric_dry_run_does_not_touch_network(monkeypatch, tmp_path):
 # --- боевой путь: комментарий, порог, record_publish -------------------------
 
 
-def test_rubric_publish_adds_comment_and_pass_score(monkeypatch, tmp_path):
-    """Боевой путь: comment-вопрос из comment_prompt в конце, порог = threshold."""
+def test_rubric_publish_adds_comment_and_segments(monkeypatch, tmp_path):
+    """Боевой путь: comment-вопрос из comment_prompt в конце, в квизе сегменты."""
     client = _RecordingClient()
     monkeypatch.setattr(photo_flow, "YandexFormsClient", _ClientFactory(client))
     monkeypatch.setattr(
@@ -314,10 +314,13 @@ def test_rubric_publish_adds_comment_and_pass_score(monkeypatch, tmp_path):
     rubric = cfg.rubrics.get("a")
     # комментарий добавлен ровно один раз и текстом из рубрики
     assert client.comments == [rubric.comment_prompt]
-    # порог квиза = threshold рубрики
+    # порог рубрики не передаётся в quiz: в режиме сегментов он игнорируется
     quiz = client.quizzes[0]["quiz"]
-    assert quiz["pass_scores"] == rubric.threshold
-    assert quiz["calc_method"] == "scores"
+    assert "pass_scores" not in quiz
+    assert quiz["calc_method"] == "range"
+    # сегменты результатов строятся для формы с порогом
+    assert len(quiz["items"]) == 4
+    assert quiz["items"][-1]["upper_limit"] == 8
     assert client.published == ["sid-1"]
 
 

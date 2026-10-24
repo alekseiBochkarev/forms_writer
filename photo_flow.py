@@ -780,16 +780,15 @@ def publish_photo_form(
     used_titles: List[str],
     correct_answers: List[str],
     title_builder,
-    pass_score: Optional[int] = None,
     comment_prompt: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
     """Создать, наполнить и опубликовать форму — без записи состояния.
 
     Переиспользуется фото-потоком и рубриками. `title_builder(used_titles,
-    correct_answers)` собирает базовый заголовок; `pass_score` переопределяет
-    порог квиза; `comment_prompt` добавляет блок-комментарий в конце формы.
-    Возвращает dict c `survey_id`, `public_url`, `base_title`, `name`, `added`
-    либо None, если публикация отменена (недобор вопросов).
+    correct_answers)` собирает базовый заголовок; `comment_prompt` добавляет
+    блок-комментарий в конце формы. Возвращает dict c `survey_id`, `public_url`,
+    `base_title`, `name`, `added` либо None, если публикация отменена
+    (недобор вопросов).
     """
     base_title = title_builder(used_titles, correct_answers)
 
@@ -844,7 +843,7 @@ def publish_photo_form(
         client.add_comment_question(survey_id, comment_prompt.strip(), header=False)
         log.info("  + вопрос для комментариев (comment)")
 
-    quiz = build_quiz_settings(cfg, total=len(added), pass_score=pass_score)
+    quiz = build_quiz_settings(cfg, total=len(added))
     client.update_survey(survey_id, {"quiz": quiz, "stats": cfg.stats, "need_auth": False})
     log.info("Настройки теста применены (stats=%s)", cfg.stats)
 
