@@ -386,7 +386,6 @@ def run_rubric_repack(
         questions,
         minimum=TRAP_MIN_QUESTIONS,
         title_builder=title_builder,
-        pass_score=rubric.threshold,
         comment_prompt=rubric.comment_prompt,
     )
     if result is None:
@@ -559,7 +558,6 @@ def _publish(
         used_titles=used_titles,
         correct_answers=correct_answers,
         title_builder=title_builder,
-        pass_score=rubric.threshold,
         comment_prompt=rubric.comment_prompt,
     )
     if result is None:
@@ -618,7 +616,6 @@ def _publish_plain_form(
     questions: List[Dict[str, Any]],
     minimum: int,
     title_builder,
-    pass_score: int,
     comment_prompt: Optional[str],
 ) -> Optional[Dict[str, Any]]:
     """Создать, наполнить и опубликовать форму БЕЗ картинок — без записи состояния.
@@ -686,7 +683,7 @@ def _publish_plain_form(
         client.add_comment_question(survey_id, comment_prompt.strip(), header=False)
         log.info("  + вопрос для комментариев (comment)")
 
-    quiz = build_quiz_settings(cfg, total=len(added), pass_score=pass_score)
+    quiz = build_quiz_settings(cfg, total=len(added))
     client.update_survey(
         survey_id, {"quiz": quiz, "stats": cfg.stats, "need_auth": False}
     )
@@ -861,7 +858,6 @@ def _trap_publish(
         questions,
         minimum=TRAP_MIN_QUESTIONS,
         title_builder=title_builder,
-        pass_score=rubric.threshold,
         comment_prompt=rubric.comment_prompt,
     )
     if result is None:

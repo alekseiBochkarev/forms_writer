@@ -10,6 +10,7 @@ from yandex_forms import (
     MAX_SURVEY_PAGES,
     YandexFormsClient,
     YandexFormsError,
+    build_quiz_settings,
     publish_questions,
 )
 
@@ -193,6 +194,61 @@ def test_publish_questions_quiz_total_counts_only_enum_questions():
     # 2 enum-вопроса + 2 comment-блока -> total должен быть 2, а не 4
     assert quiz["items"][-1]["upper_limit"] == 2
     assert "из 2." in quiz["items"][-1]["description"]
+
+
+# --- build_quiz_settings: сегменты ------------------------------------------
+
+
+def test_quiz_auto_segments_for_13_questions():
+    """Без настроек — 4 сегмента по четвертям и полное покрытие баллов."""
+    quiz = build_quiz_settings(_publish_cfg(), total=13)
+
+    assert quiz["calc_method"] == "range"
+    assert [item["upper_limit"] for item in quiz["items"]] == [3, 6, 9, 13]
+    assert quiz["items"][0]["title"] == "Начинающий"
+    assert quiz["items"][-1]["title"] == "Ходячая энциклопедия"
+    assert "0–3" in quiz["items"][0]["description"]
+    assert "10–13" in quiz["items"][-1]["description"]
+
+
+def test_quiz_pass_scores_do_not_replace_segments():
+    """Порог не переключает quiz на scores и не попадает в range-payload."""
+    quiz = build_quiz_settings(_publish_cfg(pass_scores=10), total=13)
+
+    assert quiz["calc_method"] == "range"
+    assert "pass_scores" not in quiz
+    assert len(quiz["items"]) == 4
+    assert quiz["items"][-1]["upper_limit"] == 13
+
+
+def test_quiz_custom_segments_take_priority():
+    """Свои SEGMENTS важнее авто-сегментов; режим остаётся range."""
+    quiz = build_quiz_settings(
+        _publish_cfg(
+            pass_scores=10,
+            segments=[
+                {"title": "Новичок", "description": "Есть куда расти", "upper_limit": 4},
+                {"title": "Эрудит", "description": "Отличный результат", "upper_limit": 13},
+            ],
+        ),
+        total=13,
+    )
+
+    assert quiz["calc_method"] == "range"
+    assert "pass_scores" not in quiz
+    assert [item["upper_limit"] for item in quiz["items"]] == [4, 13]
+
+
+@pytest.mark.parametrize(
+    "total, expected",
+    [(1, [1]), (2, [1, 2]), (3, [1, 2, 3]), (4, [1, 2, 3, 4])],
+)
+def test_quiz_auto_segments_for_small_totals(total, expected):
+    """На малых total границы не дублируются и покрывают все баллы."""
+    quiz = build_quiz_settings(_publish_cfg(), total=total)
+
+    assert [item["upper_limit"] for item in quiz["items"]] == expected
+    assert quiz["items"][-1]["upper_limit"] == total
 
 
 # --- upload_image -----------------------------------------------------------

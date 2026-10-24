@@ -244,18 +244,22 @@ class YandexFormsClient:
         return f"https://forms.yandex.ru/u/{survey_id}/"
 
 
-def build_quiz_settings(cfg, total: int, pass_score: Optional[int] = None) -> Dict[str, Any]:
+def build_quiz_settings(cfg, total: int) -> Dict[str, Any]:
     """Собрать блок quiz с учётом настроек.
 
-    Приоритет: SEQUENCES (диапазоны) -> PASS_SCORES (порог) -> авто-сегменты.
-    `pass_score` переопределяет `cfg.pass_scores` (используется рубриками, у
-    которых порог задаётся своей рубрикой, а не настройкой потока).
+    Приоритет: SEGMENTS (свои диапазоны) -> авто-сегменты. Сегменты строятся
+    для любого теста: способы подсчёта «сегменты» (`range`) и «зачёт/незачёт»
+    (`scores` + `pass_scores`) в Яндекс Формах взаимоисключающие. При
+    `calc_method="range"` сервер игнорирует `pass_scores` (проверено на боевой
+    форме: после сохранения приходит `pass_scores=null`), поэтому порог в quiz
+    не передаём.
     """
-    effective_pass = pass_score if pass_score is not None else cfg.pass_scores
     quiz: Dict[str, Any] = {
         "show_results": cfg.show_results,
         "show_correct": cfg.show_correct,
     }
+    # upper_limit нет в OpenAPI-схеме SurveyQuizItemIn, но API его принимает и
+    # возвращает (проверено GET). Без upper_limit сегмент считается верхним.
 
     if cfg.segments:
         quiz["calc_method"] = "range"
@@ -266,19 +270,6 @@ def build_quiz_settings(cfg, total: int, pass_score: Optional[int] = None) -> Di
                 **({"upper_limit": seg["upper_limit"]} if "upper_limit" in seg else {}),
             }
             for seg in cfg.segments
-        ]
-        if effective_pass is not None:
-            quiz["pass_scores"] = effective_pass
-        return quiz
-
-    if effective_pass is not None:
-        quiz["calc_method"] = "scores"
-        quiz["pass_scores"] = effective_pass
-        quiz["items"] = [
-            {
-                "title": "Тест пройден" if effective_pass else "",
-                "description": "Спасибо за прохождение теста!",
-            }
         ]
         return quiz
 
