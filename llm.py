@@ -100,18 +100,42 @@ def extract_json(content: str) -> Dict[str, Any]:
 _extract_json = extract_json
 
 
-def _validate_questions(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def _validate_questions(
+    items: List[Dict[str, Any]], *, strict: bool = True
+) -> List[Dict[str, Any]]:
+    """Проверить вопросы модели и привести их к единому виду.
+
+    `strict=True` (по умолчанию) бросает ValueError на первом некорректном
+    вопросе — так работают основные потоки, где лучше повторить генерацию.
+    `strict=False` пропускает битые элементы с предупреждением: используется в
+    `generate_topic_questions`, где один кривой вопрос не должен отменять уже
+    собранный смешанный выпуск.
+    """
     result = []
     for item in items:
+        if not isinstance(item, dict):
+            if strict:
+                raise ValueError(f"Вопрос должен быть объектом: {item}")
+            log.warning("Пропускаю вопрос неверного формата: %s", item)
+            continue
         options = item.get("options") or []
         if len(options) != 4:
-            raise ValueError(f"У вопроса должно быть 4 варианта: {item}")
+            if strict:
+                raise ValueError(f"У вопроса должно быть 4 варианта: {item}")
+            log.warning("Пропускаю вопрос с %s вариантами: %s", len(options), item)
+            continue
         correct = item.get("correct_index")
         if not isinstance(correct, int) or not (0 <= correct < 4):
-            raise ValueError(f"Некорректный correct_index: {item}")
+            if strict:
+                raise ValueError(f"Некорректный correct_index: {item}")
+            log.warning("Пропускаю вопрос с некорректным correct_index: %s", item)
+            continue
         question = (item.get("question") or "").strip()
         if not question:
-            raise ValueError(f"Пустой текст вопроса: {item}")
+            if strict:
+                raise ValueError(f"Пустой текст вопроса: {item}")
+            log.warning("Пропускаю вопрос с пустым текстом: %s", item)
+            continue
         result.append(
             {
                 "topic": (item.get("topic") or "").strip(),
@@ -366,6 +390,98 @@ def generate_conclusion(
     )
     log.info("Запрашиваю заключительную часть у модели %s ...", cfg.llm_model)
     return _request_text(cfg, TEXT_SYSTEM_PROMPT, user, "outro")
+
+
+TOPIC_SYSTEM_PROMPT = (
+    "Ты — составитель тематических викторин. Ты придумываешь точные вопросы "
+    "по заданной теме и всегда отвечаешь строго в формате JSON."
+)
+
+
+def generate_topic_questions(
+    cfg,
+    topic: str,
+    count: int,
+    avoid: List[str] | None = None,
+    extra: int = 0,
+) -> List[Dict[str, Any]]:
+    """Сгенерировать вопросы по одной конкретной теме (для смешанных рубрик).
+
+    Отличается от `generate_questions` тем, что тема задаётся явно и вопросы
+    должны быть из разных граней темы, а не из разных областей знаний. Для
+    кинотем отдельно запрещаем визуальные вопросы: кадры и фото идут отдельным
+    блоком того же выпуска.
+
+    `extra` — запас кандидатов сверх нужного числа: часть отфильтруют фактчек
+    и дедупликация. Формат элементов тот же, что у `generate_questions`.
+    """
+    target = max(1, int(count)) + max(0, int(extra))
+    avoid_block = ""
+    if avoid:
+        # Берём самые свежие вопросы: история хранится в хронологическом
+        # порядке, и старые выпуски менее важны для защиты от повторов.
+        listed = "\n".join(f"- {q}" for q in avoid[-150:])
+        avoid_block = (
+            "\nВАЖНО: не повторяй вопросы, которые уже были раньше. "
+            "Ниже список уже заданных вопросов — не используй их и не перефразируй:\n"
+            f"{listed}\n"
+        )
+    user = (
+        f"Составь ровно {target} вопросов по теме «{topic}» на языке "
+        f"«{cfg.language}».\n"
+        "Требования:\n"
+        "- вопросы из разных граней темы: история и контекст, авторы и "
+        "создатели, персонажи и исполнители, известные фразы, годы и факты, "
+        "первоисточники, музыка, награды и признание;\n"
+        "- НЕ спрашивай, что изображено на кадре, фото или плакате: "
+        "визуальный блок идёт отдельно в этом же тесте;\n"
+        "- все вопросы разные, без повторов и близких перефразировок;\n"
+        "- у каждого вопроса ровно 4 варианта ответа и РОВНО ОДИН правильный;\n"
+        "- факты достоверные и однозначные, без спорных формулировок;\n"
+        "- неверные варианты правдоподобные, но строго неверные; без "
+        "«все вышеперечисленное» и «нет верного ответа».\n"
+        f"{avoid_block}\n"
+        "Верни JSON строго такого вида:\n"
+        "{\n"
+        '  "questions": [\n'
+        "    {\n"
+        '      "topic": "Кино",\n'
+        '      "question": "Кто снял фильм ...?",\n'
+        '      "options": ["...", "...", "...", "..."],\n'
+        '      "correct_index": 2\n'
+        "    }\n"
+        "  ]\n"
+        "}\n"
+        "Никакого текста кроме JSON."
+    )
+    payload = {
+        "model": cfg.llm_model,
+        "messages": [
+            {"role": "system", "content": TOPIC_SYSTEM_PROMPT},
+            {"role": "user", "content": user},
+        ],
+        "temperature": cfg.llm_temperature,
+        "response_format": {"type": "json_object"},
+    }
+
+    log.info(
+        "Запрашиваю %s тематических вопросов по теме «%s» у модели %s ...",
+        target,
+        topic,
+        cfg.llm_model,
+    )
+    data = post_chat(cfg, payload)
+    content = data["choices"][0]["message"]["content"]
+    questions = _validate_questions(
+        extract_json(content).get("questions", []), strict=False
+    )
+    if len(questions) < target:
+        log.warning(
+            "Тематических вопросов получено %s из %s запрошенных",
+            len(questions),
+            target,
+        )
+    return questions
 
 
 TRAP_SYSTEM_PROMPT = (

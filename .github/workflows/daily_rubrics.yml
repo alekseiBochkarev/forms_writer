@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Рубрики a/b/c публикуются параллельно (matrix) и каждая коммитит общее
+  # Рубрики b/c/d публикуются параллельно (matrix) и каждая коммитит общее
   # rubrics_state.json тем же паттерном, что и другие workflow (pull --rebase
   # --autostash + push). Ограничение «не чаще раза в UTC-день» — на рубрику
   # (allow_publish_rubric), поэтому разные рубрики в одном слоте допустимы.
@@ -26,20 +26,21 @@ jobs:
   #
   # Если захочется развести анонсы по времени, чтобы они не наслаивались в
   # Telegram, вынесите каждую рубрику в отдельный workflow со своим cron
-  # (напр. a — 08:00, b — 11:00, c — 14:00 UTC): скопируйте job
+  # (напр. b — 08:00, c — 11:00, d — 14:00 UTC): скопируйте job
   # create-rubric-forms, уберите strategy.matrix и подставьте конкретный id в
   # `--rubric`, поменяйте cron и concurrency.group.
   create-rubric-forms:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    # Рубрики a/b — фото-конвейер (много LLM-вызовов), c — ловушки (генерация с
-    # запасом + фактчек). Худший случай сопоставим с daily_photo, берём 60 мин.
+    # Рубрика b — фото-конвейер (много LLM-вызовов), c — ловушки (генерация с
+    # запасом + фактчек), d — смешанный выпуск (кадры + текстовые вопросы, тоже
+    # с фактчеком). Худший случай сопоставим с daily_photo, берём 60 мин.
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        rubric: [a, b, c]
+        rubric: [b, c, d]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -66,8 +67,11 @@ jobs:
           # --- обычные настройки (Settings -> Variables) ---
           LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.openai.com/v1' }}
           LLM_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}
-          # Фото-рубрикам нужны источники изображений (как в daily_photo.yml).
-          FILM_RU_ENABLED: ${{ vars.FILM_RU_ENABLED || 'false' }}
+          # Фото-рубрикам и смешанному выпуску нужны источники изображений.
+          # Рубрика «d» — советское кино, её кадры берутся только из ruwiki_film,
+          # поэтому флаг включён жёстко: если Variable FILM_RU_ENABLED=false,
+          # ежедневный выпуск «d» падал бы на выборе темы.
+          FILM_RU_ENABLED: "true"
           FILM_GRAB_ENABLED: ${{ vars.FILM_GRAB_ENABLED || 'false' }}
           MOVIE_SCREENCAPS_ENABLED: ${{ vars.MOVIE_SCREENCAPS_ENABLED || 'false' }}
           WIKIMEDIA_USER_AGENT: ${{ vars.WIKIMEDIA_USER_AGENT }}

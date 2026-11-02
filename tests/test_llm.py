@@ -114,6 +114,22 @@ def test_validate_questions_rejects_empty_question():
             _validate_questions([_item(question=bad)])
 
 
+def test_validate_questions_non_strict_skips_bad_items():
+    """strict=False пропускает битые вопросы, оставляя корректные."""
+    items = [
+        _item(),
+        _item(options=["1", "2", "3"]),
+        "не объект",
+        _item(correct_index=9),
+        _item(question=""),
+        _item(question="Второй корректный?"),
+    ]
+
+    result = _validate_questions(items, strict=False)
+
+    assert [q["question"] for q in result] == ["В каком году?", "Второй корректный?"]
+
+
 # --- generate_questions: retry/backoff (сеть не задействуется) ---------------
 
 

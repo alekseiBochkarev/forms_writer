@@ -38,7 +38,9 @@
 - **Эксперимент с рубриками** (`python main.py --rubric <id>`): серия выпусков с
   единым форматом (свои шаблоны заголовков с номером серии, порог и вопрос для
   комментариев). Фото-рубрики (`source=photo`) переиспользуют фото-конвейер,
-  состояние — отдельный файл `rubrics_state.json`.
+  ловушки (`source=trap`) — текстовые вопросы, смешанные (`source=mixed`) —
+  кадры плюс текстовые факты в одной форме. Состояние — отдельный файл
+  `rubrics_state.json`.
 
 ## Структура
 
@@ -162,7 +164,7 @@ python main.py --delete-survey 6aac...
 | `WIKIMEDIA_USER_AGENT` | нет* | — | User-Agent для Wikimedia (обязателен для источника) |
 | `OPENVERSE_API_KEY` | нет | — | API-ключ Openverse |
 | `OPENVERSE_BASE_URL` | нет | `https://api.openverse.org/v1` | Базовый URL Openverse |
-| `FILM_RU_ENABLED` | нет | `false` | Единственный способ включить `ruwiki_film`; нужен для темы «советские фильмы» |
+| `FILM_RU_ENABLED` | нет | `false` | Единственный способ включить `ruwiki_film`; нужен для темы «советские фильмы». В `daily_rubrics.yml` включён принудительно — он обязателен для рубрики `d` |
 | `FILM_GRAB_ENABLED` | нет | `false` | Единственный способ включить `filmgrab` (film-grab.com); нужен для иностранных фильмов |
 | `MOVIE_SCREENCAPS_ENABLED` | нет | `false` | Единственный способ включить `movscreencaps` (movie-screencaps.com); нужен для иностранных фильмов |
 | `PHOTO_VISION_ENABLED` | нет | `true` | Проверять изображения через vision-модель (fail-closed) |
@@ -182,7 +184,7 @@ python main.py --delete-survey 6aac...
 | `NEW_TESTS_TG_TARGET_CHANNEL` | нет | `@qa_helper_draft` | Telegram-канал нового потока |
 | `NEW_TESTS_TG_BOT_TOKEN` | нет | = `TG_BOT_TOKEN` | Отдельный токен бота для нового потока |
 | `NEW_TESTS_PUBLISH_TELEGRAM` / `NEW_TESTS_PUBLISH_VK` | нет | `true` / `false` | Публикация анонса нового потока |
-| `RUBRICS` | нет | встроенный список | JSON-массив рубрик эксперимента (`id`, `series_name`, `source` = `photo`/`trap`, `questions_count`, `threshold` < `questions_count`, `title_templates` с `{series_no}`/`{threshold}`/`{count}`/`{n}`, `comment_prompt`, `enabled`, `slot`) |
+| `RUBRICS` | нет | встроенный список | JSON-массив рубрик эксперимента (`id`, `series_name`, `source` = `photo`/`trap`/`mixed`, `questions_count`, `threshold` < `questions_count`, `photo_count` для `mixed`, `themes`, `title_templates` с `{series_no}`/`{threshold}`/`{count}`/`{n}`/`{wrong_pct}`, `comment_prompt`, `enabled`, `slot`) |
 | `RUBRICS_STATE_FILE` | нет | `rubrics_state.json` | Файл состояния рубрик (номера серий, даты публикаций) |
 | `RUBRIC_MIN_MEDIAN` | нет | `50` | Порог вердикта «ниже порога» в `rubric_metrics.py` — по медиане **числа ответов** (прокси просмотров), не просмотров |
 | `RUBRIC_REPACK_WRONG_PCT` | нет | `60` | Порог доли ошибшихся (`wrong_pct >=`), при котором публикация рубрики считается провальной и переупаковывается (`--rubric c --repack`) |
@@ -376,13 +378,16 @@ python main.py --photo --force                       # игнорировать 
 Рубрика — серия выпусков с единым форматом: свои шаблоны заголовков (с номером
 серии `{series_no}`, порогом `{threshold}` и числом вопросов `{count}`), своим
 порогом прохождения и вопросом для комментариев в конце формы. Реестр задаётся
-переменной `RUBRICS` (или встроенный список `a`/`b`/`c`).
+переменной `RUBRICS` (или встроенный список `a`/`b`/`c`/`d`).
 
 ```bash
 python main.py --rubric a                # выпустить рубрику «a»
-python main.py --rubric b --dry-run      # план выпуска рубрики «b» без обращения к API
+FILM_RU_ENABLED=true python main.py --rubric d --dry-run  # план смешанного выпуска без API
 python main.py --rubric a --force        # игнорировать защиту «раз в день на рубрику»
 ```
+
+Для dry-run рубрики `d` нужен `FILM_RU_ENABLED=true` (без него тема
+«советские фильмы» недоступна и запуск завершится ошибкой выбора темы).
 
 Фото-рубрики (`source=photo`) переиспользуют фото-конвейер (тему, сущности и
 изображения), но собирают заголовок из шаблонов рубрики и публикуются с порогом
@@ -396,6 +401,20 @@ python main.py --rubric a --force        # игнорировать защиту
 «меньше половины». Публикация — не чаще раза в UTC-день на рубрику (`--force`
 обходит). Состояние ведётся отдельно в `rubrics_state.json`. В `--dry-run` LLM и
 внешние API не вызываются.
+
+Смешанные рубрики (`source=mixed`) собирают одну форму из двух блоков по одной
+теме: `photo_count` вопросов с кадрами из фото-конвейера и остальные
+(`questions_count - photo_count`) — текстовые вопросы, которые генерирует
+`llm.generate_topic_questions` и проверяет факт-чек. Блоки чередуются, чтобы кадр
+работал визуальным крючком по всей форме (при 5 фото из 15 — вопросы 1, 4, 7,
+10, 13). Если кадров не хватило, недостающее добирается текстовыми вопросами (и
+наоборот); выпуск отменяется, если не собралось ни одного кадра или ни одного
+текстового вопроса. Минимум публикации — `max(threshold + 1, ceil(0.8 * count))`,
+для 15/10 это 12 вопросов. Встроенная рубрика `d` — «Кино: кадры и факты»:
+15 вопросов (5 кадров + 10 фактов), порог 10/15, тема «советские фильмы»; для
+кадров нужен включённый `FILM_RU_ENABLED`. Рубрика `a` (фото-тест по кадрам)
+остаётся в реестре, но в ежедневное расписание не входит — она запускается
+вручную для сравнения с `d`.
 
 ### Метрики рубрик
 
@@ -580,7 +599,7 @@ python main.py --rubric c --repack --dry-run  # показать решение 
 (шаблон `Daily rubrics experiment`) по единственному cron `0 13 * * *` (UTC).
 Резервного cron нет: повторный запуск в тот же UTC-день заблокировала бы защита
 «раз в день на рубрику», поэтому при сбое job перезапускают вручную —
-`gh run rerun <run-id> --failed`. Первый job публикует рубрики a/b/c параллельно
+`gh run rerun <run-id> --failed`. Первый job публикует рубрики b/c/d параллельно
 (matrix, `python main.py --rubric <id>`), каждая коммитит общий
 `rubrics_state.json`. Второй job (после матрицы) обновляет метрики
 (`python rubric_metrics.py`) и переупаковывает провал ловушки
@@ -594,11 +613,11 @@ python main.py --rubric c --repack --dry-run  # показать решение 
 | --- | --- | --- | --- |
 | 06:00 | `daily.yml` | `python main.py` | эрудиция (слот 1) |
 | 12:00 | `daily_new_tests.yml` | `python main.py --new-tests` | новый тест (`@qa_helper_draft`) |
-| 13:00 | `daily_rubrics.yml` | `python main.py --rubric a/b/c` | рубрики эксперимента (3 шт.) |
+| 13:00 | `daily_rubrics.yml` | `python main.py --rubric b/c/d` | рубрики эксперимента (3 шт.) |
 | 13:00 (после матрицы) | `daily_rubrics.yml` | `python rubric_metrics.py` + `python main.py --rubric c --repack` | метрики и репак провала (без новой публикации, если провала нет) |
 | 16:00 | `daily_photo.yml` | `python main.py --photo` | фото-тест |
 
-Рубрики a/b/c выходят в одном слоте 13:00 UTC и считаются отдельными
+Рубрики b/c/d выходят в одном слоте 13:00 UTC и считаются отдельными
 публикациями (не чаще раза в UTC-день на рубрику). При необходимости развести
 анонсы по времени см. комментарий в `.github/workflows/daily_rubrics.yml`.
 

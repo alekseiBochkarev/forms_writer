@@ -24,10 +24,10 @@ from state import (
 
 
 def test_load_rubrics_defaults_when_env_empty():
-    """Без RUBRICS берутся три встроенные рубрики a/b/c."""
+    """Без RUBRICS берутся четыре встроенные рубрики a/b/c/d."""
     rubrics = load_rubrics()
 
-    assert set(rubrics.rubrics) == {"a", "b", "c"}
+    assert set(rubrics.rubrics) == {"a", "b", "c", "d"}
     a = rubrics.get("a")
     assert a is not None
     assert a.series_name == "Знаток по кино"
@@ -50,9 +50,20 @@ def test_load_rubrics_defaults_when_env_empty():
     assert c.questions_count == 10
     assert c.threshold == 8
 
+    d = rubrics.get("d")
+    assert d is not None
+    assert d.source == "mixed"
+    assert d.questions_count == 15
+    assert d.photo_count == 5
+    assert d.threshold == 10
+    assert d.themes == ["советские фильмы"]
+
     # шаблоны содержат обещанные плейсхолдеры
     assert all("{threshold}" in t and "{count}" in t for t in a.title_templates)
     assert any("{series_no}" in t for t in c.title_templates)
+    # у смешанной рубрики номер серии обязателен: иначе при фиксированных
+    # 15/10 пять шаблонов исчерпаются и заголовки начнут повторяться
+    assert all("{series_no}" in t for t in d.title_templates)
 
 
 def test_load_rubrics_defaults_are_not_shared_mutable():
@@ -110,6 +121,62 @@ def test_load_rubrics_unknown_source_rejected():
         assert source in message
 
 
+def test_load_rubrics_mixed_requires_photo_count():
+    """source=mixed без photo_count или с photo_count >= count — ошибка."""
+    payload = [
+        {
+            "id": "x",
+            "series_name": "Смешанный тест",
+            "source": "mixed",
+            "questions_count": 15,
+            "threshold": 10,
+            "title_templates": ["Тест {threshold} из {count}"],
+        }
+    ]
+    os.environ["RUBRICS"] = json.dumps(payload, ensure_ascii=False)
+    try:
+        with pytest.raises(ValueError) as exc:
+            load_rubrics()
+    finally:
+        del os.environ["RUBRICS"]
+    assert "photo_count" in str(exc.value)
+
+    payload[0]["photo_count"] = 15
+    os.environ["RUBRICS"] = json.dumps(payload, ensure_ascii=False)
+    try:
+        with pytest.raises(ValueError) as exc:
+            load_rubrics()
+    finally:
+        del os.environ["RUBRICS"]
+    assert "photo_count" in str(exc.value)
+
+
+def test_load_rubrics_mixed_parses_photo_count():
+    """source=mixed с корректным photo_count загружается."""
+    payload = [
+        {
+            "id": "x",
+            "series_name": "Смешанный тест",
+            "source": "mixed",
+            "questions_count": 15,
+            "photo_count": 5,
+            "threshold": 10,
+            "themes": ["советские фильмы"],
+            "title_templates": ["Тест {threshold} из {count}"],
+        }
+    ]
+    os.environ["RUBRICS"] = json.dumps(payload, ensure_ascii=False)
+    try:
+        rubrics = load_rubrics()
+    finally:
+        del os.environ["RUBRICS"]
+
+    rubric = rubrics.get("x")
+    assert rubric.source == "mixed"
+    assert rubric.photo_count == 5
+    assert rubric.questions_count == 15
+
+
 def test_load_rubrics_env_override_and_disabled():
     """RUBRICS из окружения полностью переопределяет встроенный список."""
     payload = [
@@ -141,7 +208,7 @@ def test_load_config_attaches_rubrics():
     cfg = config.load_config({"dry_run": True}, require_questions=False)
 
     assert cfg.rubrics is not None
-    assert {r.id for r in cfg.rubrics.enabled_rubrics()} == {"a", "b", "c"}
+    assert {r.id for r in cfg.rubrics.enabled_rubrics()} == {"a", "b", "c", "d"}
 
 
 # --- Состояние рубрик (state.py) ----------------------------------------------

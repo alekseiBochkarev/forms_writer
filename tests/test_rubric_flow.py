@@ -134,10 +134,11 @@ def _photo_question(theme, entity):
 
 
 def _stub_build_questions(monkeypatch, theme, count):
-    """Заглушка photo_flow._build_questions: вернуть `count` готовых вопросов."""
+    """Заглушка photo_flow._build_questions: вернуть готовые вопросы по сущностям."""
 
     def fake(cfg, thm, question, entities, need):
-        return [_photo_question(theme, f"сущность {i + 1}") for i in range(min(need, count))]
+        limit = min(need, count)
+        return [_photo_question(theme, entity) for entity in list(entities)[:limit]]
 
     monkeypatch.setattr(photo_flow, "_build_questions", fake)
 
@@ -442,6 +443,355 @@ def test_rubric_republish_same_day_blocked_after_publish(monkeypatch, tmp_path):
     state = load_state(cfg.rubrics_state_file)
     assert rubric_flow.run_rubric(cfg, state, "a", dry_run=False, force=False) == 0
     assert len(load_state(cfg.rubrics_state_file)["published"]) == 1
+
+
+# --- смешанная рубрика «d»: кадры + текстовые факты --------------------------
+
+
+def _mixed_cfg(tmp_path, **overrides):
+    """Конфиг для смешанной рубрики: тема «советские фильмы», источник ruwiki_film."""
+    base = {
+        "photo_theme": "",
+        "photo_themes": ["советские фильмы"],
+        "photo_sources": ["ruwiki_film"],
+        "film_ru_enabled": True,
+    }
+    base.update(overrides)
+    return _rubric_cfg(tmp_path, **base)
+
+
+_TEXT_STEMS = [
+    "В каком году состоялась премьера «Москвы слезам не верит»?",
+    "Кто сыграл Женю Лукашина в «Иронии судьбы»?",
+    "Какой режиссёр поставил «Служебный роман»?",
+    "Как называется фильм о Шурике и Лиде из Ленинграда?",
+    "Кто озвучил кота Матроскина в мультфильмах о Простоквашино?",
+    "Сколько серий в фильме «Место встречи изменить нельзя»?",
+    "Какая актриса сыграла Маргариту в «Мастере и Маргарите»?",
+    "Кто написал музыку к фильму «Ирония судьбы»?",
+    "Как звали героиню Нонны Мордюковой в «Бриллиантовой руке»?",
+    "В каком городе происходит действие «Белого солнца пустыни»?",
+    "Кто снял фильм «Андрей Рублёв»?",
+    "Какая фраза стала визитной карточкой Глеба Жеглова?",
+    "Какой фильм получил «Оскар» за лучший иностранный фильм в 1969 году?",
+    "Кто сыграл Штирлица в «Семнадцати мгновениях весны»?",
+    "Как называется деревня, где живут герои «Простоквашино»?",
+    "Кто был режиссёром «Белого солнца пустыни»?",
+    "Сколько богатырей изображено на известной картине Васнецова?",
+]
+
+
+def _text_questions(count):
+    """Текстовые вопросы без картинок: разные формулировки, без ложного дедупа."""
+    result = []
+    for i in range(count):
+        answer = f"ответ {i + 1}"
+        result.append(
+            {
+                "topic": "Кино",
+                "question": _TEXT_STEMS[i % len(_TEXT_STEMS)],
+                "options": [answer, "вариант 1", "вариант 2", "вариант 3"],
+                "correct_index": 0,
+            }
+        )
+    return result
+
+
+def test_interleave_questions_starts_with_photo_and_spreads_them():
+    """5 кадров на 15 вопросов встают в позиции 1, 4, 7, 10, 13."""
+    photos = [f"p{i}" for i in range(1, 6)]
+    texts = [f"t{i}" for i in range(1, 11)]
+
+    plan = rubric_flow.interleave_questions(photos, texts)
+
+    assert len(plan) == 15
+    assert plan[0] == "p1"
+    assert [i + 1 for i, item in enumerate(plan) if item.startswith("p")] == [
+        1, 4, 7, 10, 13
+    ]
+    assert [item for item in plan if item.startswith("t")] == texts
+
+
+def test_interleave_questions_without_one_block_keeps_other():
+    """Если один блок пуст, второй возвращается без изменений."""
+    assert rubric_flow.interleave_questions([], ["t1", "t2"]) == ["t1", "t2"]
+    assert rubric_flow.interleave_questions(["p1"], []) == ["p1"]
+
+
+def test_mixed_minimum_not_below_threshold_and_plan_share():
+    """Минимум смешанного выпуска: max(порог + 1, 80% плана); для 15/10 — 12."""
+    cfg = load_config({"dry_run": True}, require_questions=False)
+    rubric = cfg.rubrics.get("d")
+
+    assert rubric_flow._mixed_minimum(rubric) == 12
+
+
+def test_rubric_d_dry_run_plans_15_questions_without_network(monkeypatch, tmp_path):
+    """DRY-RUN рубрики «d»: план 15 вопросов (5 кадров + 10 фактов), порог 10."""
+    _no_network(monkeypatch)
+    monkeypatch.setattr(
+        rubric_flow, "generate_topic_questions",
+        lambda *a, **k: pytest.fail("в dry-run LLM не вызывается"),
+    )
+    monkeypatch.setattr(
+        photo_flow, "_build_questions",
+        lambda *a, **k: pytest.fail("в dry-run картинки не собираются"),
+    )
+
+    captured = {}
+    real_title = rubric_flow.build_rubric_title
+
+    def spy_title(rubric, series_no, count, used_titles=None, correct_answers=None, **kw):
+        captured["series_no"] = series_no
+        captured["count"] = count
+        captured["threshold"] = rubric.threshold
+        return real_title(rubric, series_no, count, used_titles, correct_answers, **kw)
+
+    monkeypatch.setattr(rubric_flow, "build_rubric_title", spy_title)
+
+    cfg = _mixed_cfg(tmp_path, dry_run=True)
+    state = load_state(cfg.rubrics_state_file)
+
+    assert rubric_flow.run_rubric(cfg, state, "d", dry_run=True) == 0
+    assert captured == {"series_no": 1, "count": 15, "threshold": 10}
+    assert not (tmp_path / "rubrics_state.json").exists()
+
+
+def test_rubric_d_publish_mixes_photo_and_text_questions(monkeypatch, tmp_path):
+    """Боевой путь «d»: 15 вопросов, 5 с картинками, 10 текстовых, чередование."""
+    import factcheck
+
+    client = _RecordingClient()
+    monkeypatch.setattr(photo_flow, "YandexFormsClient", _ClientFactory(client))
+    monkeypatch.setattr(
+        photo_flow, "_generate_entities",
+        lambda cfg, theme, count, used: [f"фильм {i + 1}" for i in range(9)],
+    )
+    _stub_build_questions(monkeypatch, "советские фильмы", 9)
+    monkeypatch.setattr(
+        rubric_flow, "generate_topic_questions",
+        lambda cfg, topic, count, avoid=None, extra=0: _text_questions(count + extra),
+    )
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+    monkeypatch.setattr(rubric_flow.publisher, "publish_announcement", lambda *a, **k: ["telegram"])
+
+    cfg = _mixed_cfg(tmp_path, dry_run=False, force=True)
+    state = load_state(cfg.rubrics_state_file)
+
+    assert rubric_flow.run_rubric(cfg, state, "d", dry_run=False, force=True) == 0
+
+    # в форме 15 вопросов: первый — кадр, дальше кадры в позициях 4, 7, 10, 13
+    assert len(client.questions) == 15
+    question_texts = [q[0] for q in client.questions]
+    assert question_texts[0] == photo_flow.question_text("советские фильмы")
+    photo_positions = [
+        i + 1 for i, text in enumerate(question_texts)
+        if text == photo_flow.question_text("советские фильмы")
+    ]
+    assert photo_positions == [1, 4, 7, 10, 13]
+    assert client.comments == [cfg.rubrics.get("d").comment_prompt]
+    assert client.published == ["sid-1"]
+
+    saved = load_state(cfg.rubrics_state_file)
+    entry = saved["published"][-1]
+    assert entry["rubric_id"] == "d"
+    assert entry["series_no"] == 1
+    assert entry["threshold"] == 10
+    assert entry["count"] == 15
+    assert entry["theme"] == "советские фильмы"
+    assert entry["mixed"] is True
+    assert entry["photo_count"] == 5
+    assert entry["text_count"] == 10
+    # история: фото идут с префиксом темы, текстовые — полным текстом вопроса
+    assert len(saved["asked_questions"]) == 15
+    assert saved["asked_questions"][0] == "советские фильмы: фильм 1"
+    assert saved["used_entities"]["советские фильмы"] == [
+        f"фильм {i + 1}" for i in range(5)
+    ]
+
+
+def test_rubric_d_tops_up_missing_photos_with_text(monkeypatch, tmp_path):
+    """Если кадров не хватило, недостающие вопросы добираются текстовыми."""
+    import factcheck
+
+    client = _RecordingClient()
+    monkeypatch.setattr(photo_flow, "YandexFormsClient", _ClientFactory(client))
+    monkeypatch.setattr(
+        photo_flow, "_generate_entities",
+        lambda cfg, theme, count, used: [f"фильм {i + 1}" for i in range(9)],
+    )
+    _stub_build_questions(monkeypatch, "советские фильмы", 3)
+    captured = {}
+
+    def fake_topic(cfg, topic, count, avoid=None, extra=0):
+        captured["count"] = count
+        return _text_questions(count + extra)
+
+    monkeypatch.setattr(rubric_flow, "generate_topic_questions", fake_topic)
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+    monkeypatch.setattr(rubric_flow.publisher, "publish_announcement", lambda *a, **k: [])
+
+    cfg = _mixed_cfg(tmp_path, dry_run=False, force=True)
+    state = load_state(cfg.rubrics_state_file)
+
+    assert rubric_flow.run_rubric(cfg, state, "d", dry_run=False, force=True) == 0
+
+    # 3 кадра + 12 текстовых = 15 вопросов плана
+    assert captured["count"] == 12
+    saved = load_state(cfg.rubrics_state_file)
+    assert saved["published"][-1]["photo_count"] == 3
+    assert saved["published"][-1]["text_count"] == 12
+
+
+def test_rubric_d_tops_up_missing_text_with_photos(monkeypatch, tmp_path):
+    """Если текстовых вопросов не хватило, недостающие добираются кадрами."""
+    import factcheck
+
+    client = _RecordingClient()
+    monkeypatch.setattr(photo_flow, "YandexFormsClient", _ClientFactory(client))
+    monkeypatch.setattr(
+        photo_flow, "_generate_entities",
+        lambda cfg, theme, count, used: [f"фильм {i + 1}" for i in range(12)],
+    )
+    _stub_build_questions(monkeypatch, "советские фильмы", 12)
+    monkeypatch.setattr(
+        rubric_flow, "generate_topic_questions",
+        lambda cfg, topic, count, avoid=None, extra=0: _text_questions(3),
+    )
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+    monkeypatch.setattr(rubric_flow.publisher, "publish_announcement", lambda *a, **k: [])
+
+    cfg = _mixed_cfg(tmp_path, dry_run=False, force=True)
+    state = load_state(cfg.rubrics_state_file)
+
+    assert rubric_flow.run_rubric(cfg, state, "d", dry_run=False, force=True) == 0
+
+    entry = load_state(cfg.rubrics_state_file)["published"][-1]
+    assert entry["count"] == 15
+    assert entry["photo_count"] == 12
+    assert entry["text_count"] == 3
+
+
+def test_rubric_d_aborts_without_text_questions(monkeypatch, tmp_path):
+    """Ни одного текстового вопроса — смешанный выпуск отменяется."""
+    import factcheck
+
+    monkeypatch.setattr(
+        photo_flow, "YandexFormsClient",
+        lambda *a, **k: pytest.fail("без текстовых вопросов публикации быть не должно"),
+    )
+    monkeypatch.setattr(
+        photo_flow, "_generate_entities",
+        lambda cfg, theme, count, used: [f"фильм {i + 1}" for i in range(9)],
+    )
+    _stub_build_questions(monkeypatch, "советские фильмы", 9)
+    monkeypatch.setattr(
+        rubric_flow, "generate_topic_questions", lambda *a, **k: []
+    )
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+
+    cfg = _mixed_cfg(tmp_path, dry_run=False, force=True)
+    state = load_state(cfg.rubrics_state_file)
+
+    assert rubric_flow.run_rubric(cfg, state, "d", dry_run=False, force=True) == 1
+    assert not (tmp_path / "rubrics_state.json").exists()
+
+
+def test_rubric_d_aborts_when_mixed_minimum_not_reached(monkeypatch, tmp_path):
+    """Собрано меньше минимума (12) — отмена до создания формы."""
+    import factcheck
+
+    monkeypatch.setattr(
+        photo_flow, "YandexFormsClient",
+        lambda *a, **k: pytest.fail("при недоборе форма не создаётся"),
+    )
+    monkeypatch.setattr(
+        photo_flow, "_generate_entities",
+        lambda cfg, theme, count, used: [f"фильм {i + 1}" for i in range(4)],
+    )
+    _stub_build_questions(monkeypatch, "советские фильмы", 4)
+    monkeypatch.setattr(
+        rubric_flow, "generate_topic_questions",
+        lambda cfg, topic, count, avoid=None, extra=0: _text_questions(3),
+    )
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+
+    cfg = _mixed_cfg(tmp_path, dry_run=False, force=True)
+    state = load_state(cfg.rubrics_state_file)
+
+    # 4 кадра + 3 текстовых = 7 < 12
+    assert rubric_flow.run_rubric(cfg, state, "d", dry_run=False, force=True) == 1
+    assert not (tmp_path / "rubrics_state.json").exists()
+
+
+def test_rubric_d_state_saved_before_announcement(monkeypatch, tmp_path):
+    """Сбой анонса не откатывает смешанный выпуск: состояние уже записано."""
+    import factcheck
+
+    client = _RecordingClient()
+    monkeypatch.setattr(photo_flow, "YandexFormsClient", _ClientFactory(client))
+    monkeypatch.setattr(
+        photo_flow, "_generate_entities",
+        lambda cfg, theme, count, used: [f"фильм {i + 1}" for i in range(9)],
+    )
+    _stub_build_questions(monkeypatch, "советские фильмы", 9)
+    monkeypatch.setattr(
+        rubric_flow, "generate_topic_questions",
+        lambda cfg, topic, count, avoid=None, extra=0: _text_questions(count + extra),
+    )
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+
+    def boom(*a, **k):
+        raise RuntimeError("telegram недоступен")
+
+    monkeypatch.setattr(rubric_flow.publisher, "publish_announcement", boom)
+
+    cfg = _mixed_cfg(tmp_path, dry_run=False, force=True)
+    state = load_state(cfg.rubrics_state_file)
+
+    assert rubric_flow.run_rubric(cfg, state, "d", dry_run=False, force=True) == 0
+    assert client.published == ["sid-1"]
+    saved = load_state(cfg.rubrics_state_file)
+    assert saved["published"][-1]["survey_id"] == "sid-1"
+    assert saved["published"][-1]["mixed"] is True
+
+
+def test_mixed_entity_dedup_matches_film_in_text_question():
+    """Проверка «тот же фильм»: название из кадра ищется в тексте и вариантах."""
+    text = {
+        "question": "В каком году вышел фильм «Москва слезам не верит»?",
+        "options": ["1979", "1980", "1981", "1982"],
+    }
+    assert rubric_flow._mentions_any(text, ["Москва слезам не верит"])
+    assert not rubric_flow._mentions_any(text, ["Ирония судьбы"])
+
+    photo = {"entity": "Москва слезам не верит"}
+    assert rubric_flow._mentions_any_entity(photo, [text])
+    assert not rubric_flow._mentions_any_entity({"entity": "Ирония судьбы"}, [text])
+
+    # короткая сущность не должна совпадать с частью другого слова
+    assert not rubric_flow._mentions_any(
+        {"question": "Который из фильмов вышел позже?", "options": []}, ["кот"]
+    )
+
+
+def test_rubric_d_aborts_without_photos(monkeypatch, tmp_path):
+    """Ни одного кадра — смешанный выпуск отменяется без обращения к формам."""
+    monkeypatch.setattr(
+        photo_flow, "YandexFormsClient",
+        lambda *a, **k: pytest.fail("без кадров публикации быть не должно"),
+    )
+    monkeypatch.setattr(
+        photo_flow, "_generate_entities",
+        lambda cfg, theme, count, used: [f"фильм {i + 1}" for i in range(5)],
+    )
+    monkeypatch.setattr(photo_flow, "_build_questions", lambda *a, **k: [])
+
+    cfg = _mixed_cfg(tmp_path, dry_run=False, force=True)
+    state = load_state(cfg.rubrics_state_file)
+
+    assert rubric_flow.run_rubric(cfg, state, "d", dry_run=False, force=True) == 1
+    assert not (tmp_path / "rubrics_state.json").exists()
 
 
 # --- отказ trap-рубрики ------------------------------------------------------

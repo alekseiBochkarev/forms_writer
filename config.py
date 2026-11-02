@@ -258,7 +258,8 @@ DEFAULT_NEW_TESTS_PASS_SCORES = [10]
 DEFAULT_PHOTO_SOURCES = ["wikimedia", "openverse"]
 
 # Разрешённые источники вопросов для рубрик (эксперимент с рубриками).
-KNOWN_RUBRIC_SOURCES = ("photo", "trap")
+# mixed — смешанный выпуск: фотографии/кадры плюс текстовые вопросы по теме.
+KNOWN_RUBRIC_SOURCES = ("photo", "trap", "mixed")
 
 # Порог «провала» для репака рубрики-ловушки: доля ошибшихся (`wrong_pct`), при
 # которой публикация считается провальной и её можно переупаковать (репак) с тем
@@ -343,6 +344,37 @@ DEFAULT_RUBRICS: List[Dict[str, Any]] = [
         "enabled": True,
         "slot": "afternoon",
     },
+    {
+        # Смешанная рубрика: самые сильные темы канала — советское кино
+        # (текстовые тесты) и кадры из фильмов (фото-тесты). В одном выпуске
+        # 5 вопросов по кадрам и 10 текстовых фактов, кадры распределены по
+        # всей форме как визуальные крючки.
+        "id": "d",
+        "series_name": "Кино: кадры и факты",
+        "source": "mixed",
+        "questions_count": 15,
+        "photo_count": 5,
+        "threshold": 10,
+        "themes": ["советские фильмы"],
+        "comment_prompt": (
+            "Какой кадр вы узнали сразу, а какой факт о советском кино "
+            "оказался самым неожиданным? Расскажите в комментариях."
+        ),
+        "title_templates": [
+            "Вы настоящий знаток советского кино, если ответите на "
+            "{threshold} из {count}. Кадры и факты. Выпуск {series_no}",
+            "Кадры из советских фильмов и факты о них: возьмёте "
+            "{threshold} из {count}? Тест {series_no}",
+            "Узнайте советский фильм по кадру и проверьте, что помните "
+            "о нём. {threshold}/{count} — вы киноман. {series_no}",
+            "Только настоящий киноман СССР ответит на {threshold} из "
+            "{count} вопросов о советском кино. Серия {series_no}",
+            "В этом тесте {count} вопросов о советском кино: кадры и факты. "
+            "Соберёте {threshold}? {series_no}",
+        ],
+        "enabled": True,
+        "slot": "evening",
+    },
 ]
 
 KNOWN_PHOTO_SOURCES = (
@@ -370,6 +402,9 @@ class Rubric:
     # Темы фото-рубрики: выпуски берутся только отсюда. Пусто — весь список
     # PHOTO_THEMES (тогда шаблоны заголовков не должны называть категорию).
     themes: List[str] = field(default_factory=list)
+    # Смешанная рубрика (source=mixed): сколько вопросов выпуска идут с фото,
+    # остальные — текстовые. Для photo/trap не используется.
+    photo_count: int = 0
 
     def validate(self) -> None:
         errors = []
@@ -389,6 +424,17 @@ class Rubric:
                 f"Рубрика «{self.id}»: threshold ({self.threshold}) должен быть "
                 f"меньше questions_count ({self.questions_count})"
             )
+        if self.source == "mixed":
+            if self.photo_count < 1:
+                errors.append(
+                    f"Рубрика «{self.id}»: для source=mixed photo_count должен "
+                    "быть >= 1"
+                )
+            elif self.photo_count >= self.questions_count:
+                errors.append(
+                    f"Рубрика «{self.id}»: photo_count ({self.photo_count}) должен "
+                    f"быть меньше questions_count ({self.questions_count})"
+                )
         if errors:
             raise ValueError("Ошибки конфигурации:\n  - " + "\n  - ".join(errors))
 
@@ -437,6 +483,13 @@ def _rubric_from_dict(data: Any) -> Rubric:
         raise ValueError(f"RUBRICS: themes рубрики «{rubric_id or '?'}» "
                          "должен быть массивом строк")
     themes = [str(t).strip() for t in raw_themes if str(t).strip()]
+    raw_photo_count = data.get("photo_count", 0)
+    try:
+        photo_count = int(raw_photo_count or 0)
+    except (TypeError, ValueError):
+        raise ValueError(
+            f"RUBRICS: photo_count рубрики «{rubric_id or '?'}» должен быть числом"
+        )
     return Rubric(
         id=rubric_id,
         title_templates=title_templates,
@@ -448,6 +501,7 @@ def _rubric_from_dict(data: Any) -> Rubric:
         enabled=bool(data.get("enabled", True)),
         slot=str(data.get("slot", "")).strip(),
         themes=themes,
+        photo_count=photo_count,
     )
 
 
