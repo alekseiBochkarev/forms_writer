@@ -786,9 +786,10 @@ def publish_photo_form(
 
     Переиспользуется фото-потоком и рубриками. `title_builder(used_titles,
     correct_answers)` собирает базовый заголовок; `comment_prompt` добавляет
-    блок-комментарий в конце формы. Возвращает dict c `survey_id`, `public_url`,
-    `base_title`, `name`, `added` либо None, если публикация отменена
-    (недобор вопросов).
+    блок-комментарий в конце формы. Вопросы без `_image_bytes` добавляются без
+    картинки — так смешанная рубрика собирает одну форму из фото- и текстовых
+    вопросов. Возвращает dict c `survey_id`, `public_url`, `base_title`, `name`,
+    `added` либо None, если публикация отменена (недобор вопросов).
     """
     base_title = title_builder(used_titles, correct_answers)
 
@@ -803,22 +804,28 @@ def publish_photo_form(
     added: List[Dict[str, Any]] = []
     for i, q in enumerate(questions, 1):
         try:
-            uploaded = client.upload_image(
-                survey_id,
-                q["_image_bytes"],
-                _filename(i, q["_image_mime"]),
-                q["_image_mime"],
-            )
+            image = None
+            if q.get("_image_bytes"):
+                image = client.upload_image(
+                    survey_id,
+                    q["_image_bytes"],
+                    _filename(i, q.get("_image_mime") or ""),
+                    q.get("_image_mime") or "image/jpeg",
+                )
             client.add_enum_question(
                 survey_id,
                 question=q["question"],
                 options=q["options"],
                 correct_index=q["correct_index"],
                 shuffle=cfg.shuffle,
-                image=uploaded,
+                image=image,
             )
         except Exception as exc:  # noqa: BLE001 - один вопрос не должен ронять выпуск
-            log.warning("Не удалось добавить вопрос «%s»: %s", q["entity"], exc)
+            log.warning(
+                "Не удалось добавить вопрос «%s»: %s",
+                q.get("entity") or q.get("question"),
+                exc,
+            )
             continue
         q.pop("_image_bytes", None)
         q.pop("_image_mime", None)

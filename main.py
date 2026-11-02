@@ -14,6 +14,7 @@
     python main.py --new-tests --dry-run # план нового теста без обращения к API
     python main.py --rubric a            # выпустить рубрику эксперимента «a»
     python main.py --rubric b --dry-run  # план выпуска рубрики «b» без API
+    python main.py --rubric d --dry-run  # план смешанного выпуска «d» (кадры + факты)
     python main.py --rubric c --repack   # переупаковать провал рубрики «c» (тот же тест, новый заголовок)
 """
 
@@ -70,7 +71,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--rubric",
         metavar="ID",
-        help="выпустить рубрику эксперимента по её id (например a/b/c)",
+        help="выпустить рубрику эксперимента по её id (например a/b/c/d)",
     )
     parser.add_argument(
         "--repack",

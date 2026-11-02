@@ -752,6 +752,40 @@ def test_publish_uploads_images_and_updates_state(monkeypatch, tmp_path):
     assert state["asked_questions"] == ["животные: кот", "животные: пёс"]
 
 
+def test_publish_photo_form_allows_text_question_without_image(monkeypatch):
+    """Смешанная рубрика: вопрос без _image_bytes добавляется без картинки."""
+    client = _FakeClient()
+    monkeypatch.setattr(photo_flow, "YandexFormsClient", _ClientFactory(client))
+
+    text_question = {
+        "topic": "Кино",
+        "question": "Кто снял «Москва слезам не верит»?",
+        "options": ["Владимир Меньшов", "Эльдар Рязанов", "Георгий Данелия", "Никита Михалков"],
+        "correct_index": 0,
+    }
+    cfg = FakePhotoCfg(publish=True, number_surveys=False)
+
+    result = photo_flow.publish_photo_form(
+        cfg,
+        [_question("кот"), text_question],
+        minimum=2,
+        used_titles=[],
+        correct_answers=["кот", "Владимир Меньшов"],
+        title_builder=lambda used, answers: "Смешанный тест",
+    )
+
+    assert result is not None
+    assert len(client.uploaded) == 1  # картинка загружена только для фото-вопроса
+    assert client.added_images == [
+        {"id": "img-1", "links": {}, "name": "photo_1.jpg"},
+        None,
+    ]
+    assert [q["question"] for q in result["added"]] == [
+        "Что (кто) изображено на фотографии?",
+        "Кто снял «Москва слезам не верит»?",
+    ]
+
+
 def test_publish_deletes_draft_when_minimum_not_reached(monkeypatch, tmp_path):
     """Если в форму добавилось меньше минимума — черновик удаляется, код 1."""
     client = _FakeClient()
