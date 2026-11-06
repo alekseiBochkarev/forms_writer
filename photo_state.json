@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-10-24",
+  "last_publish_date": "2026-11-06",
   "published": [
     {
       "date": "2026-09-24",
@@ -2568,6 +2568,95 @@
           "license": "CC BY-SA 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-11-06",
+      "survey_id": "6aee4a45b6fc051f7465fd1e",
+      "url": "https://forms.yandex.ru/u/6aee4a45b6fc051f7465fd1e/",
+      "theme": "пейзажи русских художников",
+      "title": "Тест для знатоков искусства: назовите автора этих 10 картин 2",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Levitan_Evening_bells_1892.jpg/1280px-Levitan_Evening_bells_1892.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Levitan_Evening_bells_1892.jpg",
+          "title": "Levitan Evening bells 1892.jpg",
+          "author": "Isaac Levitan",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Valentin_Serov_%27October._Domotkanovo%27%2C_1895_%2838607778595%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Valentin_Serov_%27October._Domotkanovo%27,_1895_(38607778595).jpg",
+          "title": "Valentin Serov 'October. Domotkanovo', 1895 (38607778595).jpg",
+          "author": "Andrey Filippov 安德烈 from Moscow, Russia",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Aleksey_Venetsianov_-_%D0%9D%D0%B0_%D0%BF%D0%B0%D1%88%D0%BD%D0%B5._%D0%92%D0%B5%D1%81%D0%BD%D0%B0_-_Google_Art_Project.jpg/1280px-Aleksey_Venetsianov_-_%D0%9D%D0%B0_%D0%BF%D0%B0%D1%88%D0%BD%D0%B5._%D0%92%D0%B5%D1%81%D0%BD%D0%B0_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aleksey_Venetsianov_-_%D0%9D%D0%B0_%D0%BF%D0%B0%D1%88%D0%BD%D0%B5._%D0%92%D0%B5%D1%81%D0%BD%D0%B0_-_Google_Art_Project.jpg",
+          "title": "Aleksey Venetsianov - На пашне. Весна - Google Art Project.jpg",
+          "author": "Alexey Venetsianov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Grigorij_Grigorjewitsch_Mjassojedow_003.jpg/1280px-Grigorij_Grigorjewitsch_Mjassojedow_003.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Grigorij_Grigorjewitsch_Mjassojedow_003.jpg",
+          "title": "Grigorij Grigorjewitsch Mjassojedow 003.jpg",
+          "author": "Grigoriy Myasoyedov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/26/Mikhail_Nesterov_001.jpg/1280px-Mikhail_Nesterov_001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Mikhail_Nesterov_001.jpg",
+          "title": "Mikhail Nesterov 001.jpg",
+          "author": "Mikhail Nesterov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Vasily_Surikov_-_Taking_a_Snow_Town_-_Google_Art_Project.jpg/1280px-Vasily_Surikov_-_Taking_a_Snow_Town_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Vasily_Surikov_-_Taking_a_Snow_Town_-_Google_Art_Project.jpg",
+          "title": "Vasily Surikov - Taking a Snow Town - Google Art Project.jpg",
+          "author": "Vasily Surikov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Ilia_Efimovich_Repin_%281844-1930%29_-_Volga_Boatmen_%281870-1873%29.jpg/1280px-Ilia_Efimovich_Repin_%281844-1930%29_-_Volga_Boatmen_%281870-1873%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ilia_Efimovich_Repin_(1844-1930)_-_Volga_Boatmen_(1870-1873).jpg",
+          "title": "Ilia Efimovich Repin (1844-1930) - Volga Boatmen (1870-1873).jpg",
+          "author": "Ilya Repin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/84/Viktor_Vasnetsov_-_%D0%90%D0%BB%D0%B5%D0%BD%D1%83%D1%88%D0%BA%D0%B0_-_Google_Art_Project.jpg/1280px-Viktor_Vasnetsov_-_%D0%90%D0%BB%D0%B5%D0%BD%D1%83%D1%88%D0%BA%D0%B0_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Viktor_Vasnetsov_-_%D0%90%D0%BB%D0%B5%D0%BD%D1%83%D1%88%D0%BA%D0%B0_-_Google_Art_Project.jpg",
+          "title": "Viktor Vasnetsov - Аленушка - Google Art Project.jpg",
+          "author": "Viktor Vasnetsov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/0/00/Moonlight_night_by_Ivan_Kramskoy_%28GTG%29.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Moonlight_night_by_Ivan_Kramskoy_(GTG).jpeg",
+          "title": "Moonlight night by Ivan Kramskoy (GTG).jpeg",
+          "author": "Ivan Kramskoi",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/b/be/Konstantin_Makovsky_-_Children_running_from_a_thunderstorm_-_1872.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Konstantin_Makovsky_-_Children_running_from_a_thunderstorm_-_1872.jpg",
+          "title": "Konstantin Makovsky - Children running from a thunderstorm - 1872.jpg",
+          "author": "Konstantin Makovsky",
+          "license": "Public domain"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -2860,14 +2949,25 @@
     "хищные птицы: Обыкновенный осоед",
     "хищные птицы: Болотный лунь",
     "хищные птицы: Красный коршун",
-    "хищные птицы: Орёл-карлик"
+    "хищные птицы: Орёл-карлик",
+    "пейзажи русских художников: Исаак Левитан|Вечерний звон",
+    "пейзажи русских художников: Валентин Серов|Октябрь. Домотканово",
+    "пейзажи русских художников: Алексей Венецианов|На пашне. Весна",
+    "пейзажи русских художников: Григорий Мясоедов|Страдная пора. Косцы",
+    "пейзажи русских художников: Михаил Нестеров|Видение отроку Варфоломею",
+    "пейзажи русских художников: Василий Суриков|Взятие снежного городка",
+    "пейзажи русских художников: Илья Репин|Бурлаки на Волге",
+    "пейзажи русских художников: Виктор Васнецов|Алёнушка",
+    "пейзажи русских художников: Иван Крамской|Лунная ночь",
+    "пейзажи русских художников: Константин Маковский|Дети, бегущие от грозы"
   ],
   "used_themes": [
     "породы собак",
     "животные Африки",
     "достопримечательности и места",
     "картины из школьной программы",
-    "хищные птицы"
+    "хищные птицы",
+    "пейзажи русских художников"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -3116,7 +3216,17 @@
       "Иван Шишкин|Рожь",
       "Фёдор Васильев|Оттепель",
       "Василий Поленов|Заросший пруд",
-      "Аркадий Рылов|Зелёный шум"
+      "Аркадий Рылов|Зелёный шум",
+      "Исаак Левитан|Вечерний звон",
+      "Валентин Серов|Октябрь. Домотканово",
+      "Алексей Венецианов|На пашне. Весна",
+      "Григорий Мясоедов|Страдная пора. Косцы",
+      "Михаил Нестеров|Видение отроку Варфоломею",
+      "Василий Суриков|Взятие снежного городка",
+      "Илья Репин|Бурлаки на Волге",
+      "Виктор Васнецов|Алёнушка",
+      "Иван Крамской|Лунная ночь",
+      "Константин Маковский|Дети, бегущие от грозы"
     ],
     "породы собак": [
       "Немецкая овчарка",
@@ -3199,6 +3309,7 @@
     "Вы настоящий знаток природы, если назовёте всех 10 животных на фото",
     "Вы путешественник, если узнаете эти 10 достопримечательностей без подсказок",
     "Вы помните эти 10 картин из школьной программы? Проверьте по фото",
-    "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя"
+    "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя",
+    "Тест для знатоков искусства: назовите автора этих 10 картин"
   ]
 }
