@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-11-06",
+  "last_publish_date": "2026-11-07",
   "published": [
     {
       "date": "2026-09-24",
@@ -2657,6 +2657,95 @@
           "license": "Public domain"
         }
       ]
+    },
+    {
+      "date": "2026-11-07",
+      "survey_id": "6aef8922bf4fde2dce866973",
+      "url": "https://forms.yandex.ru/u/6aef8922bf4fde2dce866973/",
+      "theme": "породы собак",
+      "title": "Только 1 из 10 отличает эти породы собак по фото. А вы? 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Alaskan_Malamute.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Alaskan_Malamute.jpg",
+          "title": "Alaskan Malamute.jpg",
+          "author": "SCMW",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Samojed00.jpg/1280px-Samojed00.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Samojed00.jpg",
+          "title": "Samojed00.jpg",
+          "author": "No machine-readable author provided. Pleple2000 assumed (based on copyright claims).",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Shih_Tzu_-_Brachycephalie_-_Qualzucht.jpg/1280px-Shih_Tzu_-_Brachycephalie_-_Qualzucht.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Shih_Tzu_-_Brachycephalie_-_Qualzucht.jpg",
+          "title": "Shih Tzu - Brachycephalie - Qualzucht.jpg",
+          "author": "Sciencia58",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/f/fe/BOSTON_TERRIER%2C_Ving%C3%A5rdens_Essi_von_Richards_%2823995273800%29.2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:BOSTON_TERRIER,_Ving%C3%A5rdens_Essi_von_Richards_(23995273800).2.jpg",
+          "title": "BOSTON TERRIER, Vingårdens Essi von Richards (23995273800).2.jpg",
+          "author": "Svenska Mässan from Sweden",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Pepe_a_Josaphat_looking_back.jpg/1280px-Pepe_a_Josaphat_looking_back.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Pepe_a_Josaphat_looking_back.jpg",
+          "title": "Pepe a Josaphat looking back.jpg",
+          "author": "Trougnouf",
+          "license": "CC BY 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/GraceTheGreyhound.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:GraceTheGreyhound.jpg",
+          "title": "GraceTheGreyhound.jpg",
+          "author": "Neurodoc",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/1965._%D0%98%D1%80%D0%BB%D0%B0%D0%BD%D0%B4%D1%81%D0%BA%D0%B8%D0%B9_%D1%81%D0%B5%D1%82%D1%82%D0%B5%D1%80.jpg/1280px-1965._%D0%98%D1%80%D0%BB%D0%B0%D0%BD%D0%B4%D1%81%D0%BA%D0%B8%D0%B9_%D1%81%D0%B5%D1%82%D1%82%D0%B5%D1%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:1965._%D0%98%D1%80%D0%BB%D0%B0%D0%BD%D0%B4%D1%81%D0%BA%D0%B8%D0%B9_%D1%81%D0%B5%D1%82%D1%82%D0%B5%D1%80.jpg",
+          "title": "1965. Ирландский сеттер.jpg",
+          "author": "Post of Soviet Union",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Basset_Hound_Relaxing.jpg/1280px-Basset_Hound_Relaxing.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Basset_Hound_Relaxing.jpg",
+          "title": "Basset Hound Relaxing.jpg",
+          "author": "Chase Bohannon, Thom Bohannon",
+          "license": "CC0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Bloodhound_Erland22.jpg/1280px-Bloodhound_Erland22.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Bloodhound_Erland22.jpg",
+          "title": "Bloodhound Erland22.jpg",
+          "author": "User:Erland22",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Betty_Verdure.Photo_Ph.BRIZARD.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Betty_Verdure.Photo_Ph.BRIZARD.JPG",
+          "title": "Betty Verdure.Photo Ph.BRIZARD.JPG",
+          "author": "Mapovfille",
+          "license": "CC BY 3.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -2959,15 +3048,20 @@
     "пейзажи русских художников: Илья Репин|Бурлаки на Волге",
     "пейзажи русских художников: Виктор Васнецов|Алёнушка",
     "пейзажи русских художников: Иван Крамской|Лунная ночь",
-    "пейзажи русских художников: Константин Маковский|Дети, бегущие от грозы"
+    "пейзажи русских художников: Константин Маковский|Дети, бегущие от грозы",
+    "породы собак: Аляскинский маламут",
+    "породы собак: Самоед",
+    "породы собак: Ши-тцу",
+    "породы собак: Бостон-терьер",
+    "породы собак: Веймаранер",
+    "породы собак: Грейхаунд",
+    "породы собак: Ирландский сеттер",
+    "породы собак: Бассет-хаунд",
+    "породы собак: Бладхаунд",
+    "породы собак: Кавалер-кинг-чарльз-спаниель"
   ],
   "used_themes": [
-    "породы собак",
-    "животные Африки",
-    "достопримечательности и места",
-    "картины из школьной программы",
-    "хищные птицы",
-    "пейзажи русских художников"
+    "породы собак"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -3258,7 +3352,17 @@
       "Английский бульдог",
       "Бернский зенненхунд",
       "Мальтийская болонка",
-      "Йоркширский терьер"
+      "Йоркширский терьер",
+      "Аляскинский маламут",
+      "Самоед",
+      "Ши-тцу",
+      "Бостон-терьер",
+      "Веймаранер",
+      "Грейхаунд",
+      "Ирландский сеттер",
+      "Бассет-хаунд",
+      "Бладхаунд",
+      "Кавалер-кинг-чарльз-спаниель"
     ],
     "животные Африки": [
       "Африканский слон",
@@ -3310,6 +3414,7 @@
     "Вы путешественник, если узнаете эти 10 достопримечательностей без подсказок",
     "Вы помните эти 10 картин из школьной программы? Проверьте по фото",
     "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя",
-    "Тест для знатоков искусства: назовите автора этих 10 картин"
+    "Тест для знатоков искусства: назовите автора этих 10 картин",
+    "Только 1 из 10 отличает эти породы собак по фото. А вы?"
   ]
 }
