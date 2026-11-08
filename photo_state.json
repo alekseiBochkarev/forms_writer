@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-11-07",
+  "last_publish_date": "2026-11-08",
   "published": [
     {
       "date": "2026-09-24",
@@ -2746,6 +2746,95 @@
           "license": "CC BY 3.0"
         }
       ]
+    },
+    {
+      "date": "2026-11-08",
+      "survey_id": "6af0d6be70ad373bf4bd504e",
+      "url": "https://forms.yandex.ru/u/6af0d6be70ad373bf4bd504e/",
+      "theme": "хищные птицы",
+      "title": "Узнаете ли вы этих 10 хищных птиц по фото? Тест на внимательность 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Falco_peregrinus_-_01.jpg/1280px-Falco_peregrinus_-_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Falco_peregrinus_-_01.jpg",
+          "title": "Falco peregrinus - 01.jpg",
+          "author": "Carlos Delgado",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Buteo_galapagoensis_0zz.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Buteo_galapagoensis_0zz.jpg",
+          "title": "Buteo galapagoensis 0zz.jpg",
+          "author": "Photo by David J. Stang",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Circus_pygargus_%2833541975444%29.jpg/1280px-Circus_pygargus_%2833541975444%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Circus_pygargus_(33541975444).jpg",
+          "title": "Circus pygargus (33541975444).jpg",
+          "author": "Jac. Janssen from Baarlo lb, NL",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Haliastur_sphenurus_2_-_Pitt_Town.jpg/1280px-Haliastur_sphenurus_2_-_Pitt_Town.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Haliastur_sphenurus_2_-_Pitt_Town.jpg",
+          "title": "Haliastur sphenurus 2 - Pitt Town.jpg",
+          "author": "JJ Harrison (https://www.jjharrison.com.au/)",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/001_Wild_Golden_Eagle_and_Majinghorn_Pfyn-Finges_Photo_by_Giles_Laurent.jpg/1280px-001_Wild_Golden_Eagle_and_Majinghorn_Pfyn-Finges_Photo_by_Giles_Laurent.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:001_Wild_Golden_Eagle_and_Majinghorn_Pfyn-Finges_Photo_by_Giles_Laurent.jpg",
+          "title": "001 Wild Golden Eagle and Majinghorn Pfyn-Finges Photo by Giles Laurent.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Mochuelo_Com%C3%BAn_%28_Athene_noctua_%29%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Mochuelo_Com%C3%BAn_(_Athene_noctua_)(1).jpg",
+          "title": "Mochuelo Común ( Athene noctua )(1).jpg",
+          "author": "Arturo Nikolai from Galicia, Spain",
+          "license": "CC BY-SA 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Kaiseradler_Aquila_heliaca_2_amk.jpg/1280px-Kaiseradler_Aquila_heliaca_2_amk.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Kaiseradler_Aquila_heliaca_2_amk.jpg",
+          "title": "Kaiseradler Aquila heliaca 2 amk.jpg",
+          "author": "user:AngMoKio",
+          "license": "CC BY-SA 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Eurasian_Hobby_%28Falco_subbuteo%29_%2828913995607%29.jpg/1280px-Eurasian_Hobby_%28Falco_subbuteo%29_%2828913995607%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Eurasian_Hobby_(Falco_subbuteo)_(28913995607).jpg",
+          "title": "Eurasian Hobby (Falco subbuteo) (28913995607).jpg",
+          "author": "Imran Shah from Islamabad, Pakistan",
+          "license": "CC BY-SA 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Bubo_scandiacus_-_Karlsruhe_Zoo_01.jpg/1280px-Bubo_scandiacus_-_Karlsruhe_Zoo_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Bubo_scandiacus_-_Karlsruhe_Zoo_01.jpg",
+          "title": "Bubo scandiacus - Karlsruhe Zoo 01.jpg",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Cathartes_aura_-Santa_Teresa_County_Park%2C_San_Jose%2C_California%2C_USA_-adult-8a.jpg/1280px-Cathartes_aura_-Santa_Teresa_County_Park%2C_San_Jose%2C_California%2C_USA_-adult-8a.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Cathartes_aura_-Santa_Teresa_County_Park,_San_Jose,_California,_USA_-adult-8a.jpg",
+          "title": "Cathartes aura -Santa Teresa County Park, San Jose, California, USA -adult-8a.jpg",
+          "author": "Don DeBold from San Jose, CA, USA",
+          "license": "CC BY 2.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -3058,10 +3147,21 @@
     "породы собак: Ирландский сеттер",
     "породы собак: Бассет-хаунд",
     "породы собак: Бладхаунд",
-    "породы собак: Кавалер-кинг-чарльз-спаниель"
+    "породы собак: Кавалер-кинг-чарльз-спаниель",
+    "хищные птицы: Сокол-сапсан",
+    "хищные птицы: Ястреб-канюк",
+    "хищные птицы: Лунь луговой",
+    "хищные птицы: Коршун-свистун",
+    "хищные птицы: Орёл-беркут",
+    "хищные птицы: Сыч домовый",
+    "хищные птицы: Орёл-могильник",
+    "хищные птицы: Сокол-чеглок",
+    "хищные птицы: Сова-белая",
+    "хищные птицы: Гриф-индейка"
   ],
   "used_themes": [
-    "породы собак"
+    "породы собак",
+    "хищные птицы"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -3288,7 +3388,17 @@
       "Обыкновенный осоед",
       "Болотный лунь",
       "Красный коршун",
-      "Орёл-карлик"
+      "Орёл-карлик",
+      "Сокол-сапсан",
+      "Ястреб-канюк",
+      "Лунь луговой",
+      "Коршун-свистун",
+      "Орёл-беркут",
+      "Сыч домовый",
+      "Орёл-могильник",
+      "Сокол-чеглок",
+      "Сова-белая",
+      "Гриф-индейка"
     ],
     "пейзажи русских художников": [
       "Иван Айвазовский|Девятый вал",
@@ -3415,6 +3525,7 @@
     "Вы помните эти 10 картин из школьной программы? Проверьте по фото",
     "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя",
     "Тест для знатоков искусства: назовите автора этих 10 картин",
-    "Только 1 из 10 отличает эти породы собак по фото. А вы?"
+    "Только 1 из 10 отличает эти породы собак по фото. А вы?",
+    "Узнаете ли вы этих 10 хищных птиц по фото? Тест на внимательность"
   ]
 }
