@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-11-08",
+  "last_publish_date": "2026-11-10",
   "published": [
     {
       "date": "2026-09-24",
@@ -2835,6 +2835,95 @@
           "license": "CC BY 2.0"
         }
       ]
+    },
+    {
+      "date": "2026-11-10",
+      "survey_id": "6af25e6bbf4fde4bca86697e",
+      "url": "https://forms.yandex.ru/u/6af25e6bbf4fde4bca86697e/",
+      "theme": "картины из школьной программы",
+      "title": "Вы помните эти 10 картин из школьной программы? Проверьте по фото 3",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Iv%C3%A1n_el_Terrible_y_su_hijo%2C_por_Ili%C3%A1_Repin.jpg/1280px-Iv%C3%A1n_el_Terrible_y_su_hijo%2C_por_Ili%C3%A1_Repin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Iv%C3%A1n_el_Terrible_y_su_hijo,_por_Ili%C3%A1_Repin.jpg",
+          "title": "Iván el Terrible y su hijo, por Iliá Repin.jpg",
+          "author": "Ilya Repin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Ivan_Shishkin_-_Mast-Tree_grove_-_Google_Art_Project.jpg/1280px-Ivan_Shishkin_-_Mast-Tree_grove_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ivan_Shishkin_-_Mast-Tree_grove_-_Google_Art_Project.jpg",
+          "title": "Ivan Shishkin - Mast-Tree grove - Google Art Project.jpg",
+          "author": "Ivan Shishkin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Flying_carpet_by_Vasnetsov%2C_study_%281880%2C_GTG%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Flying_carpet_by_Vasnetsov,_study_(1880,_GTG).jpg",
+          "title": "Flying carpet by Vasnetsov, study (1880, GTG).jpg",
+          "author": "Vasnetsov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/26/Mikhail_Nesterov_001.jpg/1280px-Mikhail_Nesterov_001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Mikhail_Nesterov_001.jpg",
+          "title": "Mikhail Nesterov 001.jpg",
+          "author": "Mikhail Nesterov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Stenka_Razin_by_Vasily_Surikov_1906.jpg/1280px-Stenka_Razin_by_Vasily_Surikov_1906.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Stenka_Razin_by_Vasily_Surikov_1906.jpg",
+          "title": "Stenka Razin by Vasily Surikov 1906.jpg",
+          "author": "Vasily Surikov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Boris_Kustodiev_-_Shrovetide_-_Google_Art_Project.jpg/1280px-Boris_Kustodiev_-_Shrovetide_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Boris_Kustodiev_-_Shrovetide_-_Google_Art_Project.jpg",
+          "title": "Boris Kustodiev - Shrovetide - Google Art Project.jpg",
+          "author": "Boris Kustodiev",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Zinaida_Serebryakova_%281914%29_At_Breakfast.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Zinaida_Serebryakova_(1914)_At_Breakfast.jpg",
+          "title": "Zinaida Serebryakova (1914) At Breakfast.jpg",
+          "author": "Zinaida Serebryakova",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/6c/%D0%9F%D0%BE%D1%81%D0%BB%D0%B5%D0%B4%D0%BD%D0%B8%D0%B9_%D0%BF%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D0%B0.webp?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9F%D0%BE%D1%81%D0%BB%D0%B5%D0%B4%D0%BD%D0%B8%D0%B9_%D0%BF%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D0%B0.webp",
+          "title": "Последний портрет Пушкина.webp",
+          "author": "Непизвестный художник второй половины XIX в, часто приписывается некоему Мвану Логиновичу Линёву",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/54/Fedotov_zavt_arist.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Fedotov_zavt_arist.jpg",
+          "title": "Fedotov zavt arist.jpg",
+          "author": "Pavel Fedotov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Grabar_February_azure_1904_gtg.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Grabar_February_azure_1904_gtg.jpg",
+          "title": "Grabar February azure 1904 gtg.jpg",
+          "author": "Igor Grabar",
+          "license": "Public domain"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -3157,11 +3246,22 @@
     "хищные птицы: Орёл-могильник",
     "хищные птицы: Сокол-чеглок",
     "хищные птицы: Сова-белая",
-    "хищные птицы: Гриф-индейка"
+    "хищные птицы: Гриф-индейка",
+    "картины из школьной программы: Илья Репин|Иван Грозный и сын его Иван",
+    "картины из школьной программы: Иван Шишкин|Корабельная роща",
+    "картины из школьной программы: Виктор Васнецов|Ковер-самолет",
+    "картины из школьной программы: Михаил Нестеров|Видение отроку Варфоломею",
+    "картины из школьной программы: Василий Суриков|Степан Разин",
+    "картины из школьной программы: Борис Кустодиев|Масленица",
+    "картины из школьной программы: Зинаида Серебрякова|За завтраком",
+    "картины из школьной программы: Орест Кипренский|Портрет Пушкина",
+    "картины из школьной программы: Павел Федотов|Завтрак аристократа",
+    "картины из школьной программы: Игорь Грабарь|Февральская лазурь"
   ],
   "used_themes": [
     "породы собак",
-    "хищные птицы"
+    "хищные птицы",
+    "картины из школьной программы"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -3356,7 +3456,17 @@
       "Валентин Серов|Мика Морозов",
       "Борис Кустодиев|Купчиха за чаем",
       "Карл Брюллов|Всадница",
-      "Николай Ге|Петр I допрашивает царевича Алексея"
+      "Николай Ге|Петр I допрашивает царевича Алексея",
+      "Илья Репин|Иван Грозный и сын его Иван",
+      "Иван Шишкин|Корабельная роща",
+      "Виктор Васнецов|Ковер-самолет",
+      "Михаил Нестеров|Видение отроку Варфоломею",
+      "Василий Суриков|Степан Разин",
+      "Борис Кустодиев|Масленица",
+      "Зинаида Серебрякова|За завтраком",
+      "Орест Кипренский|Портрет Пушкина",
+      "Павел Федотов|Завтрак аристократа",
+      "Игорь Грабарь|Февральская лазурь"
     ],
     "хищные птицы": [
       "Беркут",
@@ -3526,6 +3636,7 @@
     "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя",
     "Тест для знатоков искусства: назовите автора этих 10 картин",
     "Только 1 из 10 отличает эти породы собак по фото. А вы?",
-    "Узнаете ли вы этих 10 хищных птиц по фото? Тест на внимательность"
+    "Узнаете ли вы этих 10 хищных птиц по фото? Тест на внимательность",
+    "Вы помните эти 10 картин из школьной программы? Проверьте по фото"
   ]
 }
