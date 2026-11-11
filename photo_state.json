@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-11-10",
+  "last_publish_date": "2026-11-11",
   "published": [
     {
       "date": "2026-09-24",
@@ -2924,6 +2924,95 @@
           "license": "Public domain"
         }
       ]
+    },
+    {
+      "date": "2026-11-11",
+      "survey_id": "6af4f2b0b6fc0577bf123aa0",
+      "url": "https://forms.yandex.ru/u/6af4f2b0b6fc0577bf123aa0/",
+      "theme": "достопримечательности и места",
+      "title": "Угадайте 10 стран по фото. Без ошибок справятся только эрудиты 1",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/MSM_sunset_02.JPG/1280px-MSM_sunset_02.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:MSM_sunset_02.JPG",
+          "title": "MSM sunset 02.JPG",
+          "author": "Benh LIEU SONG",
+          "license": "CC BY 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Atomium%2C_Bruselas%2C_B%C3%A9lgica%2C_2021-12-15%2C_DD_148-150_HDR.jpg/1280px-Atomium%2C_Bruselas%2C_B%C3%A9lgica%2C_2021-12-15%2C_DD_148-150_HDR.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Atomium,_Bruselas,_B%C3%A9lgica,_2021-12-15,_DD_148-150_HDR.jpg",
+          "title": "Atomium, Bruselas, Bélgica, 2021-12-15, DD 148-150 HDR.jpg",
+          "author": "Diego Delso",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/%D0%9C%D0%B8%D0%BB%D0%B0%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_%D0%A1%D0%BE%D0%B1%D0%BE%D1%80_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B8%D0%BB%D0%B0%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_%D0%A1%D0%BE%D0%B1%D0%BE%D1%80_-_panoramio.jpg",
+          "title": "Миланский Собор - panoramio.jpg",
+          "author": "Рустам Абдрахимов",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Tower_Bridge_Lights.jpg/1280px-Tower_Bridge_Lights.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Tower_Bridge_Lights.jpg",
+          "title": "Tower Bridge Lights.jpg",
+          "author": "Martin Falbisoner",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Amsterdam_%28NL%29%2C_Anne-Frank-Huis_--_2015_--_7185.jpg/1280px-Amsterdam_%28NL%29%2C_Anne-Frank-Huis_--_2015_--_7185.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Amsterdam_(NL),_Anne-Frank-Huis_--_2015_--_7185.jpg",
+          "title": "Amsterdam (NL), Anne-Frank-Huis -- 2015 -- 7185.jpg",
+          "author": "Dietmar Rabich",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Budapest_Parliament_4604.JPG/1280px-Budapest_Parliament_4604.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Budapest_Parliament_4604.JPG",
+          "title": "Budapest Parliament 4604.JPG",
+          "author": "Dirk Beyer",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Charles_Bridge_Covid.jpg/1280px-Charles_Bridge_Covid.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Charles_Bridge_Covid.jpg",
+          "title": "Charles Bridge Covid.jpg",
+          "author": "Tadeáš Gregor",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c4/Schloss_Sch%C3%B6nbrunn_Wien_2014_%28Zuschnitt_1%29.jpg/1280px-Schloss_Sch%C3%B6nbrunn_Wien_2014_%28Zuschnitt_1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Schloss_Sch%C3%B6nbrunn_Wien_2014_(Zuschnitt_1).jpg",
+          "title": "Schloss Schönbrunn Wien 2014 (Zuschnitt 1).jpg",
+          "author": "Thomas Wolf, www.foto-tw.de",
+          "license": "CC BY-SA 3.0 de"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/07-17-2012_-_Emborio_-_Emporio_-_Santorini_-_Greece_-_11.jpg/1280px-07-17-2012_-_Emborio_-_Emporio_-_Santorini_-_Greece_-_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:07-17-2012_-_Emborio_-_Emporio_-_Santorini_-_Greece_-_11.jpg",
+          "title": "07-17-2012 - Emborio - Emporio - Santorini - Greece - 11.jpg",
+          "author": "Norbert Nagel",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d8/Kinkaku-ji_in_November_2016_-02.jpg/1280px-Kinkaku-ji_in_November_2016_-02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Kinkaku-ji_in_November_2016_-02.jpg",
+          "title": "Kinkaku-ji in November 2016 -02.jpg",
+          "author": "Martin Falbisoner",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -3256,12 +3345,23 @@
     "картины из школьной программы: Зинаида Серебрякова|За завтраком",
     "картины из школьной программы: Орест Кипренский|Портрет Пушкина",
     "картины из школьной программы: Павел Федотов|Завтрак аристократа",
-    "картины из школьной программы: Игорь Грабарь|Февральская лазурь"
+    "картины из школьной программы: Игорь Грабарь|Февральская лазурь",
+    "достопримечательности и места: Мон-Сен-Мишель",
+    "достопримечательности и места: Атомиум",
+    "достопримечательности и места: Миланский собор",
+    "достопримечательности и места: Тауэрский мост",
+    "достопримечательности и места: Дом-музей Анны Франк",
+    "достопримечательности и места: Здание парламента в Будапеште",
+    "достопримечательности и места: Карлов мост",
+    "достопримечательности и места: Шёнбрунн",
+    "достопримечательности и места: Санторини",
+    "достопримечательности и места: Золотой храм"
   ],
   "used_themes": [
     "породы собак",
     "хищные птицы",
-    "картины из школьной программы"
+    "картины из школьной программы",
+    "достопримечательности и места"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -3424,7 +3524,17 @@
       "Храм Святой Софии",
       "Водопад Виктория",
       "Великий Барьерный риф",
-      "Гора Эверест"
+      "Гора Эверест",
+      "Мон-Сен-Мишель",
+      "Атомиум",
+      "Миланский собор",
+      "Тауэрский мост",
+      "Дом-музей Анны Франк",
+      "Здание парламента в Будапеште",
+      "Карлов мост",
+      "Шёнбрунн",
+      "Санторини",
+      "Золотой храм"
     ],
     "картины из школьной программы": [
       "Три богатыря",
@@ -3637,6 +3747,7 @@
     "Тест для знатоков искусства: назовите автора этих 10 картин",
     "Только 1 из 10 отличает эти породы собак по фото. А вы?",
     "Узнаете ли вы этих 10 хищных птиц по фото? Тест на внимательность",
-    "Вы помните эти 10 картин из школьной программы? Проверьте по фото"
+    "Вы помните эти 10 картин из школьной программы? Проверьте по фото",
+    "Угадайте 10 стран по фото. Без ошибок справятся только эрудиты"
   ]
 }
