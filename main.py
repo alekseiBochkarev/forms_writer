@@ -366,13 +366,12 @@ def _run_new_tests(cfg) -> int:
         log.error("Не удалось подготовить вводную/заключительную: %s", exc)
         return 1
 
-    # Публикация нового потока идёт в свой Telegram-канал (VK — опционально).
+    # Публикация нового потока идёт в общий Telegram-канал.
     cfg.tg_target_channel = cfg.new_tests_tg_target_channel
     new_tests_bot_token = getattr(cfg, "new_tests_tg_bot_token", "")
     if new_tests_bot_token:
         cfg.tg_bot_token = new_tests_bot_token
     cfg.publish_telegram = cfg.new_tests_publish_telegram
-    cfg.publish_vk = cfg.new_tests_publish_vk
 
     client = YandexFormsClient(cfg.yandex_token, cfg.yandex_org_id, cfg.yandex_org_header)
     survey_id = publish_questions(cfg, questions, client, intro=intro, outro=outro)
@@ -421,7 +420,7 @@ def _announce(cfg, survey_id: str, count: int, name: str, intro: str = "") -> Li
     if posted:
         log.info("Анонс опубликован: %s", ", ".join(posted))
         return posted
-    if cfg.publish_telegram or cfg.publish_vk:
+    if cfg.publish_telegram:
         _warn_in_actions(
             "Анонс не опубликован ни в одну соцсеть — причина в логе выше "
             "(для Telegram проверьте канал: python main.py --check-telegram)"
@@ -461,6 +460,7 @@ def _check_telegram(channel: Optional[str] = None) -> int:
         return 2
     target = (
         channel
+        or os.getenv("TG_TARGET_CHANNEL")
         or os.getenv("NEW_TESTS_TG_TARGET_CHANNEL")
         or "@qa_helper_draft"
     ).strip()
@@ -745,7 +745,7 @@ def main() -> int:
     public_url = YandexFormsClient.public_url(survey_id)
     log.info("Готово. Публичная ссылка: %s", public_url)
 
-    # 5) Анонс в Telegram и VK (вводная добавляется в TG перед CTA)
+    # 5) Анонс в Telegram (вводная вставляется перед CTA)
     _announce(cfg, survey_id, len(questions), cfg.survey_name, intro=intro)
 
     # 6) Сохраняем состояние (защита от дублей и от повторов вопросов)

@@ -281,7 +281,6 @@ def test_new_tests_defaults():
     assert cfg.effective_new_tests_min_questions() == 15
     assert cfg.new_tests_state_file == "new_state.json"
     assert cfg.new_tests_tg_target_channel == "@qa_helper_draft"
-    assert cfg.new_tests_publish_vk is False
 
 
 def test_personality_defaults():

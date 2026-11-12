@@ -45,7 +45,6 @@ def test_publish_announcement_adds_intro_to_telegram(monkeypatch):
 
     cfg = types.SimpleNamespace(
         publish_telegram=True,
-        publish_vk=False,
         tg_bot_token="t",
         tg_target_channel="@qa_helper_draft",
         announce_intro=True,
@@ -71,7 +70,6 @@ def test_publish_announcement_skips_intro_when_disabled(monkeypatch):
 
     cfg = types.SimpleNamespace(
         publish_telegram=True,
-        publish_vk=False,
         tg_bot_token="t",
         tg_target_channel="@c",
         announce_intro=False,
@@ -121,7 +119,6 @@ def test_publish_announcement_survives_telegram_failure(monkeypatch):
 
     cfg = types.SimpleNamespace(
         publish_telegram=True,
-        publish_vk=False,
         tg_bot_token="t",
         tg_target_channel="@wrong",
         announce_intro=True,

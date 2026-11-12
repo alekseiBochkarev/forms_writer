@@ -927,7 +927,7 @@ def _publish(
     survey_id = result["survey_id"]
     public_url = result["public_url"]
 
-    # В анонс (Telegram/VK) отдаём базовый заголовок без счётчика нумерации
+    # В анонс (Telegram) отдаём базовый заголовок без счётчика нумерации
     # (нумерация остаётся только в названии формы Яндекс Форм).
     posted = publisher.publish_announcement(cfg, survey_id, len(added), base_title)
     if posted:

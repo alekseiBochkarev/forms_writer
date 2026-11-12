@@ -585,13 +585,10 @@ class Config:
     questions_file: Optional[str]
     dry_run: bool
 
-    # --- Публикация анонса в соцсетях ---
+    # --- Публикация анонса в Telegram ---
     publish_telegram: bool
     tg_bot_token: str
     tg_target_channel: str
-    publish_vk: bool
-    vk_access_token: str
-    vk_group_id: str
     announce_template: str
     announce_templates: Optional[List[str]]
 
@@ -658,7 +655,6 @@ class Config:
     # Отдельный токен бота для нового потока; пусто — используется TG_BOT_TOKEN.
     new_tests_tg_bot_token: str = ""
     new_tests_publish_telegram: bool = True
-    new_tests_publish_vk: bool = False
 
     # --- Творческие личности ---
     # Список деятелей искусства для тематических выпусков «творческая личность».
@@ -862,9 +858,6 @@ def load_config(
         publish_telegram=_get_bool("PUBLISH_TELEGRAM", True),
         tg_bot_token=os.getenv("TG_BOT_TOKEN", "").strip(),
         tg_target_channel=os.getenv("TG_TARGET_CHANNEL", "").strip(),
-        publish_vk=_get_bool("PUBLISH_VK", False),
-        vk_access_token=os.getenv("VK_ACCESS_TOKEN", "").strip(),
-        vk_group_id=os.getenv("VK_GROUP_ID", "").strip(),
         announce_template=os.getenv("ANNOUNCE_TEMPLATE", "").strip(),
         announce_templates=_get_list("ANNOUNCE_TEMPLATES"),
         state_file=os.getenv("STATE_FILE", "state.json").strip(),
@@ -919,7 +912,6 @@ def load_config(
         ).strip(),
         new_tests_tg_bot_token=os.getenv("NEW_TESTS_TG_BOT_TOKEN", "").strip(),
         new_tests_publish_telegram=_get_bool("NEW_TESTS_PUBLISH_TELEGRAM", True),
-        new_tests_publish_vk=_get_bool("NEW_TESTS_PUBLISH_VK", False),
         new_tests_personalities=_get_str_list("NEW_TESTS_PERSONALITIES"),
         # --- Творческие личности ---
         personality_mix_count=max(0, _get_int("PERSONALITY_MIX_COUNT", DEFAULT_PERSONALITY_MIX_COUNT) or 0),

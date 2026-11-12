@@ -49,14 +49,14 @@ jobs:
           LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.openai.com/v1' }}
           LLM_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}
           # Канал нового потока: @username публичного канала или числовой id
-          # приватного (-100…). Приватный канал без @username иначе не найдётся.
+          # приватного (-100…). По умолчанию — единый канал всех потоков
+          # (TG_TARGET_CHANNEL), отдельная переменная — только для исключений.
           NEW_TESTS_ENABLED: "true"
           NEW_TESTS_COUNT: ${{ vars.NEW_TESTS_COUNT || '15' }}
           NEW_TESTS_PASS_SCORES: ${{ vars.NEW_TESTS_PASS_SCORES || '[10]' }}
           NEW_TESTS_TOPICS: ${{ vars.NEW_TESTS_TOPICS }}
-          NEW_TESTS_TG_TARGET_CHANNEL: ${{ vars.NEW_TESTS_TG_TARGET_CHANNEL || '@qa_helper_draft' }}
+          NEW_TESTS_TG_TARGET_CHANNEL: ${{ vars.NEW_TESTS_TG_TARGET_CHANNEL || vars.TG_TARGET_CHANNEL || secrets.TG_TARGET_CHANNEL || '@qa_helper_draft' }}
           NEW_TESTS_PUBLISH_TELEGRAM: "true"
-          NEW_TESTS_PUBLISH_VK: "false"
           NEW_TESTS_STATE_FILE: "new_state.json"
           # Эксперимент для нового проекта: включить советское кино (ru.wikipedia).
           FILM_RU_ENABLED: ${{ vars.FILM_RU_ENABLED || 'true' }}

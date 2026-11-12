@@ -35,7 +35,7 @@ jobs:
           # Тот же бот, что публикует новый поток: отдельный токен, если задан.
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           NEW_TESTS_TG_BOT_TOKEN: ${{ secrets.NEW_TESTS_TG_BOT_TOKEN }}
-          NEW_TESTS_TG_TARGET_CHANNEL: ${{ vars.NEW_TESTS_TG_TARGET_CHANNEL || '@qa_helper_draft' }}
+          NEW_TESTS_TG_TARGET_CHANNEL: ${{ vars.TG_TARGET_CHANNEL || vars.NEW_TESTS_TG_TARGET_CHANNEL || secrets.TG_TARGET_CHANNEL || '@qa_helper_draft' }}
           CHANNEL: ${{ inputs.channel }}
         # Печатает id канала (-100…) и статус бота. Если канал не найден,
         # выводит список каналов из getUpdates — туда попадает канал, пост

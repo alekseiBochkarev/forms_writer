@@ -7,7 +7,7 @@
 Автоматическое создание и публикация тестов-викторин в Яндекс Формах.
 Приложение генерирует вопросы на общую эрудицию через LLM (OpenAI-совместимый
 API), собирает из них тест с правильными ответами, перемешиванием вариантов и
-сегментами результатов, публикует форму и анонсирует её в Telegram и VK.
+сегментами результатов, публикует форму и анонсирует её в Telegram.
 Запускается ежедневно через GitHub Actions.
 
 ## Структура
@@ -16,7 +16,7 @@ API), собирает из них тест с правильными ответ
 - `config.py` — загрузка настроек из переменных окружения / `.env`.
 - `llm.py` — генерация вопросов через LLM.
 - `yandex_forms.py` — клиент API Яндекс Форм (создание формы, вопросы, публикация).
-- `publisher.py` — публикация анонса в Telegram (Bot API) и VK (Wall API).
+- `publisher.py` — публикация анонса в Telegram (Bot API).
 - `dedup.py` — проверка вопросов на повторы (точные и похожие формулировки).
 - `state.py` — состояние: дата публикации и список уже заданных вопросов.
 - `samples/questions.json` — пример готовых вопросов (запуск без LLM).
@@ -36,7 +36,6 @@ API), собирает из них тест с правильными ответ
 - `YANDEX_FORMS_TOKEN` — OAuth-токен с правом `forms:write`.
 - `YANDEX_ORG_ID` — идентификатор организации (заголовок `X-Cloud-Org-Id`).
 - `TG_BOT_TOKEN`, `TG_TARGET_CHANNEL` — для анонса в Telegram (опционально).
-- `VK_ACCESS_TOKEN`, `VK_GROUP_ID` — для анонса в VK (опционально).
 
 ```bash
 pip install -r requirements.txt
@@ -50,8 +49,8 @@ python main.py --questions-file samples/questions.json
 
 `.github/workflows/daily.yml` использует GitHub Secrets:
 `LLM_API_KEY`, `YANDEX_FORMS_TOKEN`, `YANDEX_ORG_ID`,
-а также `TG_BOT_TOKEN`, `TG_TARGET_CHANNEL`, `VK_ACCESS_TOKEN`, `VK_GROUP_ID`
-(для анонса в соцсетях). Несекретные настройки задаются через Variables.
+а также `TG_BOT_TOKEN` (для анонса в Telegram). Несекретные настройки задаются
+через Variables (`TG_TARGET_CHANNEL` и др.).
 
 ## Соглашения
 
