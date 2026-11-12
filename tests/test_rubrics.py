@@ -24,10 +24,10 @@ from state import (
 
 
 def test_load_rubrics_defaults_when_env_empty():
-    """Без RUBRICS берутся четыре встроенные рубрики a/b/c/d."""
+    """Без RUBRICS берутся четыре встроенные рубрики a/b/d/e."""
     rubrics = load_rubrics()
 
-    assert set(rubrics.rubrics) == {"a", "b", "c", "d"}
+    assert set(rubrics.rubrics) == {"a", "b", "d", "e"}
     a = rubrics.get("a")
     assert a is not None
     assert a.series_name == "Знаток по кино"
@@ -45,10 +45,7 @@ def test_load_rubrics_defaults_when_env_empty():
     assert b.threshold == 8
 
     c = rubrics.get("c")
-    assert c is not None
-    assert c.source == "trap"
-    assert c.questions_count == 10
-    assert c.threshold == 8
+    assert c is None  # текстовые тесты на 10 вопросов (8/10) убраны из реестра
 
     d = rubrics.get("d")
     assert d is not None
@@ -58,12 +55,27 @@ def test_load_rubrics_defaults_when_env_empty():
     assert d.threshold == 10
     assert d.themes == ["советские фильмы"]
 
+    e = rubrics.get("e")
+    assert e is not None
+    assert e.source == "mixed"
+    assert e.questions_count == 30
+    assert e.photo_count == 15
+    assert e.threshold == 20
+    assert e.questions_count - e.photo_count == 15
+    assert e.themes
+    # темы должны быть доступны в фото-потоке, иначе рубрика не выберет тему
+    assert set(e.themes) <= set(config.DEFAULT_PHOTO_THEMES)
+    assert e.comment_prompt
+
     # шаблоны содержат обещанные плейсхолдеры
     assert all("{threshold}" in t and "{count}" in t for t in a.title_templates)
-    assert any("{series_no}" in t for t in c.title_templates)
-    # у смешанной рубрики номер серии обязателен: иначе при фиксированных
-    # 15/10 пять шаблонов исчерпаются и заголовки начнут повторяться
+    # у смешанных рубрик номер серии обязателен: иначе при фиксированных
+    # 15/10 и 30/20 шаблоны исчерпаются и заголовки начнут повторяться
     assert all("{series_no}" in t for t in d.title_templates)
+    assert all("{series_no}" in t for t in e.title_templates)
+    # заголовок «e» называет число вопросов с фото, не называя категорию:
+    # тема выпуска ротируется
+    assert any("{photo_count}" in t for t in e.title_templates)
 
 
 def test_load_rubrics_defaults_are_not_shared_mutable():
@@ -208,7 +220,7 @@ def test_load_config_attaches_rubrics():
     cfg = config.load_config({"dry_run": True}, require_questions=False)
 
     assert cfg.rubrics is not None
-    assert {r.id for r in cfg.rubrics.enabled_rubrics()} == {"a", "b", "c", "d"}
+    assert {r.id for r in cfg.rubrics.enabled_rubrics()} == {"a", "b", "d", "e"}
 
 
 # --- Состояние рубрик (state.py) ----------------------------------------------

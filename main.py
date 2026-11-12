@@ -15,7 +15,8 @@
     python main.py --rubric a            # выпустить рубрику эксперимента «a»
     python main.py --rubric b --dry-run  # план выпуска рубрики «b» без API
     python main.py --rubric d --dry-run  # план смешанного выпуска «d» (кадры + факты)
-    python main.py --rubric c --repack   # переупаковать провал рубрики «c» (тот же тест, новый заголовок)
+    python main.py --rubric e --dry-run  # план большого выпуска «e» (30 вопросов: 15 фото + 15 текстовых)
+    python main.py --rubric <id> --repack  # переупаковать провал trap-рубрики (тот же тест, новый заголовок)
 """
 
 from __future__ import annotations
@@ -71,7 +72,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--rubric",
         metavar="ID",
-        help="выпустить рубрику эксперимента по её id (например a/b/c/d)",
+        help="выпустить рубрику эксперимента по её id (например a/b/d/e)",
     )
     parser.add_argument(
         "--repack",

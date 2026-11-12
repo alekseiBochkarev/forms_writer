@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Рубрики b/c/d публикуются параллельно (matrix) и каждая коммитит общее
+  # Рубрики b/d/e публикуются параллельно (matrix) и каждая коммитит общее
   # rubrics_state.json тем же паттерном, что и другие workflow (pull --rebase
   # --autostash + push). Ограничение «не чаще раза в UTC-день» — на рубрику
   # (allow_publish_rubric), поэтому разные рубрики в одном слоте допустимы.
@@ -26,21 +26,21 @@ jobs:
   #
   # Если захочется развести анонсы по времени, чтобы они не наслаивались в
   # Telegram, вынесите каждую рубрику в отдельный workflow со своим cron
-  # (напр. b — 08:00, c — 11:00, d — 14:00 UTC): скопируйте job
+  # (напр. b — 08:00, d — 11:00, e — 14:00 UTC): скопируйте job
   # create-rubric-forms, уберите strategy.matrix и подставьте конкретный id в
   # `--rubric`, поменяйте cron и concurrency.group.
   create-rubric-forms:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    # Рубрика b — фото-конвейер (много LLM-вызовов), c — ловушки (генерация с
-    # запасом + фактчек), d — смешанный выпуск (кадры + текстовые вопросы, тоже
-    # с фактчеком). Худший случай сопоставим с daily_photo, берём 60 мин.
-    timeout-minutes: 60
+    # b и e — фото-конвейер, d — смешанный выпуск. У «e» 15 кадров и 15
+    # текстовых вопросов (много LLM-вызовов: сущности, дистракторы на каждую
+    # сущность, тематические вопросы с запасом + фактчек), поэтому берём 90 мин.
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
-        rubric: [b, c, d]
+        rubric: [b, d, e]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -97,12 +97,10 @@ jobs:
           git pull --rebase --autostash || true
           git push || echo "Nothing to push"
 
-  # Отдельный job после матрицы: сначала обновляем метрики свежих форм
-  # (wrong_pct), затем при наличии провала переупаковываем рубрику-ловушку «c».
-  # Отдельный checkout даёт свежий rubrics_state.json (со вчерашней метрикой и
-  # уже опубликованным сегодня выпуском «c»), поэтому решение о репаке
-  # принимается по актуальным данным.
-  metrics-and-repack:
+  # Отдельный job после матрицы: обновляем метрики свежих форм (число ответов,
+  # correct_rate, wrong_pct) и коммитим их в rubrics_state.json. Отдельный
+  # checkout даёт свежее состояние с уже опубликованными сегодня выпусками.
+  metrics:
     runs-on: ubuntu-latest
     needs: create-rubric-forms
     permissions:
@@ -127,35 +125,12 @@ jobs:
           RUBRIC_MIN_MEDIAN: ${{ vars.RUBRIC_MIN_MEDIAN || '50' }}
         run: python rubric_metrics.py
 
-      - name: Repack failed trap rubric
-        env:
-          # --- секреты: модель и Яндекс Формы ---
-          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-          YANDEX_FORMS_TOKEN: ${{ secrets.YANDEX_FORMS_TOKEN }}
-          YANDEX_ORG_ID: ${{ secrets.YANDEX_ORG_ID }}
-          # --- секреты: публикация анонса (необязательно) ---
-          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-          TG_TARGET_CHANNEL: ${{ secrets.TG_TARGET_CHANNEL }}
-          VK_ACCESS_TOKEN: ${{ secrets.VK_ACCESS_TOKEN }}
-          VK_GROUP_ID: ${{ secrets.VK_GROUP_ID }}
-          # --- обычные настройки (Settings -> Variables) ---
-          LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.openai.com/v1' }}
-          LLM_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}
-          RUBRIC_REPACK_WRONG_PCT: ${{ vars.RUBRIC_REPACK_WRONG_PCT || '60' }}
-          PUBLISH: "true"
-          SHUFFLE: "true"
-          SHOW_RESULTS: "true"
-          SHOW_CORRECT: "true"
-          STATS: "true"
-        # Репак не обязателен: если кандидатов нет — шаг завершается кодом 0.
-        run: python main.py --rubric c --repack
-
       - name: Commit rubrics state
         run: |
           git config user.name "daily-bot"
           git config user.email "daily-bot@users.noreply.github.com"
           git add rubrics_state.json || true
-          git commit -m "Update rubrics state (repack/metrics)" || echo "No changes"
+          git commit -m "Update rubrics state (metrics)" || echo "No changes"
           python -c "import json; json.load(open('rubrics_state.json', encoding='utf-8-sig'))" \
             || { echo "rubrics_state.json повреждён — push отменён"; exit 1; }
           git pull --rebase --autostash || true

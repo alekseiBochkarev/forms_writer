@@ -58,6 +58,15 @@ MIXED_EXTRA_TEXT = 4
 MIXED_MIN_RATIO = 0.8
 
 
+def _mixed_extra_text(need: int) -> int:
+    """Запас текстовых кандидатов сверх плана: не меньше трети нужного числа.
+
+    Для крупного выпуска (15 текстовых вопросов из 30) базовых четырёх мало:
+    недобор добирается кадрами и ломает баланс «15 фото + 15 текстовых».
+    """
+    return max(MIXED_EXTRA_TEXT, math.ceil(max(0, need) / 3))
+
+
 def latest_wrong_pct(state: Dict[str, Any], rubric_id: str) -> Optional[str]:
     """Вернуть текстовую метрику «ошиблись NN%» по истории публикаций рубрики.
 
@@ -95,7 +104,8 @@ def build_rubric_title(
     """Собрать заголовок рубрики из её шаблонов с анти-спойлером и историей.
 
     Плейсхолдеры: `{series_no}` (номер выпуска вида «№7»), `{threshold}`,
-    `{count}`/`{n}` (число вопросов), `{wrong_pct}` (для рубрик-ловушек —
+    `{count}`/`{n}` (число вопросов), `{photo_count}` (для смешанных рубрик —
+    сколько вопросов идёт с фото), `{wrong_pct}` (для рубрик-ловушек —
     динамическая метрика «NN%» из истории либо мягкая статичная формулировка).
     Анти-спойлер, проверка соответствия теме и защита от повторов — общая логика
     с фото-потоком (`photo_flow.render_title`).
@@ -105,6 +115,7 @@ def build_rubric_title(
         "threshold": rubric.threshold,
         "count": count,
         "n": count,
+        "photo_count": rubric.photo_count,
         "wrong_pct": (wrong_pct or "").strip() or STATIC_WRONG_PCT,
     }
     title = photo_flow.render_title(
@@ -923,8 +934,9 @@ def interleave_questions(
     """Равномерно перемешать фото- и текстовые вопросы, начиная с фото.
 
     Фото встают в позиции `i * total / len(photo)`: при 5 фото и 15 вопросах —
-    1-й, 4-й, 7-й, 10-й и 13-й. Так кадр работает визуальным крючком в начале
-    и возвращается по ходу теста, а не сваливается одним блоком.
+    1-й, 4-й, 7-й, 10-й и 13-й, а при 15 фото и 30 вопросах — все нечётные
+    (1, 3, 5, …, 29). Так кадр работает визуальным крючком в начале и
+    возвращается по ходу теста, а не сваливается одним блоком.
     """
     photos = list(photo_questions)
     texts = list(text_questions)
@@ -1010,7 +1022,7 @@ def _collect_mixed_questions(
     avoid = _erudite_history(cfg, state)
     try:
         candidates = generate_topic_questions(
-            cfg, theme, text_target, avoid=avoid, extra=MIXED_EXTRA_TEXT
+            cfg, theme, text_target, avoid=avoid, extra=_mixed_extra_text(text_target)
         )
     except Exception as exc:  # noqa: BLE001 - понятная ошибка вместо трейсбека
         log.error("Не удалось получить текстовые вопросы по теме «%s»: %s", theme, exc)

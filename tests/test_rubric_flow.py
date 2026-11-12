@@ -519,11 +519,13 @@ def test_interleave_questions_without_one_block_keeps_other():
 
 
 def test_mixed_minimum_not_below_threshold_and_plan_share():
-    """Минимум смешанного выпуска: max(порог + 1, 80% плана); для 15/10 — 12."""
+    """Минимум смешанного выпуска: max(порог + 1, 80% плана)."""
     cfg = load_config({"dry_run": True}, require_questions=False)
-    rubric = cfg.rubrics.get("d")
 
-    assert rubric_flow._mixed_minimum(rubric) == 12
+    # d: 15 вопросов, порог 10 -> max(11, 12) = 12
+    assert rubric_flow._mixed_minimum(cfg.rubrics.get("d")) == 12
+    # e: 30 вопросов, порог 20 -> max(21, 24) = 24
+    assert rubric_flow._mixed_minimum(cfg.rubrics.get("e")) == 24
 
 
 def test_rubric_d_dry_run_plans_15_questions_without_network(monkeypatch, tmp_path):
@@ -794,18 +796,138 @@ def test_rubric_d_aborts_without_photos(monkeypatch, tmp_path):
     assert not (tmp_path / "rubrics_state.json").exists()
 
 
-# --- отказ trap-рубрики ------------------------------------------------------
+# --- крупная смешанная рубрика «e»: 30 вопросов (15 фото + 15 текстовых) ---
 
-def test_trap_rubric_refuses_with_nonzero_code(monkeypatch, tmp_path):
-    """Рубрика source=trap отказывает ненулевым кодом и не лезет в сеть."""
-    monkeypatch.setattr(
-        photo_flow, "YandexFormsClient",
-        lambda *a, **k: pytest.fail("trap-рубрика не должна ничего публиковать"),
+
+_E_THEME = "достопримечательности и места"
+
+
+def _e_cfg(tmp_path, **overrides):
+    """Конфиг рубрики «e»: тема из открытых источников, без кино-флагов."""
+    base = {
+        "photo_theme": _E_THEME,
+        "photo_themes": [_E_THEME],
+        "photo_sources": ["wikimedia"],
+    }
+    base.update(overrides)
+    return _mixed_cfg(tmp_path, **base)
+
+
+def test_interleave_questions_alternates_when_half_are_photos():
+    """15 фото на 30 вопросов встают в нечётные позиции (1, 3, …, 29)."""
+    photos = [f"p{i}" for i in range(1, 16)]
+    texts = [f"t{i}" for i in range(1, 16)]
+
+    plan = rubric_flow.interleave_questions(photos, texts)
+
+    assert len(plan) == 30
+    assert [i + 1 for i, item in enumerate(plan) if item.startswith("p")] == list(
+        range(1, 30, 2)
     )
-    cfg = _rubric_cfg(tmp_path, dry_run=False)
+    assert [item for item in plan if item.startswith("t")] == texts
+
+
+def test_rubric_e_dry_run_plans_30_questions_without_network(monkeypatch, tmp_path):
+    """DRY-RUN рубрики «e»: план 30 вопросов (15 фото + 15 текстовых), порог 20."""
+    _no_network(monkeypatch)
+    monkeypatch.setattr(
+        rubric_flow, "generate_topic_questions",
+        lambda *a, **k: pytest.fail("в dry-run LLM не вызывается"),
+    )
+    monkeypatch.setattr(
+        photo_flow, "_build_questions",
+        lambda *a, **k: pytest.fail("в dry-run картинки не собираются"),
+    )
+
+    captured = {}
+    real_title = rubric_flow.build_rubric_title
+
+    def spy_title(rubric, series_no, count, used_titles=None, correct_answers=None, **kw):
+        captured["series_no"] = series_no
+        captured["count"] = count
+        captured["threshold"] = rubric.threshold
+        return real_title(rubric, series_no, count, used_titles, correct_answers, **kw)
+
+    monkeypatch.setattr(rubric_flow, "build_rubric_title", spy_title)
+
+    cfg = _e_cfg(tmp_path, dry_run=True)
     state = load_state(cfg.rubrics_state_file)
 
-    assert rubric_flow.run_rubric(cfg, state, "c", dry_run=False) == 1
+    assert rubric_flow.run_rubric(cfg, state, "e", dry_run=True) == 0
+    assert captured == {"series_no": 1, "count": 30, "threshold": 20}
+    assert not (tmp_path / "rubrics_state.json").exists()
+
+
+def test_rubric_e_publish_builds_30_questions_half_with_photo(monkeypatch, tmp_path):
+    """Боевой путь «e»: 30 вопросов, 15 с фото и 15 текстовых, чередование."""
+    import factcheck
+
+    client = _RecordingClient()
+    monkeypatch.setattr(photo_flow, "YandexFormsClient", _ClientFactory(client))
+    monkeypatch.setattr(
+        photo_flow, "_generate_entities",
+        lambda cfg, theme, count, used: [f"место {i + 1}" for i in range(count)],
+    )
+    _stub_build_questions(monkeypatch, _E_THEME, 20)
+    monkeypatch.setattr(
+        rubric_flow, "generate_topic_questions",
+        lambda cfg, topic, count, avoid=None, extra=0: _text_questions(count + extra),
+    )
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+    monkeypatch.setattr(rubric_flow.publisher, "publish_announcement", lambda *a, **k: [])
+
+    cfg = _e_cfg(tmp_path, dry_run=False, force=True)
+    state = load_state(cfg.rubrics_state_file)
+
+    assert rubric_flow.run_rubric(cfg, state, "e", dry_run=False, force=True) == 0
+
+    assert len(client.questions) == 30
+    question_texts = [q[0] for q in client.questions]
+    photo_positions = [
+        i + 1 for i, text in enumerate(question_texts)
+        if text == photo_flow.question_text(_E_THEME)
+    ]
+    assert photo_positions == list(range(1, 30, 2))
+    assert client.comments == [cfg.rubrics.get("e").comment_prompt]
+    assert client.published == ["sid-1"]
+
+    saved = load_state(cfg.rubrics_state_file)
+    entry = saved["published"][-1]
+    assert entry["rubric_id"] == "e"
+    assert entry["series_no"] == 1
+    assert entry["threshold"] == 20
+    assert entry["count"] == 30
+    assert entry["theme"] == _E_THEME
+    assert entry["mixed"] is True
+    assert entry["photo_count"] == 15
+    assert entry["text_count"] == 15
+    assert len(saved["asked_questions"]) == 30
+
+
+def test_rubric_e_aborts_when_mixed_minimum_not_reached(monkeypatch, tmp_path):
+    """Собрано меньше минимума (24) — отмена до создания формы."""
+    import factcheck
+
+    monkeypatch.setattr(
+        photo_flow, "YandexFormsClient",
+        lambda *a, **k: pytest.fail("при недоборе форма не создаётся"),
+    )
+    monkeypatch.setattr(
+        photo_flow, "_generate_entities",
+        lambda cfg, theme, count, used: [f"место {i + 1}" for i in range(10)],
+    )
+    _stub_build_questions(monkeypatch, _E_THEME, 10)
+    monkeypatch.setattr(
+        rubric_flow, "generate_topic_questions",
+        lambda cfg, topic, count, avoid=None, extra=0: _text_questions(3),
+    )
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+
+    cfg = _e_cfg(tmp_path, dry_run=False, force=True)
+    state = load_state(cfg.rubrics_state_file)
+
+    # 10 фото + 3 текстовых = 13 < 24
+    assert rubric_flow.run_rubric(cfg, state, "e", dry_run=False, force=True) == 1
     assert not (tmp_path / "rubrics_state.json").exists()
 
 

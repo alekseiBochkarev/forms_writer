@@ -347,7 +347,7 @@ def test_wrong_pct_reaches_state_and_latest_wrong_pct(tmp_path):
 
 
 def test_build_rubric_title_uses_state_wrong_pct(tmp_path):
-    """build_rubric_title рубрики c c wrong_pct из state даёт заголовок с числом."""
+    """build_rubric_title trap-рубрики с wrong_pct из state даёт заголовок с числом."""
     published_at = NOW - timedelta(hours=60)
     state_file = str(tmp_path / "rubrics_state.json")
     state = load_state(state_file)
@@ -363,10 +363,25 @@ def test_build_rubric_title_uses_state_wrong_pct(tmp_path):
     # имитируем запись метрик, как это делает refresh_metrics
     state["published"][-1]["wrong_pct"] = 62
 
-    from config import load_config
+    # trap-рубрика задаётся локально: во встроенном реестре её больше нет.
+    from config import Rubric
 
-    cfg = load_config({"dry_run": True}, require_questions=False)
-    rubric = cfg.rubrics.get("c")
+    rubric = Rubric(
+        id="c",
+        series_name="Ловушка",
+        source="trap",
+        questions_count=10,
+        threshold=8,
+        comment_prompt="Коммент?",
+        title_templates=[
+            "{wrong_pct}% ошиблись в этих вопросах. Возьмёте {threshold} "
+            "из {count}? {series_no}",
+            "Меньше половины прошедших этот тест не ошибаются. "
+            "А вы возьмёте {threshold} из {count}? Выпуск {series_no}",
+        ],
+        enabled=True,
+        slot="afternoon",
+    )
     wrong = latest_wrong_pct(state, "c")
     assert wrong == "62"
 

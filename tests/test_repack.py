@@ -24,6 +24,29 @@ from state import load_state, record_publish, save_state, today_utc
 # --- конфиг и фикстуры -------------------------------------------------------
 
 
+def _trap_rubric() -> Rubric:
+    """Рубрика-ловушка «c» для тестов репака.
+
+    Во встроенном реестре trap-рубрик больше нет (тесты на 10 вопросов убраны),
+    но репак остаётся возможным для рубрик, заданных через RUBRICS, поэтому
+    тест добавляет её в реестр локально.
+    """
+    return Rubric(
+        id="c",
+        series_name="Ловушка",
+        source="trap",
+        questions_count=10,
+        threshold=8,
+        comment_prompt="Вопрос в конце: на каком вопросе вы попались?",
+        title_templates=[
+            "Тест. {wrong_pct}% прошедших ошибаются в этих вопросах. "
+            "Сможете взять {threshold} из {count}? {series_no}",
+        ],
+        enabled=True,
+        slot="afternoon",
+    )
+
+
 def _trap_cfg(tmp_path, **overrides):
     """Конфиг репака: ловушка «c» + пороги репака (можно переопределить)."""
     base = {
@@ -48,7 +71,9 @@ def _trap_cfg(tmp_path, **overrides):
     }
     base.update(overrides)
     cfg = types.SimpleNamespace(**base)
-    cfg.rubrics = load_config({"dry_run": True}, require_questions=False).rubrics
+    rubrics = load_config({"dry_run": True}, require_questions=False).rubrics
+    rubrics.rubrics["c"] = _trap_rubric()
+    cfg.rubrics = rubrics
     return cfg
 
 
