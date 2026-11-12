@@ -18,10 +18,15 @@ API), собирает из них тест с правильными ответ
 - `yandex_forms.py` — клиент API Яндекс Форм (создание формы, вопросы, публикация).
 - `publisher.py` — публикация анонса в Telegram (Bot API).
 - `dedup.py` — проверка вопросов на повторы (точные и похожие формулировки).
+- `rotation.py` — расписание выпусков: эрудиция каждый день + два потока из пула
+  `новые тесты / b / d / e / фото` по ротации (`--date`, `--is-scheduled`).
 - `state.py` — состояние: дата публикации и список уже заданных вопросов.
 - `samples/questions.json` — пример готовых вопросов (запуск без LLM).
 - `state.json` — состояние: дата последней публикации и id форм.
-- `.github/workflows/daily.yml` — планировщик ежедневного запуска.
+- `.github/workflows/daily.yml` — планировщик ежедневного запуска (эрудиция, всегда).
+- `.github/workflows/daily_new_tests.yml`, `daily_photo.yml`, `daily_rubrics.yml` —
+  дополнительные потоки, которые запускаются только в свои дни по ротации
+  (`rotation.py`); `workflow_dispatch` её игнорирует (ручной запуск = force).
 - `requirements.txt` — зависимости Python.
 
 ## Запуск локально
@@ -43,6 +48,7 @@ python main.py --dry-run          # проверка без обращения �
 python main.py --check             # проверить доступ к Яндекс Формам
 python main.py                     # создать и опубликовать форму
 python main.py --questions-file samples/questions.json
+python rotation.py                 # какой план выпусков на сегодня (UTC)
 ```
 
 ## Секреты в CI
@@ -58,6 +64,9 @@ python main.py --questions-file samples/questions.json
 - Не коммитьте секреты и `.env` в git; для ключей — только GitHub Secrets.
 - `state.json` обновляется приложением и коммитится workflow (не вручную).
 - Для изменений в расписании правится `.github/workflows/daily.yml` (cron в UTC).
+- Какие дополнительные потоки выходят в конкретный день, задаёт `rotation.py`
+  (пул `EXTRA_FLOWS`, число в день — `EXTRA_PER_DAY`); проверка в workflow:
+  `python rotation.py --is-scheduled <flow>`.
 - Новые настройки добавляйте в `config.py`, `.env.example` и README (таблица переменных).
 - Перед изменениями в API Яндекс Форм сверяйтесь с
   https://yandex.ru/support/forms/ru/api-ref/.

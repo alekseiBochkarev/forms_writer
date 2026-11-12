@@ -2,7 +2,9 @@ name: Daily photo form
 
 on:
   schedule:
-    # Каждый день в 16:00 UTC (19:00 МСК) — на 10 часов позже эрудиционного выпуска.
+    # Слот каждый день в 16:00 UTC (19:00 МСК). Выходит ли поток в этот день,
+    # решает ротация (rotation.py): в день 3 теста — эрудиция + два потока из
+    # пула. Ручной запуск (workflow_dispatch) ротацию игнорирует.
     - cron: "0 16 * * *"
     # Резервный запуск через 30 минут на случай сбоя основного.
     - cron: "30 16 * * *"
@@ -35,7 +37,21 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # Ротация: в день выходит эрудиция (daily.yml) и два потока из пула.
+      # Ручной запуск (workflow_dispatch) ротацию игнорирует — это force.
+      - name: Check daily rotation
+        id: rotation
+        run: |
+          if python rotation.py --is-scheduled photo; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Сегодня по ротации этот поток не выходит — пропускаем."
+            python rotation.py
+          fi
+
       - name: Generate and publish photo form
+        if: github.event_name == 'workflow_dispatch' || steps.rotation.outputs.run == 'true'
         env:
           # --- секреты: модель и Яндекс Формы ---
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
@@ -68,6 +84,7 @@ jobs:
         run: python main.py --photo
 
       - name: Commit photo state
+        if: github.event_name == 'workflow_dispatch' || steps.rotation.outputs.run == 'true'
         run: |
           git config user.name "daily-bot"
           git config user.email "daily-bot@users.noreply.github.com"
