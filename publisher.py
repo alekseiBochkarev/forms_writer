@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import random
 from datetime import date
-from typing import List
+from typing import Any, Dict, List, Optional
 
 import requests
 
@@ -54,12 +54,17 @@ def _inject_intro(text: str, intro: str, url: str) -> str:
     return f"{text[:line_start].rstrip()}\n\n{intro}\n\n{text[line_start:]}"
 
 
-def post_to_telegram(token: str, channel: str, text: str) -> None:
-    """Отправить сообщение в Telegram-канал через Bot API."""
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    payload = {"chat_id": channel, "text": text}
-    response = requests.post(url, json=payload, timeout=30)
-    data = None
+def _telegram_call(
+    token: str, method: str, params: Optional[Dict[str, Any]] = None
+) -> Any:
+    """Вызвать метод Bot API и вернуть поле `result`.
+
+    Ошибки Telegram приходят с HTTP 200 и `ok: false`, поэтому проверяем оба
+    признака. В тексте ошибки оставляем `description` — без него причину
+    (неверный канал, бот не админ) не понять.
+    """
+    url = f"https://api.telegram.org/bot{token}/{method}"
+    response = requests.post(url, json=params or {}, timeout=30)
     try:
         data = response.json()
     except ValueError:
@@ -68,9 +73,116 @@ def post_to_telegram(token: str, channel: str, text: str) -> None:
         description = (data or {}).get("description")
         detail = description or (response.text or "")[:500]
         raise RuntimeError(
-            f"Telegram API error (chat_id={channel!r}, HTTP {response.status_code}): "
-            f"{detail}"
+            f"{method}: HTTP {response.status_code}: {detail}"
         )
+    return (data or {}).get("result")
+
+
+def telegram_error_hint(error: str) -> str:
+    """Подсказка к частым ошибкам публикации в канал.
+
+    Отдельно про приватные каналы: у них нет `@username`, Bot API принимает
+    только числовой id вида `-100…`, а бот должен быть админом канала.
+    """
+    text = (error or "").lower()
+    if "chat not found" in text:
+        return (
+            " — Telegram не знает такой chat_id. Если канал приватный, у него "
+            "нет @username: укажите числовой id вида -100… (переменная "
+            "NEW_TESTS_TG_TARGET_CHANNEL) и добавьте бота админом канала."
+        )
+    if (
+        "bot is not a member" in text
+        or "not enough rights" in text
+        or "have no rights" in text
+        or "chat_write_forbidden" in text
+    ):
+        return (
+            " — добавьте бота администратором канала с правом «Публикация "
+            "сообщений»."
+        )
+    if "unauthorized" in text:
+        return " — проверьте токен бота (TG_BOT_TOKEN / NEW_TESTS_TG_BOT_TOKEN)."
+    return ""
+
+
+def post_to_telegram(token: str, channel: str, text: str) -> None:
+    """Отправить сообщение в Telegram-канал через Bot API."""
+    try:
+        _telegram_call(token, "sendMessage", {"chat_id": channel, "text": text})
+    except RuntimeError as exc:
+        raise RuntimeError(
+            f"Telegram API error (chat_id={channel!r}): {exc}"
+            f"{telegram_error_hint(str(exc))}"
+        ) from exc
+
+
+def get_me(token: str) -> Dict[str, Any]:
+    """Информация о боте-владельце токена (`getMe`)."""
+    return _telegram_call(token, "getMe") or {}
+
+
+def get_chat(token: str, channel: str) -> Dict[str, Any]:
+    """Разрешить chat_id и вернуть базовые поля канала (`getChat`)."""
+    result = _telegram_call(token, "getChat", {"chat_id": channel}) or {}
+    return {
+        "id": result.get("id"),
+        "type": result.get("type") or "",
+        "title": result.get("title") or result.get("username") or "",
+        "username": result.get("username") or "",
+    }
+
+
+def get_chat_member(token: str, channel: str, user_id: Any) -> str:
+    """Статус бота в канале: creator / administrator / member / …"""
+    result = _telegram_call(
+        token, "getChatMember", {"chat_id": channel, "user_id": user_id}
+    ) or {}
+    return result.get("status") or ""
+
+
+def list_recent_channels(token: str) -> List[Dict[str, Any]]:
+    """Каналы из последних обновлений бота — чтобы найти id приватного канала.
+
+    Достаточно переслать любой пост канала боту в личку: в обновлении придёт
+    `forward_from_chat` с числовым id (`-100…`).
+    """
+    updates = _telegram_call(
+        token,
+        "getUpdates",
+        {
+            "limit": 100,
+            "allowed_updates": [
+                "message",
+                "channel_post",
+                "edited_message",
+                "edited_channel_post",
+            ],
+        },
+    ) or []
+    found: Dict[Any, Dict[str, Any]] = {}
+    for update in updates:
+        if not isinstance(update, dict):
+            continue
+        for key in ("message", "channel_post", "edited_message", "edited_channel_post"):
+            payload = update.get(key)
+            if not isinstance(payload, dict):
+                continue
+            candidates = [payload.get("chat"), payload.get("forward_from_chat")]
+            # Bot API 7.0+ присылает пересланное как forward_origin.chat,
+            # старое поле forward_from_chat оставлено для совместимости.
+            origin = payload.get("forward_origin")
+            if isinstance(origin, dict):
+                candidates.append(origin.get("chat"))
+            for chat in candidates:
+                if isinstance(chat, dict) and chat.get("type") == "channel":
+                    if chat.get("id") is not None:
+                        found[chat["id"]] = {
+                            "id": chat["id"],
+                            "title": chat.get("title") or "",
+                            "username": chat.get("username") or "",
+                        }
+    return list(found.values())
 
 
 def post_to_vk(token: str, group_id: str, text: str) -> None:

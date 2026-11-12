@@ -6,6 +6,7 @@
     python main.py --questions-file samples/questions.json
     python main.py --count 10 --topic "наука и техника"
     python main.py --check              # проверить доступ к API Яндекс Форм
+    python main.py --check-telegram     # проверить токен бота и доступ к каналу Telegram
     python main.py --delete-survey 6aac...            # удалить форму по id
     python main.py --rename-survey 6aac... --name "Новое имя"  # переименовать форму
     python main.py --photo               # выпуск фото-теста (одна тема)
@@ -24,9 +25,10 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import random
 import sys
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import factcheck
 import photo_flow
@@ -35,7 +37,14 @@ import rubric_flow
 from config import PERSONALITY_TOPIC, load_config
 from dedup import DuplicateChecker
 from llm import generate_conclusion, generate_intro, generate_questions
-from publisher import publish_announcement
+from publisher import (
+    get_chat,
+    get_chat_member,
+    get_me,
+    list_recent_channels,
+    publish_announcement,
+    telegram_error_hint,
+)
 from state import load_state, save_state, today_utc
 from yandex_forms import YandexFormsClient, publish_questions
 
@@ -58,6 +67,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--no-publish", action="store_true", help="не публиковать форму")
     parser.add_argument("--force", action="store_true", help="игнорировать защиту от дублей")
     parser.add_argument("--check", action="store_true", help="проверить доступ к API и выйти")
+    parser.add_argument(
+        "--check-telegram",
+        action="store_true",
+        help="проверить токен бота и доступ к каналу Telegram и выйти",
+    )
+    parser.add_argument(
+        "--channel",
+        help="канал для --check-telegram (@username или числовой id -100…)",
+    )
     parser.add_argument("--delete-survey", help="удалить форму по id и выйти")
     parser.add_argument("--rename-survey", help="переименовать форму по id (вместе с --name)")
     parser.add_argument("--photo", action="store_true", help="создать тест с фотографиями")
@@ -361,11 +379,7 @@ def _run_new_tests(cfg) -> int:
     public_url = YandexFormsClient.public_url(survey_id)
     log.info("Готово. Публичная ссылка: %s", public_url)
 
-    posted = publish_announcement(
-        cfg, survey_id, len(questions), cfg.survey_name, intro=intro
-    )
-    if posted:
-        log.info("Анонс опубликован: %s", ", ".join(posted))
+    _announce(cfg, survey_id, len(questions), cfg.survey_name, intro=intro)
 
     state_data["last_publish_date"] = today_utc()
     state_data.setdefault("published", []).append(
@@ -395,8 +409,124 @@ def _run_new_tests(cfg) -> int:
     return 0
 
 
+def _warn_in_actions(message: str) -> None:
+    """Продублировать проблему аннотацией GitHub Actions (видно в Summary run)."""
+    if os.getenv("GITHUB_ACTIONS") == "true":
+        print(f"::warning::{message}", flush=True)
+
+
+def _announce(cfg, survey_id: str, count: int, name: str, intro: str = "") -> List[str]:
+    """Опубликовать анонс и подсветить проблему, если публикация не удалась."""
+    posted = publish_announcement(cfg, survey_id, count, name, intro=intro)
+    if posted:
+        log.info("Анонс опубликован: %s", ", ".join(posted))
+        return posted
+    if cfg.publish_telegram or cfg.publish_vk:
+        _warn_in_actions(
+            "Анонс не опубликован ни в одну соцсеть — причина в логе выше "
+            "(для Telegram проверьте канал: python main.py --check-telegram)"
+        )
+    return posted
+
+
+def _log_channel_candidates(token: str) -> None:
+    """Показать каналы из последних обновлений бота — так находится id приватного."""
+    try:
+        channels = list_recent_channels(token)
+    except RuntimeError as exc:
+        log.warning("Не удалось получить каналы через getUpdates: %s", exc)
+        channels = []
+    if not channels:
+        log.info(
+            "Как узнать id приватного канала: добавьте бота администратором "
+            "канала, перешлите любой пост канала боту в личные сообщения и "
+            "повторите проверку."
+        )
+        return
+    log.info("Каналы из последних обновлений бота:")
+    for channel in channels:
+        username = f" (@{channel['username']})" if channel.get("username") else ""
+        log.info("  %s | %s%s", channel.get("id"), channel.get("title"), username)
+
+
+def _check_telegram(channel: Optional[str] = None) -> int:
+    """Проверить токен бота и доступ к целевому каналу, ничего не публикуя."""
+    token = (
+        os.getenv("NEW_TESTS_TG_BOT_TOKEN") or os.getenv("TG_BOT_TOKEN") or ""
+    ).strip()
+    if not token:
+        log.error(
+            "Не задан TG_BOT_TOKEN (или NEW_TESTS_TG_BOT_TOKEN) — проверять нечего"
+        )
+        return 2
+    target = (
+        channel
+        or os.getenv("NEW_TESTS_TG_TARGET_CHANNEL")
+        or "@qa_helper_draft"
+    ).strip()
+
+    try:
+        me = get_me(token)
+    except RuntimeError as exc:
+        log.error("Токен бота не принят: %s%s", exc, telegram_error_hint(str(exc)))
+        return 1
+
+    log.info("Бот: @%s (id %s)", me.get("username") or me.get("first_name"), me.get("id"))
+    log.info("Целевой канал: %s", target)
+
+    try:
+        chat = get_chat(token, target)
+    except RuntimeError as exc:
+        log.error("Канал недоступен: %s%s", exc, telegram_error_hint(str(exc)))
+        _log_channel_candidates(token)
+        return 1
+
+    username = f", @{chat['username']}" if chat.get("username") else ""
+    log.info(
+        "Канал найден: «%s», type=%s, id=%s%s",
+        chat.get("title"),
+        chat.get("type"),
+        chat.get("id"),
+        username,
+    )
+
+    try:
+        status = get_chat_member(token, chat.get("id"), me.get("id"))
+    except RuntimeError as exc:
+        log.error("Не удалось проверить права бота в канале: %s", exc)
+        return 1
+
+    if status in ("creator", "administrator"):
+        log.info("Права бота: %s — публикация доступна", status)
+        return 0
+    log.error(
+        "Права бота: %s — нужен статус administrator с правом публикации",
+        status or "неизвестно",
+    )
+    return 1
+
+
 def main() -> int:
     args = parse_args()
+
+    if args.check_telegram:
+        if (
+            args.photo
+            or args.new_tests
+            or args.rubric
+            or args.check
+            or args.delete_survey
+            or args.rename_survey
+        ):
+            log.error(
+                "Флаг --check-telegram несовместим с --photo/--new-tests/"
+                "--rubric/--check/--delete-survey/--rename-survey"
+            )
+            return 2
+        return _check_telegram(args.channel)
+    if args.channel:
+        log.error("Флаг --channel используется только вместе с --check-telegram")
+        return 2
 
     if (args.photo or args.new_tests) and (
         args.check or args.delete_survey or args.rename_survey
@@ -616,11 +746,7 @@ def main() -> int:
     log.info("Готово. Публичная ссылка: %s", public_url)
 
     # 5) Анонс в Telegram и VK (вводная добавляется в TG перед CTA)
-    posted = publish_announcement(
-        cfg, survey_id, len(questions), cfg.survey_name, intro=intro
-    )
-    if posted:
-        log.info("Анонс опубликован: %s", ", ".join(posted))
+    _announce(cfg, survey_id, len(questions), cfg.survey_name, intro=intro)
 
     # 6) Сохраняем состояние (защита от дублей и от повторов вопросов)
     state_data["last_publish_date"] = today_utc()

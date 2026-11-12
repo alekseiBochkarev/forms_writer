@@ -42,10 +42,14 @@ jobs:
           YANDEX_ORG_ID: ${{ secrets.YANDEX_ORG_ID }}
           # --- секреты: публикация анонса (необязательно) ---
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          # Отдельный бот нового потока; если секрет не задан, main.py берёт
+          # TG_BOT_TOKEN (см. NEW_TESTS_TG_BOT_TOKEN в config.py).
+          NEW_TESTS_TG_BOT_TOKEN: ${{ secrets.NEW_TESTS_TG_BOT_TOKEN }}
           # --- обычные настройки (Settings -> Variables) ---
           LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.openai.com/v1' }}
           LLM_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}
-          # Новый поток публикуется в собственный канал (нужен @username).
+          # Канал нового потока: @username публичного канала или числовой id
+          # приватного (-100…). Приватный канал без @username иначе не найдётся.
           NEW_TESTS_ENABLED: "true"
           NEW_TESTS_COUNT: ${{ vars.NEW_TESTS_COUNT || '15' }}
           NEW_TESTS_PASS_SCORES: ${{ vars.NEW_TESTS_PASS_SCORES || '[10]' }}

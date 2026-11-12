@@ -89,6 +89,13 @@ python main.py
 python main.py --check
 ```
 
+Проверить, что бот видит канал для анонсов (ничего не публикует):
+
+```bash
+python main.py --check-telegram                      # канал из NEW_TESTS_TG_TARGET_CHANNEL
+python main.py --check-telegram --channel -1001234   # конкретный канал по id
+```
+
 Служебные команды (по id формы):
 
 ```bash
@@ -181,8 +188,8 @@ python main.py --delete-survey 6aac...
 | `PERSONALITY_MIX_COUNT` | нет | `1` | Сколько вопросов о творческих личностях подмешивать в общий тест (`0` — выключить) |
 | `NEW_TESTS_SURVEY_NAME` | нет | `Насколько широк ваш кругозор` | Название формы нового потока |
 | `NEW_TESTS_STATE_FILE` | нет | `new_state.json` | Файл состояния нового потока |
-| `NEW_TESTS_TG_TARGET_CHANNEL` | нет | `@qa_helper_draft` | Telegram-канал нового потока |
-| `NEW_TESTS_TG_BOT_TOKEN` | нет | = `TG_BOT_TOKEN` | Отдельный токен бота для нового потока |
+| `NEW_TESTS_TG_TARGET_CHANNEL` | нет | `@qa_helper_draft` | Telegram-канал нового потока: `@username` публичного канала или числовой id `-100…` приватного |
+| `NEW_TESTS_TG_BOT_TOKEN` | нет | = `TG_BOT_TOKEN` | Отдельный токен бота для нового потока (бот должен быть админом канала) |
 | `NEW_TESTS_PUBLISH_TELEGRAM` / `NEW_TESTS_PUBLISH_VK` | нет | `true` / `false` | Публикация анонса нового потока |
 | `RUBRICS` | нет | встроенный список | JSON-массив рубрик эксперимента (`id`, `series_name`, `source` = `photo`/`trap`/`mixed`, `questions_count`, `threshold` < `questions_count`, `photo_count` для `mixed`, `themes`, `title_templates` с `{series_no}`/`{threshold}`/`{count}`/`{n}`/`{photo_count}`/`{wrong_pct}`, `comment_prompt`, `enabled`, `slot`) |
 | `RUBRICS_STATE_FILE` | нет | `rubrics_state.json` | Файл состояния рубрик (номера серий, даты публикаций) |
@@ -327,9 +334,44 @@ python main.py --new-tests             # боевой выпуск
 API Яндекса и соцсетей в этом режиме не вызываются.
 
 > **Важно про канал.** Bot API принимает `@username` (например
-> `@qa_helper_draft`) либо id вида `-100...`. Числовой web-id канала
+> `@qa_helper_draft`) либо числовой id вида `-100...`. Числовой web-id канала
 > (`-3728753106`) для Bot API **не подходит**. Бот должен быть администратором
 > канала.
+
+### Приватный канал
+
+У приватного канала нет `@username`, поэтому `@qa_helper_draft` его не найдёт —
+Telegram ответит `Bad Request: chat not found`, а форма при этом всё равно
+создастся и workflow останется зелёным (ошибка публикации только логируется).
+
+1. Добавьте бота (`TG_BOT_TOKEN` / `NEW_TESTS_TG_BOT_TOKEN`) в **Администраторы**
+   канала с правом «Публикация сообщений».
+2. Узнайте числовой id канала: перешлите любой пост канала боту в личные
+   сообщения и посмотрите id в обновлениях — `python main.py --check-telegram`
+   сам покажет найденные каналы с id, если указанный не открывается.
+   Другой способ: `https://api.telegram.org/bot<TOKEN>/getUpdates` и поле
+   `forward_from_chat.id` (начинается с `-100`).
+   Самый простой вариант без локальных токенов — **Actions → Check Telegram
+   channel → Run workflow**: workflow выведет id и статус бота, а если канал не
+   найден — список каналов из `getUpdates` (пересланный боту пост попадает туда).
+3. Пропишите id в настройках:
+   - локально/в `.env` — `NEW_TESTS_TG_TARGET_CHANNEL=-1001234567890`;
+   - в GitHub — **Settings → Secrets and variables → Actions → Variables**:
+     `NEW_TESTS_TG_TARGET_CHANNEL = -1001234567890`;
+   - если постящий бот отдельный — **Secrets**: `NEW_TESTS_TG_BOT_TOKEN`
+     (при пустом значении используется `TG_BOT_TOKEN`).
+4. Проверьте доступ перед публикацией:
+
+   ```bash
+   python main.py --check-telegram
+   ```
+
+   Успех — строки «Канал найден: «…», id=-100…» и «Права бота: administrator».
+   При ошибке команда печатает подсказку и список каналов из `getUpdates`.
+
+Если анонс всё же не ушёл, форма и состояние сохраняются, job остаётся
+зелёным, но в логе будет `Не удалось опубликовать анонс в Telegram: …`, а в
+Summary запуска GitHub Actions — предупреждение с той же причиной.
 
 ## Защита от дублей и повторов вопросов
 
@@ -585,9 +627,11 @@ python main.py --rubric <id> --repack --dry-run  # показать решени
 2. **Settings → Secrets and variables → Actions**:
    - **Secrets:** `LLM_API_KEY`, `YANDEX_FORMS_TOKEN`, `YANDEX_ORG_ID`
      и, для соцсетей, `TG_BOT_TOKEN`, `TG_TARGET_CHANNEL`,
-     `VK_ACCESS_TOKEN`, `VK_GROUP_ID`;
+     `VK_ACCESS_TOKEN`, `VK_GROUP_ID`; отдельный бот нового потока —
+     `NEW_TESTS_TG_BOT_TOKEN` (необязательно, иначе берётся `TG_BOT_TOKEN`);
    - **Variables** (необязательно): `LLM_BASE_URL`, `LLM_MODEL`,
-     `QUESTIONS_TOPIC`, `QUESTIONS_COUNT`, `QUESTIONS_LANGUAGE`.
+     `QUESTIONS_TOPIC`, `QUESTIONS_COUNT`, `QUESTIONS_LANGUAGE`,
+     `NEW_TESTS_TG_TARGET_CHANNEL` (для приватного канала — числовой id `-100…`).
 3. Расписание задаётся в `.github/workflows/daily.yml` (cron в UTC: основной
    `0 6 * * *` и резервный `30 6 * * *`). Запустить можно и вручную:
    вкладка **Actions → Daily form → Run workflow**.
@@ -605,6 +649,11 @@ python main.py --rubric <id> --repack --dry-run  # показать решени
 `0 12 * * *` и `30 12 * * *` (UTC). Он выполняет `python main.py --new-tests`
 с `NEW_TESTS_ENABLED=true` и коммитит `new_state.json`. Запустить вручную:
 **Actions → Daily new tests form → Run workflow**.
+
+Проверить канал этого потока можно отдельным ручным workflow
+`.github/workflows/check_telegram.yml` (`Check Telegram channel`,
+`workflow_dispatch`): он запускает `python main.py --check-telegram` с теми же
+секретами/переменными, показывает id канала и статус бота, ничего не публикует.
 
 Эксперимент с рубриками запускается workflow `.github/workflows/daily_rubrics.yml`
 (шаблон `Daily rubrics experiment`) по единственному cron `0 13 * * *` (UTC).
@@ -634,8 +683,10 @@ Run workflow**.
 
 Каналы публикации: эрудиция, фото и новые тесты постят в Telegram. Для старого
 потока канал задаётся секретом `TG_TARGET_CHANNEL` (для `@qa_helper_draft`), для
-нового — `NEW_TESTS_TG_TARGET_CHANNEL`. Помните, что Bot API принимает
-`@username` или `-100...`, а не web-id канала.
+нового — переменной `NEW_TESTS_TG_TARGET_CHANNEL`. Помните, что Bot API принимает
+`@username` или `-100...`, а не web-id канала. Если канал новый поток не видит
+(`chat not found`), проверьте настройки командой `python main.py --check-telegram`
+и см. раздел «Приватный канал» выше.
 
 ## Формат вопросов в `QUESTIONS_FILE`
 

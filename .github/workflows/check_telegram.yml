@@ -1,0 +1,48 @@
+name: Check Telegram channel
+
+# Ручная диагностика публикации: токен бота, доступ к каналу и id приватного
+# канала. Ничего не публикует и не меняет состояние. Запуск: Actions →
+# Check Telegram channel → Run workflow.
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Канал для проверки (@username или -100…); пусто — из Variable"
+        required: false
+        default: ""
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check bot and channel
+        env:
+          # Тот же бот, что публикует новый поток: отдельный токен, если задан.
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          NEW_TESTS_TG_BOT_TOKEN: ${{ secrets.NEW_TESTS_TG_BOT_TOKEN }}
+          NEW_TESTS_TG_TARGET_CHANNEL: ${{ vars.NEW_TESTS_TG_TARGET_CHANNEL || '@qa_helper_draft' }}
+          CHANNEL: ${{ inputs.channel }}
+        # Печатает id канала (-100…) и статус бота. Если канал не найден,
+        # выводит список каналов из getUpdates — туда попадает канал, пост
+        # которого переслали боту в личные сообщения.
+        run: |
+          if [ -n "$CHANNEL" ]; then
+            python main.py --check-telegram --channel "$CHANNEL"
+          else
+            python main.py --check-telegram
+          fi

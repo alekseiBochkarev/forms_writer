@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import types
 from pathlib import Path
 
@@ -620,6 +621,8 @@ class _Args:
         self.no_publish = False
         self.force = False
         self.check = False
+        self.check_telegram = False
+        self.channel = None
         self.delete_survey = None
         self.rename_survey = None
         self.photo = False
@@ -675,3 +678,146 @@ def test_main_erudition_daily_guard_blocks_second_run(monkeypatch, tmp_path):
     )
 
     assert main_module.main() == 0
+
+
+# --- Проверка Telegram-канала (--check-telegram) ----------------------------
+
+
+def test_check_telegram_reports_admin_channel(monkeypatch):
+    """Бот-админ числового канала — проверка успешна."""
+    monkeypatch.setenv("TG_BOT_TOKEN", "t")
+    monkeypatch.setattr(
+        main_module, "get_me", lambda token: {"id": 1, "username": "qa_helper_editor"}
+    )
+    monkeypatch.setattr(
+        main_module,
+        "get_chat",
+        lambda token, channel: {
+            "id": -1001234567890,
+            "type": "channel",
+            "title": "QA Helper — drafts",
+            "username": "",
+        },
+    )
+    monkeypatch.setattr(
+        main_module,
+        "get_chat_member",
+        lambda token, chat, user: "administrator",
+    )
+
+    assert main_module._check_telegram() == 0
+
+
+def test_check_telegram_fails_when_bot_not_admin(monkeypatch):
+    """Бот в канале, но без прав администратора — публикация не пройдёт."""
+    monkeypatch.setenv("NEW_TESTS_TG_BOT_TOKEN", "t")
+    monkeypatch.setattr(main_module, "get_me", lambda token: {"id": 1})
+    monkeypatch.setattr(
+        main_module,
+        "get_chat",
+        lambda token, channel: {
+            "id": -1001,
+            "type": "channel",
+            "title": "QA Helper — drafts",
+            "username": "",
+        },
+    )
+    monkeypatch.setattr(
+        main_module, "get_chat_member", lambda token, chat, user: "member"
+    )
+
+    assert main_module._check_telegram() == 1
+
+
+def test_check_telegram_requires_token(monkeypatch):
+    monkeypatch.delenv("TG_BOT_TOKEN", raising=False)
+
+    assert main_module._check_telegram() == 2
+
+
+def test_check_telegram_hints_private_channel_id(monkeypatch, caplog):
+    """При «chat not found» показываем id каналов из обновлений бота."""
+    monkeypatch.setenv("TG_BOT_TOKEN", "t")
+    monkeypatch.setattr(main_module, "get_me", lambda token: {"id": 1})
+
+    def no_chat(token, channel):
+        raise RuntimeError("getChat: HTTP 400: Bad Request: chat not found")
+
+    monkeypatch.setattr(main_module, "get_chat", no_chat)
+    monkeypatch.setattr(
+        main_module,
+        "list_recent_channels",
+        lambda token: [
+            {"id": -1007777777777, "title": "QA Helper — drafts", "username": ""}
+        ],
+    )
+
+    with caplog.at_level(logging.INFO):
+        assert main_module._check_telegram() == 1
+
+    assert "-1007777777777" in caplog.text
+    assert "приватн" in caplog.text.lower()
+
+
+def test_check_telegram_uses_explicit_channel(monkeypatch):
+    """--channel перекрывает NEW_TESTS_TG_TARGET_CHANNEL."""
+    monkeypatch.setenv("TG_BOT_TOKEN", "t")
+    monkeypatch.setenv("NEW_TESTS_TG_TARGET_CHANNEL", "@qa_helper_draft")
+    seen = {}
+
+    monkeypatch.setattr(main_module, "get_me", lambda token: {"id": 1})
+    monkeypatch.setattr(
+        main_module,
+        "get_chat",
+        lambda token, channel: seen.update(channel=channel)
+        or {
+            "id": -1005,
+            "type": "channel",
+            "title": "QA Helper — drafts",
+            "username": "",
+        },
+    )
+    monkeypatch.setattr(
+        main_module, "get_chat_member", lambda token, chat, user: "creator"
+    )
+
+    assert main_module._check_telegram("-1005") == 0
+    assert seen["channel"] == "-1005"
+
+
+def test_channel_flag_requires_check_telegram(monkeypatch):
+    monkeypatch.setattr(main_module, "parse_args", lambda: _Args(channel="-1005"))
+
+    assert main_module.main() == 2
+
+
+def test_check_telegram_flag_is_exclusive(monkeypatch):
+    monkeypatch.setattr(
+        main_module, "parse_args", lambda: _Args(check_telegram=True, new_tests=True)
+    )
+
+    assert main_module.main() == 2
+
+
+# --- Видимость сбоя публикации в GitHub Actions -----------------------------
+
+
+def test_announce_warns_in_actions_when_nothing_posted(monkeypatch, capsys):
+    """Форма создана, но анонс не ушёл — в Actions появляется warning."""
+    monkeypatch.setenv("GITHUB_ACTIONS", "true")
+    monkeypatch.setattr("main.publish_announcement", lambda *a, **k: [])
+
+    cfg = types.SimpleNamespace(publish_telegram=True, publish_vk=False)
+
+    assert main_module._announce(cfg, "abc", 15, "Имя") == []
+    assert "::warning::" in capsys.readouterr().out
+
+
+def test_announce_does_not_warn_when_posted(monkeypatch, capsys):
+    monkeypatch.setenv("GITHUB_ACTIONS", "true")
+    monkeypatch.setattr("main.publish_announcement", lambda *a, **k: ["telegram"])
+
+    cfg = types.SimpleNamespace(publish_telegram=True, publish_vk=False)
+
+    assert main_module._announce(cfg, "abc", 15, "Имя") == ["telegram"]
+    assert "::warning::" not in capsys.readouterr().out

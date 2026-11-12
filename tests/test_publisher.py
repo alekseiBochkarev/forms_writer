@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import types
 
 import publisher
@@ -131,3 +132,141 @@ def test_publish_announcement_survives_telegram_failure(monkeypatch):
     posted = publisher.publish_announcement(cfg, "abc", 10, "Имя", intro="Вв.")
 
     assert posted == []
+
+
+class _FakeResponse:
+    """Ответ Bot API с заданным JSON и HTTP-кодом."""
+
+    def __init__(self, data, status_code=200):
+        self._data = data
+        self.status_code = status_code
+        self.text = json.dumps(data, ensure_ascii=False) if data is not None else ""
+
+    def json(self):
+        if self._data is None:
+            raise ValueError("no json")
+        return self._data
+
+
+def test_post_to_telegram_hints_private_channel(monkeypatch):
+    """«chat not found» подсказывает про приватный канал и id -100…."""
+
+    def fake_post(*args, **kwargs):
+        return _FakeResponse(
+            {"ok": False, "description": "Bad Request: chat not found"}, 400
+        )
+
+    monkeypatch.setattr(publisher.requests, "post", fake_post)
+
+    with pytest.raises(RuntimeError) as exc:
+        publisher.post_to_telegram("token", "@qa_helper_draft", "текст")
+
+    message = str(exc.value)
+    assert "chat not found" in message
+    assert "-100" in message
+    assert "приват" in message.lower()
+
+
+def test_get_chat_returns_numeric_id_and_title(monkeypatch):
+    """getChat отдаёт числовой id канала — он и нужен для приватного канала."""
+    seen = {}
+
+    def fake_post(url, json=None, timeout=None):
+        seen["url"] = url
+        seen["json"] = json
+        return _FakeResponse(
+            {
+                "ok": True,
+                "result": {
+                    "id": -1001234567890,
+                    "type": "channel",
+                    "title": "QA Helper — drafts",
+                },
+            }
+        )
+
+    monkeypatch.setattr(publisher.requests, "post", fake_post)
+
+    chat = publisher.get_chat("token", "-1001234567890")
+
+    assert chat == {
+        "id": -1001234567890,
+        "type": "channel",
+        "title": "QA Helper — drafts",
+        "username": "",
+    }
+    assert seen["url"].endswith("/getChat")
+    assert seen["json"] == {"chat_id": "-1001234567890"}
+
+
+def test_get_chat_member_returns_status(monkeypatch):
+    monkeypatch.setattr(
+        publisher.requests,
+        "post",
+        lambda *a, **k: _FakeResponse({"ok": True, "result": {"status": "administrator"}}),
+    )
+
+    assert publisher.get_chat_member("token", "-1001", 42) == "administrator"
+
+
+def test_list_recent_channels_collects_only_channels(monkeypatch):
+    """В кандидаты попадают каналы из forward_from_chat, личные чаты — нет."""
+    updates = {
+        "ok": True,
+        "result": [
+            {
+                "message": {
+                    "chat": {"id": 42, "type": "private"},
+                    "forward_from_chat": {
+                        "id": -1007777777777,
+                        "type": "channel",
+                        "title": "QA Helper — drafts",
+                    },
+                }
+            },
+            {"message": {"chat": {"id": 42, "type": "private"}}},
+            {
+                "message": {
+                    "chat": {"id": 42, "type": "private"},
+                    "forward_origin": {
+                        "type": "channel",
+                        "chat": {
+                            "id": -1009999999999,
+                            "type": "channel",
+                            "title": "Пересланный канал",
+                        },
+                    },
+                }
+            },
+            {
+                "channel_post": {
+                    "chat": {
+                        "id": -1008888888888,
+                        "type": "channel",
+                        "title": "Публичный канал",
+                        "username": "public_channel",
+                    }
+                }
+            },
+        ],
+    }
+    monkeypatch.setattr(
+        publisher.requests, "post", lambda *a, **k: _FakeResponse(updates)
+    )
+
+    channels = publisher.list_recent_channels("token")
+
+    assert channels == [
+        {"id": -1007777777777, "title": "QA Helper — drafts", "username": ""},
+        {"id": -1009999999999, "title": "Пересланный канал", "username": ""},
+        {
+            "id": -1008888888888,
+            "title": "Публичный канал",
+            "username": "public_channel",
+        },
+    ]
+
+
+def test_telegram_error_hint_for_missing_rights():
+    hint = publisher.telegram_error_hint("Forbidden: bot is not a member")
+    assert "администратор" in hint.lower()
