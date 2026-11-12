@@ -1,4 +1,4 @@
-"""Публикация анонса формы в Telegram и VK."""
+"""Публикация анонса формы в Telegram."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ import requests
 log = logging.getLogger(__name__)
 
 # Формулировки анонса по умолчанию. При каждом запуске выбирается случайная,
-# поэтому посты в Telegram и VK слегка отличаются.
+# поэтому посты в канале слегка отличаются.
 DEFAULT_ANNOUNCE_TEMPLATES = [
     "Новый тест: «{name}»\n\n{count} вопросов на разные темы — проверьте свой кругозор.\n\nПройти: {url}",
     "Проверьте эрудицию: «{name}»\n\n{count} вопросов из разных областей. Справитесь?\n\nПройти: {url}",
@@ -185,33 +185,16 @@ def list_recent_channels(token: str) -> List[Dict[str, Any]]:
     return list(found.values())
 
 
-def post_to_vk(token: str, group_id: str, text: str) -> None:
-    """Опубликовать пост на стене VK-группы от её имени."""
-    url = "https://api.vk.com/method/wall.post"
-    params = {
-        "access_token": token,
-        "v": "5.199",
-        "owner_id": f"-{group_id}",
-        "from_group": 1,
-        "message": text,
-    }
-    response = requests.post(url, data=params, timeout=30)
-    response.raise_for_status()
-    data = response.json()
-    if data.get("error"):
-        raise RuntimeError(f"VK API error: {data['error']}")
-
-
 def publish_announcement(
     cfg, survey_id: str, count: int, name: str, intro: str = ""
 ) -> List[str]:
-    """Опубликовать анонс во все настроенные соцсети.
+    """Опубликовать анонс в Telegram.
 
     Вводная (если задана и включён `announce_intro`) добавляется в текст
-    Telegram-анонса перед CTA. Возвращает список каналов, куда публикация удалась.
-    Сбой публикации в отдельной соцсети не роняет запуск: форма к этому моменту
-    уже создана и опубликована, поэтому ошибка только логируется, а состояние
-    всё равно сохраняется.
+    анонса перед CTA. Возвращает список каналов, куда публикация удалась.
+    Сбой публикации не роняет запуск: форма к этому моменту уже создана и
+    опубликована, поэтому ошибка только логируется, а состояние всё равно
+    сохраняется.
     """
     text = build_announcement(cfg, survey_id, count, name)
     posted: List[str] = []
@@ -230,16 +213,5 @@ def publish_announcement(
                 log.error("Не удалось опубликовать анонс в Telegram: %s", exc)
         else:
             log.info("Пропускаю Telegram: не заданы TG_BOT_TOKEN / TG_TARGET_CHANNEL")
-
-    if cfg.publish_vk:
-        if cfg.vk_access_token and cfg.vk_group_id:
-            try:
-                post_to_vk(cfg.vk_access_token, cfg.vk_group_id, text)
-                posted.append("vk")
-                log.info("Анонс опубликован в VK")
-            except Exception as exc:  # noqa: BLE001 - форма уже опубликована
-                log.error("Не удалось опубликовать анонс в VK: %s", exc)
-        else:
-            log.info("Пропускаю VK: не заданы VK_ACCESS_TOKEN / VK_GROUP_ID")
 
     return posted

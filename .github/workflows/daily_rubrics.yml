@@ -61,9 +61,8 @@ jobs:
           YANDEX_ORG_ID: ${{ secrets.YANDEX_ORG_ID }}
           # --- секреты: публикация анонса (необязательно) ---
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-          TG_TARGET_CHANNEL: ${{ secrets.TG_TARGET_CHANNEL }}
-          VK_ACCESS_TOKEN: ${{ secrets.VK_ACCESS_TOKEN }}
-          VK_GROUP_ID: ${{ secrets.VK_GROUP_ID }}
+          # Единый канал для всех потоков (Variable важнее старого Secret).
+          TG_TARGET_CHANNEL: ${{ vars.TG_TARGET_CHANNEL || vars.NEW_TESTS_TG_TARGET_CHANNEL || secrets.TG_TARGET_CHANNEL }}
           # --- обычные настройки (Settings -> Variables) ---
           LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.openai.com/v1' }}
           LLM_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}

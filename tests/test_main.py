@@ -299,7 +299,6 @@ def _new_tests_cfg(state_path, **overrides):
         "new_tests_survey_name": "Насколько широк ваш кругозор",
         "new_tests_tg_target_channel": "@qa_helper_draft",
         "new_tests_publish_telegram": True,
-        "new_tests_publish_vk": False,
         "new_tests_topics": ["советское кино", "кулинария"],
         "new_tests_pass_scores": [7, 8],
         "new_tests_personalities": ["Фёдор Шаляпин", "Михаил Врубель"],
@@ -759,8 +758,34 @@ def test_check_telegram_hints_private_channel_id(monkeypatch, caplog):
     assert "приватн" in caplog.text.lower()
 
 
+def test_check_telegram_uses_unified_channel_variable(monkeypatch):
+    """Без --channel берётся единая переменная TG_TARGET_CHANNEL."""
+    monkeypatch.setenv("TG_BOT_TOKEN", "t")
+    monkeypatch.setenv("TG_TARGET_CHANNEL", "-1009")
+    seen = {}
+
+    monkeypatch.setattr(main_module, "get_me", lambda token: {"id": 1})
+    monkeypatch.setattr(
+        main_module,
+        "get_chat",
+        lambda token, channel: seen.update(channel=channel)
+        or {
+            "id": -1009,
+            "type": "channel",
+            "title": "QA Helper — drafts",
+            "username": "",
+        },
+    )
+    monkeypatch.setattr(
+        main_module, "get_chat_member", lambda token, chat, user: "administrator"
+    )
+
+    assert main_module._check_telegram() == 0
+    assert seen["channel"] == "-1009"
+
+
 def test_check_telegram_uses_explicit_channel(monkeypatch):
-    """--channel перекрывает NEW_TESTS_TG_TARGET_CHANNEL."""
+    """--channel перекрывает переменные окружения."""
     monkeypatch.setenv("TG_BOT_TOKEN", "t")
     monkeypatch.setenv("NEW_TESTS_TG_TARGET_CHANNEL", "@qa_helper_draft")
     seen = {}
@@ -807,7 +832,7 @@ def test_announce_warns_in_actions_when_nothing_posted(monkeypatch, capsys):
     monkeypatch.setenv("GITHUB_ACTIONS", "true")
     monkeypatch.setattr("main.publish_announcement", lambda *a, **k: [])
 
-    cfg = types.SimpleNamespace(publish_telegram=True, publish_vk=False)
+    cfg = types.SimpleNamespace(publish_telegram=True)
 
     assert main_module._announce(cfg, "abc", 15, "Имя") == []
     assert "::warning::" in capsys.readouterr().out
@@ -817,7 +842,7 @@ def test_announce_does_not_warn_when_posted(monkeypatch, capsys):
     monkeypatch.setenv("GITHUB_ACTIONS", "true")
     monkeypatch.setattr("main.publish_announcement", lambda *a, **k: ["telegram"])
 
-    cfg = types.SimpleNamespace(publish_telegram=True, publish_vk=False)
+    cfg = types.SimpleNamespace(publish_telegram=True)
 
     assert main_module._announce(cfg, "abc", 15, "Имя") == ["telegram"]
     assert "::warning::" not in capsys.readouterr().out
