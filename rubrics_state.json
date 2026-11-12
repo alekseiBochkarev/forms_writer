@@ -11,10 +11,10 @@
       "count": 9,
       "publish_ts": "2026-10-22T17:55:09+00:00",
       "title": "Тест. меньше половины% прошедших ошибаются в этих вопросах. Сможете взять 8 из 9? №1",
-      "answers_count": 1933,
-      "correct_rate": 0.7551,
+      "answers_count": 2080,
+      "correct_rate": 0.7558,
       "wrong_pct": 24,
-      "metrics_ts": "2026-11-08T18:20:04+00:00"
+      "metrics_ts": "2026-11-12T20:42:06+00:00"
     },
     {
       "survey_id": "6adb9f68bf4fde243f07e958",
@@ -27,10 +27,10 @@
       "publish_ts": "2026-10-23T17:55:19+00:00",
       "title": "Вы настоящий знаток картин, если угадаете 8/10 шедевров по фрагменту. Выпуск №1",
       "theme": "картины из школьной программы",
-      "answers_count": 0,
-      "correct_rate": 0.0,
-      "wrong_pct": 100,
-      "metrics_ts": "2026-11-08T18:20:05+00:00"
+      "answers_count": 323,
+      "correct_rate": 0.7297,
+      "wrong_pct": 27,
+      "metrics_ts": "2026-11-12T20:42:07+00:00"
     },
     {
       "survey_id": "6adcdd1270ad374142647d9c",
@@ -45,7 +45,7 @@
       "answers_count": 4,
       "correct_rate": 0.5833,
       "wrong_pct": 42,
-      "metrics_ts": "2026-11-08T18:20:06+00:00"
+      "metrics_ts": "2026-11-12T20:42:08+00:00"
     },
     {
       "survey_id": "6ade35e9bf4fde628007e984",
@@ -60,7 +60,7 @@
       "answers_count": 1,
       "correct_rate": 0.8571,
       "wrong_pct": 14,
-      "metrics_ts": "2026-11-08T18:20:06+00:00"
+      "metrics_ts": "2026-11-12T20:42:08+00:00"
     },
     {
       "survey_id": "6adfa604bf4fde0b61fc249d",
@@ -76,7 +76,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-08T18:20:07+00:00"
+      "metrics_ts": "2026-11-12T20:42:09+00:00"
     },
     {
       "survey_id": "6ae0ef85bf4fde2b44fc2491",
@@ -91,7 +91,7 @@
       "answers_count": 2,
       "correct_rate": 0.65,
       "wrong_pct": 35,
-      "metrics_ts": "2026-11-08T18:20:08+00:00"
+      "metrics_ts": "2026-11-12T20:42:09+00:00"
     },
     {
       "survey_id": "6ae395dcbf4fde6f67fc2518",
@@ -106,7 +106,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-08T18:20:08+00:00"
+      "metrics_ts": "2026-11-12T20:42:10+00:00"
     },
     {
       "survey_id": "6ae62820bf4fde238559e0f4",
@@ -122,7 +122,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-08T18:20:09+00:00"
+      "metrics_ts": "2026-11-12T20:42:10+00:00"
     },
     {
       "survey_id": "6ae7839abf4fde435559e0fc",
@@ -137,7 +137,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-08T18:20:10+00:00"
+      "metrics_ts": "2026-11-12T20:42:11+00:00"
     },
     {
       "survey_id": "6ae90b3770ad37187043841e",
@@ -152,7 +152,7 @@
       "answers_count": 2,
       "correct_rate": 0.8333,
       "wrong_pct": 17,
-      "metrics_ts": "2026-11-08T18:20:11+00:00"
+      "metrics_ts": "2026-11-12T20:42:11+00:00"
     },
     {
       "survey_id": "6aea3e2bbf4fde2e00d157ed",
@@ -168,10 +168,10 @@
       "mixed": true,
       "photo_count": 1,
       "text_count": 14,
-      "answers_count": 3360,
-      "correct_rate": 0.7271,
-      "wrong_pct": 27,
-      "metrics_ts": "2026-11-08T18:20:23+00:00"
+      "answers_count": 7503,
+      "correct_rate": 0.7227,
+      "wrong_pct": 28,
+      "metrics_ts": "2026-11-12T20:42:35+00:00"
     },
     {
       "survey_id": "6aeb93f933edce0028ba5db3",
@@ -186,7 +186,7 @@
       "answers_count": 1,
       "correct_rate": 0.5714,
       "wrong_pct": 43,
-      "metrics_ts": "2026-11-08T18:20:24+00:00"
+      "metrics_ts": "2026-11-12T20:42:35+00:00"
     },
     {
       "survey_id": "6aece7a0bf4fde081d866979",
@@ -201,7 +201,7 @@
       "answers_count": 2,
       "correct_rate": 0.5,
       "wrong_pct": 50,
-      "metrics_ts": "2026-11-08T18:20:24+00:00"
+      "metrics_ts": "2026-11-12T20:42:36+00:00"
     },
     {
       "survey_id": "6aee307db6fc051e8e65fd1e",
@@ -212,7 +212,11 @@
       "threshold": 8,
       "count": 10,
       "publish_ts": "2026-11-06T19:54:43+00:00",
-      "title": "Тест. меньше половины% прошедших ошибаются в этих вопросах. Сможете взять 8 из 10? №10"
+      "title": "Тест. меньше половины% прошедших ошибаются в этих вопросах. Сможете взять 8 из 10? №10",
+      "answers_count": 1,
+      "correct_rate": 0.6,
+      "wrong_pct": 40,
+      "metrics_ts": "2026-11-12T20:42:36+00:00"
     },
     {
       "survey_id": "6aef66e4ff84652a25900baa",
@@ -223,7 +227,11 @@
       "threshold": 8,
       "count": 6,
       "publish_ts": "2026-11-07T17:59:04+00:00",
-      "title": "Тест. меньше половины% прошедших ошибаются в этих вопросах. Сможете взять 8 из 6? №11"
+      "title": "Тест. меньше половины% прошедших ошибаются в этих вопросах. Сможете взять 8 из 6? №11",
+      "answers_count": 0,
+      "correct_rate": 0.0,
+      "wrong_pct": 100,
+      "metrics_ts": "2026-11-12T20:42:37+00:00"
     },
     {
       "survey_id": "6af0bc63ff84653b76900baf",
@@ -234,7 +242,11 @@
       "threshold": 8,
       "count": 8,
       "publish_ts": "2026-11-08T18:16:10+00:00",
-      "title": "Даже эрудиты спотыкаются о эти вопросы: соберёте 8 из 8? Тест №12"
+      "title": "Даже эрудиты спотыкаются о эти вопросы: соберёте 8 из 8? Тест №12",
+      "answers_count": 1,
+      "correct_rate": 0.75,
+      "wrong_pct": 25,
+      "metrics_ts": "2026-11-12T20:42:37+00:00"
     },
     {
       "survey_id": "6af24fa470ad374fbcbd509c",
@@ -245,7 +257,11 @@
       "threshold": 8,
       "count": 8,
       "publish_ts": "2026-11-09T22:56:41+00:00",
-      "title": "Даже эрудиты спотыкаются о эти вопросы: соберёте 8 из 8? Тест №13"
+      "title": "Даже эрудиты спотыкаются о эти вопросы: соберёте 8 из 8? Тест №13",
+      "answers_count": 0,
+      "correct_rate": 0.0,
+      "wrong_pct": 100,
+      "metrics_ts": "2026-11-12T20:42:38+00:00"
     },
     {
       "survey_id": "6af37cc6bf4fde5c1a33df61",
@@ -256,7 +272,11 @@
       "threshold": 8,
       "count": 7,
       "publish_ts": "2026-11-10T20:21:30+00:00",
-      "title": "Меньше половины прошедших этот тест не ошибаются. А вы возьмёте 8 из 7? Выпуск №14"
+      "title": "Меньше половины прошедших этот тест не ошибаются. А вы возьмёте 8 из 7? Выпуск №14",
+      "answers_count": 0,
+      "correct_rate": 0.0,
+      "wrong_pct": 100,
+      "metrics_ts": "2026-11-12T20:42:38+00:00"
     },
     {
       "survey_id": "6af4ca44ff846576908fe836",
