@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-11-11",
+  "last_publish_date": "2026-11-12",
   "published": [
     {
       "date": "2026-09-24",
@@ -3013,6 +3013,95 @@
           "license": "CC BY-SA 4.0"
         }
       ]
+    },
+    {
+      "date": "2026-11-12",
+      "survey_id": "6af637c3ff84650de7869196",
+      "url": "https://forms.yandex.ru/u/6af637c3ff84650de7869196/",
+      "theme": "пейзажи русских художников",
+      "title": "Узнаете ли вы эти 10 шедевров живописи по фрагменту? 2",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Ivan_Shishkin_-_Mast-Tree_grove_-_Google_Art_Project.jpg/1280px-Ivan_Shishkin_-_Mast-Tree_grove_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ivan_Shishkin_-_Mast-Tree_grove_-_Google_Art_Project.jpg",
+          "title": "Ivan Shishkin - Mast-Tree grove - Google Art Project.jpg",
+          "author": "Ivan Shishkin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Wassilij_Dimitriewitsch_Polenow_001.jpg/1280px-Wassilij_Dimitriewitsch_Polenow_001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Wassilij_Dimitriewitsch_Polenow_001.jpg",
+          "title": "Wassilij Dimitriewitsch Polenow 001.jpg",
+          "author": "Vasily Polenov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/%D0%92_%D0%9A%D1%80%D1%8B%D0%BC%D1%81%D0%BA%D0%B8%D1%85_%D0%B3%D0%BE%D1%80%D0%B0%D1%85._1886.jpg/1280px-%D0%92_%D0%9A%D1%80%D1%8B%D0%BC%D1%81%D0%BA%D0%B8%D1%85_%D0%B3%D0%BE%D1%80%D0%B0%D1%85._1886.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%92_%D0%9A%D1%80%D1%8B%D0%BC%D1%81%D0%BA%D0%B8%D1%85_%D0%B3%D0%BE%D1%80%D0%B0%D1%85._1886.jpg",
+          "title": "В Крымских горах. 1886.jpg",
+          "author": "Isaac Levitan",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Savrasov_Pechersky_Monastery.jpg/1280px-Savrasov_Pechersky_Monastery.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Savrasov_Pechersky_Monastery.jpg",
+          "title": "Savrasov Pechersky Monastery.jpg",
+          "author": "Alexei Savrasov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Vladimirka.jpg/1280px-Vladimirka.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Vladimirka.jpg",
+          "title": "Vladimirka.jpg",
+          "author": "Isaac Levitan",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/1872_Schischkin_Pinienwald_anagoria.JPG/1280px-1872_Schischkin_Pinienwald_anagoria.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:1872_Schischkin_Pinienwald_anagoria.JPG",
+          "title": "1872 Schischkin Pinienwald anagoria.JPG",
+          "author": "Ivan Shishkin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Semiradsky_Christ_and_Sinner.jpg/1280px-Semiradsky_Christ_and_Sinner.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Semiradsky_Christ_and_Sinner.jpg",
+          "title": "Semiradsky Christ and Sinner.jpg",
+          "author": "Henryk Siemiradzki",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Fyodor_Vasilyev_Before_the_rain_10990.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Fyodor_Vasilyev_Before_the_rain_10990.jpg",
+          "title": "Fyodor Vasilyev Before the rain 10990.jpg",
+          "author": "Fyodor Vasilyev",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Arkhip_Kuindzhi_-_%D0%9D%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5_-_Google_Art_Project.jpg/1280px-Arkhip_Kuindzhi_-_%D0%9D%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Arkhip_Kuindzhi_-_%D0%9D%D0%BE%D1%87%D1%8C_%D0%BD%D0%B0_%D0%94%D0%BD%D0%B5%D0%BF%D1%80%D0%B5_-_Google_Art_Project.jpg",
+          "title": "Arkhip Kuindzhi - Ночь на Днепре - Google Art Project.jpg",
+          "author": "Arkhip Kuindzhi",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/27/Ivan_Ivanovich_Shishkin_-_Forest_distant_views%2C_1884.jpg/1280px-Ivan_Ivanovich_Shishkin_-_Forest_distant_views%2C_1884.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ivan_Ivanovich_Shishkin_-_Forest_distant_views,_1884.jpg",
+          "title": "Ivan Ivanovich Shishkin - Forest distant views, 1884.jpg",
+          "author": "Ivan Shishkin",
+          "license": "Public domain"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -3355,13 +3444,24 @@
     "достопримечательности и места: Карлов мост",
     "достопримечательности и места: Шёнбрунн",
     "достопримечательности и места: Санторини",
-    "достопримечательности и места: Золотой храм"
+    "достопримечательности и места: Золотой храм",
+    "пейзажи русских художников: Иван Шишкин|Корабельная роща",
+    "пейзажи русских художников: Василий Поленов|Бабушкин сад",
+    "пейзажи русских художников: Фёдор Васильев|В Крымских горах",
+    "пейзажи русских художников: Алексей Саврасов|Печерский монастырь под Нижним Новгородом",
+    "пейзажи русских художников: Исаак Левитан|Владимирка",
+    "пейзажи русских художников: Иван Шишкин|Сосновый бор. Мачтовый лес в Вятской губернии",
+    "пейзажи русских художников: Василий Поленов|Христос и грешница",
+    "пейзажи русских художников: Фёдор Васильев|Перед дождём",
+    "пейзажи русских художников: Архип Куинджи|Ночь на Днепре",
+    "пейзажи русских художников: Иван Шишкин|Лесные дали"
   ],
   "used_themes": [
     "породы собак",
     "хищные птицы",
     "картины из школьной программы",
-    "достопримечательности и места"
+    "достопримечательности и места",
+    "пейзажи русских художников"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -3650,7 +3750,17 @@
       "Илья Репин|Бурлаки на Волге",
       "Виктор Васнецов|Алёнушка",
       "Иван Крамской|Лунная ночь",
-      "Константин Маковский|Дети, бегущие от грозы"
+      "Константин Маковский|Дети, бегущие от грозы",
+      "Иван Шишкин|Корабельная роща",
+      "Василий Поленов|Бабушкин сад",
+      "Фёдор Васильев|В Крымских горах",
+      "Алексей Саврасов|Печерский монастырь под Нижним Новгородом",
+      "Исаак Левитан|Владимирка",
+      "Иван Шишкин|Сосновый бор. Мачтовый лес в Вятской губернии",
+      "Василий Поленов|Христос и грешница",
+      "Фёдор Васильев|Перед дождём",
+      "Архип Куинджи|Ночь на Днепре",
+      "Иван Шишкин|Лесные дали"
     ],
     "породы собак": [
       "Немецкая овчарка",
@@ -3748,6 +3858,7 @@
     "Только 1 из 10 отличает эти породы собак по фото. А вы?",
     "Узнаете ли вы этих 10 хищных птиц по фото? Тест на внимательность",
     "Вы помните эти 10 картин из школьной программы? Проверьте по фото",
-    "Угадайте 10 стран по фото. Без ошибок справятся только эрудиты"
+    "Угадайте 10 стран по фото. Без ошибок справятся только эрудиты",
+    "Узнаете ли вы эти 10 шедевров живописи по фрагменту?"
   ]
 }
