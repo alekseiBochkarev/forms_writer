@@ -24,6 +24,31 @@ from state import load_state, record_publish, save_state, today_utc
 # --- конфиг и фикстуры -------------------------------------------------------
 
 
+def _trap_rubric():
+    """Рубрика-ловушка «c» для тестов: во встроенном реестре её больше нет."""
+    from config import Rubric
+
+    return Rubric(
+        id="c",
+        series_name="Ловушка",
+        source="trap",
+        questions_count=10,
+        threshold=8,
+        comment_prompt=(
+            "Вопрос в конце: на каком вопросе вы попались в ловушку? "
+            "Расскажите в комментариях."
+        ),
+        title_templates=[
+            "Тест. {wrong_pct}% прошедших ошибаются в этих вопросах. "
+            "Сможете взять {threshold} из {count}? {series_no}",
+            "Меньше половины прошедших этот тест не ошибаются. "
+            "А вы возьмёте {threshold} из {count}? Выпуск {series_no}",
+        ],
+        enabled=True,
+        slot="afternoon",
+    )
+
+
 def _trap_cfg(tmp_path, **overrides):
     """Конфиг для ловушек: реестр рубрик из config + поля, нужные конвейеру."""
     base = {
@@ -59,7 +84,9 @@ def _trap_cfg(tmp_path, **overrides):
     }
     base.update(overrides)
     cfg = types.SimpleNamespace(**base)
-    cfg.rubrics = load_config({"dry_run": True}, require_questions=False).rubrics
+    rubrics = load_config({"dry_run": True}, require_questions=False).rubrics
+    rubrics.rubrics["c"] = _trap_rubric()
+    cfg.rubrics = rubrics
     return cfg
 
 
