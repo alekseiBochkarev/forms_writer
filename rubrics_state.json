@@ -11,10 +11,10 @@
       "count": 9,
       "publish_ts": "2026-10-22T17:55:09+00:00",
       "title": "Тест. меньше половины% прошедших ошибаются в этих вопросах. Сможете взять 8 из 9? №1",
-      "answers_count": 2080,
-      "correct_rate": 0.7558,
-      "wrong_pct": 24,
-      "metrics_ts": "2026-11-12T20:42:06+00:00"
+      "answers_count": 2259,
+      "correct_rate": 0.7548,
+      "wrong_pct": 25,
+      "metrics_ts": "2026-11-14T18:51:11+00:00"
     },
     {
       "survey_id": "6adb9f68bf4fde243f07e958",
@@ -27,10 +27,10 @@
       "publish_ts": "2026-10-23T17:55:19+00:00",
       "title": "Вы настоящий знаток картин, если угадаете 8/10 шедевров по фрагменту. Выпуск №1",
       "theme": "картины из школьной программы",
-      "answers_count": 323,
-      "correct_rate": 0.7297,
+      "answers_count": 428,
+      "correct_rate": 0.7318,
       "wrong_pct": 27,
-      "metrics_ts": "2026-11-12T20:42:07+00:00"
+      "metrics_ts": "2026-11-14T18:51:12+00:00"
     },
     {
       "survey_id": "6adcdd1270ad374142647d9c",
@@ -45,7 +45,7 @@
       "answers_count": 4,
       "correct_rate": 0.5833,
       "wrong_pct": 42,
-      "metrics_ts": "2026-11-12T20:42:08+00:00"
+      "metrics_ts": "2026-11-14T18:51:13+00:00"
     },
     {
       "survey_id": "6ade35e9bf4fde628007e984",
@@ -60,7 +60,7 @@
       "answers_count": 1,
       "correct_rate": 0.8571,
       "wrong_pct": 14,
-      "metrics_ts": "2026-11-12T20:42:08+00:00"
+      "metrics_ts": "2026-11-14T18:51:13+00:00"
     },
     {
       "survey_id": "6adfa604bf4fde0b61fc249d",
@@ -76,7 +76,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-12T20:42:09+00:00"
+      "metrics_ts": "2026-11-14T18:51:14+00:00"
     },
     {
       "survey_id": "6ae0ef85bf4fde2b44fc2491",
@@ -91,7 +91,7 @@
       "answers_count": 2,
       "correct_rate": 0.65,
       "wrong_pct": 35,
-      "metrics_ts": "2026-11-12T20:42:09+00:00"
+      "metrics_ts": "2026-11-14T18:51:15+00:00"
     },
     {
       "survey_id": "6ae395dcbf4fde6f67fc2518",
@@ -106,7 +106,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-12T20:42:10+00:00"
+      "metrics_ts": "2026-11-14T18:51:15+00:00"
     },
     {
       "survey_id": "6ae62820bf4fde238559e0f4",
@@ -122,7 +122,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-12T20:42:10+00:00"
+      "metrics_ts": "2026-11-14T18:51:16+00:00"
     },
     {
       "survey_id": "6ae7839abf4fde435559e0fc",
@@ -137,7 +137,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-12T20:42:11+00:00"
+      "metrics_ts": "2026-11-14T18:51:17+00:00"
     },
     {
       "survey_id": "6ae90b3770ad37187043841e",
@@ -152,7 +152,7 @@
       "answers_count": 2,
       "correct_rate": 0.8333,
       "wrong_pct": 17,
-      "metrics_ts": "2026-11-12T20:42:11+00:00"
+      "metrics_ts": "2026-11-14T18:51:18+00:00"
     },
     {
       "survey_id": "6aea3e2bbf4fde2e00d157ed",
@@ -168,10 +168,10 @@
       "mixed": true,
       "photo_count": 1,
       "text_count": 14,
-      "answers_count": 7503,
-      "correct_rate": 0.7227,
+      "answers_count": 10740,
+      "correct_rate": 0.7198,
       "wrong_pct": 28,
-      "metrics_ts": "2026-11-12T20:42:35+00:00"
+      "metrics_ts": "2026-11-14T18:52:11+00:00"
     },
     {
       "survey_id": "6aeb93f933edce0028ba5db3",
@@ -186,7 +186,7 @@
       "answers_count": 1,
       "correct_rate": 0.5714,
       "wrong_pct": 43,
-      "metrics_ts": "2026-11-12T20:42:35+00:00"
+      "metrics_ts": "2026-11-14T18:52:11+00:00"
     },
     {
       "survey_id": "6aece7a0bf4fde081d866979",
@@ -201,7 +201,7 @@
       "answers_count": 2,
       "correct_rate": 0.5,
       "wrong_pct": 50,
-      "metrics_ts": "2026-11-12T20:42:36+00:00"
+      "metrics_ts": "2026-11-14T18:52:12+00:00"
     },
     {
       "survey_id": "6aee307db6fc051e8e65fd1e",
@@ -216,7 +216,7 @@
       "answers_count": 1,
       "correct_rate": 0.6,
       "wrong_pct": 40,
-      "metrics_ts": "2026-11-12T20:42:36+00:00"
+      "metrics_ts": "2026-11-14T18:52:13+00:00"
     },
     {
       "survey_id": "6aef66e4ff84652a25900baa",
@@ -231,7 +231,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-12T20:42:37+00:00"
+      "metrics_ts": "2026-11-14T18:52:14+00:00"
     },
     {
       "survey_id": "6af0bc63ff84653b76900baf",
@@ -246,7 +246,7 @@
       "answers_count": 1,
       "correct_rate": 0.75,
       "wrong_pct": 25,
-      "metrics_ts": "2026-11-12T20:42:37+00:00"
+      "metrics_ts": "2026-11-14T18:52:14+00:00"
     },
     {
       "survey_id": "6af24fa470ad374fbcbd509c",
@@ -261,7 +261,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-12T20:42:38+00:00"
+      "metrics_ts": "2026-11-14T18:52:15+00:00"
     },
     {
       "survey_id": "6af37cc6bf4fde5c1a33df61",
@@ -276,7 +276,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-12T20:42:38+00:00"
+      "metrics_ts": "2026-11-14T18:52:16+00:00"
     },
     {
       "survey_id": "6af4ca44ff846576908fe836",
@@ -287,7 +287,11 @@
       "threshold": 8,
       "count": 10,
       "publish_ts": "2026-11-11T20:04:26+00:00",
-      "title": "Тест. 50% прошедших ошибаются в этих вопросах. Сможете взять 8 из 10? №15"
+      "title": "Тест. 50% прошедших ошибаются в этих вопросах. Сможете взять 8 из 10? №15",
+      "answers_count": 0,
+      "correct_rate": 0.0,
+      "wrong_pct": 100,
+      "metrics_ts": "2026-11-14T18:52:16+00:00"
     },
     {
       "survey_id": "6af772a6bf4fde16cbfae49a",
