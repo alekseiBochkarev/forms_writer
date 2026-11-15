@@ -10,6 +10,7 @@ import types
 
 import pytest
 
+import config
 import photo_flow
 import rubric_flow
 from config import load_config
@@ -85,7 +86,7 @@ class _RecordingClient:
 
     def add_enum_question(self, survey_id, question, options, correct_index,
                           shuffle=True, image=None):
-        self.questions.append((question, options, correct_index))
+        self.questions.append((question, options, correct_index, image))
         return len(self.questions)
 
     def add_comment_question(self, survey_id, label, header=False):
@@ -141,6 +142,68 @@ def _stub_build_questions(monkeypatch, theme, count):
         return [_photo_question(theme, entity) for entity in list(entities)[:limit]]
 
     monkeypatch.setattr(photo_flow, "_build_questions", fake)
+
+
+def _stub_build_questions_themed(monkeypatch, count=99):
+    """Заглушка _build_questions, сохраняющая тему: у мультитемы темы разные."""
+
+    def fake(cfg, theme, question, entities, need):
+        limit = min(need, count)
+        return [
+            {
+                "topic": theme,
+                "question": question,
+                "options": [entity, "x", "y", "z"],
+                "correct_index": 0,
+                "theme": theme,
+                "entity": entity,
+                "image": {"source": "wikimedia", "url": "https://x/a.jpg"},
+                "_image_bytes": b"bytes",
+                "_image_mime": "image/jpeg",
+            }
+            for entity in list(entities)[:limit]
+        ]
+
+    monkeypatch.setattr(photo_flow, "_build_questions", fake)
+
+
+def _topic_text_questions(topic, count, extra=0):
+    """Уникальные текстовые вопросы указанной темы (для мультитемы рубрики «e»)."""
+    return [
+        {
+            "topic": topic,
+            "question": f"Тема «{topic}», вопрос №{i + 1}: что верно?",
+            "options": [
+                f"ответ {topic} {i + 1}",
+                "вариант 1",
+                "вариант 2",
+                "вариант 3",
+            ],
+            "correct_index": 0,
+        }
+        for i in range(count + extra)
+    ]
+
+
+class _ExactDuplicateChecker:
+    """Дедуп только по точному совпадению: тесты квот, а не похожести формулировок.
+
+    Настоящий `DuplicateChecker` считает похожие шаблонные вопросы дублями
+    (сходство >= 0.82), а заглушки тестов строят как раз шаблонные формулировки.
+    """
+
+    def __init__(self, history=None):
+        self._seen = {str(text) for text in history or []}
+
+    def add(self, text: str) -> None:
+        self._seen.add(str(text))
+
+    def is_duplicate(self, text: str) -> bool:
+        return str(text) in self._seen
+
+
+def _stub_exact_dedup(monkeypatch):
+    monkeypatch.setattr(rubric_flow, "DuplicateChecker", _ExactDuplicateChecker)
 
 
 def _no_network(monkeypatch):
@@ -601,6 +664,9 @@ def test_rubric_d_publish_mixes_photo_and_text_questions(monkeypatch, tmp_path):
     assert entry["threshold"] == 10
     assert entry["count"] == 15
     assert entry["theme"] == "советские фильмы"
+    assert entry["themes"] == ["советские фильмы"]
+    # текстовый блок рубрики «d» идёт по теме выпуска — отдельный список не пишем
+    assert "text_themes" not in entry
     assert entry["mixed"] is True
     assert entry["photo_count"] == 5
     assert entry["text_count"] == 10
@@ -799,14 +865,11 @@ def test_rubric_d_aborts_without_photos(monkeypatch, tmp_path):
 # --- крупная смешанная рубрика «e»: 30 вопросов (15 фото + 15 текстовых) ---
 
 
-_E_THEME = "достопримечательности и места"
-
-
 def _e_cfg(tmp_path, **overrides):
-    """Конфиг рубрики «e»: тема из открытых источников, без кино-флагов."""
+    """Конфиг рубрики «e»: открытые источники, все её фото-темы доступны."""
     base = {
-        "photo_theme": _E_THEME,
-        "photo_themes": [_E_THEME],
+        "photo_theme": "",
+        "photo_themes": list(config.DEFAULT_PHOTO_THEMES),
         "photo_sources": ["wikimedia"],
     }
     base.update(overrides)
@@ -825,6 +888,45 @@ def test_interleave_questions_alternates_when_half_are_photos():
         range(1, 30, 2)
     )
     assert [item for item in plan if item.startswith("t")] == texts
+
+
+def test_split_quota_distributes_remainder_to_first_themes():
+    """Квоты по темам: поровну, остаток достаётся первым темам списка."""
+    assert rubric_flow._split_quota(["a", "b", "c", "d"], 15) == [4, 4, 4, 3]
+    assert rubric_flow._split_quota(["a", "b"], 5) == [3, 2]
+    assert rubric_flow._split_quota([], 5) == []
+    assert rubric_flow._split_quota(["a"], 0) == [0]
+
+
+def test_rotate_themes_prefers_unused_then_oldest():
+    """Ротация: сначала ни разу не использованные темы, затем самые давние."""
+    recent = {"тема A": 7, "тема B": 3}
+
+    assert rubric_flow._rotate_themes(
+        ["тема A", "тема B", "тема C"], recent
+    ) == ["тема C", "тема B", "тема A"]
+    # одна тема (рубрика «d») остаётся единственной
+    assert rubric_flow._rotate_themes(["тема A"], {}) == ["тема A"]
+
+
+def test_recent_themes_reads_published_history():
+    """История тем читается из published: старые записи без themes тоже учтены."""
+    state = {
+        "published": [
+            {"theme": "старая тема"},
+            {"theme": "мульти", "themes": ["тема A", "тема B"]},
+            "мусор",
+            {"themes": ["тема B"]},
+        ]
+    }
+
+    assert rubric_flow._recent_themes(state) == {
+        "старая тема": 0,
+        "мульти": 1,
+        "тема A": 1,
+        "тема B": 3,
+    }
+    assert rubric_flow._recent_themes({}) == {}
 
 
 def test_rubric_e_dry_run_plans_30_questions_without_network(monkeypatch, tmp_path):
@@ -858,37 +960,69 @@ def test_rubric_e_dry_run_plans_30_questions_without_network(monkeypatch, tmp_pa
     assert not (tmp_path / "rubrics_state.json").exists()
 
 
-def test_rubric_e_publish_builds_30_questions_half_with_photo(monkeypatch, tmp_path):
-    """Боевой путь «e»: 30 вопросов, 15 с фото и 15 текстовых, чередование."""
+def test_rubric_e_dry_run_uses_multiple_themes(monkeypatch, tmp_path):
+    """DRY-RUN мультитемы: фото-блок и текстовый блок идут по спискам рубрики."""
+    _no_network(monkeypatch)
+    captured = {}
+
+    def spy_mixed(cfg, state, rubric, photo_themes, text_topics, series_no):
+        captured["photo_themes"] = list(photo_themes)
+        captured["text_topics"] = list(text_topics)
+        return 0
+
+    monkeypatch.setattr(rubric_flow, "_mixed_dry_run", spy_mixed)
+
+    cfg = _e_cfg(tmp_path, dry_run=True)
+    rubric = cfg.rubrics.get("e")
+    state = load_state(cfg.rubrics_state_file)
+
+    assert rubric_flow.run_rubric(cfg, state, "e", dry_run=True) == 0
+    assert captured["photo_themes"] == list(rubric.photo_themes)
+    assert captured["text_topics"] == list(rubric.text_themes)
+    assert len(captured["photo_themes"]) > 1
+    assert len(captured["text_topics"]) > 1
+
+
+def test_rubric_e_publish_mixes_photo_themes_and_text_topics(monkeypatch, tmp_path):
+    """Боевой путь «e»: 30 вопросов, 15 фото из разных тем и 15 текстовых."""
     import factcheck
 
     client = _RecordingClient()
     monkeypatch.setattr(photo_flow, "YandexFormsClient", _ClientFactory(client))
     monkeypatch.setattr(
         photo_flow, "_generate_entities",
-        lambda cfg, theme, count, used: [f"место {i + 1}" for i in range(count)],
+        lambda cfg, theme, count, used: [f"{theme} {i + 1}" for i in range(count)],
     )
-    _stub_build_questions(monkeypatch, _E_THEME, 20)
-    monkeypatch.setattr(
-        rubric_flow, "generate_topic_questions",
-        lambda cfg, topic, count, avoid=None, extra=0: _text_questions(count + extra),
-    )
+    _stub_build_questions_themed(monkeypatch)
+
+    topic_calls = []
+
+    def fake_topic(cfg, topic, count, avoid=None, extra=0):
+        topic_calls.append(topic)
+        return _topic_text_questions(topic, count, extra)
+
+    monkeypatch.setattr(rubric_flow, "generate_topic_questions", fake_topic)
     monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
     monkeypatch.setattr(rubric_flow.publisher, "publish_announcement", lambda *a, **k: [])
+    _stub_exact_dedup(monkeypatch)
 
     cfg = _e_cfg(tmp_path, dry_run=False, force=True)
+    rubric = cfg.rubrics.get("e")
     state = load_state(cfg.rubrics_state_file)
 
     assert rubric_flow.run_rubric(cfg, state, "e", dry_run=False, force=True) == 0
 
     assert len(client.questions) == 30
-    question_texts = [q[0] for q in client.questions]
+    # фото — в нечётных позициях, но темы у них разные
     photo_positions = [
-        i + 1 for i, text in enumerate(question_texts)
-        if text == photo_flow.question_text(_E_THEME)
+        i + 1 for i, q in enumerate(client.questions) if q[3] is not None
     ]
     assert photo_positions == list(range(1, 30, 2))
-    assert client.comments == [cfg.rubrics.get("e").comment_prompt]
+    photo_texts = {q[0] for q in client.questions if q[3] is not None}
+    assert photo_texts == {photo_flow.question_text(t) for t in rubric.photo_themes}
+    # текстовый блок собран по всем областям знаний рубрики, а не по одной
+    assert set(topic_calls) == set(rubric.text_themes)
+    assert client.comments == [rubric.comment_prompt]
     assert client.published == ["sid-1"]
 
     saved = load_state(cfg.rubrics_state_file)
@@ -897,11 +1031,19 @@ def test_rubric_e_publish_builds_30_questions_half_with_photo(monkeypatch, tmp_p
     assert entry["series_no"] == 1
     assert entry["threshold"] == 20
     assert entry["count"] == 30
-    assert entry["theme"] == _E_THEME
     assert entry["mixed"] is True
     assert entry["photo_count"] == 15
     assert entry["text_count"] == 15
+    # подпись выпуска — объединённый список тем, сами темы — в themes
+    assert entry["themes"] == list(rubric.photo_themes)
+    assert entry["theme"] == ", ".join(rubric.photo_themes)
+    assert entry["text_themes"] == list(rubric.text_themes)
     assert len(saved["asked_questions"]) == 30
+    # квоты фото-блока разложены по темам (15 на 4 темы: 4 + 4 + 4 + 3)
+    for theme, quota in zip(
+        rubric.photo_themes, rubric_flow._split_quota(list(rubric.photo_themes), 15)
+    ):
+        assert len(saved["used_entities"][theme]) == quota
 
 
 def test_rubric_e_aborts_when_mixed_minimum_not_reached(monkeypatch, tmp_path):
@@ -912,23 +1054,146 @@ def test_rubric_e_aborts_when_mixed_minimum_not_reached(monkeypatch, tmp_path):
         photo_flow, "YandexFormsClient",
         lambda *a, **k: pytest.fail("при недоборе форма не создаётся"),
     )
-    monkeypatch.setattr(
-        photo_flow, "_generate_entities",
-        lambda cfg, theme, count, used: [f"место {i + 1}" for i in range(10)],
-    )
-    _stub_build_questions(monkeypatch, _E_THEME, 10)
+    issued = set()
+
+    def fake_entities(cfg, theme, count, used):
+        # источник отдаёт лишь по 3 кадра на тему, повторно — ничего
+        if theme in issued:
+            return []
+        issued.add(theme)
+        return [f"{theme} {i + 1}" for i in range(3)]
+
+    monkeypatch.setattr(photo_flow, "_generate_entities", fake_entities)
+    _stub_build_questions_themed(monkeypatch)
+    # на каждую тему модель отдаёт одни и те же 3 вопроса — дедуп оставит 3
     monkeypatch.setattr(
         rubric_flow, "generate_topic_questions",
         lambda cfg, topic, count, avoid=None, extra=0: _text_questions(3),
     )
     monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+    _stub_exact_dedup(monkeypatch)
 
     cfg = _e_cfg(tmp_path, dry_run=False, force=True)
     state = load_state(cfg.rubrics_state_file)
 
-    # 10 фото + 3 текстовых = 13 < 24
+    # 12 фото + 3 уникальных текстовых = 15 < 24
     assert rubric_flow.run_rubric(cfg, state, "e", dry_run=False, force=True) == 1
     assert not (tmp_path / "rubrics_state.json").exists()
+
+
+# --- мультитема: квоты, добор и защита от повторов тем ----------------------
+
+
+def test_collect_text_block_splits_quota_across_topics(monkeypatch, tmp_path):
+    """Текстовый блок: квота на каждую область знаний, вопросы не повторяются."""
+    import factcheck
+
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+    monkeypatch.setattr(
+        rubric_flow, "generate_topic_questions",
+        lambda cfg, topic, count, avoid=None, extra=0: _topic_text_questions(
+            topic, count, extra
+        ),
+    )
+    _stub_exact_dedup(monkeypatch)
+
+    cfg = _e_cfg(tmp_path, dry_run=True)
+    topics = ["история", "география", "наука"]
+
+    questions = rubric_flow._collect_text_block(cfg, {}, topics, 7)
+
+    assert [q["topic"] for q in questions] == (
+        ["история"] * 3 + ["география"] * 2 + ["наука"] * 2
+    )
+
+
+def test_collect_text_block_tops_up_from_other_topics(monkeypatch, tmp_path):
+    """Если тема не дала вопросов, дефицит закрывают остальные темы."""
+    import factcheck
+
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+
+    def fake_topic(cfg, topic, count, avoid=None, extra=0):
+        if topic == "история":
+            return []
+        return _topic_text_questions(topic, count, extra)
+
+    monkeypatch.setattr(rubric_flow, "generate_topic_questions", fake_topic)
+    _stub_exact_dedup(monkeypatch)
+
+    cfg = _e_cfg(tmp_path, dry_run=True)
+    questions = rubric_flow._collect_text_block(
+        cfg, {}, ["история", "география", "наука"], 7
+    )
+
+    by_topic: dict = {}
+    for question in questions:
+        by_topic[question["topic"]] = by_topic.get(question["topic"], 0) + 1
+    assert len(questions) == 7
+    assert "история" not in by_topic
+    assert by_topic["география"] + by_topic["наука"] == 7
+
+
+def test_text_block_skips_questions_matching_photo_content(monkeypatch, tmp_path):
+    """Текстовый вопрос про то же, что на кадре, отбрасывается (включая живопись)."""
+    import factcheck
+
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+
+    candidates = [
+        {
+            "topic": "живопись",
+            "question": "Кто написал «Девятый вал»?",
+            "options": ["Айвазовский", "Репин", "Левитан", "Серов"],
+            "correct_index": 0,
+        },
+        {
+            "topic": "история",
+            "question": "В каком году отменили крепостное право?",
+            "options": ["1861", "1848", "1905", "1917"],
+            "correct_index": 0,
+        },
+    ]
+    monkeypatch.setattr(
+        rubric_flow, "generate_topic_questions", lambda *a, **k: list(candidates)
+    )
+
+    cfg = _e_cfg(tmp_path, dry_run=True)
+    photos = [
+        {
+            "theme": "картины из школьной программы",
+            "entity": "Иван Айвазовский|Девятый вал",
+            "question": "Кто автор этой картины?",
+            "options": ["Иван Айвазовский", "x", "y", "z"],
+            "correct_index": 0,
+        }
+    ]
+
+    questions = rubric_flow._collect_text_block(
+        cfg, {}, ["искусство", "история"], 2, photos
+    )
+
+    assert [q["question"] for q in questions] == [
+        "В каком году отменили крепостное право?"
+    ]
+
+
+def test_photo_block_does_not_repeat_entities_across_themes(monkeypatch, tmp_path):
+    """Одна и та же сущность не попадает в выпуск дважды из разных тем."""
+    monkeypatch.setattr(
+        photo_flow, "_generate_entities",
+        lambda cfg, theme, count, used: ["Общий объект"]
+        + [f"{theme} {i + 1}" for i in range(3)],
+    )
+    _stub_build_questions_themed(monkeypatch)
+
+    cfg = _e_cfg(tmp_path, dry_run=True)
+    questions = rubric_flow._collect_photo_block(cfg, {}, ["тема A", "тема B"], 4)
+
+    entities = [q["entity"] for q in questions]
+    assert len(questions) == 4
+    assert len(set(entities)) == 4
+    assert {q["theme"] for q in questions} == {"тема A", "тема B"}
 
 
 def test_unknown_rubric_returns_error(monkeypatch, tmp_path):
