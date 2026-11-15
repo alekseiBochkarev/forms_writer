@@ -356,20 +356,31 @@ DEFAULT_RUBRICS: List[Dict[str, Any]] = [
     },
     {
         # Крупный смешанный выпуск вместо текстовых тестов на 10 вопросов
-        # (8/10): 30 вопросов, половина с фотографиями. Темы выбраны так, чтобы
-        # текстовые вопросы по ним были осмысленными (география и живопись), а
-        # картинки брались из открытых источников без кино-флагов. Шаблоны
-        # заголовков не называют категорию: тема выпуска меняется по ротации.
+        # (8/10): 30 вопросов, половина с фотографиями. Выпуск намеренно
+        # собирается НЕ по одной теме: фото-блок идёт по нескольким доступным
+        # темам (квоты на тему), текстовый — по разным областям знаний. Иначе
+        # выпуск превращается в тест про живопись, хотя обещает эрудицию.
+        # Картинки берутся из открытых источников без кино-флагов, а шаблоны
+        # заголовков не называют категорию.
         "id": "e",
         "series_name": "Эрудит: фото и факты",
         "source": "mixed",
         "questions_count": 30,
         "photo_count": 15,
         "threshold": 20,
-        "themes": [
+        "photo_themes": [
             "достопримечательности и места",
+            "животные Африки",
+            "хищные птицы",
             "картины из школьной программы",
-            "пейзажи русских художников",
+        ],
+        "text_themes": [
+            "история России",
+            "география мира",
+            "наука и техника",
+            "литература",
+            "музыка и кино",
+            "спорт",
         ],
         "comment_prompt": (
             "Какой вопрос оказался сложнее — с фотографией или текстовый? "
@@ -401,6 +412,17 @@ KNOWN_PHOTO_SOURCES = (
 )
 
 
+def _known_themes(themes: List[str], all_themes: List[str]) -> List[str]:
+    """Оставить только темы из `all_themes` (без учёта регистра), без повторов."""
+    known = {str(t).strip().lower(): str(t).strip() for t in all_themes}
+    result: List[str] = []
+    for theme in themes:
+        matched = known.get(str(theme).strip().lower())
+        if matched and matched not in result:
+            result.append(matched)
+    return result
+
+
 @dataclass
 class Rubric:
     """Рубрика теста для эксперимента: серия выпусков с одним форматом."""
@@ -420,6 +442,13 @@ class Rubric:
     # Смешанная рубрика (source=mixed): сколько вопросов выпуска идут с фото,
     # остальные — текстовые. Для photo/trap не используется.
     photo_count: int = 0
+    # Смешанная рубрика: темы фото-блока. Если задано несколько тем, выпуск
+    # собирается из разных тем с квотами (а не целиком по одной теме); пусто —
+    # фото-блок идёт по теме выпуска из `themes`.
+    photo_themes: List[str] = field(default_factory=list)
+    # Смешанная рубрика: темы (области знаний) текстового блока. Пусто — берётся
+    # тема выпуска из `themes`, как в рубрике «d».
+    text_themes: List[str] = field(default_factory=list)
 
     def validate(self) -> None:
         errors = []
@@ -450,6 +479,12 @@ class Rubric:
                     f"Рубрика «{self.id}»: photo_count ({self.photo_count}) должен "
                     f"быть меньше questions_count ({self.questions_count})"
                 )
+        elif self.photo_themes or self.text_themes:
+            # Иначе настройка молча игнорируется: у photo/trap блоков нет.
+            errors.append(
+                f"Рубрика «{self.id}»: photo_themes/text_themes задаются только "
+                "для source=mixed"
+            )
         if errors:
             raise ValueError("Ошибки конфигурации:\n  - " + "\n  - ".join(errors))
 
@@ -461,13 +496,24 @@ class Rubric:
         """
         if not self.themes:
             return list(all_themes)
-        known = {str(t).strip().lower(): str(t).strip() for t in all_themes}
-        result: List[str] = []
-        for theme in self.themes:
-            matched = known.get(theme.strip().lower())
-            if matched and matched not in result:
-                result.append(matched)
-        return result
+        return _known_themes(self.themes, all_themes)
+
+    def photo_theme_candidates(self, all_themes: List[str]) -> List[str]:
+        """Темы фото-блока смешанной рубрики (несколько тем — с квотами).
+
+        Свои `photo_themes` фильтруются по доступным темам фото-потока; если они
+        не заданы — используется тема выпуска из `themes`.
+        """
+        if not self.photo_themes:
+            return self.theme_candidates(all_themes)
+        return _known_themes(self.photo_themes, all_themes)
+
+    def text_topic_candidates(self, theme: str = "") -> List[str]:
+        """Темы текстового блока: свои `text_themes` либо тема выпуска."""
+        if self.text_themes:
+            return list(self.text_themes)
+        value = (theme or "").strip()
+        return [value] if value else []
 
 
 @dataclass
@@ -483,6 +529,16 @@ class Rubrics_config:
         return self.rubrics.get(rubric_id)
 
 
+def _string_list(data: Dict[str, Any], key: str, rubric_id: str) -> List[str]:
+    """Прочитать список непустых строк из поля рубрики."""
+    raw = data.get(key, [])
+    if not isinstance(raw, list):
+        raise ValueError(
+            f"RUBRICS: {key} рубрики «{rubric_id or '?'}» должен быть массивом строк"
+        )
+    return [str(item).strip() for item in raw if str(item).strip()]
+
+
 def _rubric_from_dict(data: Any) -> Rubric:
     """Собрать Rubric из JSON-объекта с проверкой типов и значений."""
     if not isinstance(data, dict):
@@ -493,11 +549,9 @@ def _rubric_from_dict(data: Any) -> Rubric:
         raise ValueError(f"RUBRICS: title_templates рубрики «{rubric_id or '?'}» "
                          "должен быть массивом строк")
     title_templates = [str(t).strip() for t in templates if str(t).strip()]
-    raw_themes = data.get("themes", [])
-    if not isinstance(raw_themes, list):
-        raise ValueError(f"RUBRICS: themes рубрики «{rubric_id or '?'}» "
-                         "должен быть массивом строк")
-    themes = [str(t).strip() for t in raw_themes if str(t).strip()]
+    themes = _string_list(data, "themes", rubric_id)
+    photo_themes = _string_list(data, "photo_themes", rubric_id)
+    text_themes = _string_list(data, "text_themes", rubric_id)
     raw_photo_count = data.get("photo_count", 0)
     try:
         photo_count = int(raw_photo_count or 0)
@@ -517,6 +571,8 @@ def _rubric_from_dict(data: Any) -> Rubric:
         slot=str(data.get("slot", "")).strip(),
         themes=themes,
         photo_count=photo_count,
+        photo_themes=photo_themes,
+        text_themes=text_themes,
     )
 
 

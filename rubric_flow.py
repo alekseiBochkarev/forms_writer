@@ -12,8 +12,11 @@
   - `trap` — вопросы-ловушки на эрудицию (`llm.generate_trap_questions`) без
     картинок: обычный enum-конвейер с фактчекингом и дедупликацией;
   - `mixed` — смешанный выпуск: часть вопросов с фото из фото-конвейера,
-    часть — текстовые вопросы по той же теме (`llm.generate_topic_questions`).
-    Вопросы чередуются, чтобы кадры работали визуальными крючками по всей форме.
+    часть — текстовые вопросы. Фото-блок может идти по НЕСКОЛЬКИМ темам
+    (`photo_themes` рубрики) с квотами на тему, текстовый — по нескольким
+    областям знаний (`text_themes`); без этих списков выпуск собирается по одной
+    теме. Вопросы чередуются, чтобы кадры работали визуальными крючками по всей
+    форме.
 """
 
 from __future__ import annotations
@@ -970,40 +973,322 @@ def _mixed_minimum(rubric: Rubric) -> int:
     return max(rubric.threshold + 1, share)
 
 
+def _entity_key(entity: Any) -> str:
+    """Ключ сравнения сущностей: без регистра и внешних пробелов."""
+    return str(entity or "").strip().casefold()
+
+
+def _split_quota(items: List[str], total: int) -> List[int]:
+    """Разложить `total` вопросов по темам: поровну, остаток — первым темам."""
+    if not items or total <= 0:
+        return [0] * len(items)
+    base, rest = divmod(total, len(items))
+    return [base + (1 if index < rest else 0) for index in range(len(items))]
+
+
+def _recent_themes(state: Dict[str, Any]) -> Dict[str, int]:
+    """Последний выпуск, в котором встречалась тема: индекс записи `published`.
+
+    Нужен для ротации тем мультитемы: в первую очередь берутся темы, которых
+    давно не было. Читается по истории публикаций, чтобы не заводить отдельное
+    состояние (и корректно работать со старыми записями без `themes`).
+    """
+    recent: Dict[str, int] = {}
+    published = state.get("published")
+    if not isinstance(published, list):
+        return recent
+    for index, entry in enumerate(published):
+        if not isinstance(entry, dict):
+            continue
+        names: List[str] = []
+        themes = entry.get("themes")
+        if isinstance(themes, list):
+            names.extend(str(theme) for theme in themes)
+        label = str(entry.get("theme") or "").strip()
+        if label:
+            names.append(label)
+        for name in names:
+            if name:
+                recent[name] = index
+    return recent
+
+
+def _rotate_themes(themes: List[str], recent: Dict[str, int]) -> List[str]:
+    """Порядок тем выпуска: сначала ни разу не использованные, затем давние.
+
+    Внутри выпуска порядок важен: квоты распределяются сверху вниз, поэтому
+    первая тема получает лишний вопрос, а добор начинается с неё же.
+    """
+    return sorted(themes, key=lambda theme: (theme in recent, recent.get(theme, -1)))
+
+
+def _mixed_photo_themes(cfg, rubric: Rubric, state: Dict[str, Any]) -> List[str]:
+    """Темы фото-блока смешанного выпуска в порядке ротации.
+
+    Явно заданная тема (`PHOTO_THEME`) сужает выпуск до одной темы: ручной запуск
+    должен оставаться предсказуемым. Иначе берутся `photo_themes` рубрики (или её
+    `themes`), а темы без включённых источников отбрасываются.
+    """
+    forced = str(getattr(cfg, "photo_theme", "") or "").strip()
+    if forced:
+        if not photo_flow.available_theme_sources(cfg, forced):
+            log.error(
+                "Тема фото-блока «%s» недоступна: нет включённых источников "
+                "изображений",
+                forced,
+            )
+            return []
+        log.info("Тема фото-блока задана явно: %s", forced)
+        return [forced]
+
+    candidates = rubric.photo_theme_candidates(cfg.effective_photo_themes())
+    if rubric.photo_themes and not candidates:
+        log.error(
+            "Рубрика «%s»: ни одна из тем %s не найдена в PHOTO_THEMES",
+            rubric.id,
+            rubric.photo_themes,
+        )
+        return []
+    available: List[str] = []
+    for theme in candidates:
+        if photo_flow.available_theme_sources(cfg, theme):
+            available.append(theme)
+        else:
+            log.info("Тема «%s» пропущена: нет доступных источников", theme)
+    if not available:
+        return []
+    if len(available) == 1:
+        log.info("Рубрика задала единственную тему: %s", available[0])
+    return _rotate_themes(available, _recent_themes(state))
+
+
+def _unique_themes(themes: List[str]) -> List[str]:
+    """Темы без пустых значений и повторов (порядок сохраняется)."""
+    unique: List[str] = []
+    for theme in themes:
+        value = str(theme).strip()
+        if value and value not in unique:
+            unique.append(value)
+    return unique
+
+
+def _mixed_release_label(photo_themes: List[str]) -> str:
+    """Подпись выпуска для истории: одна тема как есть, несколько — через запятую."""
+    return ", ".join(_unique_themes(photo_themes))
+
+
+def _mixed_title_theme(photo_themes: List[str]) -> str:
+    """Тема для сборки заголовка: у мультитемы категорию не называем (пусто)."""
+    unique = _unique_themes(photo_themes)
+    return unique[0] if len(unique) == 1 else ""
+
+
+def _count_values(questions: List[Dict[str, Any]], key: str) -> Dict[str, int]:
+    """Сколько вопросов пришлось на каждое значение поля (тема, область знаний)."""
+    counts: Dict[str, int] = {}
+    for question in questions:
+        value = str(question.get(key) or "—")
+        counts[value] = counts.get(value, 0) + 1
+    return counts
+
+
+def _format_counts(counts: Dict[str, int]) -> str:
+    return ", ".join(f"{name} — {count}" for name, count in counts.items())
+
+
+def _photo_questions_for_theme(
+    cfg, theme: str, count: int, avoid: List[str], seen: set
+) -> List[Dict[str, Any]]:
+    """Собрать до `count` кадров одной темы, не повторяя сущности из `seen`.
+
+    `seen` — ключи уже занятых выпуском сущностей, в том числе из других тем:
+    один и тот же объект может подойти двум темам. Сущность помечается занятой
+    сразу, чтобы неудачный поиск картинки не повторялся в доборе.
+    """
+    if count <= 0:
+        return []
+    try:
+        entities = photo_flow._generate_entities(
+            cfg, theme, count + photo_flow.EXTRA_ENTITIES, avoid
+        )
+    except Exception as exc:  # noqa: BLE001 - понятная ошибка вместо трейсбека
+        log.error("Не удалось получить сущности темы «%s»: %s", theme, exc)
+        return []
+    fresh: List[str] = []
+    for entity in entities:
+        key = _entity_key(entity)
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        fresh.append(entity)
+    if not fresh:
+        log.warning("Для темы «%s» не осталось новых сущностей", theme)
+        return []
+    return photo_flow._build_questions(
+        cfg, theme, photo_flow.question_text(theme), fresh, count
+    )
+
+
+def _collect_photo_block(
+    cfg,
+    state: Dict[str, Any],
+    themes: List[str],
+    need: int,
+    exclude: Optional[List[str]] = None,
+) -> List[Dict[str, Any]]:
+    """Фото-блок по нескольким темам: квота на тему плюс проход добора.
+
+    Первый проход выдаёт каждой теме её квоту. Если тема не смогла её закрыть
+    (источник не отдал кадры), второй проход даёт каждой теме шанс закрыть общий
+    дефицит — выпуск не теряет кадры из-за одной слабой темы.
+    """
+    if not themes or need <= 0:
+        return []
+    used_entities = state.get("used_entities") or {}
+    seen = {_entity_key(entity) for entity in (exclude or []) if _entity_key(entity)}
+    quotas = _split_quota(themes, need)
+    questions: List[Dict[str, Any]] = []
+    for pass_no in range(2):
+        for index, theme in enumerate(themes):
+            remaining = need - len(questions)
+            if remaining <= 0:
+                break
+            want = min(quotas[index] if pass_no == 0 else remaining, remaining)
+            if want <= 0:
+                continue
+            avoid = list(used_entities.get(theme) or []) + sorted(seen)
+            batch = _photo_questions_for_theme(cfg, theme, want, avoid, seen)
+            if not batch:
+                continue
+            questions.extend(batch)
+            log.info("  кадры темы «%s»: %s из %s", theme, len(batch), want)
+    return questions[:need]
+
+
+def _photo_reference_phrases(
+    photo_questions: List[Dict[str, Any]],
+) -> List[str]:
+    """Фразы кадров для проверки пересечений с текстовыми вопросами.
+
+    Для живописи ответ — автор, а картинка ищется по названию, поэтому берём и
+    сущность целиком, и ответ, и поисковый запрос: вопрос про любую из этих
+    формулировок — фактический повтор содержания кадра.
+    """
+    phrases: List[str] = []
+    for question in photo_questions:
+        entity = str(question.get("entity") or "").strip()
+        if not entity:
+            continue
+        theme = str(question.get("theme") or "")
+        answer, query = photo_flow.answer_and_query(theme, entity)
+        for value in (entity, answer, query):
+            text = str(value or "").strip()
+            if text and text not in phrases:
+                phrases.append(text)
+    return phrases
+
+
+def _collect_text_block(
+    cfg,
+    state: Dict[str, Any],
+    topics: List[str],
+    need: int,
+    photo_questions: Optional[List[Dict[str, Any]]] = None,
+) -> List[Dict[str, Any]]:
+    """Текстовый блок по нескольким темам: квота на тему плюс проход добора.
+
+    Каждая область знаний — отдельный запрос к модели: смешение тем внутри
+    одного запроса модель понимает плохо и сваливается в одну тему. Кандидаты
+    проходят факт-чек и дедупликацию (с историей прошлых выпусков), а вопросы,
+    повторяющие содержание кадров, отбрасываются.
+    """
+    if not topics or need <= 0:
+        return []
+
+    import factcheck
+
+    avoid = _erudite_history(cfg, state)
+    checker = DuplicateChecker(avoid)
+    photo_phrases = _photo_reference_phrases(photo_questions or [])
+    for question in photo_questions or []:
+        theme = str(question.get("theme") or "")
+        entity = str(question.get("entity") or "").strip()
+        if entity:
+            checker.add(f"{theme}: {entity}")
+
+    quotas = _split_quota(topics, need)
+    questions: List[Dict[str, Any]] = []
+    for pass_no in range(2):
+        for index, topic in enumerate(topics):
+            remaining = need - len(questions)
+            if remaining <= 0:
+                break
+            want = min(quotas[index] if pass_no == 0 else remaining, remaining)
+            if want <= 0:
+                continue
+            try:
+                candidates = generate_topic_questions(
+                    cfg, topic, want, avoid=avoid, extra=_mixed_extra_text(want)
+                )
+            except Exception as exc:  # noqa: BLE001 - один сбой не роняет выпуск
+                log.error(
+                    "Не удалось получить текстовые вопросы по теме «%s»: %s",
+                    topic,
+                    exc,
+                )
+                continue
+            log.info(
+                "Кандидатов текстовых вопросов по теме «%s»: %s",
+                topic,
+                len(candidates),
+            )
+            candidates = factcheck.filter_questions(cfg, candidates)
+            taken = 0
+            for question in candidates:
+                if len(questions) >= need or taken >= want:
+                    break
+                if checker.is_duplicate(question["question"]):
+                    log.info("  повтор, пропускаю: %s", question["question"])
+                    continue
+                if _mentions_any(question, photo_phrases):
+                    # Вопрос про тот же объект, что и кадр, — фактический повтор
+                    # содержания, хотя формулировки разные (дедуп по тексту его
+                    # не ловит).
+                    log.info(
+                        "  совпадает с кадром по содержанию, пропускаю: %s",
+                        question["question"],
+                    )
+                    continue
+                checker.add(question["question"])
+                questions.append(question)
+                taken += 1
+            if not taken:
+                log.info("  тема «%s» не дала новых вопросов", topic)
+    return questions[:need]
+
+
 def _collect_mixed_questions(
-    cfg, state: Dict[str, Any], rubric: Rubric, theme: str
+    cfg,
+    state: Dict[str, Any],
+    rubric: Rubric,
+    photo_themes: List[str],
+    text_topics: List[str],
 ) -> tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
     """Собрать фото- и текстовые вопросы одного смешанного выпуска.
 
-    Фото-блок может быть недобран (источник не отдал кадры) — тогда
-    недостающее число вопросов добирается текстовыми, чтобы выпуск не
+    Фото-блок идёт по нескольким темам с квотами, текстовый — по нескольким
+    областям знаний. Фото-блок может быть недобран (источник не отдал кадры) —
+    тогда недостающее число вопросов добирается текстовыми, чтобы выпуск не
     уменьшался. Обратный недобор (текстовых меньше плана) добирается кадрами.
-    Вопросы не должны дублировать друг друга по содержанию: текстовый вопрос,
-    упоминающий фильм из кадра, пропускается, как и дополнительный кадр про
-    фильм, о котором уже спрашивает текстовый вопрос. Если не собрался ни один
-    фото-вопрос или ни один текстовый, возвращаются пустые списки: формат
+    Вопросы не должны дублировать друг друга по содержанию. Если не собрался ни
+    один фото-вопрос или ни один текстовый, возвращаются пустые списки: формат
     рубрики без одной из частей теряет смысл.
     """
     target_total = rubric.questions_count
     photo_target = min(rubric.photo_count, target_total - 1)
     text_target = target_total - photo_target
-    question = photo_flow.question_text(theme)
 
-    used_entities = list((state.get("used_entities") or {}).get(theme, []))
-    try:
-        entities = photo_flow._generate_entities(
-            cfg, theme, photo_target + photo_flow.EXTRA_ENTITIES, used_entities
-        )
-    except Exception as exc:  # noqa: BLE001 - понятная ошибка вместо трейсбека
-        log.error("Не удалось получить сущности темы «%s»: %s", theme, exc)
-        return [], []
-    if not entities:
-        log.error("Модель не вернула сущностей для темы «%s»", theme)
-        return [], []
-
-    photo_questions = photo_flow._build_questions(
-        cfg, theme, question, entities, photo_target
-    )
+    photo_questions = _collect_photo_block(cfg, state, photo_themes, photo_target)
     if not photo_questions:
         log.error(
             "Для смешанной рубрики «%s» не удалось подобрать ни одного кадра — "
@@ -1019,45 +1304,9 @@ def _collect_mixed_questions(
         )
         text_target += photo_target - len(photo_questions)
 
-    avoid = _erudite_history(cfg, state)
-    try:
-        candidates = generate_topic_questions(
-            cfg, theme, text_target, avoid=avoid, extra=_mixed_extra_text(text_target)
-        )
-    except Exception as exc:  # noqa: BLE001 - понятная ошибка вместо трейсбека
-        log.error("Не удалось получить текстовые вопросы по теме «%s»: %s", theme, exc)
-        return photo_questions, []
-    log.info("Кандидатов текстовых вопросов от модели: %s", len(candidates))
-
-    import factcheck
-
-    candidates = factcheck.filter_questions(cfg, candidates)
-
-    checker = DuplicateChecker(avoid)
-    photo_entities = [
-        str(q.get("entity") or "").strip()
-        for q in photo_questions
-        if str(q.get("entity") or "").strip()
-    ]
-    for entity in photo_entities:
-        checker.add(f"{theme}: {entity}")
-
-    text_questions: List[Dict[str, Any]] = []
-    for q in candidates:
-        if len(text_questions) >= text_target:
-            break
-        if checker.is_duplicate(q["question"]):
-            log.info("  повтор, пропускаю: %s", q["question"])
-            continue
-        if _mentions_any(q, photo_entities):
-            # Текстовый вопрос про тот же фильм, что и кадр, — фактический
-            # повтор содержания, хотя формулировки разные (дедуп по тексту его
-            # не ловит).
-            log.info("  совпадает с кадром по сущности, пропускаю: %s", q["question"])
-            continue
-        checker.add(q["question"])
-        text_questions.append(q)
-
+    text_questions = _collect_text_block(
+        cfg, state, text_topics, text_target, photo_questions
+    )
     if not text_questions:
         log.error(
             "Для смешанной рубрики «%s» не удалось собрать текстовые вопросы — "
@@ -1069,20 +1318,21 @@ def _collect_mixed_questions(
     # Если текстовых не хватило до плана — добираем оставшимися кадрами.
     shortfall = target_total - (len(photo_questions) + len(text_questions))
     if shortfall > 0:
-        used_in_photos = {q.get("entity") for q in photo_questions}
-        remaining = [e for e in entities if e not in used_in_photos]
-        if remaining:
-            extra_photos = photo_flow._build_questions(
-                cfg, theme, question, remaining, shortfall
-            )
-            # Дополнительные кадры не должны повторять фильм, о котором уже
-            # спрашивает принятый текстовый вопрос.
-            kept_extra = [
-                q for q in extra_photos if not _mentions_any_entity(q, text_questions)
-            ]
-            if kept_extra:
-                log.info("Добираю кадрами ещё %s вопросов", len(kept_extra))
-                photo_questions.extend(kept_extra)
+        extra_photos = _collect_photo_block(
+            cfg,
+            state,
+            photo_themes,
+            shortfall,
+            exclude=[q.get("entity") for q in photo_questions],
+        )
+        # Дополнительные кадры не должны повторять то, о чём уже спрашивает
+        # принятый текстовый вопрос.
+        kept_extra = [
+            q for q in extra_photos if not _mentions_any_entity(q, text_questions)
+        ]
+        if kept_extra:
+            log.info("Добираю кадрами ещё %s вопросов", len(kept_extra))
+            photo_questions.extend(kept_extra)
 
     return photo_questions, text_questions
 
@@ -1124,7 +1374,12 @@ def _question_haystack(question: Dict[str, Any]) -> str:
 
 
 def _mixed_dry_run(
-    cfg, state: Dict[str, Any], rubric: Rubric, theme: str, series_no: int
+    cfg,
+    state: Dict[str, Any],
+    rubric: Rubric,
+    photo_themes: List[str],
+    text_topics: List[str],
+    series_no: int,
 ) -> int:
     """Сухая сборка смешанного выпуска без обращений к API."""
     log.info(
@@ -1136,10 +1391,12 @@ def _mixed_dry_run(
     photo_count = rubric.photo_count
     text_count = max(0, total - photo_count)
     log.info(
-        "Рубрика «%s» (%s): тема «%s», кадров: %s, текстовых: %s, порог: %s/%s",
+        "Рубрика «%s» (%s): фото-темы: %s; текстовые темы: %s; кадров: %s, "
+        "текстовых: %s, порог: %s/%s",
         rubric.id,
         rubric.series_name,
-        theme,
+        ", ".join(photo_themes) or "—",
+        ", ".join(text_topics) or "—",
         photo_count,
         text_count,
         rubric.threshold,
@@ -1156,14 +1413,23 @@ def _mixed_dry_run(
         total,
         used_titles=used_titles,
         correct_answers=correct_answers,
-        theme=theme,
+        theme=_mixed_title_theme(photo_themes),
     )
     log.info("  заголовок: %s", title)
 
-    plan = interleave_questions(
-        [("фото", f"кадр {i + 1}") for i in range(photo_count)],
-        [("текст", f"факт {i + 1}") for i in range(text_count)],
-    )
+    photo_plan = [
+        (f"фото: {theme}", f"кадр {index + 1}")
+        for theme, quota in zip(
+            photo_themes, _split_quota(photo_themes, photo_count)
+        )
+        for index in range(quota)
+    ]
+    text_plan = [
+        (f"текст: {topic}", f"факт {index + 1}")
+        for topic, quota in zip(text_topics, _split_quota(text_topics, text_count))
+        for index in range(quota)
+    ]
+    plan = interleave_questions(photo_plan, text_plan)
     for i, (kind, item) in enumerate(plan, 1):
         log.info("  %2d. [%s] %s", i, kind, item)
 
@@ -1180,18 +1446,26 @@ def _mixed_dry_run(
 
 
 def _mixed_publish(
-    cfg, state: Dict[str, Any], rubric: Rubric, theme: str, series_no: int
+    cfg,
+    state: Dict[str, Any],
+    rubric: Rubric,
+    photo_themes: List[str],
+    text_topics: List[str],
+    series_no: int,
 ) -> int:
     """Боевая сборка и публикация смешанного выпуска (кадры + текстовые факты)."""
     if not cfg.yandex_token or not cfg.yandex_org_id:
         log.error("Для публикации рубрики не заданы YANDEX_FORMS_TOKEN / YANDEX_ORG_ID")
         return 1
 
+    label = _mixed_release_label(photo_themes)
     log.info(
-        "Рубрика «%s» (%s): тема «%s», кадров: %s, текстовых: %s, порог: %s/%s",
+        "Рубрика «%s» (%s): фото-темы: %s; текстовые темы: %s; кадров: %s, "
+        "текстовых: %s, порог: %s/%s",
         rubric.id,
         rubric.series_name,
-        theme,
+        label or "—",
+        ", ".join(text_topics) or "—",
         rubric.photo_count,
         rubric.questions_count - rubric.photo_count,
         rubric.threshold,
@@ -1199,7 +1473,7 @@ def _mixed_publish(
     )
 
     photo_questions, text_questions = _collect_mixed_questions(
-        cfg, state, rubric, theme
+        cfg, state, rubric, photo_themes, text_topics
     )
     if not photo_questions or not text_questions:
         return 1
@@ -1219,6 +1493,14 @@ def _mixed_publish(
         len(photo_questions),
         len(text_questions),
     )
+    log.info(
+        "Раскладка по фото-темам: %s",
+        _format_counts(_count_values(photo_questions, "theme")),
+    )
+    log.info(
+        "Раскладка по текстовым темам: %s",
+        _format_counts(_count_values(text_questions, "topic")),
+    )
 
     correct_answers = []
     for q in questions:
@@ -1230,6 +1512,7 @@ def _mixed_publish(
     title_history = getattr(cfg, "photo_title_history", 10) or 10
     used_titles = list(state.get("used_titles") or [])[-title_history:]
     count = len(questions)
+    title_theme = _mixed_title_theme(photo_themes)
 
     def title_builder(_used, _answers):
         return build_rubric_title(
@@ -1238,7 +1521,7 @@ def _mixed_publish(
             count,
             used_titles=_used,
             correct_answers=_answers,
-            theme=theme,
+            theme=title_theme,
         )
 
     result = photo_flow.publish_photo_form(
@@ -1277,14 +1560,20 @@ def _mixed_publish(
         count=len(added),
     )
     entry["title"] = base_title
-    entry["theme"] = theme
+    # Для мультитемы `theme` — подпись выпуска, а список тем — в `themes`.
+    entry["theme"] = label
+    entry["themes"] = list(photo_themes)
+    if list(text_topics) != list(photo_themes):
+        entry["text_themes"] = list(text_topics)
     entry["mixed"] = True
     entry["photo_count"] = sum(1 for q in added if q.get("image"))
     entry["text_count"] = sum(1 for q in added if not q.get("image"))
 
     asked = state.setdefault("asked_questions", [])
     asked.extend(
-        f"{theme}: {q['entity']}" if q.get("entity") else q["question"]
+        f"{q.get('theme') or label}: {q['entity']}"
+        if q.get("entity")
+        else q["question"]
         for q in added
     )
     state["asked_questions"] = asked[-photo_flow.ASKED_HISTORY_LIMIT:]
@@ -1294,13 +1583,19 @@ def _mixed_publish(
     state["used_titles"] = used_titles_state[-photo_flow.TITLE_HISTORY_LIMIT:]
 
     used_themes = state.setdefault("used_themes", [])
-    if theme not in used_themes:
-        used_themes.append(theme)
+    if len(photo_themes) == 1 and photo_themes[0] not in used_themes:
+        # История тем фото-потока — прежняя семантика для однотемных выпусков.
+        # Ротация мультитемы считается по `published[]`, поэтому здесь список
+        # не засоряется несколькими темами одного выпуска.
+        used_themes.append(photo_themes[0])
 
     used_entities_state = state.setdefault("used_entities", {})
-    used_entities_state.setdefault(theme, []).extend(
-        q["entity"] for q in added if q.get("entity")
-    )
+    for question in added:
+        entity = question.get("entity")
+        if not entity:
+            continue
+        theme_of = str(question.get("theme") or label).strip()
+        used_entities_state.setdefault(theme_of, []).append(entity)
 
     save_state(cfg.rubrics_state_file, state)
     log.info("Состояние сохранено: %s", cfg.rubrics_state_file)
@@ -1327,7 +1622,8 @@ def run_rubric(
     Проверяет разрешение публикации (не чаще раза в UTC-день на рубрику,
     `force` обходит) и диспетчеризует по `source`: `photo` — фото-конвейер,
     `trap` — конвейер вопросов-ловушек (LLM + фактчек, без картинок),
-    `mixed` — кадры из фото-конвейера плюс текстовые вопросы по той же теме.
+    `mixed` — кадры из фото-конвейера плюс текстовые вопросы (по одной теме
+    или по нескольким — см. `photo_themes`/`text_themes` рубрики).
     """
     if cfg.rubrics is None:
         log.error("Реестр рубрик не загружен")
@@ -1374,6 +1670,35 @@ def run_rubric(
             )
             return 1
 
+    if rubric.source == "mixed":
+        # Смешанный выпуск может идти по нескольким темам сразу: фото-блок — с
+        # квотами по темам, текстовый — по областям знаний. Одна тема (рубрика
+        # «d») сохраняет прежнее поведение.
+        photo_themes = _mixed_photo_themes(cfg, rubric, state)
+        if not photo_themes:
+            log.error(
+                "Не удалось выбрать темы фото-блока рубрики «%s»: нет доступных "
+                "тем. Проверьте PHOTO_THEMES, RUBRICS и флаги кино-источников.",
+                rubric.id,
+            )
+            return 1
+        label = _mixed_release_label(photo_themes)
+        text_topics = rubric.text_topic_candidates(label)
+        if not text_topics:
+            log.error(
+                "Рубрика «%s»: не заданы темы текстового блока (themes/"
+                "text_themes) — публикация отменена.",
+                rubric.id,
+            )
+            return 1
+        if dry_run:
+            return _mixed_dry_run(
+                cfg, state, rubric, photo_themes, text_topics, series_no
+            )
+        return _mixed_publish(
+            cfg, state, rubric, photo_themes, text_topics, series_no
+        )
+
     theme = _rubric_theme(cfg, rubric, state)
     if not theme:
         log.error(
@@ -1384,11 +1709,7 @@ def run_rubric(
         return 1
 
     if dry_run:
-        if rubric.source == "mixed":
-            return _mixed_dry_run(cfg, state, rubric, theme, series_no)
         return _dry_run(cfg, state, rubric, theme, series_no)
-    if rubric.source == "mixed":
-        return _mixed_publish(cfg, state, rubric, theme, series_no)
     return _publish(cfg, state, rubric, theme, series_no)
 
 

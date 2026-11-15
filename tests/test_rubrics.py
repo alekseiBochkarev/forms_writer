@@ -62,9 +62,14 @@ def test_load_rubrics_defaults_when_env_empty():
     assert e.photo_count == 15
     assert e.threshold == 20
     assert e.questions_count - e.photo_count == 15
-    assert e.themes
-    # темы должны быть доступны в фото-потоке, иначе рубрика не выберет тему
-    assert set(e.themes) <= set(config.DEFAULT_PHOTO_THEMES)
+    # Крупный выпуск не должен сваливаться в одну тему: фото-блок идёт по
+    # нескольким темам, текстовый — по нескольким областям знаний.
+    assert len(e.photo_themes) > 1
+    assert len(e.text_themes) > 1
+    assert not set(e.photo_themes) & set(e.text_themes)
+    # темы фото-блока должны быть доступны в фото-потоке, иначе рубрика не
+    # соберёт кадры
+    assert set(e.photo_themes) <= set(config.DEFAULT_PHOTO_THEMES)
     assert e.comment_prompt
 
     # шаблоны содержат обещанные плейсхолдеры
@@ -187,6 +192,75 @@ def test_load_rubrics_mixed_parses_photo_count():
     assert rubric.source == "mixed"
     assert rubric.photo_count == 5
     assert rubric.questions_count == 15
+
+
+def test_load_rubrics_mixed_parses_photo_and_text_themes():
+    """Мультитема смешанной рубрики: photo_themes и text_themes разбираются."""
+    payload = [
+        {
+            "id": "x",
+            "series_name": "Смешанный тест",
+            "source": "mixed",
+            "questions_count": 30,
+            "photo_count": 15,
+            "threshold": 20,
+            "photo_themes": ["животные Африки", "породы собак", "неизвестная тема"],
+            "text_themes": ["история", "география"],
+            "title_templates": ["Тест {threshold} из {count}"],
+        }
+    ]
+    os.environ["RUBRICS"] = json.dumps(payload, ensure_ascii=False)
+    try:
+        rubrics = load_rubrics()
+    finally:
+        del os.environ["RUBRICS"]
+
+    rubric = rubrics.get("x")
+    assert rubric.photo_themes == [
+        "животные Африки",
+        "породы собак",
+        "неизвестная тема",
+    ]
+    assert rubric.text_themes == ["история", "география"]
+    # фото-темы фильтруются по темам фото-потока: иначе выпуск не соберётся
+    assert rubric.photo_theme_candidates(config.DEFAULT_PHOTO_THEMES) == [
+        "животные Африки",
+        "породы собак",
+    ]
+    # текстовые темы — произвольные области знаний, они не фильтруются
+    assert rubric.text_topic_candidates("породы собак") == ["история", "география"]
+
+
+def test_rubric_themes_fallback_to_release_theme():
+    """Без photo_themes/text_themes обе части берут тему выпуска (рубрика «d»)."""
+    d = load_rubrics().get("d")
+
+    assert d.photo_theme_candidates(config.DEFAULT_PHOTO_THEMES) == ["советские фильмы"]
+    assert d.text_topic_candidates("советские фильмы") == ["советские фильмы"]
+    assert d.text_topic_candidates("") == []
+
+
+def test_load_rubrics_photo_themes_rejected_for_non_mixed_source():
+    """photo_themes/text_themes у photo/trap — ошибка: настройка не применится."""
+    payload = [
+        {
+            "id": "x",
+            "series_name": "Фото-тест",
+            "source": "photo",
+            "questions_count": 10,
+            "threshold": 8,
+            "photo_themes": ["породы собак"],
+            "title_templates": ["Тест {threshold} из {count}"],
+        }
+    ]
+    os.environ["RUBRICS"] = json.dumps(payload, ensure_ascii=False)
+    try:
+        with pytest.raises(ValueError) as exc:
+            load_rubrics()
+    finally:
+        del os.environ["RUBRICS"]
+
+    assert "source=mixed" in str(exc.value)
 
 
 def test_load_rubrics_env_override_and_disabled():
