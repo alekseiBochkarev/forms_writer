@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-11-17",
+  "last_publish_date": "2026-11-19",
   "published": [
     {
       "date": "2026-09-24",
@@ -3280,6 +3280,95 @@
           "license": "CC BY-SA 3.0"
         }
       ]
+    },
+    {
+      "date": "2026-11-19",
+      "survey_id": "6aff7e61ff84650ff617db8a",
+      "url": "https://forms.yandex.ru/u/6aff7e61ff84650ff617db8a/",
+      "theme": "картины из школьной программы",
+      "title": "Узнаете ли вы эти 10 шедевров живописи по фрагменту? 3",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Ne_zhdali_%281st_version%29.jpg/1280px-Ne_zhdali_%281st_version%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Ne_zhdali_(1st_version).jpg",
+          "title": "Ne zhdali (1st version).jpg",
+          "author": "Ilya Repin",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/SurikovMenshikovBerezovo.jpg/1280px-SurikovMenshikovBerezovo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:SurikovMenshikovBerezovo.jpg",
+          "title": "SurikovMenshikovBerezovo.jpg",
+          "author": "Vasily Surikov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/Pavel_Fedotov_-_The_fresh_cavalier_-_Google_Art_Project.jpg/1280px-Pavel_Fedotov_-_The_fresh_cavalier_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Pavel_Fedotov_-_The_fresh_cavalier_-_Google_Art_Project.jpg",
+          "title": "Pavel Fedotov - The fresh cavalier - Google Art Project.jpg",
+          "author": "Pavel Fedotov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Spitzenkl%C3%B6pplerin_des_Johannes_Vermeer_im_Louvre.jpg/1280px-Spitzenkl%C3%B6pplerin_des_Johannes_Vermeer_im_Louvre.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Spitzenkl%C3%B6pplerin_des_Johannes_Vermeer_im_Louvre.jpg",
+          "title": "Spitzenklöpplerin des Johannes Vermeer im Louvre.jpg",
+          "author": "This Photo was taken by Wolfgang Moroder.  \n\nFeel free to use my photos, but please mention me as the author and send me a  message. \n\n\n\nThis image is not in the public domain. Please respect the copyright protection. It may only be used according to the rules mentioned here. This specifically excludes use in social media, if applicable terms of the licenses listed here are not appropriate.\n\n\n\nPlease do not upload an updated image here without consultation with the Author. The author would like to make corrections only at his own source. This ensures that the changes are preserved.Please if you think that any changes should be required, please inform the author.Otherwise you can upload a new image with a new name. Please use one of the templates derivative or extract.",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/Fedor_Rokotov_-_Alexandra_Struyskaya_-_WGA19662.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Fedor_Rokotov_-_Alexandra_Struyskaya_-_WGA19662.jpg",
+          "title": "Fedor Rokotov - Alexandra Struyskaya - WGA19662.jpg",
+          "author": "Fyodor Rokotov",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Borovikovsky_maria_Lopukhina.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Borovikovsky_maria_Lopukhina.jpg",
+          "title": "Borovikovsky maria Lopukhina.jpg",
+          "author": "Vladimir Borovikovsky",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Raphael_-_The_Sistine_Madonna_-_Google_Arts_%26_Culture.jpg/1280px-Raphael_-_The_Sistine_Madonna_-_Google_Arts_%26_Culture.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Raphael_-_The_Sistine_Madonna_-_Google_Arts_%26_Culture.jpg",
+          "title": "Raphael - The Sistine Madonna - Google Arts & Culture.jpg",
+          "author": "Raphael",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Rembrandt_Harmensz_van_Rijn_-_Return_of_the_Prodigal_Son_-_Google_Art_Project.jpg/1280px-Rembrandt_Harmensz_van_Rijn_-_Return_of_the_Prodigal_Son_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Rembrandt_Harmensz_van_Rijn_-_Return_of_the_Prodigal_Son_-_Google_Art_Project.jpg",
+          "title": "Rembrandt Harmensz van Rijn - Return of the Prodigal Son - Google Art Project.jpg",
+          "author": "Rembrandt",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Leonardo_da_Vinci_%281452-1519%29_-_The_Last_Supper_%281495-1498%29.jpg/1280px-Leonardo_da_Vinci_%281452-1519%29_-_The_Last_Supper_%281495-1498%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Leonardo_da_Vinci_(1452-1519)_-_The_Last_Supper_(1495-1498).jpg",
+          "title": "Leonardo da Vinci (1452-1519) - The Last Supper (1495-1498).jpg",
+          "author": "Leonardo da Vinci",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/La_nascita_di_Venere_%28Botticelli%29.jpg/1280px-La_nascita_di_Venere_%28Botticelli%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:La_nascita_di_Venere_(Botticelli).jpg",
+          "title": "La nascita di Venere (Botticelli).jpg",
+          "author": "Unknown authorUnknown author",
+          "license": "Public domain"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -3652,10 +3741,21 @@
     "породы собак: Кавказская овчарка",
     "породы собак: Кане-корсо",
     "породы собак: Мастиф",
-    "породы собак: Московская сторожевая"
+    "породы собак: Московская сторожевая",
+    "картины из школьной программы: Илья Репин|Не ждали",
+    "картины из школьной программы: Василий Суриков|Меншиков в Березове",
+    "картины из школьной программы: Павел Федотов|Свежий кавалер",
+    "картины из школьной программы: Василий Тропинин|Кружевница",
+    "картины из школьной программы: Фёдор Рокотов|Портрет Струйской",
+    "картины из школьной программы: Владимир Боровиковский|Портрет Лопухиной",
+    "картины из школьной программы: Рафаэль|Сикстинская мадонна",
+    "картины из школьной программы: Рембрандт|Возвращение блудного сына",
+    "картины из школьной программы: Леонардо да Винчи|Тайная вечеря",
+    "картины из школьной программы: Сандро Боттичелли|Рождение Венеры"
   ],
   "used_themes": [
-    "породы собак"
+    "породы собак",
+    "картины из школьной программы"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -3870,7 +3970,17 @@
       "Зинаида Серебрякова|За завтраком",
       "Орест Кипренский|Портрет Пушкина",
       "Павел Федотов|Завтрак аристократа",
-      "Игорь Грабарь|Февральская лазурь"
+      "Игорь Грабарь|Февральская лазурь",
+      "Илья Репин|Не ждали",
+      "Василий Суриков|Меншиков в Березове",
+      "Павел Федотов|Свежий кавалер",
+      "Василий Тропинин|Кружевница",
+      "Фёдор Рокотов|Портрет Струйской",
+      "Владимир Боровиковский|Портрет Лопухиной",
+      "Рафаэль|Сикстинская мадонна",
+      "Рембрандт|Возвращение блудного сына",
+      "Леонардо да Винчи|Тайная вечеря",
+      "Сандро Боттичелли|Рождение Венеры"
     ],
     "хищные птицы": [
       "Беркут",
@@ -4075,6 +4185,7 @@
     "Угадайте 10 стран по фото. Без ошибок справятся только эрудиты",
     "Узнаете ли вы эти 10 шедевров живописи по фрагменту?",
     "Только 1 из 10 узнаёт этих животных по глазам. Проверьте себя",
-    "Вы настоящий собаковод, если назовёте все 10 пород собак"
+    "Вы настоящий собаковод, если назовёте все 10 пород собак",
+    "Узнаете ли вы эти 10 шедевров живописи по фрагменту?"
   ]
 }
