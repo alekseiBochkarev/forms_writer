@@ -11,10 +11,10 @@
       "count": 9,
       "publish_ts": "2026-10-22T17:55:09+00:00",
       "title": "Тест. меньше половины% прошедших ошибаются в этих вопросах. Сможете взять 8 из 9? №1",
-      "answers_count": 2954,
-      "correct_rate": 0.7535,
+      "answers_count": 3038,
+      "correct_rate": 0.7527,
       "wrong_pct": 25,
-      "metrics_ts": "2026-11-20T21:01:08+00:00"
+      "metrics_ts": "2026-11-21T20:11:46+00:00"
     },
     {
       "survey_id": "6adb9f68bf4fde243f07e958",
@@ -27,10 +27,10 @@
       "publish_ts": "2026-10-23T17:55:19+00:00",
       "title": "Вы настоящий знаток картин, если угадаете 8/10 шедевров по фрагменту. Выпуск №1",
       "theme": "картины из школьной программы",
-      "answers_count": 547,
-      "correct_rate": 0.7382,
+      "answers_count": 556,
+      "correct_rate": 0.7385,
       "wrong_pct": 26,
-      "metrics_ts": "2026-11-20T21:01:10+00:00"
+      "metrics_ts": "2026-11-21T20:11:48+00:00"
     },
     {
       "survey_id": "6adcdd1270ad374142647d9c",
@@ -45,7 +45,7 @@
       "answers_count": 4,
       "correct_rate": 0.5833,
       "wrong_pct": 42,
-      "metrics_ts": "2026-11-20T21:01:11+00:00"
+      "metrics_ts": "2026-11-21T20:11:49+00:00"
     },
     {
       "survey_id": "6ade35e9bf4fde628007e984",
@@ -60,7 +60,7 @@
       "answers_count": 1,
       "correct_rate": 0.8571,
       "wrong_pct": 14,
-      "metrics_ts": "2026-11-20T21:01:12+00:00"
+      "metrics_ts": "2026-11-21T20:11:50+00:00"
     },
     {
       "survey_id": "6adfa604bf4fde0b61fc249d",
@@ -76,7 +76,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-20T21:01:13+00:00"
+      "metrics_ts": "2026-11-21T20:11:51+00:00"
     },
     {
       "survey_id": "6ae0ef85bf4fde2b44fc2491",
@@ -91,7 +91,7 @@
       "answers_count": 2,
       "correct_rate": 0.65,
       "wrong_pct": 35,
-      "metrics_ts": "2026-11-20T21:01:13+00:00"
+      "metrics_ts": "2026-11-21T20:11:51+00:00"
     },
     {
       "survey_id": "6ae395dcbf4fde6f67fc2518",
@@ -106,7 +106,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-20T21:01:14+00:00"
+      "metrics_ts": "2026-11-21T20:11:52+00:00"
     },
     {
       "survey_id": "6ae62820bf4fde238559e0f4",
@@ -122,7 +122,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-20T21:01:15+00:00"
+      "metrics_ts": "2026-11-21T20:11:53+00:00"
     },
     {
       "survey_id": "6ae7839abf4fde435559e0fc",
@@ -137,7 +137,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-20T21:01:16+00:00"
+      "metrics_ts": "2026-11-21T20:11:53+00:00"
     },
     {
       "survey_id": "6ae90b3770ad37187043841e",
@@ -152,7 +152,7 @@
       "answers_count": 2,
       "correct_rate": 0.8333,
       "wrong_pct": 17,
-      "metrics_ts": "2026-11-20T21:01:16+00:00"
+      "metrics_ts": "2026-11-21T20:11:54+00:00"
     },
     {
       "survey_id": "6aea3e2bbf4fde2e00d157ed",
@@ -168,10 +168,10 @@
       "mixed": true,
       "photo_count": 1,
       "text_count": 14,
-      "answers_count": 15200,
+      "answers_count": 15359,
       "correct_rate": 0.7175,
       "wrong_pct": 28,
-      "metrics_ts": "2026-11-20T21:02:33+00:00"
+      "metrics_ts": "2026-11-21T20:13:14+00:00"
     },
     {
       "survey_id": "6aeb93f933edce0028ba5db3",
@@ -186,7 +186,7 @@
       "answers_count": 1,
       "correct_rate": 0.5714,
       "wrong_pct": 43,
-      "metrics_ts": "2026-11-20T21:02:34+00:00"
+      "metrics_ts": "2026-11-21T20:13:15+00:00"
     },
     {
       "survey_id": "6aece7a0bf4fde081d866979",
@@ -201,7 +201,7 @@
       "answers_count": 2,
       "correct_rate": 0.5,
       "wrong_pct": 50,
-      "metrics_ts": "2026-11-20T21:02:35+00:00"
+      "metrics_ts": "2026-11-21T20:13:16+00:00"
     },
     {
       "survey_id": "6aee307db6fc051e8e65fd1e",
@@ -216,7 +216,7 @@
       "answers_count": 1,
       "correct_rate": 0.6,
       "wrong_pct": 40,
-      "metrics_ts": "2026-11-20T21:02:35+00:00"
+      "metrics_ts": "2026-11-21T20:13:16+00:00"
     },
     {
       "survey_id": "6aef66e4ff84652a25900baa",
@@ -231,7 +231,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-20T21:02:36+00:00"
+      "metrics_ts": "2026-11-21T20:13:17+00:00"
     },
     {
       "survey_id": "6af0bc63ff84653b76900baf",
@@ -246,7 +246,7 @@
       "answers_count": 1,
       "correct_rate": 0.75,
       "wrong_pct": 25,
-      "metrics_ts": "2026-11-20T21:02:36+00:00"
+      "metrics_ts": "2026-11-21T20:13:18+00:00"
     },
     {
       "survey_id": "6af24fa470ad374fbcbd509c",
@@ -261,7 +261,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-20T21:02:37+00:00"
+      "metrics_ts": "2026-11-21T20:13:18+00:00"
     },
     {
       "survey_id": "6af37cc6bf4fde5c1a33df61",
@@ -276,7 +276,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-20T21:02:38+00:00"
+      "metrics_ts": "2026-11-21T20:13:19+00:00"
     },
     {
       "survey_id": "6af4ca44ff846576908fe836",
@@ -291,7 +291,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-20T21:02:38+00:00"
+      "metrics_ts": "2026-11-21T20:13:20+00:00"
     },
     {
       "survey_id": "6af772a6bf4fde16cbfae49a",
@@ -307,7 +307,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-20T21:02:39+00:00"
+      "metrics_ts": "2026-11-21T20:13:21+00:00"
     },
     {
       "survey_id": "6af8ad5970ad372e544f2572",
@@ -323,10 +323,10 @@
       "mixed": true,
       "photo_count": 14,
       "text_count": 16,
-      "answers_count": 1995,
-      "correct_rate": 0.7679,
+      "answers_count": 2130,
+      "correct_rate": 0.7672,
       "wrong_pct": 23,
-      "metrics_ts": "2026-11-20T21:02:48+00:00"
+      "metrics_ts": "2026-11-21T20:13:32+00:00"
     },
     {
       "survey_id": "6afa05b2a9feda46155f828f",
@@ -342,7 +342,7 @@
       "answers_count": 0,
       "correct_rate": 0.0,
       "wrong_pct": 100,
-      "metrics_ts": "2026-11-20T21:02:49+00:00"
+      "metrics_ts": "2026-11-21T20:13:32+00:00"
     },
     {
       "survey_id": "6afb88daff8465060cc3d605",
@@ -361,10 +361,10 @@
       "mixed": true,
       "photo_count": 1,
       "text_count": 14,
-      "answers_count": 1892,
-      "correct_rate": 0.8374,
+      "answers_count": 2130,
+      "correct_rate": 0.8377,
       "wrong_pct": 16,
-      "metrics_ts": "2026-11-20T21:02:55+00:00"
+      "metrics_ts": "2026-11-21T20:13:40+00:00"
     },
     {
       "survey_id": "6afe14f2bf4fde00275ceda1",
@@ -376,7 +376,11 @@
       "count": 10,
       "publish_ts": "2026-11-18T21:13:55+00:00",
       "title": "Вы настоящий кинолог, если угадаете 8/10 пород по фото. Проверьте себя №6",
-      "theme": "породы собак"
+      "theme": "породы собак",
+      "answers_count": 0,
+      "correct_rate": 0.0,
+      "wrong_pct": 100,
+      "metrics_ts": "2026-11-21T20:13:41+00:00"
     },
     {
       "survey_id": "6aff680770ad3707ce5378e6",
