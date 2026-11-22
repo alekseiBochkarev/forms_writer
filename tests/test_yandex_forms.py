@@ -22,10 +22,11 @@ def _client_with_captured_request():
     client = YandexFormsClient("token", "org")
     captured = {}
 
-    def fake_request(method, path, payload=None):
+    def fake_request(method, path, payload=None, params=None):
         captured["method"] = method
         captured["path"] = path
         captured["payload"] = payload
+        captured["params"] = params
         return {"id": 777}
 
     client._request = fake_request  # type: ignore[method-assign]
@@ -468,3 +469,254 @@ def test_next_survey_name_sees_form_on_third_capped_page():
 
     assert name == f"{base} 10"
     assert len(calls) == 3
+
+
+# --- завязка и режим обратной связи ----------------------------------------
+
+
+def test_compose_label_puts_context_before_question():
+    """Завязка идёт перед вопросом через пустую строку."""
+    assert (
+        yandex_forms._compose_label("Вопрос?", "Короткая завязка.")
+        == "Короткая завязка.\n\nВопрос?"
+    )
+
+
+def test_compose_label_without_context_is_plain_question():
+    assert yandex_forms._compose_label("Вопрос?", "") == "Вопрос?"
+    assert yandex_forms._compose_label("Вопрос?") == "Вопрос?"
+
+
+def test_compose_label_strips_whitespace():
+    assert (
+        yandex_forms._compose_label("  Вопрос?  ", "  Завязка.  ")
+        == "Завязка.\n\nВопрос?"
+    )
+
+
+def test_add_enum_question_sends_context_in_label():
+    """Клиент кладёт завязку в label, не в comment."""
+    client, captured = _client_with_captured_request()
+
+    client.add_enum_question(
+        "s1", "Q?", ["a", "b", "c", "d"], 1, context="Завязка."
+    )
+
+    assert captured["payload"]["label"] == "Завязка.\n\nQ?"
+    assert "comment" not in captured["payload"]
+
+
+def test_build_answer_condition_single_option():
+    """Условие «верный ответ»: operator=and и один eq по слагу варианта."""
+    condition = yandex_forms.build_answer_condition("id-enum-1", ["777"])
+
+    assert condition == {
+        "operator": "and",
+        "items": [
+            {"type": "question", "condition": "eq", "question": "id-enum-1", "value": "777"}
+        ],
+    }
+
+
+def test_build_answer_condition_any_wrong_option():
+    """Условие «любой из неверных»: operator=or и по eq на каждый вариант."""
+    condition = yandex_forms.build_answer_condition(
+        "id-enum-1", ["1", "2", "3"], operator="or"
+    )
+
+    assert condition["operator"] == "or"
+    assert [item["value"] for item in condition["items"]] == ["1", "2", "3"]
+
+
+class _FeedbackClient:
+    """Заглушка клиента: отдаёт слаги и запоминает условия показа."""
+
+    def __init__(self):
+        self.comments = []
+        self.questions = []
+        self.conditions = []
+        self.updates = []
+        self.order = []
+
+    def create_survey(self, name):
+        return "sid-1"
+
+    def next_survey_name(self, name):
+        return name
+
+    def add_enum_question_detailed(self, survey_id, **kwargs):
+        self.questions.append(kwargs)
+        number = len(self.questions)
+        self.order.append(f"q{number}")
+        return {
+            "id": 100 + number,
+            "slug": f"id-enum-{100 + number}",
+            "items": [
+                {"id": i, "slug": f"slug-{number}-{i}"}
+                for i in range(len(kwargs["options"]))
+            ],
+        }
+
+    def add_comment_question(self, survey_id, label, header=False):
+        self.comments.append((label, header))
+        self.order.append(f"c{len(self.comments)}")
+        return len(self.comments)
+
+    def add_question_condition(self, survey_id, question_id, condition):
+        self.conditions.append((question_id, condition))
+
+    def update_survey(self, survey_id, payload):
+        self.updates.append(payload)
+
+    def set_access(self, *a, **k):
+        pass
+
+    def publish(self, *a, **k):
+        pass
+
+
+def _feedback_cfg(**overrides):
+    return _publish_cfg(
+        question_context_enabled=True,
+        feedback_enabled=True,
+        feedback_correct_text="Правильно.",
+        feedback_wrong_text="Ошибочка. Подумайте ещё.",
+        **overrides,
+    )
+
+
+def _one_question(**overrides):
+    question = {
+        "topic": "t",
+        "question": "Q?",
+        "options": ["a", "b", "c", "d"],
+        "correct_index": 1,
+        "context": "Завязка.",
+        "explanation": "Потому что так верно.",
+    }
+    question.update(overrides)
+    return question
+
+
+def test_publish_questions_feedback_mode_adds_two_conditional_blocks():
+    """После вопроса — два блока: верный и любой неверный вариант."""
+    client = _FeedbackClient()
+
+    publish_questions(_feedback_cfg(), [_one_question()], client)
+
+    assert [label for label, _ in client.comments] == [
+        "Правильно. Потому что так верно.",
+        "Ошибочка. Подумайте ещё.",
+    ]
+    assert len(client.conditions) == 2
+
+    ok_id, ok_condition = client.conditions[0]
+    bad_id, bad_condition = client.conditions[1]
+    assert ok_id == 1 and bad_id == 2
+    assert ok_condition["operator"] == "and"
+    assert [item["value"] for item in ok_condition["items"]] == ["slug-1-1"]
+    assert bad_condition["operator"] == "or"
+    assert [item["value"] for item in bad_condition["items"]] == [
+        "slug-1-0",
+        "slug-1-2",
+        "slug-1-3",
+    ]
+    assert {item["question"] for item in ok_condition["items"]} == {"id-enum-101"}
+
+
+def test_publish_questions_feedback_mode_keeps_block_order():
+    """Порядок: вводная → вопрос → верно → неверно → заключительная."""
+    client = _FeedbackClient()
+
+    publish_questions(
+        _feedback_cfg(),
+        [_one_question()],
+        client,
+        intro="Вводная",
+        outro="Заключительная",
+    )
+
+    assert client.order == ["c1", "q1", "c2", "c3", "c4"]
+
+
+def test_publish_questions_feedback_mode_disables_quiz():
+    """В режиме обратной связи квиз не настраивается (баллы не считаются)."""
+    client = _FeedbackClient()
+
+    publish_questions(_feedback_cfg(), [_one_question()], client)
+
+    assert "quiz" not in client.updates[-1]
+    assert client.questions[0]["has_quiz"] is False
+
+
+def test_publish_questions_feedback_mode_requires_slugs():
+    """Вопрос создаётся с with_slugs, иначе условия показа не собрать."""
+    client = _FeedbackClient()
+
+    publish_questions(_feedback_cfg(), [_one_question()], client)
+
+    assert client.questions[0]["with_slugs"] is True
+    assert client.questions[0]["context"] == "Завязка."
+
+
+def test_publish_questions_feedback_mode_without_explanation_keeps_text():
+    """Без пояснения блок верного ответа — только заголовок."""
+    client = _FeedbackClient()
+
+    publish_questions(
+        _feedback_cfg(), [_one_question(explanation="")], client
+    )
+
+    assert client.comments[0][0] == "Правильно."
+
+
+def test_publish_questions_feedback_failure_raises(monkeypatch):
+    """Если условие показа не создалось — публикация падает (fail-closed)."""
+
+    class _BrokenConditionClient(_FeedbackClient):
+        def add_question_condition(self, *a, **k):
+            raise YandexFormsError("conditions not supported")
+
+    client = _BrokenConditionClient()
+    client.publish = lambda *a, **k: pytest.fail("форма не должна публиковаться")
+
+    with pytest.raises(YandexFormsError):
+        publish_questions(_feedback_cfg(), [_one_question()], client)
+
+
+def test_publish_questions_without_slugs_raises_yandex_error():
+    """Пустой ответ API без слагов — ошибка, а не форма с вечным блоком."""
+
+    class _NoSlugClient(_FeedbackClient):
+        def add_enum_question_detailed(self, survey_id, **kwargs):
+            return {"id": 1, "items": [{"id": i} for i in range(4)]}
+
+    with pytest.raises(YandexFormsError):
+        publish_questions(_feedback_cfg(), [_one_question()], _NoSlugClient())
+
+
+def test_publish_questions_clears_context_that_spoils_answer():
+    """Завязка-спойлер убирается перед созданием вопроса."""
+    client = _CommentClient()
+    question = _one_question(
+        question="Кто написал «Войну и мир»?",
+        options=["Толстой", "Достоевский", "Чехов", "Тургенев"],
+        correct_index=0,
+        context="Этот Толстой любил простую жизнь.",
+        explanation="",
+    )
+
+    publish_questions(_publish_cfg(), [question], client)
+
+    assert client.questions[0]["context"] == ""
+
+
+def test_publish_questions_skips_context_when_disabled():
+    """При QUESTION_CONTEXT_ENABLED=false завязка не выводится."""
+    client = _CommentClient()
+
+    publish_questions(
+        _publish_cfg(question_context_enabled=False), [_one_question()], client
+    )
+
+    assert client.questions[0]["context"] == ""

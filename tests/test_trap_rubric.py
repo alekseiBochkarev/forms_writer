@@ -230,9 +230,18 @@ def test_generate_trap_questions_parses_and_uses_reserve(monkeypatch):
     result = llm.generate_trap_questions(_trap_cfg(__import__("pathlib").Path(".")), 4)
 
     assert len(result) == want
-    # каждый вопрос прошёл общую валидацию (topic/question/options[4]/correct_index)
+    # каждый вопрос прошёл общую валидацию; context/explanation есть всегда,
+    # но при выключенных флагах они пустые
     for q in result:
-        assert set(q) == {"topic", "question", "options", "correct_index"}
+        assert set(q) == {
+            "topic",
+            "question",
+            "options",
+            "correct_index",
+            "context",
+            "explanation",
+        }
+        assert q["context"] == "" and q["explanation"] == ""
         assert len(q["options"]) == 4
     # запрос был с response_format и моделью из конфига
     assert captured["payload"]["response_format"] == {"type": "json_object"}
@@ -246,6 +255,45 @@ def test_generate_trap_prompt_mentions_trap_and_one_answer():
     assert "ловушк" in lowered
     assert "однозначно верный" in lowered
     assert "4 варианта" in lowered
+
+
+def test_llm_cfg_disables_context_and_feedback_without_touching_original(tmp_path):
+    """В рубриках завязки/пояснения не запрашиваются, исходный cfg не меняется."""
+    cfg = _trap_cfg(tmp_path)
+    cfg.question_context_enabled = True
+    cfg.feedback_enabled = True
+
+    local = rubric_flow._llm_cfg(cfg)
+
+    assert local is not cfg
+    assert local.question_context_enabled is False
+    assert local.feedback_enabled is False
+    assert cfg.question_context_enabled is True
+    assert cfg.feedback_enabled is True
+
+
+def test_collect_trap_questions_uses_context_free_cfg(monkeypatch, tmp_path):
+    """Генерация ловушек получает копию конфига без завязок и пояснений."""
+    cfg = _trap_cfg(tmp_path)
+    cfg.question_context_enabled = True
+    cfg.feedback_enabled = True
+    captured = {}
+
+    def fake_generate(local_cfg, count):
+        captured["cfg"] = local_cfg
+        return _questions(count)
+
+    monkeypatch.setattr(rubric_flow, "generate_trap_questions", fake_generate)
+    monkeypatch.setattr(factcheck, "filter_questions", lambda cfg, qs: list(qs))
+
+    from dedup import DuplicateChecker
+
+    rubric_flow._collect_trap_questions(
+        cfg, cfg.rubrics.rubrics["c"], DuplicateChecker([])
+    )
+
+    assert captured["cfg"].question_context_enabled is False
+    assert captured["cfg"].feedback_enabled is False
 
 
 # --- интеграция: фактчек фильтрует кандидатов --------------------------------

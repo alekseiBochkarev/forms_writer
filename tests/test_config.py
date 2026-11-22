@@ -268,6 +268,62 @@ def test_review_model_override():
     assert cfg.effective_review_model() == "review-model"
 
 
+# --- Завязка и пояснения к вопросам -----------------------------------------
+
+
+def test_context_and_feedback_defaults():
+    """Завязки включены, режим обратной связи — выключен."""
+    cfg = load_config({"dry_run": True}, require_questions=False)
+
+    assert cfg.question_context_enabled is True
+    assert cfg.question_context_max_chars == 240
+    assert cfg.feedback_enabled is False
+    assert cfg.feedback_correct_text == "Правильно."
+    assert cfg.feedback_wrong_text == "Ошибочка. Подумайте ещё."
+    assert cfg.explanation_max_chars == 420
+
+
+def test_context_and_feedback_env_override(monkeypatch):
+    """Переменные окружения переопределяют дефолты."""
+    monkeypatch.setenv("QUESTION_CONTEXT_ENABLED", "false")
+    monkeypatch.setenv("QUESTION_CONTEXT_MAX_CHARS", "150")
+    monkeypatch.setenv("FEEDBACK_ENABLED", "true")
+    monkeypatch.setenv("FEEDBACK_CORRECT_TEXT", "Верно!")
+    monkeypatch.setenv("FEEDBACK_WRONG_TEXT", "Мимо.")
+    monkeypatch.setenv("EXPLANATION_MAX_CHARS", "300")
+
+    cfg = load_config({"dry_run": True}, require_questions=False)
+
+    assert cfg.question_context_enabled is False
+    assert cfg.question_context_max_chars == 150
+    assert cfg.feedback_enabled is True
+    assert cfg.feedback_correct_text == "Верно!"
+    assert cfg.feedback_wrong_text == "Мимо."
+    assert cfg.explanation_max_chars == 300
+
+
+def test_context_limits_ignore_garbage_values(monkeypatch):
+    """Мусор в лимитах не роняет конфиг: берётся дефолт."""
+    monkeypatch.setenv("QUESTION_CONTEXT_MAX_CHARS", "много")
+    monkeypatch.setenv("EXPLANATION_MAX_CHARS", "")
+
+    cfg = load_config({"dry_run": True}, require_questions=False)
+
+    assert cfg.question_context_max_chars == 240
+    assert cfg.explanation_max_chars == 420
+
+
+def test_empty_feedback_texts_fall_back_to_defaults(monkeypatch):
+    """Пустые заголовки обратной связи заменяются дефолтными."""
+    monkeypatch.setenv("FEEDBACK_CORRECT_TEXT", "   ")
+    monkeypatch.setenv("FEEDBACK_WRONG_TEXT", "  ")
+
+    cfg = load_config({"dry_run": True}, require_questions=False)
+
+    assert cfg.feedback_correct_text == "Правильно."
+    assert cfg.feedback_wrong_text == "Ошибочка. Подумайте ещё."
+
+
 # --- Поток новых тестов ------------------------------------------------------
 
 

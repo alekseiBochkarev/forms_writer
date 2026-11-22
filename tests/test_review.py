@@ -323,3 +323,80 @@ def test_build_prompt_includes_theme_and_soft_topic_rule():
     assert "кулинария" in prompt
     # Мягкое правило: обобщённый/неполный список тем не считается проблемой.
     assert "НЕ является проблемой" in prompt
+
+
+# --- context_spoiler / sanitize_contexts ------------------------------------
+
+
+def test_context_spoiler_detects_full_answer():
+    """Правильный ответ целиком в завязке — спойлер."""
+    assert review.context_spoiler(
+        "Этот Толстой воевал на Кавказе и много писал о крестьянах.",
+        "Толстой",
+    )
+
+
+def test_context_spoiler_ignores_single_generic_word():
+    """Одно общее слово из ответа не считается спойлером."""
+    assert not review.context_spoiler(
+        "Стрекоза весь день кружит над прудом и садится на камыш.",
+        "В пресной воде",
+    )
+
+
+def test_context_spoiler_detects_all_answer_words():
+    """Все значимые слова ответа в завязке — тоже спойлер."""
+    assert review.context_spoiler(
+        "Речь пойдёт о пресной воде и её обитателях.",
+        "В пресной воде",
+    )
+
+
+def test_context_spoiler_empty_values():
+    assert review.context_spoiler("", "ответ") is False
+    assert review.context_spoiler("завязка", "") is False
+
+
+def test_sanitize_contexts_clears_only_spoiling_context():
+    """Санитайзер убирает завязку-спойлер и не трогает остальные вопросы."""
+    questions = [
+        {
+            "question": "Кто написал «Войну и мир»?",
+            "options": ["Толстой", "Достоевский", "Чехов", "Тургенев"],
+            "correct_index": 0,
+            "context": "Этот Толстой любил простую крестьянскую жизнь.",
+        },
+        {
+            "question": "Где живут стрекозы?",
+            "options": ["В пресной воде", "В пустыне", "В тайге", "В тундре"],
+            "correct_index": 0,
+            "context": "Летом над прудом кружат тонкие стрекозы.",
+        },
+        {
+            "question": "Без завязки?",
+            "options": ["a", "b", "c", "d"],
+            "correct_index": 1,
+        },
+    ]
+
+    cleared = review.sanitize_contexts(questions)
+
+    assert cleared == 1
+    assert questions[0]["context"] == ""
+    assert questions[1]["context"].startswith("Летом над прудом")
+    assert "context" not in questions[2]
+
+
+def test_sanitize_contexts_ignores_broken_correct_index():
+    """Битый correct_index не роняет санитайзер и не чистит завязку."""
+    questions = [
+        {"question": "Q?", "options": ["a"], "correct_index": 5, "context": "Текст"}
+    ]
+
+    assert review.sanitize_contexts(questions) == 0
+    assert questions[0]["context"] == "Текст"
+
+
+def test_sanitize_contexts_returns_zero_for_empty_list():
+    assert review.sanitize_contexts([]) == 0
+    assert review.sanitize_contexts(None) == 0

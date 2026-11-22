@@ -698,6 +698,18 @@ class Config:
     # Включать вводную в текст анонса Telegram (перед CTA).
     announce_intro: bool = True
 
+    # --- Завязка и пояснения (docs/tz_question_context_feedback.md) ---
+    # «Завязка» — 1-2 предложения сценки перед вопросом (внутри label).
+    question_context_enabled: bool = True
+    question_context_max_chars: int = 240
+    # Пояснение к верному ответу + мгновенная обратная связь: после вопроса
+    # добавляются два условных comment-блока (верно/неверно). В этом режиме
+    # квиз не считает баллы (сегменты не применяются) — поэтому по умолчанию выкл.
+    feedback_enabled: bool = False
+    feedback_correct_text: str = "Правильно."
+    feedback_wrong_text: str = "Ошибочка. Подумайте ещё."
+    explanation_max_chars: int = 420
+
     # --- Поток «новых тестов» (отдельный канал) ---
     new_tests_enabled: bool = False
     # По решению заказчика — 15 вопросов с порогом 10/15.
@@ -953,6 +965,20 @@ def load_config(
         outro_max_paragraphs=_get_int("OUTRO_MAX_PARAGRAPHS", 3) or 3,
         review_model=os.getenv("REVIEW_MODEL", "").strip(),
         announce_intro=_get_bool("ANNOUNCE_INTRO", True),
+        # --- Завязка и пояснения к вопросам ---
+        question_context_enabled=_get_bool("QUESTION_CONTEXT_ENABLED", True),
+        question_context_max_chars=max(
+            0, _get_int_safe("QUESTION_CONTEXT_MAX_CHARS", 240)
+        ),
+        feedback_enabled=_get_bool("FEEDBACK_ENABLED", False),
+        feedback_correct_text=(
+            os.getenv("FEEDBACK_CORRECT_TEXT", "Правильно.").strip() or "Правильно."
+        ),
+        feedback_wrong_text=(
+            os.getenv("FEEDBACK_WRONG_TEXT", "Ошибочка. Подумайте ещё.").strip()
+            or "Ошибочка. Подумайте ещё."
+        ),
+        explanation_max_chars=max(0, _get_int_safe("EXPLANATION_MAX_CHARS", 420)),
         # --- Поток новых тестов ---
         new_tests_enabled=_get_bool("NEW_TESTS_ENABLED", False),
         new_tests_count=_get_int("NEW_TESTS_COUNT", 15),
