@@ -21,6 +21,7 @@
 
 from __future__ import annotations
 
+import copy
 import logging
 import math
 import os
@@ -753,6 +754,19 @@ def _erudite_history(cfg, rubric_state: Dict[str, Any]) -> List[str]:
     return history
 
 
+def _llm_cfg(cfg):
+    """Копия конфига для генерации вопросов рубрики.
+
+    Рубрики не поддерживают режим обратной связи (метрики считаются по баллам
+    квиза), а завязки в их формах пока не выводятся. Поэтому оба поля у модели
+    не запрашиваем: иначе ответы становятся длиннее без пользы для читателя.
+    """
+    local = copy.copy(cfg)
+    local.feedback_enabled = False
+    local.question_context_enabled = False
+    return local
+
+
 def _collect_trap_questions(
     cfg, rubric: Rubric, checker: DuplicateChecker
 ) -> List[Dict[str, Any]]:
@@ -765,7 +779,7 @@ def _collect_trap_questions(
 
     need = rubric.questions_count
     try:
-        candidates = generate_trap_questions(cfg, need)
+        candidates = generate_trap_questions(_llm_cfg(cfg), need)
     except Exception as exc:  # noqa: BLE001 - понятная ошибка вместо трейсбека
         log.error("Не удалось получить вопросы-ловушки: %s", exc)
         return []
@@ -1228,7 +1242,7 @@ def _collect_text_block(
                 continue
             try:
                 candidates = generate_topic_questions(
-                    cfg, topic, want, avoid=avoid, extra=_mixed_extra_text(want)
+                    _llm_cfg(cfg), topic, want, avoid=avoid, extra=_mixed_extra_text(want)
                 )
             except Exception as exc:  # noqa: BLE001 - один сбой не роняет выпуск
                 log.error(

@@ -117,6 +117,8 @@ def load_questions_from_file(path: str) -> List[Dict[str, Any]]:
                 "question": item["question"],
                 "options": options,
                 "correct_index": correct,
+                "context": item.get("context", ""),
+                "explanation": item.get("explanation", ""),
             }
         )
     return result
@@ -350,6 +352,9 @@ def _run_new_tests(cfg) -> int:
     for i, q in enumerate(questions, 1):
         correct = q["options"][q["correct_index"]]
         log.info("  %2d. %s  ->  %s", i, q["question"], correct)
+        context = str(q.get("context") or "").strip()
+        if context and getattr(cfg, "question_context_enabled", False):
+            log.info("      завязка: %s", context)
 
     if cfg.dry_run:
         log.info(
@@ -687,7 +692,10 @@ def main() -> int:
                     continue
                 for q in hist_client.get_questions(s["id"]):
                     if q.get("label"):
-                        history.append(q["label"])
+                        # В label наших вопросов может быть «завязка\n\nвопрос»:
+                        # в историю берём только сам вопрос, без контекста.
+                        label = str(q["label"])
+                        history.append(label.rsplit("\n\n", 1)[-1].strip() or label)
             if history:
                 log.info("Загружено вопросов из существующих форм: %s", len(history))
                 state_data["asked_questions"] = history[-500:]
@@ -696,6 +704,11 @@ def main() -> int:
 
     log.info("Форма: «%s»", cfg.survey_name)
     log.info("Вопросов: %s | тема: %s | публикация: %s", cfg.count, cfg.topic, cfg.publish)
+    log.info(
+        "Завязки: %s | обратная связь: %s",
+        "вкл" if getattr(cfg, "question_context_enabled", False) else "выкл",
+        "вкл" if getattr(cfg, "feedback_enabled", False) else "выкл",
+    )
 
     # 1) Получаем вопросы (без повторов с предыдущими выпусками)
     checker = DuplicateChecker(history)
@@ -723,6 +736,9 @@ def main() -> int:
     for i, q in enumerate(questions, 1):
         correct = q["options"][q["correct_index"]]
         log.info("  %2d. %s  ->  %s", i, q["question"], correct)
+        context = str(q.get("context") or "").strip()
+        if context and getattr(cfg, "question_context_enabled", False):
+            log.info("      завязка: %s", context)
 
     # 2) Dry-run — только показать план
     if cfg.dry_run:

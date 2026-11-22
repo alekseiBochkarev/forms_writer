@@ -81,6 +81,55 @@ def review_title(
     return True, ""
 
 
+def _phrase(text: str) -> str:
+    """Нормализованная фраза: нижний регистр, без пунктуации, один пробел."""
+    return " ".join(re.sub(r"[^0-9а-яёa-z]+", " ", str(text or "").lower()).split())
+
+
+def context_spoiler(context: str, answer: str) -> bool:
+    """Раскрывает ли завязка правильный ответ.
+
+    Строже, чем `contains_spoiler`: совпадения одного общего слова мало (завязка
+    про стрекоз законно упоминает «воду», хотя ответ — «В пресной воде»).
+    Спойлером считаем правильный ответ целиком или все его значимые слова сразу.
+    """
+    phrase = _phrase(context)
+    target = _phrase(answer)
+    if not phrase or not target:
+        return False
+    if target in phrase:
+        return True
+    answer_words = _words(answer)
+    return bool(answer_words) and answer_words <= _words(context)
+
+
+def sanitize_contexts(questions: List[Dict[str, Any]]) -> int:
+    """Убрать завязки, раскрывающие правильный ответ.
+
+    Вызывается перед созданием формы для всех потоков. Выпуск не блокируется:
+    теряется только завязка у конкретного вопроса. Возвращает число очищенных.
+    """
+    cleared = 0
+    for question in questions or []:
+        context = str(question.get("context") or "").strip()
+        if not context:
+            continue
+        options = question.get("options") or []
+        index = question.get("correct_index")
+        if not isinstance(index, int) or not (0 <= index < len(options)):
+            continue
+        if context_spoiler(context, str(options[index])):
+            question["context"] = ""
+            cleared += 1
+            log.info(
+                "  завязка раскрывала ответ — убрал: %s",
+                question.get("question", ""),
+            )
+    if cleared:
+        log.info("Завязок убрано из-за спойлера: %s", cleared)
+    return cleared
+
+
 def _correct_answers(questions: List[Dict[str, Any]]) -> List[str]:
     result: List[str] = []
     for q in questions or []:

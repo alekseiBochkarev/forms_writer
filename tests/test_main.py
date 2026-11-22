@@ -60,6 +60,56 @@ def test_load_file_with_plain_list(tmp_path: Path):
     assert questions[0]["question"] == "Q?"
 
 
+def test_load_file_keeps_context_and_explanation(tmp_path: Path):
+    """Завязка и пояснение из файла не теряются при загрузке."""
+    path = tmp_path / "with_context.json"
+    path.write_text(
+        json.dumps(
+            {
+                "questions": [
+                    {
+                        "topic": "T",
+                        "question": "Q?",
+                        "options": ["a", "b", "c", "d"],
+                        "correct_index": 1,
+                        "context": "Завязка.",
+                        "explanation": "Пояснение.",
+                    }
+                ]
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    question = load_questions_from_file(str(path))[0]
+
+    assert question["context"] == "Завязка."
+    assert question["explanation"] == "Пояснение."
+
+
+def test_load_file_without_context_gets_empty_strings(tmp_path: Path):
+    """Нет полей в файле — пустые строки (единый контракт для публикации)."""
+    path = tmp_path / "plain.json"
+    path.write_text(
+        json.dumps(
+            [
+                {
+                    "question": "Q?",
+                    "options": ["a", "b", "c", "d"],
+                    "correct_index": 0,
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    question = load_questions_from_file(str(path))[0]
+
+    assert question["context"] == ""
+    assert question["explanation"] == ""
+
+
 def test_load_file_broken_option_count_raises(tmp_path: Path):
     """Вопрос с числом вариантов != 4 — ValueError."""
     path = tmp_path / "broken.json"

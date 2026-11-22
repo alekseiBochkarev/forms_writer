@@ -24,6 +24,90 @@ class YandexFormsError(RuntimeError):
     pass
 
 
+def _compose_label(question: str, context: str = "") -> str:
+    """Текст вопроса с «завязкой» перед ним (разделитель — пустая строка)."""
+    text = str(question or "").strip()
+    preface = str(context or "").strip()
+    return f"{preface}\n\n{text}" if preface else text
+
+
+def build_answer_condition(
+    question_slug: str,
+    option_slugs: List[str],
+    operator: str = "and",
+) -> Dict[str, Any]:
+    """Условие показа блока: выбран один из `option_slugs`.
+
+    `operator="and"` — один вариант (ровно верный ответ), `"or"` — любой из
+    перечисленных (все неверные).
+    """
+    return {
+        "operator": operator,
+        "items": [
+            {
+                "type": "question",
+                "condition": "eq",
+                "question": question_slug,
+                "value": slug,
+            }
+            for slug in option_slugs
+        ],
+    }
+
+
+def add_feedback_blocks(
+    client: "YandexFormsClient",
+    survey_id: str,
+    question: Dict[str, Any],
+    correct_index: int,
+    cfg,
+    explanation: str = "",
+) -> None:
+    """Добавить после вопроса блоки «Правильно/Ошибочка» с условиями показа.
+
+    `question` — ответ API на создание вопроса с `with_slugs=true`: нужны
+    `slug` вопроса и `slug` каждого варианта. `explanation` — пояснение из
+    исходного вопроса (в ответе API его нет). Порядок блоков важен: они
+    добавляются сразу после вопроса и показываются только при выборе ответа.
+    """
+    question_slug = str(question.get("slug") or "").strip()
+    items = question.get("items") or []
+    option_slugs = [str(item.get("slug") or "").strip() for item in items]
+    if not question_slug or not option_slugs or not all(option_slugs):
+        raise YandexFormsError(
+            "API не вернул слаги вопроса/вариантов — нельзя собрать условия показа"
+        )
+
+    correct_slug = option_slugs[correct_index]
+    wrong_slugs = [slug for i, slug in enumerate(option_slugs) if i != correct_index]
+    explanation_text = str(explanation or "").strip()
+
+    correct_text = (
+        str(getattr(cfg, "feedback_correct_text", "") or "").strip() or "Правильно."
+    )
+    wrong_text = (
+        str(getattr(cfg, "feedback_wrong_text", "") or "").strip()
+        or "Ошибочка. Подумайте ещё."
+    )
+    if explanation_text:
+        correct_text = f"{correct_text} {explanation_text}".strip()
+
+    ok_id = client.add_comment_question(survey_id, correct_text, header=False)
+    if not ok_id:
+        raise YandexFormsError("API не вернул id блока обратной связи")
+    client.add_question_condition(
+        survey_id, ok_id, build_answer_condition(question_slug, [correct_slug])
+    )
+    bad_id = client.add_comment_question(survey_id, wrong_text, header=False)
+    if not bad_id:
+        raise YandexFormsError("API не вернул id блока обратной связи")
+    client.add_question_condition(
+        survey_id,
+        bad_id,
+        build_answer_condition(question_slug, wrong_slugs, operator="or"),
+    )
+
+
 class YandexFormsClient:
     def __init__(self, token: str, org_id: str, org_header: str = "X-Cloud-Org-Id"):
         self.base_url = BASE_URL
@@ -189,27 +273,85 @@ class YandexFormsClient:
         correct_index: int,
         shuffle: bool = True,
         image: Optional[Dict[str, Any]] = None,
+        context: str = "",
     ) -> int:
-        payload = {
+        """Добавить вопрос с вариантами и вернуть его id (см. detailed-версию)."""
+        data = self.add_enum_question_detailed(
+            survey_id,
+            question=question,
+            options=options,
+            correct_index=correct_index,
+            shuffle=shuffle,
+            image=image,
+            context=context,
+        )
+        return data["id"]
+
+    def add_enum_question_detailed(
+        self,
+        survey_id: str,
+        question: str,
+        options: List[str],
+        correct_index: int,
+        shuffle: bool = True,
+        image: Optional[Dict[str, Any]] = None,
+        context: str = "",
+        has_quiz: bool = True,
+        with_slugs: bool = False,
+    ) -> Dict[str, Any]:
+        """Добавить вопрос и вернуть полный ответ API (слаг вопроса и вариантов).
+
+        Слаги нужны для условий показа (`add_question_condition`): публичный API
+        принимает в `question`/`value` именно слаги, а не числовые id. Поэтому в
+        режиме обратной связи создаём вопрос с `with_slugs=true`.
+
+        `context` («завязка») ставится в начало `label` через пустую строку —
+        один блок текста, как в разобранных каналах.
+
+        `has_quiz=False` — вопрос без подсчёта баллов (режим обратной связи:
+        читатель может менять вариант до верного, баллы теряют смысл).
+        """
+        payload: Dict[str, Any] = {
             "type": "enum",
-            "label": question,
+            "label": _compose_label(question, context),
             "widget": "radio",
-            "has_quiz": True,
+            "has_quiz": has_quiz,
             "modify_choices": "shuffle" if shuffle else "natural",
             "validators": [{"type": "required"}],
             "items": [
                 {
                     "label": option,
-                    "correct": (i == correct_index),
-                    "scores": (1 if i == correct_index else 0),
+                    **(
+                        {
+                            "correct": (i == correct_index),
+                            "scores": (1 if i == correct_index else 0),
+                        }
+                        if has_quiz
+                        else {}
+                    ),
                 }
                 for i, option in enumerate(options)
             ],
         }
         if image:
             payload["image"] = image
-        data = self._request("POST", f"/surveys/{survey_id}/questions/", payload)
-        return data["id"]
+        params = {"with_slugs": "true"} if with_slugs else None
+        return self._request(
+            "POST", f"/surveys/{survey_id}/questions/", payload, params=params
+        )
+
+    def add_question_condition(
+        self,
+        survey_id: str,
+        question_id: int,
+        condition: Dict[str, Any],
+    ) -> Any:
+        """Задать условие показа блока (см. `build_answer_condition`)."""
+        return self._request(
+            "POST",
+            f"/surveys/{survey_id}/questions/{question_id}/conditions",
+            condition,
+        )
 
     def add_comment_question(
         self, survey_id: str, label: str, header: bool = False
@@ -324,7 +466,19 @@ def publish_questions(
 
     Вводная добавляется блоком `comment` первым, заключительная — последним
     (блоки комментариев не влияют на баллы квиза). Возвращает id формы.
+
+    При `FEEDBACK_ENABLED` после каждого вопроса добавляются условные блоки
+    «Правильно/Ошибочка», а `quiz` в форму не передаётся.
     """
+    # Завязки проверяем детерминированно до обращения к API: если контекст
+    # раскрывает ответ — убираем его (выпуск не блокируем).
+    from review import sanitize_contexts
+
+    sanitize_contexts(questions)
+
+    feedback_mode = bool(getattr(cfg, "feedback_enabled", False))
+    with_context = bool(getattr(cfg, "question_context_enabled", False))
+
     if cfg.yandex_survey_id:
         survey_id = cfg.yandex_survey_id
         log.info("Использую существующую форму: %s", survey_id)
@@ -346,25 +500,67 @@ def publish_questions(
         log.info("  + вводная часть (comment id=%s)", comment_id)
 
     for i, q in enumerate(questions, 1):
-        qid = client.add_enum_question(
-            survey_id,
-            question=q["question"],
-            options=q["options"],
-            correct_index=q["correct_index"],
-            shuffle=cfg.shuffle,
-            image=q.get("image"),
-        )
-        log.info("  + вопрос %s: id=%s [%s]", i, qid, q.get("topic", ""))
+        context = str(q.get("context") or "").strip() if with_context else ""
+        if feedback_mode:
+            # В режиме обратной связи нужны слаги вопроса и вариантов — по ним
+            # строятся условия показа блоков «Правильно/Ошибочка».
+            data = client.add_enum_question_detailed(
+                survey_id,
+                question=q["question"],
+                options=q["options"],
+                correct_index=q["correct_index"],
+                shuffle=cfg.shuffle,
+                image=q.get("image"),
+                context=context,
+                has_quiz=False,
+                with_slugs=True,
+            )
+            qid = data.get("id")
+            add_feedback_blocks(
+                client,
+                survey_id,
+                data,
+                q["correct_index"],
+                cfg,
+                explanation=str(q.get("explanation") or ""),
+            )
+            log.info(
+                "  + вопрос %s: id=%s [%s] + обратная связь",
+                i,
+                qid,
+                q.get("topic", ""),
+            )
+        else:
+            qid = client.add_enum_question(
+                survey_id,
+                question=q["question"],
+                options=q["options"],
+                correct_index=q["correct_index"],
+                shuffle=cfg.shuffle,
+                image=q.get("image"),
+                context=context,
+            )
+            log.info("  + вопрос %s: id=%s [%s]", i, qid, q.get("topic", ""))
 
     if getattr(cfg, "conclusion_enabled", False) and (outro or "").strip():
         comment_id = client.add_comment_question(survey_id, outro.strip(), header=False)
         log.info("  + заключительная часть (comment id=%s)", comment_id)
 
-    quiz = build_quiz_settings(cfg, total=len(questions))
-    client.update_survey(
-        survey_id, {"quiz": quiz, "stats": cfg.stats, "need_auth": False}
-    )
-    log.info("Настройки теста применены (stats=%s, quiz=%s)", cfg.stats, quiz.get("calc_method"))
+    if feedback_mode:
+        # Баллы и сегменты в этом режиме не имеют смысла: читатель может менять
+        # вариант до верного, а пояснение показывается сразу.
+        client.update_survey(survey_id, {"stats": cfg.stats, "need_auth": False})
+        log.info("Режим обратной связи: квиз не настраивается (stats=%s)", cfg.stats)
+    else:
+        quiz = build_quiz_settings(cfg, total=len(questions))
+        client.update_survey(
+            survey_id, {"quiz": quiz, "stats": cfg.stats, "need_auth": False}
+        )
+        log.info(
+            "Настройки теста применены (stats=%s, quiz=%s)",
+            cfg.stats,
+            quiz.get("calc_method"),
+        )
 
     # Открываем публичный доступ: иначе обычные пользователи не откроют ссылку.
     client.set_access(survey_id, access="public", action="submit")

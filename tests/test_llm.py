@@ -494,3 +494,163 @@ def test_generate_questions_uses_personality_focus_from_cfg(monkeypatch):
     generate_questions(cfg)
 
     assert "жизни и творчестве" in captured["prompt"]
+
+
+# --- завязка и пояснения ----------------------------------------------------
+
+
+def test_build_user_prompt_has_no_context_fields_by_default():
+    """Без флагов промпт не просит завязку и пояснение."""
+    prompt = _build_user_prompt("общая эрудиция", 5, "ru")
+
+    assert '"context"' not in prompt
+    assert '"explanation"' not in prompt
+
+
+def test_build_user_prompt_requests_context_only():
+    """Флаг завязки добавляет поле context, но не explanation."""
+    prompt = _build_user_prompt("общая эрудиция", 5, "ru", with_context=True)
+
+    assert '"context"' in prompt
+    assert '"explanation"' not in prompt
+    assert "завязк" in prompt
+
+
+def test_build_user_prompt_requests_explanation_only():
+    prompt = _build_user_prompt("общая эрудиция", 5, "ru", with_explanation=True)
+
+    assert '"explanation"' in prompt
+    assert '"context"' not in prompt
+
+
+def test_validate_questions_drops_fields_when_flags_off():
+    """Без флагов поля не попадают в результат — контракт не меняется."""
+    result = _validate_questions(
+        [_item(context="Завязка", explanation="Пояснение")]
+    )
+
+    assert result[0]["context"] == ""
+    assert result[0]["explanation"] == ""
+
+
+def test_validate_questions_keeps_and_normalizes_context():
+    """Завязка сохраняется, лишние пробелы/переводы строк убираются."""
+    result = _validate_questions(
+        [_item(context="  Первая строка.\n\n  Вторая строка.  ")], with_context=True
+    )
+
+    assert result[0]["context"] == "Первая строка. Вторая строка."
+
+
+def test_validate_questions_clips_context_by_sentence_boundary():
+    """Длинная завязка обрезается по концу предложения, а не по слову."""
+    long_context = "Первое предложение про театр. " * 20
+
+    result = _validate_questions(
+        [_item(context=long_context)], with_context=True, context_max=120
+    )
+
+    context = result[0]["context"]
+    assert len(context) <= 120
+    assert context.endswith(".")
+
+
+def test_validate_questions_clips_with_ellipsis_without_sentence_end():
+    """Если конца предложения рядом нет — добавляется многоточие."""
+    text = "слово " * 50
+
+    result = _validate_questions(
+        [_item(context=text)], with_context=True, context_max=40
+    )
+
+    context = result[0]["context"]
+    assert len(context) <= 41
+    assert context.endswith("…")
+
+
+def test_validate_questions_missing_context_is_empty_string():
+    """Битое/отсутствующее поле не роняет вопрос: просто пустая строка."""
+    result = _validate_questions(
+        [_item(context=None, explanation=123)], with_context=True, with_explanation=True
+    )
+
+    assert result[0]["context"] == ""
+    assert result[0]["explanation"] == "123"
+
+
+def test_validate_questions_zero_limit_means_no_clipping():
+    long_context = "Очень длинная завязка. " * 30
+
+    result = _validate_questions(
+        [_item(context=long_context)], with_context=True, context_max=0
+    )
+
+    assert len(result[0]["context"]) == len(" ".join(long_context.split()))
+
+
+def test_generate_questions_requests_context_when_enabled(monkeypatch):
+    """generate_questions передаёт флаг в промпт и сохраняет завязку в вопросе."""
+    captured = {}
+
+    def fake_post(url, **kwargs):
+        captured["prompt"] = kwargs["json"]["messages"][1]["content"]
+        content = json.dumps(
+            {"questions": [_item(context="Завязка перед вопросом.")]},
+            ensure_ascii=False,
+        )
+        return FakeResponse(
+            200, json_data={"choices": [{"message": {"content": content}}]}
+        )
+
+    monkeypatch.setattr("llm.requests.post", fake_post)
+
+    questions = generate_questions(_cfg(question_context_enabled=True))
+
+    assert '"context"' in captured["prompt"]
+    assert questions[0]["context"] == "Завязка перед вопросом."
+
+
+def test_generate_questions_feedback_flag_adds_explanation(monkeypatch):
+    captured = {}
+
+    def fake_post(url, **kwargs):
+        captured["prompt"] = kwargs["json"]["messages"][1]["content"]
+        content = json.dumps(
+            {
+                "questions": [
+                    _item(explanation="Потому что так исторически сложилось.")
+                ]
+            },
+            ensure_ascii=False,
+        )
+        return FakeResponse(
+            200, json_data={"choices": [{"message": {"content": content}}]}
+        )
+
+    monkeypatch.setattr("llm.requests.post", fake_post)
+
+    questions = generate_questions(_cfg(feedback_enabled=True))
+
+    assert '"explanation"' in captured["prompt"]
+    assert questions[0]["explanation"].startswith("Потому что")
+
+
+def test_generate_conclusion_asks_self_score_in_feedback_mode(monkeypatch):
+    """В режиме обратной связи заключительная просит самооценку, не ответы."""
+    payloads = _capture_text_payloads(monkeypatch, "outro", "Спасибо")
+
+    generate_conclusion(_text_cfg(feedback_enabled=True), ["История"], 10)
+
+    prompt = payloads[0]["messages"][1]["content"]
+    assert "с первой попытки" in prompt
+    assert "посмотреть правильные ответы" not in prompt
+
+
+def test_generate_conclusion_default_asks_to_look_at_answers(monkeypatch):
+    payloads = _capture_text_payloads(monkeypatch, "outro", "Спасибо")
+
+    generate_conclusion(_text_cfg(), ["История"], 10)
+
+    prompt = payloads[0]["messages"][1]["content"]
+    assert "посмотреть правильные ответы" in prompt
+    assert "с первой попытки" not in prompt

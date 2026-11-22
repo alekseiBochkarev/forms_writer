@@ -17,6 +17,78 @@ SYSTEM_PROMPT = (
     "Ты придумываешь корректные вопросы на общую эрудицию и всегда отвечаешь строго в формате JSON."
 )
 
+# Лимиты на «завязку» и пояснение. Значения по умолчанию нужны для заглушек
+# конфига (тесты, старые вызовы), где этих атрибутов ещё нет.
+DEFAULT_CONTEXT_MAX_CHARS = 240
+DEFAULT_EXPLANATION_MAX_CHARS = 420
+
+
+def _wants_context(cfg: Any) -> bool:
+    return bool(getattr(cfg, "question_context_enabled", False))
+
+
+def _wants_explanation(cfg: Any) -> bool:
+    return bool(getattr(cfg, "feedback_enabled", False))
+
+
+def _context_limit(cfg: Any) -> int:
+    return int(getattr(cfg, "question_context_max_chars", DEFAULT_CONTEXT_MAX_CHARS))
+
+
+def _explanation_limit(cfg: Any) -> int:
+    return int(
+        getattr(cfg, "explanation_max_chars", DEFAULT_EXPLANATION_MAX_CHARS)
+    )
+
+
+def clip_text(text: Any, limit: int) -> str:
+    """Сжать текст в одну строку и обрезать по лимиту на границе предложения.
+
+    `limit <= 0` — без обрезки. Обрезка «в середине слова» недопустима: если
+    рядом с лимитом есть конец предложения, режем по нему, иначе ставим
+    многоточие.
+    """
+    value = " ".join(str(text or "").split())
+    if limit <= 0 or len(value) <= limit:
+        return value
+    cut = value[:limit]
+    boundary = max(cut.rfind(". "), cut.rfind("! "), cut.rfind("? "))
+    if boundary >= limit // 2:
+        return cut[: boundary + 1].strip()
+    return cut.rstrip(" ,;:—-") + "…"
+
+
+def _content_rules(with_context: bool, with_explanation: bool) -> str:
+    """Требования к «завязке» и пояснению — общие для всех генераторов."""
+    rules = ""
+    if with_context:
+        rules += (
+            "- у каждого вопроса добавь поле \"context\": 1–2 предложения (120–240 "
+            "символов) живой завязки перед вопросом — конкретная сценка, деталь или "
+            "историческая рамка, из которой естественно вырастает вопрос; в завязке "
+            "НЕ должно быть правильного ответа, его синонимов и пересказа "
+            "формулировки вопроса, без «А вы знали» и без обращения к читателю;\n"
+        )
+    if with_explanation:
+        rules += (
+            "- добавь поле \"explanation\": 2–3 предложения (200–420 символов), "
+            "почему верный вариант верен, плюс один проверяемый факт по теме; не "
+            "пересказывай вопрос и не перечисляй остальные варианты;\n"
+        )
+    return rules
+
+
+def _schema_context_line(with_context: bool) -> str:
+    if not with_context:
+        return ""
+    return '      "context": "Короткая завязка перед вопросом.",\n'
+
+
+def _schema_explanation_line(with_explanation: bool) -> str:
+    if not with_explanation:
+        return ""
+    return '      "explanation": "Почему верный вариант верен — и один факт.",\n'
+
 
 def _build_user_prompt(
     topic: str,
@@ -25,6 +97,8 @@ def _build_user_prompt(
     avoid: List[str] | None = None,
     personality_focus: bool = False,
     personality_mix: int = 0,
+    with_context: bool = False,
+    with_explanation: bool = False,
 ) -> str:
     avoid_block = ""
     if avoid:
@@ -67,14 +141,17 @@ def _build_user_prompt(
         + "- у каждого вопроса ровно 4 варианта ответа и РОВНО ОДИН правильный;\n"
         + "- факты должны быть достоверными и однозначными, без спорных формулировок;\n"
         + "- варианты должны быть правдоподобными, но только один — верный.\n"
+        + _content_rules(with_context, with_explanation)
         + f"{avoid_block}\n"
         + "Верни JSON строго такого вида:\n"
         + "{\n"
         + '  "questions": [\n'
         + "    {\n"
+        + _schema_context_line(with_context)
         + '      "topic": "История",\n'
         + '      "question": "В каком году ... ?",\n'
         + '      "options": ["...", "...", "...", "..."],\n'
+        + _schema_explanation_line(with_explanation)
         + '      "correct_index": 2\n'
         + "    }\n"
         + "  ]\n"
@@ -101,7 +178,13 @@ _extract_json = extract_json
 
 
 def _validate_questions(
-    items: List[Dict[str, Any]], *, strict: bool = True
+    items: List[Dict[str, Any]],
+    *,
+    strict: bool = True,
+    with_context: bool = False,
+    with_explanation: bool = False,
+    context_max: int = DEFAULT_CONTEXT_MAX_CHARS,
+    explanation_max: int = DEFAULT_EXPLANATION_MAX_CHARS,
 ) -> List[Dict[str, Any]]:
     """Проверить вопросы модели и привести их к единому виду.
 
@@ -110,6 +193,11 @@ def _validate_questions(
     `strict=False` пропускает битые элементы с предупреждением: используется в
     `generate_topic_questions`, где один кривой вопрос не должен отменять уже
     собранный смешанный выпуск.
+
+    `with_context`/`with_explanation` включают приём соответствующих полей:
+    отсутствующее или битое значение не роняет вопрос, а заменяется пустой
+    строкой (завязку/пояснение просто не выводим). Длинный текст обрезается по
+    границе предложения — см. `clip_text`.
     """
     result = []
     for item in items:
@@ -136,12 +224,22 @@ def _validate_questions(
                 raise ValueError(f"Пустой текст вопроса: {item}")
             log.warning("Пропускаю вопрос с пустым текстом: %s", item)
             continue
+        context = (
+            clip_text(item.get("context"), context_max) if with_context else ""
+        )
+        explanation = (
+            clip_text(item.get("explanation"), explanation_max)
+            if with_explanation
+            else ""
+        )
         result.append(
             {
                 "topic": (item.get("topic") or "").strip(),
                 "question": question,
                 "options": [str(o) for o in options],
                 "correct_index": correct,
+                "context": context,
+                "explanation": explanation,
             }
         )
     return result
@@ -309,10 +407,18 @@ def _build_outro_prompt(
     max_paragraphs: int,
     language: str,
     theme: str | None = None,
+    feedback_mode: bool = False,
 ) -> str:
     theme_block = ""
     if (theme or "").strip():
         theme_block = f"Сквозная тема выпуска: «{theme.strip()}».\n"
+    instruction = (
+        "2) короткая инструкция посчитать, сколько раз верный ответ был выбран "
+        "с первой попытки (пояснение открывается сразу после верного выбора), и "
+        "предложить написать этот результат в комментариях;\n"
+        if feedback_mode
+        else "2) короткая инструкция посмотреть правильные ответы;\n"
+    )
     return (
         f"Напиши заключительную часть теста на языке «{language}» из "
         f"{min_paragraphs}–{max_paragraphs} абзацев после {count} вопросов.\n"
@@ -320,7 +426,7 @@ def _build_outro_prompt(
         f"{theme_block}"
         "Строй заключительную по плану:\n"
         "1) тёплая концовка и благодарность за участие;\n"
-        "2) короткая инструкция посмотреть правильные ответы;\n"
+        f"{instruction}"
         "3) вопрос для вовлечения читателя (например, был ли вопрос, на который "
         "он не знал ответа);\n"
         "4) лёгкий призыв подписаться/поставить лайк/поделиться. Без переспама.\n"
@@ -387,6 +493,7 @@ def generate_conclusion(
         cfg.outro_max_paragraphs,
         cfg.language,
         theme,
+        feedback_mode=_wants_explanation(cfg),
     )
     log.info("Запрашиваю заключительную часть у модели %s ...", cfg.llm_model)
     return _request_text(cfg, TEXT_SYSTEM_PROMPT, user, "outro")
@@ -416,6 +523,8 @@ def generate_topic_questions(
     и дедупликация. Формат элементов тот же, что у `generate_questions`.
     """
     target = max(1, int(count)) + max(0, int(extra))
+    with_context = _wants_context(cfg)
+    with_explanation = _wants_explanation(cfg)
     avoid_block = ""
     if avoid:
         # Берём самые свежие вопросы: история хранится в хронологическом
@@ -440,14 +549,17 @@ def generate_topic_questions(
         "- факты достоверные и однозначные, без спорных формулировок;\n"
         "- неверные варианты правдоподобные, но строго неверные; без "
         "«все вышеперечисленное» и «нет верного ответа».\n"
+        f"{_content_rules(with_context, with_explanation)}"
         f"{avoid_block}\n"
         "Верни JSON строго такого вида:\n"
         "{\n"
         '  "questions": [\n'
         "    {\n"
+        f"{_schema_context_line(with_context)}"
         '      "topic": "Кино",\n'
         '      "question": "Кто снял фильм ...?",\n'
         '      "options": ["...", "...", "...", "..."],\n'
+        f"{_schema_explanation_line(with_explanation)}"
         '      "correct_index": 2\n'
         "    }\n"
         "  ]\n"
@@ -473,7 +585,12 @@ def generate_topic_questions(
     data = post_chat(cfg, payload)
     content = data["choices"][0]["message"]["content"]
     questions = _validate_questions(
-        extract_json(content).get("questions", []), strict=False
+        extract_json(content).get("questions", []),
+        strict=False,
+        with_context=with_context,
+        with_explanation=with_explanation,
+        context_max=_context_limit(cfg),
+        explanation_max=_explanation_limit(cfg),
     )
     if len(questions) < target:
         log.warning(
@@ -516,7 +633,11 @@ TRAP_RULES = (
 
 
 def _build_trap_prompt(
-    count: int, language: str, avoid: List[str] | None = None
+    count: int,
+    language: str,
+    avoid: List[str] | None = None,
+    with_context: bool = False,
+    with_explanation: bool = False,
 ) -> str:
     avoid_block = ""
     if avoid:
@@ -529,14 +650,17 @@ def _build_trap_prompt(
     return (
         f"Составь ровно {count} вопросов-ловушек на языке «{language}».\n"
         + TRAP_RULES
+        + _content_rules(with_context, with_explanation)
         + f"{avoid_block}\n"
         + "Верни JSON строго такого вида:\n"
         + "{\n"
         + '  "questions": [\n'
         + "    {\n"
+        + _schema_context_line(with_context)
         + '      "topic": "География",\n'
         + '      "question": "Какая планета Солнечной системы самая большая?",\n'
         + '      "options": ["Земля", "Юпитер", "Сатурн", "Нептун"],\n'
+        + _schema_explanation_line(with_explanation)
         + '      "correct_index": 1\n'
         + "    }\n"
         + "  ]\n"
@@ -556,13 +680,21 @@ def generate_trap_questions(
     (схема и парсер переиспользуются).
     """
     target = max(1, int(count)) * TRAP_CANDIDATE_FACTOR
+    with_context = _wants_context(cfg)
+    with_explanation = _wants_explanation(cfg)
     payload = {
         "model": cfg.llm_model,
         "messages": [
             {"role": "system", "content": TRAP_SYSTEM_PROMPT},
             {
                 "role": "user",
-                "content": _build_trap_prompt(target, cfg.language, avoid),
+                "content": _build_trap_prompt(
+                    target,
+                    cfg.language,
+                    avoid,
+                    with_context=with_context,
+                    with_explanation=with_explanation,
+                ),
             },
         ],
         "temperature": cfg.llm_temperature,
@@ -572,7 +704,13 @@ def generate_trap_questions(
     log.info("Запрашиваю %s вопросов-ловушек у модели %s ...", target, cfg.llm_model)
     data = post_chat(cfg, payload)
     content = data["choices"][0]["message"]["content"]
-    return _validate_questions(extract_json(content).get("questions", []))
+    return _validate_questions(
+        extract_json(content).get("questions", []),
+        with_context=with_context,
+        with_explanation=with_explanation,
+        context_max=_context_limit(cfg),
+        explanation_max=_explanation_limit(cfg),
+    )
 
 
 def generate_questions(cfg, avoid: List[str] | None = None) -> List[Dict[str, Any]]:
@@ -589,6 +727,8 @@ def generate_questions(cfg, avoid: List[str] | None = None) -> List[Dict[str, An
     personality_mix = (
         0 if personality_focus else int(getattr(cfg, "personality_mix_count", 0) or 0)
     )
+    with_context = _wants_context(cfg)
+    with_explanation = _wants_explanation(cfg)
     payload = {
         "model": cfg.llm_model,
         "messages": [
@@ -602,6 +742,8 @@ def generate_questions(cfg, avoid: List[str] | None = None) -> List[Dict[str, An
                     avoid,
                     personality_focus,
                     personality_mix,
+                    with_context=with_context,
+                    with_explanation=with_explanation,
                 ),
             },
         ],
@@ -612,7 +754,13 @@ def generate_questions(cfg, avoid: List[str] | None = None) -> List[Dict[str, An
     log.info("Запрашиваю %s вопросов у модели %s ...", cfg.count, cfg.llm_model)
     data = post_chat(cfg, payload)
     content = data["choices"][0]["message"]["content"]
-    questions = _validate_questions(extract_json(content).get("questions", []))
+    questions = _validate_questions(
+        extract_json(content).get("questions", []),
+        with_context=with_context,
+        with_explanation=with_explanation,
+        context_max=_context_limit(cfg),
+        explanation_max=_explanation_limit(cfg),
+    )
 
     if len(questions) != cfg.count:
         raise ValueError(
