@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-11-19",
+  "last_publish_date": "2026-11-22",
   "published": [
     {
       "date": "2026-09-24",
@@ -3369,6 +3369,95 @@
           "license": "Public domain"
         }
       ]
+    },
+    {
+      "date": "2026-11-22",
+      "survey_id": "6b035e92ff84653d2217dbbf",
+      "url": "https://forms.yandex.ru/u/6b035e92ff84653d2217dbbf/",
+      "theme": "достопримечательности и места",
+      "title": "Вы путешественник, если узнаете эти 10 достопримечательностей без подсказок 2",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/1029_Acropolis_of_Athens_in_Greece_at_night_Photo_by_Giles_Laurent.jpg/1280px-1029_Acropolis_of_Athens_in_Greece_at_night_Photo_by_Giles_Laurent.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:1029_Acropolis_of_Athens_in_Greece_at_night_Photo_by_Giles_Laurent.jpg",
+          "title": "1029 Acropolis of Athens in Greece at night Photo by Giles Laurent.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Lotus_Temple_3.jpg/1280px-Lotus_Temple_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Lotus_Temple_3.jpg",
+          "title": "Lotus Temple 3.jpg",
+          "author": "Gannu03",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Buckingham_Palace%2C_London_-_April_2009.jpg/1280px-Buckingham_Palace%2C_London_-_April_2009.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Buckingham_Palace,_London_-_April_2009.jpg",
+          "title": "Buckingham Palace, London - April 2009.jpg",
+          "author": "Diliff",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Michele_Marieschi_-_The_Rialto_Bridge_from_the_Riva_del_Vin_-_WGA14068.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Michele_Marieschi_-_The_Rialto_Bridge_from_the_Riva_del_Vin_-_WGA14068.jpg",
+          "title": "Michele Marieschi - The Rialto Bridge from the Riva del Vin - WGA14068.jpg",
+          "author": "Michele Marieschi",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Temple_of_Heaven_-_Imperial_Vault_of_Heaven_01.jpg/1280px-Temple_of_Heaven_-_Imperial_Vault_of_Heaven_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Temple_of_Heaven_-_Imperial_Vault_of_Heaven_01.jpg",
+          "title": "Temple of Heaven - Imperial Vault of Heaven 01.jpg",
+          "author": "xiquinhosilva",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Douglas_DC-3_of_BOAC_at_Gibraltar%2C_silhouetted_by_searchlights_on_the_Rock.jpg/1280px-Douglas_DC-3_of_BOAC_at_Gibraltar%2C_silhouetted_by_searchlights_on_the_Rock.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Douglas_DC-3_of_BOAC_at_Gibraltar,_silhouetted_by_searchlights_on_the_Rock.jpg",
+          "title": "Douglas DC-3 of BOAC at Gibraltar, silhouetted by searchlights on the Rock.jpg",
+          "author": "Royal Air Force official photographer",
+          "license": "Public domain"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Bled_Island_%26_Bled_Castle_%281%29.jpg/1280px-Bled_Island_%26_Bled_Castle_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Bled_Island_%26_Bled_Castle_(1).jpg",
+          "title": "Bled Island & Bled Castle (1).jpg",
+          "author": "Krzysztof Golik",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Nasride_Palace_-_La_Alhambra_de_Granada_Spain_Andalousia_-_Picture_Image_Photography_%2814723326260%29.jpg/1280px-Nasride_Palace_-_La_Alhambra_de_Granada_Spain_Andalousia_-_Picture_Image_Photography_%2814723326260%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Nasride_Palace_-_La_Alhambra_de_Granada_Spain_Andalousia_-_Picture_Image_Photography_(14723326260).jpg",
+          "title": "Nasride Palace - La Alhambra de Granada Spain Andalousia - Picture Image Photography (14723326260).jpg",
+          "author": "Grand Parc - Bordeaux, France from France",
+          "license": "CC BY 2.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Daisy_Geyser_erupting_in_Yellowstone_National_Park_edit.jpg/1280px-Daisy_Geyser_erupting_in_Yellowstone_National_Park_edit.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Daisy_Geyser_erupting_in_Yellowstone_National_Park_edit.jpg",
+          "title": "Daisy Geyser erupting in Yellowstone National Park edit.jpg",
+          "author": "Brocken Inaglory",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Fontana_di_Trevi_2011-03-07.jpg/1280px-Fontana_di_Trevi_2011-03-07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Fontana_di_Trevi_2011-03-07.jpg",
+          "title": "Fontana di Trevi 2011-03-07.jpg",
+          "author": "Anton.gross (Антон Гросс)",
+          "license": "GFDL"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -3751,11 +3840,22 @@
     "картины из школьной программы: Рафаэль|Сикстинская мадонна",
     "картины из школьной программы: Рембрандт|Возвращение блудного сына",
     "картины из школьной программы: Леонардо да Винчи|Тайная вечеря",
-    "картины из школьной программы: Сандро Боттичелли|Рождение Венеры"
+    "картины из школьной программы: Сандро Боттичелли|Рождение Венеры",
+    "достопримечательности и места: Акрополь в Афинах",
+    "достопримечательности и места: Храм Лотоса в Дели",
+    "достопримечательности и места: Букингемский дворец",
+    "достопримечательности и места: Мост Риальто в Венеции",
+    "достопримечательности и места: Храм Неба в Пекине",
+    "достопримечательности и места: Скала Гибралтар",
+    "достопримечательности и места: Озеро Блед в Словении",
+    "достопримечательности и места: Дворец Альгамбра в Гранаде",
+    "достопримечательности и места: Национальный парк Йеллоустоун",
+    "достопримечательности и места: Фонтан Треви в Риме"
   ],
   "used_themes": [
     "породы собак",
-    "картины из школьной программы"
+    "картины из школьной программы",
+    "достопримечательности и места"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -3928,7 +4028,17 @@
       "Карлов мост",
       "Шёнбрунн",
       "Санторини",
-      "Золотой храм"
+      "Золотой храм",
+      "Акрополь в Афинах",
+      "Храм Лотоса в Дели",
+      "Букингемский дворец",
+      "Мост Риальто в Венеции",
+      "Храм Неба в Пекине",
+      "Скала Гибралтар",
+      "Озеро Блед в Словении",
+      "Дворец Альгамбра в Гранаде",
+      "Национальный парк Йеллоустоун",
+      "Фонтан Треви в Риме"
     ],
     "картины из школьной программы": [
       "Три богатыря",
@@ -4186,6 +4296,7 @@
     "Узнаете ли вы эти 10 шедевров живописи по фрагменту?",
     "Только 1 из 10 узнаёт этих животных по глазам. Проверьте себя",
     "Вы настоящий собаковод, если назовёте все 10 пород собак",
-    "Узнаете ли вы эти 10 шедевров живописи по фрагменту?"
+    "Узнаете ли вы эти 10 шедевров живописи по фрагменту?",
+    "Вы путешественник, если узнаете эти 10 достопримечательностей без подсказок"
   ]
 }
