@@ -1,5 +1,5 @@
 {
-  "last_publish_date": "2026-11-22",
+  "last_publish_date": "2026-11-24",
   "published": [
     {
       "date": "2026-09-24",
@@ -3458,6 +3458,95 @@
           "license": "GFDL"
         }
       ]
+    },
+    {
+      "date": "2026-11-24",
+      "survey_id": "6b04fac1b6fc05594d157f72",
+      "url": "https://forms.yandex.ru/u/6b04fac1b6fc05594d157f72/",
+      "theme": "хищные птицы",
+      "title": "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя 3",
+      "images": [
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Andean_condor_%28Vultur_gryphus%29_male_Farellones.jpg/1280px-Andean_condor_%28Vultur_gryphus%29_male_Farellones.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Andean_condor_(Vultur_gryphus)_male_Farellones.jpg",
+          "title": "Andean condor (Vultur gryphus) male Farellones.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Sagittarius_serpentarius_%28Tierpark_Berlin%2C_2008%29.jpg/1280px-Sagittarius_serpentarius_%28Tierpark_Berlin%2C_2008%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Sagittarius_serpentarius_(Tierpark_Berlin,_2008).jpg",
+          "title": "Sagittarius serpentarius (Tierpark Berlin, 2008).jpg",
+          "author": "Jochen Teufel",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Crested_caracara_%28Caracara_plancus_plancus%29_Los_Glaciares.jpg/1280px-Crested_caracara_%28Caracara_plancus_plancus%29_Los_Glaciares.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Crested_caracara_(Caracara_plancus_plancus)_Los_Glaciares.jpg",
+          "title": "Crested caracara (Caracara plancus plancus) Los Glaciares.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Bateleur_%28Terathopius_ecaudatus%29_immature_with_adult_Serengeti.jpg/1280px-Bateleur_%28Terathopius_ecaudatus%29_immature_with_adult_Serengeti.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Bateleur_(Terathopius_ecaudatus)_immature_with_adult_Serengeti.jpg",
+          "title": "Bateleur (Terathopius ecaudatus) immature with adult Serengeti.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Buteo_lagopus_29283.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Buteo_lagopus_29283.JPG",
+          "title": "Buteo lagopus 29283.JPG",
+          "author": "Walter Siegmund (talk)",
+          "license": "CC BY 2.5"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/1/17/Aegolius-funereus-001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Aegolius-funereus-001.jpg",
+          "title": "Aegolius-funereus-001.jpg",
+          "author": "Mdf",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Eurasian_pygmy_owl_%28Glaucidium_passerinum%29_Bia%C5%82owieza.jpg/1280px-Eurasian_pygmy_owl_%28Glaucidium_passerinum%29_Bia%C5%82owieza.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Eurasian_pygmy_owl_(Glaucidium_passerinum)_Bia%C5%82owieza.jpg",
+          "title": "Eurasian pygmy owl (Glaucidium passerinum) Białowieza.jpg",
+          "author": "Charles J. Sharp",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/%D0%94%D0%BB%D0%B8%D0%BD%D0%BD%D0%BE%D1%85%D0%B2%D0%BE%D1%81%D1%82%D0%B0%D1%8F_%D0%BD%D0%B5%D1%8F%D1%81%D1%8B%D1%82%D1%8C.jpg/1280px-%D0%94%D0%BB%D0%B8%D0%BD%D0%BD%D0%BE%D1%85%D0%B2%D0%BE%D1%81%D1%82%D0%B0%D1%8F_%D0%BD%D0%B5%D1%8F%D1%81%D1%8B%D1%82%D1%8C.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:%D0%94%D0%BB%D0%B8%D0%BD%D0%BD%D0%BE%D1%85%D0%B2%D0%BE%D1%81%D1%82%D0%B0%D1%8F_%D0%BD%D0%B5%D1%8F%D1%81%D1%8B%D1%82%D1%8C.jpg",
+          "title": "Длиннохвостая неясыть.jpg",
+          "author": "Levashkin",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Strix_aluco_%28Linnaeus%2C_1758%29.jpg/1280px-Strix_aluco_%28Linnaeus%2C_1758%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Strix_aluco_(Linnaeus,_1758).jpg",
+          "title": "Strix aluco (Linnaeus, 1758).jpg",
+          "author": "Michael Gäbler",
+          "license": "CC BY 3.0"
+        },
+        {
+          "source": "wikimedia",
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Sumpfohreule_%28Asio_flammeus%29_-_Spiekeroog%2C_Nationalpark_nieders%C3%A4chsisches_Wattenmeer.jpg/1280px-Sumpfohreule_%28Asio_flammeus%29_-_Spiekeroog%2C_Nationalpark_nieders%C3%A4chsisches_Wattenmeer.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Sumpfohreule_(Asio_flammeus)_-_Spiekeroog,_Nationalpark_nieders%C3%A4chsisches_Wattenmeer.jpg",
+          "title": "Sumpfohreule (Asio flammeus) - Spiekeroog, Nationalpark niedersächsisches Wattenmeer.jpg",
+          "author": "Stephan Sprinz",
+          "license": "CC BY-SA 4.0"
+        }
+      ]
     }
   ],
   "asked_questions": [
@@ -3850,12 +3939,23 @@
     "достопримечательности и места: Озеро Блед в Словении",
     "достопримечательности и места: Дворец Альгамбра в Гранаде",
     "достопримечательности и места: Национальный парк Йеллоустоун",
-    "достопримечательности и места: Фонтан Треви в Риме"
+    "достопримечательности и места: Фонтан Треви в Риме",
+    "хищные птицы: Андский кондор",
+    "хищные птицы: Птица-секретарь",
+    "хищные птицы: Каракара обыкновенная",
+    "хищные птицы: Орел-скоморох",
+    "хищные птицы: Зимняк (мохноногий канюк)",
+    "хищные птицы: Сыч мохноногий",
+    "хищные птицы: Сыч воробьиный",
+    "хищные птицы: Неясыть длиннохвостая",
+    "хищные птицы: Неясыть серая",
+    "хищные птицы: Сова болотная"
   ],
   "used_themes": [
     "породы собак",
     "картины из школьной программы",
-    "достопримечательности и места"
+    "достопримечательности и места",
+    "хищные птицы"
   ],
   "used_entities": {
     "советские фильмы": [
@@ -4132,7 +4232,17 @@
       "Орёл-могильник",
       "Сокол-чеглок",
       "Сова-белая",
-      "Гриф-индейка"
+      "Гриф-индейка",
+      "Андский кондор",
+      "Птица-секретарь",
+      "Каракара обыкновенная",
+      "Орел-скоморох",
+      "Зимняк (мохноногий канюк)",
+      "Сыч мохноногий",
+      "Сыч воробьиный",
+      "Неясыть длиннохвостая",
+      "Неясыть серая",
+      "Сова болотная"
     ],
     "пейзажи русских художников": [
       "Иван Айвазовский|Девятый вал",
@@ -4297,6 +4407,7 @@
     "Только 1 из 10 узнаёт этих животных по глазам. Проверьте себя",
     "Вы настоящий собаковод, если назовёте все 10 пород собак",
     "Узнаете ли вы эти 10 шедевров живописи по фрагменту?",
-    "Вы путешественник, если узнаете эти 10 достопримечательностей без подсказок"
+    "Вы путешественник, если узнаете эти 10 достопримечательностей без подсказок",
+    "Только 1 из 10 узнаёт этих птиц по фото. Проверьте себя"
   ]
 }
