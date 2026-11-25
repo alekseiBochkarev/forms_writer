@@ -31,6 +31,18 @@ def _compose_label(question: str, context: str = "") -> str:
     return f"{preface}\n\n{text}" if preface else text
 
 
+def _image_filename(index: int, mime: str = "") -> str:
+    """Имя файла для загрузки изображения вопроса (по mime)."""
+    mime = (mime or "").lower()
+    if "png" in mime:
+        ext = "png"
+    elif "webp" in mime:
+        ext = "webp"
+    else:
+        ext = "jpg"
+    return f"image_{index}.{ext}"
+
+
 def build_answer_condition(
     question_slug: str,
     option_slugs: List[str],
@@ -501,6 +513,28 @@ def publish_questions(
 
     for i, q in enumerate(questions, 1):
         context = str(q.get("context") or "").strip() if with_context else ""
+        image = q.get("image")
+        # Вопросы из файла могут нести байты картинки (`_image_bytes`): загружаем
+        # их в форму и передаём ссылку на изображение в вопрос.
+        if q.get("_image_bytes"):
+            try:
+                image = client.upload_image(
+                    survey_id,
+                    q["_image_bytes"],
+                    _image_filename(i, q.get("_image_mime") or ""),
+                    q.get("_image_mime") or "image/jpeg",
+                )
+                log.info("  + изображение к вопросу %s", i)
+            except Exception as exc:  # noqa: BLE001 - вопрос добавим без картинки
+                log.warning(
+                    "Не удалось загрузить изображение к вопросу «%s»: %s",
+                    q["question"],
+                    exc,
+                )
+                image = None
+            finally:
+                q.pop("_image_bytes", None)
+                q.pop("_image_mime", None)
         if feedback_mode:
             # В режиме обратной связи нужны слаги вопроса и вариантов — по ним
             # строятся условия показа блоков «Правильно/Ошибочка».
@@ -510,7 +544,7 @@ def publish_questions(
                 options=q["options"],
                 correct_index=q["correct_index"],
                 shuffle=cfg.shuffle,
-                image=q.get("image"),
+                image=image,
                 context=context,
                 has_quiz=False,
                 with_slugs=True,
@@ -537,7 +571,7 @@ def publish_questions(
                 options=q["options"],
                 correct_index=q["correct_index"],
                 shuffle=cfg.shuffle,
-                image=q.get("image"),
+                image=image,
                 context=context,
             )
             log.info("  + вопрос %s: id=%s [%s]", i, qid, q.get("topic", ""))

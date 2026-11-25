@@ -11,12 +11,14 @@ import pytest
 
 import main as main_module
 from dedup import DuplicateChecker
+from helpers import FakePhotoCfg
 from state import today_utc
 from main import (
     _choose_new_tests_theme,
     _choose_personality,
     _collect_unique_questions,
     _generate_texts_with_review,
+    _resolve_question_images,
     _run_new_tests,
     load_questions_from_file,
 )
@@ -86,6 +88,111 @@ def test_load_file_keeps_context_and_explanation(tmp_path: Path):
 
     assert question["context"] == "Завязка."
     assert question["explanation"] == "Пояснение."
+
+
+def test_load_file_keeps_image_fields(tmp_path: Path):
+    """Ссылка на картинку и метаданные источника сохраняются при загрузке."""
+    path = tmp_path / "with_image.json"
+    path.write_text(
+        json.dumps(
+            {
+                "questions": [
+                    {
+                        "topic": "T",
+                        "question": "Q?",
+                        "options": ["a", "b", "c", "d"],
+                        "correct_index": 0,
+                        "image_url": "https://example.invalid/a.jpg",
+                        "image_page": "https://example.invalid/page",
+                        "image_title": "a.jpg",
+                        "image_author": "Author",
+                        "image_license": "CC0",
+                    }
+                ]
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    question = load_questions_from_file(str(path))[0]
+
+    assert question["image_url"] == "https://example.invalid/a.jpg"
+    assert question["image_page"] == "https://example.invalid/page"
+    assert question["image_title"] == "a.jpg"
+    assert question["image_author"] == "Author"
+    assert question["image_license"] == "CC0"
+
+
+def test_resolve_question_images_downloads_direct_url(monkeypatch):
+    """image_url скачивается напрямую и складывается в _image_bytes."""
+    calls = []
+
+    def fake_download(cfg, candidate):
+        calls.append(candidate.url)
+        return b"image-bytes", "image/png"
+
+    monkeypatch.setattr(main_module.photo_sources, "download_image", fake_download)
+    questions = [
+        {
+            "question": "Q?",
+            "image_url": "https://example.invalid/a.png",
+            "image_page": "https://example.invalid/page",
+            "image_title": "a.png",
+            "image_author": "Author",
+            "image_license": "CC0",
+        }
+    ]
+
+    prepared = _resolve_question_images(FakePhotoCfg(), questions)
+
+    assert prepared == 1
+    assert calls == ["https://example.invalid/a.png"]
+    assert questions[0]["_image_bytes"] == b"image-bytes"
+    assert questions[0]["_image_mime"] == "image/png"
+    assert questions[0]["image"]["page_url"] == "https://example.invalid/page"
+
+
+def test_resolve_question_images_searches_by_query(monkeypatch):
+    """Без image_url картинка ищется по image_query в фото-источниках."""
+    candidate = main_module.photo_sources.ImageCandidate(
+        source="wikimedia",
+        url="https://example.invalid/found.jpg",
+        page_url="https://example.invalid/page",
+        title="found.jpg",
+        author="Author",
+        license="CC0",
+        mime="image/jpeg",
+    )
+
+    monkeypatch.setattr(
+        main_module.photo_sources, "search_images", lambda *a, **k: [candidate]
+    )
+    monkeypatch.setattr(
+        main_module.photo_sources,
+        "download_image",
+        lambda cfg, candidate: (b"found", "image/jpeg"),
+    )
+    questions = [{"question": "Q?", "image_query": "старинная карта"}]
+
+    prepared = _resolve_question_images(FakePhotoCfg(), questions)
+
+    assert prepared == 1
+    assert questions[0]["_image_bytes"] == b"found"
+    assert questions[0]["image"]["source"] == "wikimedia"
+
+
+def test_resolve_question_images_missing_image_is_not_counted(monkeypatch):
+    """Нет ни прямой ссылки, ни результатов поиска — вопрос не готов."""
+    monkeypatch.setattr(
+        main_module.photo_sources, "search_images", lambda *a, **k: []
+    )
+    questions = [{"question": "Q?", "image_query": "ничего не найдено"}]
+
+    prepared = _resolve_question_images(FakePhotoCfg(), questions)
+
+    assert prepared == 0
+    assert "_image_bytes" not in questions[0]
 
 
 def test_load_file_without_context_gets_empty_strings(tmp_path: Path):
