@@ -28,10 +28,12 @@ import logging
 import os
 import random
 import sys
+import time
 from typing import Any, Dict, List, Optional, Tuple
 
 import factcheck
 import photo_flow
+import photo_sources
 import review
 import rubric_flow
 from config import PERSONALITY_TOPIC, load_config
@@ -119,9 +121,102 @@ def load_questions_from_file(path: str) -> List[Dict[str, Any]]:
                 "correct_index": correct,
                 "context": item.get("context", ""),
                 "explanation": item.get("explanation", ""),
+                # Необязательная картинка: прямая ссылка (image_url) или поисковый
+                # запрос к фото-источникам (image_query). Остальные поля — только
+                # метаданные источника (для состояния/атрибуции).
+                "image_url": str(item.get("image_url") or "").strip(),
+                "image_query": str(item.get("image_query") or "").strip(),
+                "image_page": str(item.get("image_page") or "").strip(),
+                "image_title": str(item.get("image_title") or "").strip(),
+                "image_author": str(item.get("image_author") or "").strip(),
+                "image_license": str(item.get("image_license") or "").strip(),
             }
         )
     return result
+
+
+def _resolve_question_images(cfg, questions: List[Dict[str, Any]]) -> int:
+    """Подготовить изображения для вопросов из файла.
+
+    `image_url` — прямая ссылка (скачиваем как есть), `image_query` — поиск по
+    фото-источникам (wikimedia/openverse). Байты складываются в `_image_bytes`/
+    `_image_mime`, а метаданные источника — в `image`. Возвращает число вопросов,
+    для которых картинка готова.
+    """
+    prepared = 0
+    for index, q in enumerate(questions, 1):
+        url = str(q.get("image_url") or "").strip()
+        query = str(q.get("image_query") or "").strip()
+        if not url and not query:
+            continue
+
+        candidate: Optional[photo_sources.ImageCandidate] = None
+        if url:
+            candidate = photo_sources.ImageCandidate(
+                source="url",
+                url=url,
+                page_url=str(q.get("image_page") or url),
+                title=str(q.get("image_title") or ""),
+                author=str(q.get("image_author") or ""),
+                license=str(q.get("image_license") or ""),
+                mime="",
+            )
+        else:
+            try:
+                candidates = photo_sources.search_images(
+                    cfg,
+                    query,
+                    limit=max(3, cfg.photo_max_image_attempts),
+                    sources=cfg.enabled_photo_sources(),
+                )
+            except Exception as exc:  # noqa: BLE001 - источник ненадёжен
+                log.warning(
+                    "Поиск изображения для «%s» не удался: %s", q["question"], exc
+                )
+                candidates = []
+            if candidates:
+                candidate = candidates[0]
+
+        if candidate is None:
+            log.warning("Картинка для вопроса «%s» не найдена", q["question"])
+            continue
+
+        data: Optional[bytes] = None
+        mime = ""
+        for attempt in range(3):
+            try:
+                data, mime = photo_sources.download_image(cfg, candidate)
+                break
+            except RuntimeError as exc:
+                if attempt >= 2:
+                    log.warning(
+                        "Не удалось скачать картинку для «%s»: %s",
+                        q["question"],
+                        exc,
+                    )
+                else:
+                    time.sleep(2 * (attempt + 1))
+        if not data:
+            continue
+
+        q["_image_bytes"] = data
+        q["_image_mime"] = mime
+        q["image"] = {
+            "source": candidate.source,
+            "url": candidate.url,
+            "page_url": candidate.page_url,
+            "title": candidate.title,
+            "author": candidate.author,
+            "license": candidate.license,
+        }
+        prepared += 1
+        log.info(
+            "  + картинка к вопросу %s: %s",
+            index,
+            candidate.title or candidate.url,
+        )
+        time.sleep(1.0)
+    return prepared
 
 
 def _collect_unique_questions(cfg, history: List[str], checker: DuplicateChecker) -> List[Dict[str, Any]]:
@@ -741,9 +836,27 @@ def main() -> int:
             log.info("      завязка: %s", context)
 
     # 2) Dry-run — только показать план
+    intended_images = sum(
+        1 for q in questions if q.get("image_url") or q.get("image_query")
+    )
     if cfg.dry_run:
+        if intended_images:
+            log.info("DRY-RUN: вопросов с картинками будет: %s", intended_images)
         log.info("DRY-RUN: обращения к Яндекс Формам не будет")
         return 0
+
+    # 2.1) Картинки из файла: скачиваем до создания формы, чтобы не публиковать
+    # выпуск с неполным набором изображений.
+    if intended_images:
+        prepared = _resolve_question_images(cfg, questions)
+        if prepared < intended_images:
+            log.error(
+                "Подготовлено %s из %s изображений — публикация отменена.",
+                prepared,
+                intended_images,
+            )
+            return 1
+        log.info("Изображений подготовлено: %s", prepared)
 
     # 3) Вводная/заключительная и обязательное ревью
     previous_intros = _previous_intros(state_data)

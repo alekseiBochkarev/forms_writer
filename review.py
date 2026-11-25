@@ -39,27 +39,70 @@ _STOPWORDS = {
     "форма", "форме", "формы", "весь", "всех", "какой", "какие", "какая",
 }
 
+# Падежные/родовые окончания для лёгкого стемминга без зависимостей.
+# Список отсортирован от длинных к коротким: срезаем самое длинное совпадение,
+# чтобы «Габриэля» и «Габриэль» дали одну основу. Минимальная длина основы — 3.
+_CASE_SUFFIXES = (
+    "ами", "ями", "ого", "его", "ому", "ему", "ыми", "ими",
+    "ая", "яя", "ое", "ее", "ые", "ие", "ой", "ей", "ий", "ый",
+    "ом", "ем", "ам", "ям", "ах", "ях", "ов", "ев", "ью", "ья", "ье",
+    "ия", "ии", "ию", "ею", "ою", "ую", "юю", "ых", "их", "ым", "им",
+    "а", "я", "о", "е", "у", "ю", "ы", "и", "й", "ь",
+)
+
+
+def _stem(word: str) -> str:
+    """Грубая основа слова: нижний регистр, «ё»→«е», срезанное окончание."""
+    word = (word or "").lower().replace("ё", "е")
+    for suffix in _CASE_SUFFIXES:
+        if word.endswith(suffix) and len(word) - len(suffix) >= 3:
+            return word[: -len(suffix)]
+    return word
+
+
+# Служебные слова сравниваем уже по основам: «карты»/«картой» → «карт».
+_STOPWORD_STEMS = {_stem(word) for word in _STOPWORDS}
+
+
+def _tokens(text: str) -> List[str]:
+    """Слова текста в нижнем регистре (без коротких и чисел)."""
+    return _WORD_RE.findall((text or "").lower())
+
 
 def _words(text: str) -> Set[str]:
+    """Значимые основы слов текста (служебные слова отброшены)."""
     return {
-        word
-        for word in _WORD_RE.findall((text or "").lower())
-        if word not in _STOPWORDS
+        stem
+        for stem in (_stem(word) for word in _tokens(text))
+        if stem not in _STOPWORD_STEMS
     }
 
 
 def spoiler_words(text: str, correct_answers: Optional[List[str]]) -> List[str]:
-    """Слова текста, совпавшие с правильными ответами (для диагностики)."""
+    """Слова текста, совпавшие с правильными ответами (для диагностики).
+
+    Сравнение идёт по основам, поэтому ловятся и косвенные формы
+    («Ивана» против «Иван»). В результат попадают исходные словоформы из
+    текста — так сообщение об ошибке остаётся читаемым.
+    """
     if not text:
         return []
-    text_words = _words(text)
+    text_words: Dict[str, List[str]] = {}
+    for word in _tokens(text):
+        stem = _stem(word)
+        if stem in _STOPWORD_STEMS:
+            continue
+        forms = text_words.setdefault(stem, [])
+        if word not in forms:
+            forms.append(word)
     if not text_words:
         return []
     matched: List[str] = []
     for answer in correct_answers or []:
-        for word in _words(str(answer)) & text_words:
-            if word not in matched:
-                matched.append(word)
+        for word in _tokens(str(answer)):
+            for form in text_words.get(_stem(word), []):
+                if form not in matched:
+                    matched.append(form)
     return matched
 
 
@@ -67,7 +110,7 @@ def contains_spoiler(text: str, correct_answers: Optional[List[str]]) -> bool:
     """Есть ли в тексте значимое слово из правильных ответов.
 
     Служит быстрой детерминированной страховкой от подсказок во вводной и в
-    заголовке: точные совпадения слов (регистр и пунктуация не важны).
+    заголовке: сравниваются основы слов, поэтому падеж, число и род не важны.
     """
     return bool(spoiler_words(text, correct_answers))
 

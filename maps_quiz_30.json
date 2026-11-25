@@ -1,0 +1,259 @@
+{
+  "questions": [
+    {
+      "topic": "История карт",
+      "question": "Перед вами старейший сохранившийся глобус Земли. Кто его создал?",
+      "options": ["Мартин Бехайм", "Герард Меркатор", "Авраам Ортелий", "Клавдий Птолемей"],
+      "correct_index": 0,
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/78/Behaims_Erdapfel-edit-DenisBarthel.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:Behaims_Erdapfel-edit-DenisBarthel.jpg",
+      "image_title": "Behaims Erdapfel",
+      "image_author": "Martin Behaim / Georg Glockendon",
+      "image_license": "CC BY-SA 2.0 de"
+    },
+    {
+      "topic": "2ГИС",
+      "question": "В каком городе в 1999 году начал работу справочник «ДубльГИС», позже переименованный в 2ГИС?",
+      "options": ["Томск", "Новосибирск", "Омск", "Красноярск"],
+      "correct_index": 1
+    },
+    {
+      "topic": "История карт",
+      "question": "Эта карта 1502 года — старейшая сохранившаяся, где отмечены берега Бразилии. Как она называется?",
+      "options": ["Карта Пири Рейса", "Атлас Меркатора", "Планисфера Кантино", "Портолан Васко да Гамы"],
+      "correct_index": 2,
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/CantinoPlanisphere.png/1280px-CantinoPlanisphere.png",
+      "image_page": "https://commons.wikimedia.org/wiki/File:CantinoPlanisphere.png",
+      "image_title": "Cantino planisphere",
+      "image_author": "Unknown author",
+      "image_license": "Public domain"
+    },
+    {
+      "topic": "2ГИС",
+      "question": "Что означает название «ДубльГИС»?",
+      "options": ["Двойная карта города", "Два города — две карты", "Городская система навигации", "Геоинформационная система плюс городской информационный справочник"],
+      "correct_index": 3
+    },
+    {
+      "topic": "История карт",
+      "question": "Фрагмент карты какого османского адмирала показан на изображении?",
+      "options": ["Пири Рейс", "Мартин Бехайм", "Герард Меркатор", "Авраам Ортелий"],
+      "correct_index": 0,
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Piri_reis_world_map_01.jpg/1280px-Piri_reis_world_map_01.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:Piri_reis_world_map_01.jpg",
+      "image_title": "Piri Reis world map",
+      "image_author": "Piri Reis",
+      "image_license": "Public domain"
+    },
+    {
+      "topic": "2ГИС",
+      "question": "В каком году «ДубльГИС» сменил название на 2ГИС?",
+      "options": ["2005", "2016", "2011", "2020"],
+      "correct_index": 2
+    },
+    {
+      "topic": "Картография",
+      "question": "На этой карте Гренландия выглядит почти как Африка. Какая проекция перед вами?",
+      "options": ["Проекция Робинсона", "Проекция Меркатора", "Проекция Ламберта", "Гномоническая проекция"],
+      "correct_index": 1,
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Mercator_projection_SW.jpg/1280px-Mercator_projection_SW.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:Mercator_projection_SW.jpg",
+      "image_title": "Mercator projection",
+      "image_author": "Strebe",
+      "image_license": "CC BY-SA 3.0"
+    },
+    {
+      "topic": "2ГИС",
+      "question": "Что, помимо карты, составляет вторую половину «двойного» справочника 2ГИС?",
+      "options": ["Только пробки", "Только маршруты транспорта", "Справочник организаций с контактами и отзывами", "Только спутниковые снимки"],
+      "correct_index": 2
+    },
+    {
+      "topic": "История карт",
+      "question": "Этот лист «Америка» входит в первый современный атлас Theatrum Orbis Terrarum. Кто его составил?",
+      "options": ["Герард Меркатор", "Мартин Вальдземюллер", "Себастьян Мюнстер", "Авраам Ортелий"],
+      "correct_index": 3,
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/Theatrum_Orbis_Terrarum%2C_by_Abraham_Ortelius%2C_America%2C_1572.jpg/1280px-Theatrum_Orbis_Terrarum%2C_by_Abraham_Ortelius%2C_America%2C_1572.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:Theatrum_Orbis_Terrarum,_by_Abraham_Ortelius,_America,_1572.jpg",
+      "image_title": "Theatrum Orbis Terrarum, America",
+      "image_author": "Abraham Ortelius",
+      "image_license": "Public domain"
+    },
+    {
+      "topic": "Навигация",
+      "question": "По какой шкале Яндекс Карты оценивают загруженность дорог?",
+      "options": ["От 1 до 5 звёзд", "От 1 до 10 баллов", "От 0 до 100 процентов", "От A до F"],
+      "correct_index": 1
+    },
+    {
+      "topic": "Глобусы",
+      "question": "Как называется сеть параллелей и меридианов, покрывающая этот глобус?",
+      "options": ["Роза ветров", "Легенда", "Градусная сетка", "Масштабная линейка"],
+      "correct_index": 2,
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Terrestrial_globe-BHM_5396a-P6141268-gradient.jpg/1280px-Terrestrial_globe-BHM_5396a-P6141268-gradient.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:Terrestrial_globe-BHM_5396a-P6141268-gradient.jpg",
+      "image_title": "Terrestrial globe",
+      "image_author": "Rama",
+      "image_license": "CC BY-SA 3.0 fr"
+    },
+    {
+      "topic": "Картография",
+      "question": "Как называется перевод адреса в координаты на карте?",
+      "options": ["Геокодирование", "Маршрутизация", "Кластеризация", "Тайлинг"],
+      "correct_index": 0
+    },
+    {
+      "topic": "Глобусы",
+      "question": "Что нанесено на этот глобус вместо материков и океанов?",
+      "options": ["Рельеф Луны", "Маршруты планет", "Океанические течения", "Звёзды и созвездия"],
+      "correct_index": 3,
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Celestial_globe-BHM_5396b-P6141264-gradient.jpg/1280px-Celestial_globe-BHM_5396b-P6141264-gradient.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:Celestial_globe-BHM_5396b-P6141264-gradient.jpg",
+      "image_title": "Celestial globe",
+      "image_author": "Rama",
+      "image_license": "CC BY-SA 3.0 fr"
+    },
+    {
+      "topic": "Картография",
+      "question": "Как называется определение адреса по известным координатам?",
+      "options": ["Прямая маршрутизация", "Обратное геокодирование", "Триангуляция", "Геолокация"],
+      "correct_index": 1
+    },
+    {
+      "topic": "Картография",
+      "question": "Как называются линии на этой карте, соединяющие точки одинаковой высоты?",
+      "options": ["Изобары", "Изотермы", "Меридианы", "Горизонтали"],
+      "correct_index": 3,
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/79/Topographic_map_example.png",
+      "image_page": "https://commons.wikimedia.org/wiki/File:Topographic_map_example.png",
+      "image_title": "Topographic map example",
+      "image_author": "USGS",
+      "image_license": "Public domain"
+    },
+    {
+      "topic": "Картография",
+      "question": "Что означает масштаб карты 1:100 000?",
+      "options": ["1 см на карте — 100 км на местности", "1 см на карте — 1 км на местности", "1 см на карте — 10 м на местности", "Карта уменьшена в 100 раз по площади"],
+      "correct_index": 1
+    },
+    {
+      "topic": "Астрономия",
+      "question": "Перед вами карта звёздного неба. Сколько созвездий официально выделяют сегодня?",
+      "options": ["12", "48", "88", "120"],
+      "correct_index": 2,
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Planisph%C3%A6ri_c%C5%93leste.jpg/1280px-Planisph%C3%A6ri_c%C5%93leste.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:Planisph%C3%A6ri_c%C5%93leste.jpg",
+      "image_title": "Planisphaeri coeleste",
+      "image_author": "Frederik de Wit",
+      "image_license": "Public domain"
+    },
+    {
+      "topic": "Картография",
+      "question": "Как называется линия на карте, соединяющая точки одинаковой глубины океана?",
+      "options": ["Изобата", "Изогипса", "Изотерма", "Изохора"],
+      "correct_index": 0
+    },
+    {
+      "topic": "История карт",
+      "question": "Какой старинный прибор для определения положения светил показан на фото?",
+      "options": ["Секстант", "Теодолит", "Астролябия", "Нивелир"],
+      "correct_index": 2,
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/18/Astrolabe-Persian-18C.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:Astrolabe-Persian-18C.jpg",
+      "image_title": "Persian astrolabe, 18th century",
+      "image_author": "Andrew Dunn",
+      "image_license": "CC BY-SA 2.0"
+    },
+    {
+      "topic": "Глобусы",
+      "question": "Почему глобус передаёт форму и размеры материков точнее, чем плоская карта?",
+      "options": ["Он больше по размеру", "На нём нет масштаба", "Его можно повесить на стену", "Поверхность Земли на нём не растянута на плоскость"],
+      "correct_index": 3
+    },
+    {
+      "topic": "Навигация",
+      "question": "Какой прибор моряки использовали для измерения угла между горизонтом и светилом?",
+      "options": ["Астролябия", "Секстант", "Теодолит", "Барометр"],
+      "correct_index": 1,
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/IMG_5980-white.jpg/1280px-IMG_5980-white.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:IMG_5980-white.jpg",
+      "image_title": "Sextant",
+      "image_author": "Rama",
+      "image_license": "CC BY-SA 3.0 fr"
+    },
+    {
+      "topic": "Навигация",
+      "question": "Какая система спутниковой навигации была создана Китаем?",
+      "options": ["Galileo", "GPS", "BeiDou", "ГЛОНАСС"],
+      "correct_index": 2
+    },
+    {
+      "topic": "Геодезия",
+      "question": "Какой геодезический прибор измеряет горизонтальные и вертикальные углы на местности?",
+      "options": ["Нивелир", "Дальномер", "Компас", "Теодолит"],
+      "correct_index": 3,
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/A_student_using_a_Theodolite_in_field.jpg/1280px-A_student_using_a_Theodolite_in_field.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:A_student_using_a_Theodolite_in_field.jpg",
+      "image_title": "Student using a theodolite",
+      "image_author": "Kskhh",
+      "image_license": "CC BY-SA 4.0"
+    },
+    {
+      "topic": "Навигация",
+      "question": "Сколько спутников минимум нужно GPS-приёмнику для определения трёхмерных координат?",
+      "options": ["2", "3", "4", "6"],
+      "correct_index": 2
+    },
+    {
+      "topic": "Навигация",
+      "question": "Спутник какой навигационной системы изображён на рисунке?",
+      "options": ["ГЛОНАСС", "Galileo", "GPS", "BeiDou"],
+      "correct_index": 2,
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8d/GPS_Satellite_NASA_art-iif.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:GPS_Satellite_NASA_art-iif.jpg",
+      "image_title": "GPS satellite (NASA art)",
+      "image_author": "NASA",
+      "image_license": "Public domain"
+    },
+    {
+      "topic": "Онлайн-карты",
+      "question": "Что означает аббревиатура POI на онлайн-картах?",
+      "options": ["Уровень масштаба", "Point of Interest — точка интереса", "Слой пробок", "Маршрут по умолчанию"],
+      "correct_index": 1
+    },
+    {
+      "topic": "Онлайн-карты",
+      "question": "Что показывает синяя стрелка на экране навигатора?",
+      "options": ["Уровень заряда батареи", "Загруженность дорог", "Текущее положение и направление движения", "Масштаб карты"],
+      "correct_index": 2,
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Smartphone_with_navigation_map_app.jpg/1280px-Smartphone_with_navigation_map_app.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:Smartphone_with_navigation_map_app.jpg",
+      "image_title": "Smartphone with navigation map app",
+      "image_author": "Santeri Viinamäki",
+      "image_license": "CC BY-SA 4.0"
+    },
+    {
+      "topic": "Картография",
+      "question": "В каком году был запущен проект OpenStreetMap?",
+      "options": ["1999", "2010", "2015", "2004"],
+      "correct_index": 3
+    },
+    {
+      "topic": "Онлайн-карты",
+      "question": "Что снимает автомобиль с камерой на крыше для онлайн-карт?",
+      "options": ["Панорамы улиц для карт", "Спутниковые снимки", "Высоты рельефа", "Подземные коммуникации"],
+      "correct_index": 0,
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Google-street-view-car_hg.jpg/1280px-Google-street-view-car_hg.jpg",
+      "image_page": "https://commons.wikimedia.org/wiki/File:Google-street-view-car_hg.jpg",
+      "image_title": "Google Street View car",
+      "image_author": "Hannes Grobe",
+      "image_license": "CC BY-SA 4.0"
+    },
+    {
+      "topic": "Онлайн-карты",
+      "question": "Как называют виртуальную границу на карте, при пересечении которой приложение присылает уведомление?",
+      "options": ["Изолиния", "Геозона (geofence)", "Тайл", "Трек"],
+      "correct_index": 1
+    }
+  ]
+}

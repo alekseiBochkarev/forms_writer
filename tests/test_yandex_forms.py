@@ -197,6 +197,68 @@ def test_publish_questions_quiz_total_counts_only_enum_questions():
     assert "из 2." in quiz["items"][-1]["description"]
 
 
+class _ImageClient(_CommentClient):
+    """Заглушка клиента с загрузкой изображений."""
+
+    def __init__(self):
+        super().__init__()
+        self.uploads = []
+
+    def upload_image(self, survey_id, data, filename, content_type="image/jpeg"):
+        self.uploads.append((survey_id, data, filename, content_type))
+        return {"id": "img-1", "links": {"original": "https://x/img"}, "name": filename}
+
+
+def test_publish_questions_uploads_image_bytes():
+    """Байты картинки из файла загружаются и передаются в вопрос."""
+    client = _ImageClient()
+    question = {
+        "topic": "t",
+        "question": "Q?",
+        "options": ["a", "b", "c", "d"],
+        "correct_index": 0,
+        "_image_bytes": b"image-bytes",
+        "_image_mime": "image/png",
+    }
+
+    publish_questions(_publish_cfg(), [question], client)
+
+    assert client.uploads == [
+        ("sid-1", b"image-bytes", "image_1.png", "image/png")
+    ]
+    assert client.questions[0]["image"] == {
+        "id": "img-1",
+        "links": {"original": "https://x/img"},
+        "name": "image_1.png",
+    }
+    assert "_image_bytes" not in question
+    assert "_image_mime" not in question
+
+
+def test_publish_questions_image_upload_failure_keeps_text_question():
+    """Сбой загрузки картинки не роняет выпуск: вопрос добавляется без неё."""
+
+    class _BrokenImageClient(_ImageClient):
+        def upload_image(self, *a, **k):
+            raise YandexFormsError("upload failed")
+
+    client = _BrokenImageClient()
+    question = {
+        "topic": "t",
+        "question": "Q?",
+        "options": ["a", "b", "c", "d"],
+        "correct_index": 0,
+        "_image_bytes": b"image-bytes",
+        "_image_mime": "image/jpeg",
+    }
+
+    publish_questions(_publish_cfg(), [question], client)
+
+    assert len(client.questions) == 1
+    assert client.questions[0]["image"] is None
+    assert "_image_bytes" not in question
+
+
 # --- build_quiz_settings: сегменты ------------------------------------------
 
 

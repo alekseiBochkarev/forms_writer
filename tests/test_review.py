@@ -226,6 +226,13 @@ def test_spoiler_words_reports_matches():
     assert review.spoiler_words("обычный текст", ["Пробки"]) == []
 
 
+def test_spoiler_words_returns_original_word_forms():
+    """В диагностике показываем словоформу из текста, а не основу."""
+    assert review.spoiler_words(
+        "Вспомним Ивана Васильевича", ["Иван Васильевич"]
+    ) == ["ивана", "васильевича"]
+
+
 def test_review_texts_issue_names_spoiler_word(monkeypatch):
     """При спойлере в issue указано конкретное слово из ответа."""
     monkeypatch.setattr(review, "_llm_review", lambda *a, **k: {"ok": True, "issues": []})
@@ -242,18 +249,32 @@ def test_review_texts_issue_names_spoiler_word(monkeypatch):
     assert any("пробки" in issue for issue in result["issues"])
 
 
-def test_contains_spoiler_word_forms_not_detected():
-    """Документирует ограничение: ловятся только точные словоформы.
-
-    Совпадение по корню/падежу («Иван» против «Ивана») не распознаётся, поэтому
-    спойлер в косвенной форме может пройти детерминированную проверку. Это
-    ограничение текущей реализации (точное пересечение слов), а не ожидаемое
-    поведение по ТЗ — см. баг-репорт.
-    """
+def test_contains_spoiler_detects_case_forms():
+    """Спойлер ловится и в косвенной форме: «Ивана» против «Иван»."""
     assert (
         review.contains_spoiler("Вспомним Ивана Васильевича", ["Иван Васильевич"])
-        is False
+        is True
     )
+
+
+def test_contains_spoiler_detects_author_name_case_form():
+    """Родительный падеж имени и фамилии автора — тоже спойлер."""
+    assert (
+        review.contains_spoiler(
+            "Роман Габриэля Гарсиа Маркеса прогремел на весь мир.",
+            ["Габриэль Гарсиа Маркес"],
+        )
+        is True
+    )
+
+
+def test_review_title_detects_case_form():
+    """Заголовок с падежной формой ответа отклоняется без LLM."""
+    ok, reason = review.review_title(
+        None, "Истории о Габриэле Гарсиа Маркесе", ["Габриэль Гарсиа Маркес"]
+    )
+    assert ok is False
+    assert "правильного ответа" in reason
 
 
 # --- review_texts: устойчивость к формату ответа LLM ------------------------
@@ -352,6 +373,22 @@ def test_context_spoiler_detects_all_answer_words():
     )
 
 
+def test_context_spoiler_detects_case_form_of_answer():
+    """Родительный падеж в завязке раскрывает ответ в именительном."""
+    assert review.context_spoiler(
+        "Роман Габриэля Гарсиа Маркеса прогремел на весь мир.",
+        "Габриэль Гарсиа Маркес",
+    )
+
+
+def test_context_spoiler_ignores_single_inflected_generic_word():
+    """Одна косвенная форма общего слова без остальных слов ответа — не спойлер."""
+    assert not review.context_spoiler(
+        "Стрекоза весь день кружит над водой.",
+        "В пресной воде",
+    )
+
+
 def test_context_spoiler_empty_values():
     assert review.context_spoiler("", "ответ") is False
     assert review.context_spoiler("завязка", "") is False
@@ -385,6 +422,26 @@ def test_sanitize_contexts_clears_only_spoiling_context():
     assert questions[0]["context"] == ""
     assert questions[1]["context"].startswith("Летом над прудом")
     assert "context" not in questions[2]
+
+
+def test_sanitize_contexts_clears_case_form_spoiler():
+    """Завязка с падежной формой ответа тоже вычищается."""
+    questions = [
+        {
+            "question": "Кто написал «Сто лет одиночества»?",
+            "options": [
+                "Габриэль Гарсиа Маркес",
+                "Хорхе Луис Борхес",
+                "Марио Варгас Льоса",
+                "Хулио Кортасар",
+            ],
+            "correct_index": 0,
+            "context": "Роман Габриэля Гарсиа Маркеса прогремел на весь мир.",
+        }
+    ]
+
+    assert review.sanitize_contexts(questions) == 1
+    assert questions[0]["context"] == ""
 
 
 def test_sanitize_contexts_ignores_broken_correct_index():
