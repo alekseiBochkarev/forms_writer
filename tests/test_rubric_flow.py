@@ -866,11 +866,16 @@ def test_rubric_d_aborts_without_photos(monkeypatch, tmp_path):
 
 
 def _e_cfg(tmp_path, **overrides):
-    """Конфиг рубрики «e»: открытые источники, все её фото-темы доступны."""
+    """Конфиг рубрики «e»: открытые источники, все её фото-темы доступны.
+
+    Среди тем фото-блока есть кадры советского кино, поэтому источники
+    включают ruwiki_film (в workflow рубрик FILM_RU_ENABLED=true).
+    """
     base = {
         "photo_theme": "",
         "photo_themes": list(config.DEFAULT_PHOTO_THEMES),
-        "photo_sources": ["wikimedia"],
+        "photo_sources": ["wikimedia", "ruwiki_film"],
+        "film_ru_enabled": True,
     }
     base.update(overrides)
     return _mixed_cfg(tmp_path, **base)

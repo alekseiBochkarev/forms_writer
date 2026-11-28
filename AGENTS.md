@@ -18,15 +18,18 @@ API), собирает из них тест с правильными ответ
 - `yandex_forms.py` — клиент API Яндекс Форм (создание формы, вопросы, публикация).
 - `publisher.py` — публикация анонса в Telegram (Bot API).
 - `dedup.py` — проверка вопросов на повторы (точные и похожие формулировки).
-- `rotation.py` — расписание выпусков: эрудиция каждый день + два потока из пула
-  `новые тесты / b / d / e / фото` по ротации (`--date`, `--is-scheduled`).
+- `rotation.py` — расписание выпусков: эрудиция и кино (рубрика `d`) каждый
+  день + один поток из пула `новые тесты / b / e / фото` по ротации
+  (`--date`, `--is-scheduled`).
 - `state.py` — состояние: дата публикации и список уже заданных вопросов.
 - `samples/questions.json` — пример готовых вопросов (запуск без LLM).
 - `state.json` — состояние: дата последней публикации и id форм.
 - `.github/workflows/daily.yml` — планировщик ежедневного запуска (эрудиция, всегда).
-- `.github/workflows/daily_new_tests.yml`, `daily_photo.yml`, `daily_rubrics.yml` —
-  дополнительные потоки, которые запускаются только в свои дни по ротации
-  (`rotation.py`); `workflow_dispatch` её игнорирует (ручной запуск = force).
+- `.github/workflows/daily_rubrics.yml` — рубрики b/d/e; кино (d) выходит каждый
+  день, b и e — по ротации.
+- `.github/workflows/daily_new_tests.yml`, `daily_photo.yml` — дополнительные
+  потоки, которые запускаются только в свои дни по ротации (`rotation.py`);
+  `workflow_dispatch` её игнорирует (ручной запуск = force).
 - `requirements.txt` — зависимости Python.
 
 ## Запуск локально
@@ -65,7 +68,8 @@ python rotation.py                 # какой план выпусков на �
 - `state.json` обновляется приложением и коммитится workflow (не вручную).
 - Для изменений в расписании правится `.github/workflows/daily.yml` (cron в UTC).
 - Какие дополнительные потоки выходят в конкретный день, задаёт `rotation.py`
-  (пул `EXTRA_FLOWS`, число в день — `EXTRA_PER_DAY`); проверка в workflow:
+  (обязательные — `MANDATORY_FLOWS`: эрудиция и кино; пул — `EXTRA_FLOWS`, число
+  в день — `EXTRA_PER_DAY`); проверка в workflow:
   `python rotation.py --is-scheduled <flow>`.
 - Новые настройки добавляйте в `config.py`, `.env.example` и README (таблица переменных).
 - Перед изменениями в API Яндекс Форм сверяйтесь с

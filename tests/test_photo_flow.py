@@ -179,12 +179,39 @@ def test_generate_distractors_other_theme_has_no_language_rule(monkeypatch):
     """Для не-кино тем язык дистракторов не навязывается отдельным пунктом."""
     captured = _capture_chat_json(monkeypatch, {"distractors": ["пёс", "лис", "волк"]})
 
-    photo_flow._generate_distractors(FakePhotoCfg(), "животные", "кот")
+    photo_flow._generate_distractors(FakePhotoCfg(), "литература", "роман")
 
     user = captured["user"]
     assert "ОРИГИНАЛЬН" not in user
     assert "англ" not in user.lower()
     assert "советских" not in user.lower()
+
+
+@pytest.mark.parametrize(
+    "theme",
+    ["животные Африки", "хищные птицы", "породы собак"],
+)
+def test_generate_distractors_animals_require_close_species(monkeypatch, theme):
+    """Для фауны дистракторы — близкие виды, а не животные из других отрядов."""
+    captured = _capture_chat_json(monkeypatch, {"distractors": ["Кайман"]})
+
+    photo_flow._generate_distractors(FakePhotoCfg(), theme, "Крокодил")
+
+    user = captured["user"].lower()
+    assert "того же отряда" in user
+    assert "спутать" in user
+    assert "а не лев" in user
+
+
+def test_generate_distractors_non_animal_theme_has_no_species_rule(monkeypatch):
+    """Правило про близкие виды не протекает в другие темы."""
+    captured = _capture_chat_json(monkeypatch, {"distractors": ["Париж"]})
+
+    photo_flow._generate_distractors(
+        FakePhotoCfg(), "достопримечательности и места", "Лондон"
+    )
+
+    assert "того же отряда" not in captured["user"].lower()
 
 
 def test_generate_distractors_soviet_actresses_are_actress_names(monkeypatch):
@@ -263,6 +290,25 @@ def test_split_painting_and_answer_and_query():
 def test_split_painting_without_separator_degrades_gracefully():
     """Строка без разделителя не ломает разбор (возвращается как ответ и запрос)."""
     assert photo_flow.split_painting("Девятый вал") == ("Девятый вал", "Девятый вал")
+
+
+def test_question_label_painting_includes_title():
+    """Для живописи название картины всегда попадает в текст вопроса."""
+    assert photo_flow.question_label(
+        "картины", "Иван Айвазовский|Девятый вал"
+    ) == "Кто автор этой картины? Перед вами «Девятый вал»."
+    # Обычные темы не меняются.
+    assert photo_flow.question_label("животные", "кот") == (
+        "Что (кто) изображено на фотографии?"
+    )
+    # Сущность без названия — базовая формулировка, без пустых кавычек.
+    assert photo_flow.question_label("картины", "Девятый вал") == (
+        "Кто автор этой картины?"
+    )
+    # Переданная «завязка» сохраняется как основа текста.
+    assert photo_flow.question_label(
+        "картины", "Иван Айвазовский|Девятый вал", "Кто автор этого полотна?"
+    ) == "Кто автор этого полотна? Перед вами «Девятый вал»."
 
 
 def test_generate_entities_painting_returns_author_and_title(monkeypatch):
@@ -359,7 +405,10 @@ def test_build_questions_painting_uses_author_answer_and_title_image(monkeypatch
 
     assert seen["answer"] == "Иван Айвазовский"
     assert seen["query"] == "Девятый вал"
-    assert questions[0]["question"] == "Кто автор этой картины?"
+    assert (
+        questions[0]["question"]
+        == "Кто автор этой картины? Перед вами «Девятый вал»."
+    )
     assert questions[0]["options"][questions[0]["correct_index"]] == "Иван Айвазовский"
 
 
