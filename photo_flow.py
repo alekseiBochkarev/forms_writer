@@ -99,6 +99,32 @@ def question_text(theme: str) -> str:
     return "Что (кто) изображено на фотографии?"
 
 
+# Темы про фауну: для них дистракторы обязаны быть близкими видами.
+ANIMAL_TITLE_CATEGORIES = ("животные", "хищные птицы", "породы собак")
+
+
+def is_animal_theme(theme: str) -> bool:
+    """Тема про фауну: животные, птицы, породы собак."""
+    return _title_category(theme) in ANIMAL_TITLE_CATEGORIES
+
+
+def question_label(theme: str, entity: str, base: Optional[str] = None) -> str:
+    """Текст вопроса для конкретной сущности.
+
+    Для живописи в текст всегда добавляется название картины: по одному
+    изображению без подписи вопрос неоднозначен, а название не выдаёт ответ —
+    спрашиваем по-прежнему автора. Если LLM вернула сущность без названия
+    (строка без разделителя), остаётся базовая формулировка.
+    """
+    text = (base or question_text(theme)).strip()
+    if not is_painting_theme(theme):
+        return text
+    author, title = split_painting(entity)
+    if not title or title == author:
+        return text
+    return f"{text} Перед вами «{title}»."
+
+
 def is_film_theme(theme: str) -> bool:
     return bool(FILM_THEME_RE.search(theme))
 
@@ -535,6 +561,17 @@ def _generate_distractors(cfg, theme: str, entity: str) -> List[str]:
         )
     elif SOVIET_THEME_RE.search(theme or ""):
         language_rule = "Дистракторы — названия советских фильмов на русском языке.\n"
+    elif is_animal_theme(theme):
+        # Фото-вопрос про животное проверяет узнавание по снимку: варианты
+        # должны отличаться деталями вида, а не быть «зеброй» к «страусу».
+        language_rule = (
+            "Дистракторы — животные ТОГО ЖЕ отряда или семейства, что и "
+            "правильный ответ: близкие виды, которые реально можно спутать на "
+            "фотографии. Запрещены животные из других отрядов и классов: "
+            "крокодилу — аллигатор, гавиал или кайман (а не лев и не бегемот), "
+            "страусу — другие бескилевые птицы (а не зебра), сове — другие совы "
+            "(а не ястреб).\n"
+        )
     user = (
         f"Тема викторины — «{theme}». Правильный ответ: «{entity}».\n"
         f"Придумай ровно {DISTRACTOR_COUNT} дистрактора — правдоподобные, но "
@@ -715,7 +752,7 @@ def _dry_run(
             log.info("Пропускаю сущность «%s»: изображение не найдено", entity)
             continue
         planned += 1
-        log.info("  %2d. %s", planned, question)
+        log.info("  %2d. %s", planned, question_label(theme, entity, question))
         log.info("      правильный ответ: %s", answer)
         for i, option in enumerate(options):
             log.info("        %s%s", option, " *" if i == correct_index else "")
@@ -753,7 +790,7 @@ def _build_questions(
         questions.append(
             {
                 "topic": theme,
-                "question": question,
+                "question": question_label(theme, entity, question),
                 "options": options,
                 "correct_index": correct_index,
                 "theme": theme,
